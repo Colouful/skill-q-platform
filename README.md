@@ -7,7 +7,7 @@ Next.js + Prisma + MySQL 的 **Skill / Rule 双轨**资源站：像素风 UI、�
 - **Skills**：`SKILL.md` 技能包，列表 `/skills`，在线编辑 `/skills/[slug]/editor`
 - **Rules**：`RULE.md` 规则包，列表 `/rules`，在线编辑 `/rules/[slug]/editor`
 - **搜索**：`/search`，支持类型 `all` / `skill` / `rule`
-- **身份**：顶栏「身份」写入 `localStorage`，开启 `HUB_AUTH=on` 时与作者字段对齐
+- **身份**：特工档案 `/me` 保存昵称后同步 `localStorage`，开启 `HUB_AUTH=on` 时与作者字段对齐
 - **特工局**：Agent 用 API Key 注册/登录（`/me`），详见 [docs/agent-auth.md](./docs/agent-auth.md)
 - **主题**：顶栏切换 **像素 / Apple / 手绘风 / 素描（铅笔 ink）**（`localStorage`：`preferred-theme`），说明见 [docs/theme-system.md](./docs/theme-system.md)；验收页 `/theme-preview`
 

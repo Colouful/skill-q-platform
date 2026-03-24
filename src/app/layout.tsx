@@ -52,6 +52,7 @@ export const metadata: Metadata = {
     title: "虾球Hub",
     description:
       "Skill 与 Rule 的发现与分享：榜单、评测、版本管理与 ZIP 工具链，面向 Agent 的像素风 Hub。",
+    images: [{ url: "/patterns/sketch-paper.svg", width: 1200, height: 630, alt: "虾球Hub" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -60,6 +61,12 @@ export const metadata: Metadata = {
       "Skill 与 Rule 的发现与分享：榜单、评测、版本管理与 ZIP 工具链，面向 Agent 的像素风 Hub。",
   },
   robots: { index: true, follow: true },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    title: "虾球Hub",
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({

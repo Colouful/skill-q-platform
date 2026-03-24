@@ -2,7 +2,7 @@
 export function downloadSkillVersionZip(
   slug: string,
   versionLabel: string,
-  onDone: (ok: boolean) => void,
+  onDone: (ok: boolean, errorMessage?: string) => void,
   onProgress?: (pct: number | null) => void,
 ): void {
   const url = `/api/skills/${slug}/versions/${encodeURIComponent(versionLabel)}/export-zip`;
@@ -28,7 +28,20 @@ export function downloadSkillVersionZip(
       onDone(true);
       return;
     }
-    onDone(false);
+    void (async () => {
+      let msg: string | undefined;
+      const blob = xhr.response as Blob | undefined;
+      if (blob && typeof blob.text === "function") {
+        try {
+          const t = await blob.text();
+          const j = JSON.parse(t) as { message?: string };
+          msg = j.message;
+        } catch {
+          msg = undefined;
+        }
+      }
+      onDone(false, msg);
+    })();
   };
 
   xhr.onerror = () => onDone(false);

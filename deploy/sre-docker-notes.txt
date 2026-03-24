@@ -1,0 +1,63 @@
+虾球 Hub — SRE 平台 Docker 表单填写说明（与「nginx + nvm」底图、WORKDIR=/opt/web 一致）
+================================================================================
+
+一、和「client + server」老项目的区别
+--------------------------------------
+本仓库是单个 Next.js（standalone），没有 /opt/web/client/dist。
+构建产物在 /opt/web/.next/standalone，由 Node 监听 3000；Nginx 只负责 80 反代与 /health。
+
+二、SRE 表单建议填写
+--------------------------------------
+
+FROM
+  registry.100credit.cn/base/nginx:1.18-nvm
+  （以你们平台实际可用 tag 为准）
+
+WORKDIR
+  /opt/web
+
+COPY（按行；源路径相对代码仓库根目录）
+  1) server/nginx.conf      -> /opt/nginx/nginx.conf
+  2) server/nginx-start.sh   -> /opt/nginx-start.sh
+  3) 仓库根全部源码         -> /opt/web
+     若平台要求写「源」字段：用「当前仓库根」或「.」或平台约定的根路径；
+     目标目录填：/opt/web
+     不要把第三行留成「..」空目标。
+
+ENV（内网镜像可保留；若 npm 走公网可删掉或改官方源）
+  NVM_NODEJS_ORG_MIRROR=http://maven.100credit.cn/repository/br-binary/node/
+  NPM_CONFIG_REGISTRY=http://nodejs.100credit.cn/
+
+  构建期建议再增加（NEXT_PUBLIC_* 在 next build 时会打进前端包，请填生产站点）：
+  NEXT_PUBLIC_SITE_URL=https://你的正式域名
+
+RUN（整段一条，或按平台拆成多步）
+  . /root/.nvm/nvm.sh && nvm use 20 && \
+  cd /opt/web && \
+  npm ci && \
+  npm run build && \
+  chmod +x /opt/nginx-start.sh
+
+说明：
+  - 使用 npm（与仓库 package-lock.json 一致）；若平台强制 pnpm，需有 pnpm-lock.yaml 并改用 pnpm。
+  - 生产数据库迁移请在发布流水线执行：npx prisma migrate deploy（与运行环境同一 DATABASE_URL），不要写进仅构建镜像的 RUN 里。
+
+CMD / ENTRYPOINT（若平台有单独项）
+  /bin/sh /opt/nginx-start.sh
+  或：["/bin/sh", "/opt/nginx-start.sh"]
+
+暴露端口
+  80（对外与 K8s 探针）
+  容器内需 NODE 监听 3000（nginx-start.sh 已启动 node server.js）
+
+三、运行期环境变量（K8s Secret / 平台注入，不是 Dockerfile 里写死）
+--------------------------------------
+  DATABASE_URL（必填）
+  NEXT_PUBLIC_SITE_URL（与构建时一致或同域名）
+  其余见仓库 .env.example（MinIO、Redis、HUB_* 等按需）
+
+四、若平台强制 COPY 到 /opt/nginx/conf（目录）
+--------------------------------------
+  可把 server/nginx.conf 拷到 /opt/nginx/conf/default.conf，
+  并改 nginx-start.sh 里 NGINX_CONF 为 /opt/nginx/conf/default.conf，
+  或保持拷成单文件 /opt/nginx/nginx.conf（推荐，与 nginx-start.sh 默认一致）。

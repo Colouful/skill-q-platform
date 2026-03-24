@@ -1,4 +1,5 @@
 import type { PrismaClient } from "../src/generated/prisma";
+import { MODERATION_STATUS } from "../src/lib/moderation";
 import { syncRuleReviewStats } from "../src/lib/skill-review-stats";
 
 const RULE_CATEGORIES: { name: string; slug: string; sortOrder: number }[] = [
@@ -79,6 +80,7 @@ export async function seedRules(prisma: PrismaClient) {
         author: s.author,
         categoryId: biz.id,
         isFeatured: true,
+        moderationStatus: MODERATION_STATUS.PUBLISHED,
         tags: ["demo", "rule"],
         versions: {
           create: {

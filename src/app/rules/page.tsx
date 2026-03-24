@@ -9,6 +9,7 @@ import { RulesPagination } from "@/components/rules/rules-pagination";
 import { RulesCategorySidebar } from "@/components/rules/rules-category-sidebar";
 import { RuleCategoryPixelIcon } from "@/components/rule/rule-category-pixel-icon";
 import type { Prisma } from "@/generated/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { rulesListHref } from "@/lib/rules-list-url";
 import { cn } from "@/lib/utils";
 
@@ -25,7 +26,9 @@ async function RulesGrid({
   page: number;
   categorySlug?: string;
 }) {
-  const where: Prisma.RuleWhereInput = {};
+  const where: Prisma.RuleWhereInput = {
+    moderationStatus: MODERATION_STATUS.PUBLISHED,
+  };
   if (categorySlug) {
     where.category = { slug: categorySlug, resourceType: "rule" };
   }
@@ -168,7 +171,7 @@ export default async function RulesPage({
             <RulesSearch initialQ={q ?? ""} categorySlug={categorySlug} />
             <Link
               href="/rules/upload"
-              className="hub-apple-gradient-cta inline-flex items-center justify-center border-4 border-[var(--pixel-border)] bg-[var(--pixel-cyan)] px-4 py-2 font-[family-name:var(--font-pixel-body)] text-lg text-[var(--pixel-fg)] shadow-[4px_4px_0_0_var(--pixel-border)] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_var(--pixel-border)]"
+              className="hub-list-upload-cta hub-apple-gradient-cta inline-flex items-center justify-center border-4 border-[var(--pixel-border)] px-4 py-2 font-[family-name:var(--font-pixel-body)] text-lg shadow-[4px_4px_0_0_var(--pixel-border)] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_var(--pixel-border)]"
             >
               上传 Rule
             </Link>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Category, Rule } from "@/generated/prisma";
+import { ClampedCardDescription } from "@/components/card/clamped-card-description";
 import { pixelCardVariants } from "@/components/pixel";
 import { cn } from "@/lib/utils";
 import { HighlightText } from "@/components/skill/highlight-text";
@@ -20,20 +21,23 @@ export function RuleCard({
   return (
     <Link
       href={`/rules/${rule.slug}`}
-      className={cn(pixelCardVariants({ tone: "rule" }), "group block")}
+      className={cn(pixelCardVariants({ tone: "rule" }), "group/card flex h-full flex-col")}
     >
       <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--rule-accent)]">
         {rule.category.name}
       </p>
       <h3
-        className={`mt-1 font-[family-name:var(--font-pixel-heading)] text-[var(--pixel-fg)] ${compact ? "text-xs" : "text-sm"}`}
+        className={cn(
+          "mt-1 line-clamp-2 min-h-[2.5rem] font-[family-name:var(--font-pixel-heading)] text-[var(--pixel-fg)]",
+          compact ? "text-xs" : "text-sm",
+        )}
       >
         {hq ? <HighlightText text={rule.name} query={hq} /> : rule.name}
       </h3>
       {!compact && (
-        <p className="mt-2 line-clamp-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+        <ClampedCardDescription>
           {hq ? <HighlightText text={rule.description} query={hq} /> : rule.description}
-        </p>
+        </ClampedCardDescription>
       )}
       <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
         ⭐ {rule.rating.toFixed(1)} · ⬇ {rule.downloads}

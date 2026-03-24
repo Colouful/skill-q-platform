@@ -1,4 +1,4 @@
-/** Rule 详情页 JSON-LD（SoftwareSourceCode） */
+/** Rule 详情页 JSON-LD（CreativeWork） */
 export function RuleJsonLd({
   name,
   description,
@@ -15,12 +15,12 @@ export function RuleJsonLd({
   const url = `${siteOrigin.replace(/\/$/, "")}/rules/${slug}`;
   const data = {
     "@context": "https://schema.org",
-    "@type": "SoftwareSourceCode",
+    "@type": "CreativeWork",
     name,
     description: description.slice(0, 5000),
     url,
     author: { "@type": "Person", name: author },
-    programmingLanguage: "Rule",
+    genre: "Agent Rule",
   };
   return (
     <script

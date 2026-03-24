@@ -1,3 +1,6 @@
+/** 全局字号档位（与 `data-font-scale`、localStorage `preferred-font-scale` 一致） */
+export type FontScaleId = "normal" | "large" | "extraLarge";
+
 /** 主题 ID（与 data-theme、localStorage 一致） */
 export type ThemeId = "pixel" | "apple" | "sketch" | "ink";
 

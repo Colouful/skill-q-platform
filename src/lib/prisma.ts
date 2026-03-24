@@ -1,7 +1,16 @@
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@/generated/prisma";
 
-function poolConfigFromDatabaseUrl() {
+function poolConfigFromDatabaseUrl(): {
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  database?: string;
+  charset?: string;
+  connectionLimit: number;
+  acquireTimeout: number;
+} {
   const raw = process.env.DATABASE_URL;
   if (!raw) {
     throw new Error("DATABASE_URL 未配置");
@@ -9,6 +18,10 @@ function poolConfigFromDatabaseUrl() {
   const u = new URL(raw);
   const database = u.pathname.replace(/^\//, "") || undefined;
   const charset = u.searchParams.get("charset") ?? undefined;
+  const connectionLimit = Math.min(
+    50,
+    Math.max(5, Number(process.env.DATABASE_POOL_MAX ?? 20) || 20),
+  );
   return {
     host: u.hostname,
     port: u.port ? Number(u.port) : 3306,
@@ -16,6 +29,8 @@ function poolConfigFromDatabaseUrl() {
     password: decodeURIComponent(u.password),
     database,
     ...(charset ? { charset } : {}),
+    connectionLimit,
+    acquireTimeout: 60_000,
   };
 }
 

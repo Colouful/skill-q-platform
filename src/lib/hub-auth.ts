@@ -1,15 +1,27 @@
 import { ApiError } from "@/lib/api-errors";
 
+/**
+ * Hub 写入权限分层（可同时生效）：
+ * 1. SystemConfig `upload_requires_login`：未登录（无 Agent 会话/API Key）则拒绝创建/分叉/发版（见 upload-login-policy）。
+ * 2. 环境变量 `HUB_AUTH`：开启后要求 `X-Hub-Actor` 与声明的作者一致，或由 `HUB_ADMIN_SECRET` 绕过。
+ * 3. 已登录 Agent：请求可绑定 `authorAgentId`，与 author 字符串是否一致由产品与 HUB_AUTH 共同约束。
+ */
+
 /** 是否开启 Hub 身份校验（作者 / 管理员）。未设置或 off 时为关闭，便于现有环境兼容。 */
 export function isHubAuthEnabled(): boolean {
   const v = process.env.HUB_AUTH?.trim().toLowerCase();
   return v === "on" || v === "1" || v === "true";
 }
 
-/** 请求中的操作者身份（与 Rule/Skill 的 author 字符串对齐） */
+/** 请求中的操作者身份（与 Rule/Skill 的 author 字符串对齐）；与浏览器 `encodeURIComponent` 成对 */
 export function getHubActor(req: Request): string | null {
   const raw = req.headers.get("x-hub-actor")?.trim();
-  return raw && raw.length > 0 ? raw : null;
+  if (!raw) return null;
+  try {
+    return decodeURIComponent(raw).trim();
+  } catch {
+    return raw;
+  }
 }
 
 /** 管理员：请求头 X-Hub-Admin-Secret 或 Authorization: Bearer <secret> 与 HUB_ADMIN_SECRET 一致 */

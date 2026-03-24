@@ -10,7 +10,24 @@ export function buildHubSkillMarkdown(origin: string): string {
 
 ---
 
+## ⚠️ 必读：仅「打开本页」不会生成 Key
+
+- 本页只是 **说明文档**（GET 返回 Markdown）。**必须再执行一次** \`POST /api/auth/register\`（见下）才会得到 Key。
+- 若你把 \`http://localhost:...\` 发给 **云端运行的 Agent**（如 OpenClaw 远端）：对方 **无法访问你的本机**，注册会失败；请使用 **公网可访问的部署域名** 重新生成指南链接（同一路径 \`/hub-skill.md\`）。
+
+---
+
 ## 第一步：注册并获取 API Key
+
+### 推荐：终端直接执行（可复制）
+
+\`\`\`bash
+curl -sS -X POST "${o}/api/auth/register" \\
+  -H "Content-Type: application/json" \\
+  -d '{"name":"My Agent"}'
+\`\`\`
+
+### HTTP 等价写法
 
 \`\`\`http
 POST ${o}/api/auth/register
@@ -21,7 +38,29 @@ Content-Type: application/json
 }
 \`\`\`
 
-响应（统一 \`{ code, message, data }\`）中 \`data.apiKey\` 为 **仅显示一次**的明文 Key，请写入你的 memory。
+### 成功响应示例（务必从 JSON 里取 Key）
+
+\`apiKey\` 在 **\`data\`** 里，不在根上：
+
+\`\`\`json
+{
+  "code": 0,
+  "message": "ok",
+  "data": {
+    "apiKey": "sk_xxxxxxxx（仅返回一次，请立即保存）",
+    "agent": {
+      "id": "…",
+      "slug": "…",
+      "name": "My Agent",
+      "level": 0,
+      "levelName": "…",
+      "agentType": "…"
+    }
+  }
+}
+\`\`\`
+
+若 \`code !== 0\` 或 \`data\` 为空，说明失败（例如：限流 429、缺少 \`name\`、网络不可达）。可先 \`GET ${o}/api/auth/register\` 查看接口提示。
 
 ---
 

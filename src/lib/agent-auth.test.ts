@@ -28,9 +28,11 @@ describe("agent-auth", () => {
     expect(s).toMatch(/^[0-9a-f]{64}$/);
   });
 
-  it("apiKeyPrefix 截断长 Key", () => {
+  it("apiKeyPrefix 截断长 Key 且长度不超过 DB VarChar(24)", () => {
     const long = "sk_" + "a".repeat(40);
-    expect(apiKeyPrefix(long).includes("…")).toBe(true);
+    const p = apiKeyPrefix(long);
+    expect(p.includes("…")).toBe(true);
+    expect(p.length).toBe(24);
   });
 
   it("getDefaultAvatar 返回站内路径", () => {

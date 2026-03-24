@@ -1,5 +1,6 @@
 import { type Prisma } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { jsonOk } from "@/lib/api-response";
 import { ApiError, toApiResponse } from "@/lib/api-errors";
 
@@ -37,7 +38,10 @@ export async function GET(
       throw new ApiError("分类不存在", 404);
     }
 
-    const where: Prisma.RuleWhereInput = { categoryId: category.id };
+    const where: Prisma.RuleWhereInput = {
+      categoryId: category.id,
+      moderationStatus: MODERATION_STATUS.PUBLISHED,
+    };
     const orderBy = parseSort(sort);
 
     const [total, rules] = await Promise.all([

@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { jsonOk } from "@/lib/api-response";
 import { ApiError, toApiResponse } from "@/lib/api-errors";
-import { assertHubAuthForResourceAuthor } from "@/lib/hub-auth";
+import { assertSkillRuleWriteAccess } from "@/lib/skill-rule-write-access";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,10 @@ export async function POST(
       throw new ApiError("Rule 不存在", 404);
     }
 
-    assertHubAuthForResourceAuthor(req, existing.author);
+    await assertSkillRuleWriteAccess(req, {
+      authorAgentId: existing.authorAgentId,
+      author: existing.author,
+    });
 
     await prisma.rule.delete({ where: { slug } });
 

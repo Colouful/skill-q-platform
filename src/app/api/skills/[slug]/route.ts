@@ -3,10 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { getAuthFromRequest, publicAgentSummary } from "@/lib/agent-auth";
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
-import { assertHubAuthForResourceAuthor } from "@/lib/hub-auth";
+import { assertSkillRuleWriteAccess } from "@/lib/skill-rule-write-access";
+import { isPublishedModeration } from "@/lib/moderation";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
+
+const downloadPolicyEnum = z.enum(["public", "login", "author"]);
 
 const patchBody = z.object({
   name: z.string().min(1).max(255).optional(),
@@ -16,6 +19,7 @@ const patchBody = z.object({
   categorySlug: z.string().min(1).optional(),
   isFeatured: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
+  downloadPolicy: downloadPolicyEnum.optional(),
   expectedUpdatedAt: z.string().optional(),
 });
 
@@ -41,6 +45,12 @@ export async function GET(
     if (!skill) {
       return jsonErr("Skill 不存在", 404);
     }
+    if (!isPublishedModeration(skill.moderationStatus)) {
+      const isAuthor = auth.agent?.id && skill.authorAgentId === auth.agent.id;
+      if (!isAuthor) {
+        return jsonErr("Skill 不存在", 404);
+      }
+    }
     return jsonOk({
       ...skill,
       currentAgent: auth.agent ? publicAgentSummary(auth.agent) : null,
@@ -61,7 +71,10 @@ export async function POST(
       return jsonErr("Skill 不存在", 404);
     }
 
-    assertHubAuthForResourceAuthor(req, existing.author);
+    await assertSkillRuleWriteAccess(req, {
+      authorAgentId: existing.authorAgentId,
+      author: existing.author,
+    });
 
     const raw = await req.json();
     const parsed = patchBody.safeParse(raw);
@@ -85,6 +98,9 @@ export async function POST(
     if (b.isFeatured !== undefined) data.isFeatured = b.isFeatured;
     if (b.tags !== undefined) {
       data.tags = b.tags.length ? b.tags : [];
+    }
+    if (b.downloadPolicy !== undefined) {
+      data.downloadPolicy = b.downloadPolicy;
     }
 
     if (b.categorySlug !== undefined) {

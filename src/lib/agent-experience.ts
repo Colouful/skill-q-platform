@@ -1,5 +1,6 @@
 import type { Prisma } from "@/generated/prisma";
 import { levelStateFromExperience } from "@/lib/agent-levels";
+import { notifyLevelUp } from "@/lib/hub-notifications";
 
 /** 上传 Skill / Rule 成功 */
 export const XP_UPLOAD_RESOURCE = 100;
@@ -34,8 +35,16 @@ export async function applyExperienceDelta(
     where: { id: agentId },
     data: { experience: newXp, level, levelName },
   });
+  const leveledUp = level > oldLevel;
+  if (leveledUp) {
+    try {
+      await notifyLevelUp(tx, agentId, level, levelName);
+    } catch {
+      /* 通知表未迁移时不阻断经验结算 */
+    }
+  }
   return {
-    leveledUp: level > oldLevel,
+    leveledUp,
     level,
     levelName,
   };

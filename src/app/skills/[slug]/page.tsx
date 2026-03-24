@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { canViewUnpublishedResource } from "@/lib/moderation";
+import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
+import { SkillJsonLd } from "@/components/seo/skill-json-ld";
 import { SkillDetailActions } from "@/components/skills/skill-detail-actions";
 import { SkillVersionsList } from "@/components/skills/skill-versions-list";
 import { SkillReviewsPanel } from "@/components/skills/reviews/skill-reviews-panel";
+import { DownloadPolicyBadge } from "@/components/hub/download-policy-badge";
 
 export const dynamic = "force-dynamic";
 
@@ -16,12 +22,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const skill = await prisma.skill.findUnique({
     where: { slug },
-    select: { name: true, description: true },
+    select: { name: true, description: true, moderationStatus: true, authorAgentId: true },
   });
   if (!skill) {
     return { title: "Skill" };
   }
+  const agent = await getOptionalAuthAgentFromCookies();
+  if (!canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, agent?.id ?? null)) {
+    return { title: "Skill" };
+  }
   const desc = skill.description.slice(0, 160);
+  const base =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   return {
     title: skill.name,
     description: desc,
@@ -29,8 +42,11 @@ export async function generateMetadata({
       title: skill.name,
       description: desc,
       type: "article",
+      ...(base ? { url: `${base}/skills/${slug}` } : {}),
+      images: [{ url: "/patterns/sketch-paper.svg", alt: skill.name }],
     },
     twitter: {
+      card: "summary_large_image",
       title: skill.name,
       description: desc,
     },
@@ -52,6 +68,19 @@ export default async function SkillDetailPage({
   });
   if (!skill) notFound();
 
+  const h = await headers();
+  const proto = h.get("x-forwarded-proto") ?? "http";
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+  const siteOrigin =
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || `${proto}://${host}`;
+
+  const viewer = await getOptionalAuthAgentFromCookies();
+  if (!canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, viewer?.id ?? null)) {
+    notFound();
+  }
+
+  const canEdit = canEditSkillOrRule(viewer, skill.authorAgentId, skill.author);
+
   const initialReviews = await prisma.review.findMany({
     where: { skillId: skill.id, resourceType: "skill" },
     orderBy: { createdAt: "desc" },
@@ -65,6 +94,15 @@ export default async function SkillDetailPage({
 
   return (
     <article className="mx-auto w-full max-w-4xl space-y-6 pb-8">
+      <SkillJsonLd
+        name={skill.name}
+        description={skill.description}
+        slug={skill.slug}
+        author={skill.author}
+        siteOrigin={siteOrigin}
+        rating={skill.rating}
+        reviewCount={skill.reviewCount}
+      />
       <nav className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
         <Link href="/skills" className="hover:text-[var(--pixel-fg)]">
           Skills
@@ -83,8 +121,11 @@ export default async function SkillDetailPage({
         <p className="mt-4 font-[family-name:var(--font-pixel-body)] text-lg text-[var(--pixel-muted)]">
           {skill.description}
         </p>
-        <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
-          作者 {skill.author} · ⭐ {skill.rating.toFixed(1)} · ⬇ {skill.downloads}
+        <p className="mt-2 flex flex-wrap items-center gap-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+          <DownloadPolicyBadge policy={skill.downloadPolicy} />
+          <span>
+            作者 {skill.author} · ⭐ {skill.rating.toFixed(1)} · ⬇ {skill.downloads}
+          </span>
         </p>
         {tags.length > 0 && (
           <ul className="mt-4 flex flex-wrap gap-2">
@@ -111,12 +152,14 @@ export default async function SkillDetailPage({
           <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
             版本
           </h2>
-          <Link
-            href={`/skills/${skill.slug}/versions/new`}
-            className="border-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)] px-3 py-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-95"
-          >
-            发布新版本
-          </Link>
+          {canEdit ? (
+            <Link
+              href={`/skills/${skill.slug}/versions/new`}
+              className="border-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)] px-3 py-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-95"
+            >
+              发布新版本
+            </Link>
+          ) : null}
         </div>
         <SkillVersionsList slug={skill.slug} versions={skill.versions} />
       </section>
@@ -127,6 +170,7 @@ export default async function SkillDetailPage({
         slug={skill.slug}
         defaultForkName={`${skill.name} (Fork)`}
         defaultForkAuthor={skill.author}
+        canEdit={canEdit}
       />
     </article>
   );

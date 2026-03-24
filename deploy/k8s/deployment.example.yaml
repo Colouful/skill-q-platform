@@ -1,0 +1,123 @@
+# 示例：虾球 Hub — Nginx sidecar（80，探针） + Next standalone（3000）
+#
+# 使用前请替换：
+#   - image: 你们仓库地址与 tag
+#   - Secret xiaqiu-hub-env：至少 DATABASE_URL、NEXT_PUBLIC_SITE_URL（见仓库 .env.example）
+#   - Ingress / Service 对外端口按集群规范修改
+#
+# 数据库迁移：部署前在 CI 或一次性 Job 执行：
+#   npx prisma migrate deploy
+# （需带相同 DATABASE_URL，可用与 app 相同的 Secret）
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xiaqiu-hub-nginx
+data:
+  default.conf: |
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+    }
+    upstream nextjs {
+        server 127.0.0.1:3000;
+        keepalive 32;
+    }
+    server {
+        listen 80;
+        server_name _;
+        client_max_body_size 20M;
+        location = /health {
+            default_type text/plain;
+            return 200 'healthy\n';
+        }
+        location / {
+            proxy_pass http://nextjs;
+            proxy_http_version 1.1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_read_timeout 300s;
+            proxy_connect_timeout 75s;
+        }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xiaqiu-hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xiaqiu-hub
+  template:
+    metadata:
+      labels:
+        app: xiaqiu-hub
+    spec:
+      containers:
+        - name: app
+          image: your-registry.example.com/xiaqiu-hub:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http-app
+              containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: xiaqiu-hub-env
+          # 资源按实际压测调整
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+        - name: nginx
+          image: nginx:1.26-alpine
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d
+              readOnly: true
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: xiaqiu-hub-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xiaqiu-hub
+spec:
+  selector:
+    app: xiaqiu-hub
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { RuleCard } from "@/components/rule/rule-card";
 import { LobsterEmpty } from "@/components/lobster";
 import { RulesPagination } from "@/components/rules/rules-pagination";
@@ -26,7 +27,10 @@ export default async function RuleCategoryBrowsePage({
   });
   if (!category) notFound();
 
-  const where = { categoryId: category.id };
+  const where = {
+    categoryId: category.id,
+    moderationStatus: MODERATION_STATUS.PUBLISHED,
+  };
 
   const [total, rules] = await Promise.all([
     prisma.rule.count({ where }),

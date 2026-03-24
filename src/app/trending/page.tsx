@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { DiscoverSkillGrid } from "@/components/discover/discover-skill-grid";
 import { DiscoverRuleGrid } from "@/components/discover/discover-rule-grid";
 import { TrendingControls } from "@/components/discover/trending-controls";
@@ -30,6 +31,7 @@ export default async function TrendingPage({
 
   if (parsed.type === "skill") {
     const skills = await prisma.skill.findMany({
+      where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
       include: { category: true },
       orderBy: skillOrderBy(parsed.sort),
       take: parsed.limit,
@@ -51,6 +53,7 @@ export default async function TrendingPage({
 
   if (parsed.type === "rule") {
     const rules = await prisma.rule.findMany({
+      where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
       include: { category: true },
       orderBy: ruleOrderBy(parsed.sort),
       take: parsed.limit,
@@ -72,11 +75,13 @@ export default async function TrendingPage({
 
   const [skills, rules] = await Promise.all([
     prisma.skill.findMany({
+      where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
       include: { category: true },
       orderBy: skillOrderBy(parsed.sort),
       take: parsed.limit,
     }),
     prisma.rule.findMany({
+      where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
       include: { category: true },
       orderBy: ruleOrderBy(parsed.sort),
       take: parsed.limit,

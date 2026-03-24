@@ -18,8 +18,10 @@ export function generateApiKey(): string {
   return `sk_${randomBytes(32).toString("hex")}`;
 }
 
+/** 与 Prisma `ApiKey.keyPrefix` @db.VarChar(24) 对齐；截断时「…」占 1 字，故最多取 23 字再拼省略号 */
 export function apiKeyPrefix(raw: string): string {
-  return raw.length <= 24 ? raw : `${raw.slice(0, 24)}…`;
+  if (raw.length <= 24) return raw;
+  return `${raw.slice(0, 23)}…`;
 }
 
 export function generateSessionId(): string {
@@ -167,4 +169,12 @@ export async function getAuthFromRequest(req: Request) {
     sessionId: hit.session.sessionId,
     mode: "cookie" as const,
   };
+}
+
+/** Server Component：仅 Cookie 会话（无 Bearer），用于详情页可见性等 */
+export async function getOptionalAuthAgentFromCookies(): Promise<AuthAgent | null> {
+  const cookieStore = await cookies();
+  const sid = cookieStore.get(SESSION_COOKIE)?.value;
+  const hit = await findAgentBySessionCookie(sid);
+  return hit ? (hit.agent as AuthAgent) : null;
 }

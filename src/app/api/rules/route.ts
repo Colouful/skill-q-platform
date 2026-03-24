@@ -8,6 +8,9 @@ import { applyExperienceDelta, XP_UPLOAD_RESOURCE } from "@/lib/agent-experience
 import { rateLimitForAgentLevel } from "@/lib/agent-levels";
 import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
 import { slugFromName } from "@/lib/skill-slug";
+import { MODERATION_STATUS } from "@/lib/moderation";
+import { getDefaultDownloadPolicy } from "@/lib/system-config";
+import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +21,8 @@ const fileEntry = z.object({
   content: z.string().optional(),
 });
 
+const downloadPolicyEnum = z.enum(["public", "login", "author"]);
+
 const postBody = z.object({
   name: z.string().min(1).max(255),
   description: z.string().min(1),
@@ -25,6 +30,7 @@ const postBody = z.object({
   categorySlug: z.string().min(1),
   longDescription: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  downloadPolicy: downloadPolicyEnum.optional(),
   initialFiles: z.array(fileEntry).max(200).optional(),
 });
 
@@ -37,7 +43,9 @@ export async function GET(req: Request) {
     const categorySlug = searchParams.get("category")?.trim();
     const q = searchParams.get("q")?.trim();
 
-    const where: Prisma.RuleWhereInput = {};
+    const where: Prisma.RuleWhereInput = {
+      moderationStatus: MODERATION_STATUS.PUBLISHED,
+    };
     if (categorySlug) {
       where.category = { slug: categorySlug, resourceType: "rule" };
     }
@@ -74,7 +82,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const auth = await getAuthFromRequest(req);
+    const gate = await enforceUploadLoginPolicy(req);
+    if (gate.denied) {
+      return jsonErr(gate.message, 401);
+    }
+    const { auth } = gate;
     const ip = getRequestIp(req);
     const rl = auth.agent
       ? await checkApiRateLimit(`api:rules:create:agent:${auth.agent.id}`, {
@@ -114,6 +126,8 @@ export async function POST(req: Request) {
     const initialFiles =
       b.initialFiles && b.initialFiles.length > 0 ? b.initialFiles : [];
 
+    const defaultPolicy = await getDefaultDownloadPolicy();
+
     let agentLevelUp: { level: number; levelName: string } | null = null;
     const rule = await prisma.$transaction(async (tx) => {
       const r = await tx.rule.create({
@@ -125,6 +139,8 @@ export async function POST(req: Request) {
           author: b.author.trim(),
           categoryId: category.id,
           tags: tagsJson,
+          downloadPolicy: b.downloadPolicy ?? defaultPolicy,
+          moderationStatus: MODERATION_STATUS.PENDING,
           authorAgentId: auth.agent?.id ?? undefined,
           versions: {
             create: {
