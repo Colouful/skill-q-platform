@@ -33,10 +33,12 @@ export function RuleDetailActions({
   slug,
   defaultForkName,
   defaultForkAuthor,
+  canEdit,
 }: {
   slug: string;
   defaultForkName: string;
   defaultForkAuthor: string;
+  canEdit: boolean;
 }) {
   const router = useRouter();
   const [forking, setForking] = useState(false);
@@ -89,24 +91,28 @@ export function RuleDetailActions({
 
   return (
     <div className="flex flex-wrap gap-3 border-t-4 border-[var(--rule-border)] pt-6">
-      <Link
-        href={`/rules/${slug}/edit`}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
-        )}
-      >
-        元数据
-      </Link>
-      <Link
-        href={`/rules/${slug}/editor`}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "border-4 border-[var(--rule-border)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]",
-        )}
-      >
-        在线编辑
-      </Link>
+      {canEdit ? (
+        <>
+          <Link
+            href={`/rules/${slug}/edit`}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
+            )}
+          >
+            元数据
+          </Link>
+          <Link
+            href={`/rules/${slug}/editor`}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "border-4 border-[var(--rule-border)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]",
+            )}
+          >
+            在线编辑
+          </Link>
+        </>
+      ) : null}
       <Button
         type="button"
         disabled={forking}
@@ -168,6 +174,7 @@ export function RuleDetailActions({
         </DialogContent>
       </Dialog>
 
+      {canEdit ? (
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogTrigger
           type="button"
@@ -205,6 +212,7 @@ export function RuleDetailActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      ) : null}
     </div>
   );
 }

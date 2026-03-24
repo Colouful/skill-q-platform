@@ -6,7 +6,12 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import {
+  DownloadPolicyRadios,
+  type DownloadPolicyChoice,
+} from "@/components/hub/download-policy-radios";
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
+import { normalizeDownloadPolicy } from "@/lib/download-policy";
 import type { Category, Rule } from "@/generated/prisma";
 
 export function RuleEditForm({
@@ -33,6 +38,9 @@ export function RuleEditForm({
           .join(", ")
       : "",
   );
+  const [downloadPolicy, setDownloadPolicy] = useState<DownloadPolicyChoice>(
+    normalizeDownloadPolicy(rule.downloadPolicy),
+  );
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -50,6 +58,7 @@ export function RuleEditForm({
         categorySlug,
         longDescription: longDescription || null,
         tags: tagList,
+        downloadPolicy,
         expectedUpdatedAt,
       }),
     });
@@ -103,6 +112,11 @@ export function RuleEditForm({
           ))}
         </select>
       </div>
+      <DownloadPolicyRadios
+        name="rule-edit-dp"
+        value={downloadPolicy}
+        onChange={setDownloadPolicy}
+      />
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">详细说明</Label>
         <PixelTextarea

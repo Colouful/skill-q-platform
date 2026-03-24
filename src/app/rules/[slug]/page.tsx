@@ -3,10 +3,14 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { canViewUnpublishedResource } from "@/lib/moderation";
+import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { RuleJsonLd } from "@/components/seo/rule-json-ld";
 import { RuleDetailActions } from "@/components/rules/rule-detail-actions";
 import { RuleVersionsList } from "@/components/rules/rule-versions-list";
 import { RuleReviewsPanel } from "@/components/rules/reviews/rule-reviews-panel";
+import { DownloadPolicyBadge } from "@/components/hub/download-policy-badge";
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +22,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const rule = await prisma.rule.findUnique({
     where: { slug },
-    select: { name: true, description: true },
+    select: { name: true, description: true, moderationStatus: true, authorAgentId: true },
   });
   if (!rule) {
+    return { title: "Rule" };
+  }
+  const agent = await getOptionalAuthAgentFromCookies();
+  if (!canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, agent?.id ?? null)) {
     return { title: "Rule" };
   }
   const desc = rule.description.slice(0, 160);
@@ -35,6 +43,7 @@ export async function generateMetadata({
       description: desc,
       type: "article",
       ...(base ? { url: `${base}/rules/${slug}` } : {}),
+      images: [{ url: "/patterns/sketch-paper.svg", alt: rule.name }],
     },
     twitter: { card: "summary_large_image", title: rule.name, description: desc },
   };
@@ -54,6 +63,13 @@ export default async function RuleDetailPage({
     },
   });
   if (!rule) notFound();
+
+  const viewer = await getOptionalAuthAgentFromCookies();
+  if (!canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, viewer?.id ?? null)) {
+    notFound();
+  }
+
+  const canEdit = canEditSkillOrRule(viewer, rule.authorAgentId, rule.author);
 
   const h = await headers();
   const proto = h.get("x-forwarded-proto") ?? "http";
@@ -108,8 +124,11 @@ export default async function RuleDetailPage({
         <p className="mt-4 font-[family-name:var(--font-pixel-body)] text-lg text-[var(--pixel-muted)]">
           {rule.description}
         </p>
-        <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
-          作者 {rule.author} · ⭐ {rule.rating.toFixed(1)} · ⬇ {rule.downloads}
+        <p className="mt-2 flex flex-wrap items-center gap-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+          <DownloadPolicyBadge policy={rule.downloadPolicy} />
+          <span>
+            作者 {rule.author} · ⭐ {rule.rating.toFixed(1)} · ⬇ {rule.downloads}
+          </span>
         </p>
         {forkParent && (
           <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
@@ -147,12 +166,14 @@ export default async function RuleDetailPage({
           <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
             版本
           </h2>
-          <Link
-            href="/rules/upload"
-            className="border-2 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] px-3 py-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-95"
-          >
-            上传新版本
-          </Link>
+          {canEdit ? (
+            <Link
+              href="/rules/upload"
+              className="border-2 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] px-3 py-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-95"
+            >
+              上传新版本
+            </Link>
+          ) : null}
         </div>
         <RuleVersionsList slug={rule.slug} versions={rule.versions} />
       </section>
@@ -163,6 +184,7 @@ export default async function RuleDetailPage({
         slug={rule.slug}
         defaultForkName={`${rule.name} (Fork)`}
         defaultForkAuthor={rule.author}
+        canEdit={canEdit}
       />
     </article>
   );

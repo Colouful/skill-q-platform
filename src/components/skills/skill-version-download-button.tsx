@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { notifyDownloadApiError } from "@/lib/download-toast-client";
 import { downloadSkillVersionZip } from "@/lib/skill-version-zip-client";
 
 type DownloadPayload = {
@@ -48,7 +49,7 @@ export function SkillVersionDownloadButton({
       );
       setPending(false);
       if (res.code !== 0 || !res.data) {
-        toast.error(res.message || "记录失败");
+        notifyDownloadApiError(res.message || "记录失败");
         return;
       }
       const d = res.data;
@@ -64,7 +65,7 @@ export function SkillVersionDownloadButton({
     downloadSkillVersionZip(
       slug,
       versionLabel,
-      (ok) => {
+      (ok, errMsg) => {
         setPending(false);
         setZipPct(null);
         if (ok) {
@@ -72,7 +73,7 @@ export function SkillVersionDownloadButton({
           router.refresh();
           return;
         }
-        toast.error("打包或下载失败");
+        notifyDownloadApiError(errMsg || "打包或下载失败");
       },
       (p) => setZipPct(p),
     );

@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Agent {
-  id             String    @id @default(uuid()) @db.VarChar(36)
+  id             String    @id @default(uuid()) @db.VarChar(191)
   name           String    @db.VarChar(100)
   slug           String    @unique @db.VarChar(100)
   avatar         String?   @db.VarChar(500)
@@ -31,6 +31,8 @@ model Agent {
   uploadedSkills Skill[]    @relation("SkillAuthor")
   uploadedRules  Rule[]     @relation("RuleAuthor")
   authoredReviews Review[]  @relation("ReviewAuthor")
+  downloadLogs    DownloadLog[]
+  hubNotifications HubNotification[]
 
   @@map("agents")
   @@index([slug])
@@ -39,10 +41,10 @@ model Agent {
 }
 
 model ApiKey {
-  id          String    @id @default(uuid()) @db.VarChar(36)
+  id          String    @id @default(uuid()) @db.VarChar(191)
   keyHash     String    @unique @map("key_hash") @db.VarChar(64)
   keyPrefix   String    @db.VarChar(24)
-  agentId     String    @db.VarChar(36)
+  agentId     String    @db.VarChar(191)
   agent       Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
   name        String    @default("Default") @db.VarChar(50)
   description String?   @db.Text
@@ -62,11 +64,11 @@ model ApiKey {
 }
 
 model AgentSession {
-  id        String   @id @default(uuid()) @db.VarChar(36)
+  id        String   @id @default(uuid()) @db.VarChar(191)
   sessionId String   @unique @db.VarChar(64)
-  agentId   String   @db.VarChar(36)
+  agentId   String   @db.VarChar(191)
   agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  apiKeyId  String   @db.VarChar(36)
+  apiKeyId  String   @db.VarChar(191)
   apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
   userAgent String?  @db.VarChar(500)
   ipAddress String?  @db.VarChar(50)
@@ -111,8 +113,11 @@ model Skill {
   isFeatured        Boolean   @default(false)
   tags              Json?
   forkedFromSkillId String?   @db.VarChar(36)
-  authorAgentId     String?   @db.VarChar(36)
+  authorAgentId     String?   @db.VarChar(191)
   authorAgent       Agent?    @relation("SkillAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  downloadPolicy    String    @default("public") @db.VarChar(20)
+  moderationStatus  String    @default("published") @db.VarChar(20)
+  moderationNote    String?   @db.Text
   versions          Version[]
   reviews           Review[]
   createdAt         DateTime  @default(now())
@@ -123,6 +128,7 @@ model Skill {
   @@index([slug])
   @@index([downloads])
   @@index([rating])
+  @@index([moderationStatus])
 }
 
 model Rule {
@@ -140,8 +146,11 @@ model Rule {
   isFeatured       Boolean       @default(false)
   tags             Json?
   forkedFromRuleId String?       @db.VarChar(36)
-  authorAgentId    String?   @db.VarChar(36)
+  authorAgentId    String?   @db.VarChar(191)
   authorAgent      Agent?        @relation("RuleAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  downloadPolicy   String    @default("public") @db.VarChar(20)
+  moderationStatus String    @default("published") @db.VarChar(20)
+  moderationNote   String?   @db.Text
   versions         RuleVersion[]
   reviews          Review[]
   createdAt        DateTime      @default(now())
@@ -153,6 +162,7 @@ model Rule {
   @@index([author])
   @@index([downloads])
   @@index([rating])
+  @@index([moderationStatus])
 }
 
 model Version {
@@ -200,7 +210,7 @@ model Review {
   rating       Int
   content       String   @db.Text
   author        String   @db.VarChar(100)
-  authorAgentId String?   @db.VarChar(36)
+  authorAgentId String?   @db.VarChar(191)
   authorAgent   Agent?   @relation("ReviewAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
   isHelpful     Int      @default(0)
   createdAt     DateTime @default(now())
@@ -210,4 +220,83 @@ model Review {
   @@index([skillId])
   @@index([ruleId])
   @@index([resourceType, resourceId])
+}
+
+model DownloadLog {
+  id           String   @id @default(uuid())
+  agentId      String?  @db.VarChar(191)
+  agent        Agent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  resourceType String   @db.VarChar(20)
+  resourceId   String   @db.VarChar(36)
+  ipAddress    String   @db.VarChar(50)
+  userAgent    String?  @db.VarChar(500)
+  createdAt    DateTime @default(now())
+
+  @@index([agentId])
+  @@index([resourceType, resourceId])
+  @@map("download_logs")
+}
+
+model CategoryAuditLog {
+  id         String   @id @default(uuid()) @db.VarChar(36)
+  adminId    String   @db.VarChar(36)
+  action     String   @db.VarChar(40)
+  categoryId String?  @db.VarChar(36)
+  details    Json
+  createdAt  DateTime @default(now())
+
+  @@index([adminId])
+  @@index([categoryId])
+  @@map("category_audit_logs")
+}
+
+model SystemConfig {
+  configKey   String   @id @map("config_key") @db.VarChar(64)
+  configValue String   @map("config_value") @db.Text
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("system_configs")
+}
+
+model HubNotification {
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  agentId   String    @map("agent_id") @db.VarChar(191)
+  agent     Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  type      String    @db.VarChar(40)
+  title     String    @db.VarChar(255)
+  content   String    @db.Text
+  isRead    Boolean   @default(false) @map("is_read")
+  readAt    DateTime? @map("read_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([agentId])
+  @@index([agentId, isRead])
+  @@map("hub_notifications")
+}
+
+model Admin {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @db.VarChar(255)
+  role         String   @default("moderator") @db.VarChar(32)
+  permissions  Json     @default("[]")
+  isActive     Boolean  @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  sessions     AdminSession[]
+
+  @@map("admins")
+}
+
+model AdminSession {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  sessionId String   @unique @db.VarChar(64)
+  adminId   String   @db.VarChar(36)
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([adminId])
+  @@map("admin_sessions")
 }

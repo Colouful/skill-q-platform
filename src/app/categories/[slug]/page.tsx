@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { SkillCard } from "@/components/skill/skill-card";
 import { LobsterEmpty } from "@/components/lobster";
 
@@ -16,6 +17,7 @@ export default async function CategoryPage({
     where: { slug_resourceType: { slug, resourceType: "skill" } },
     include: {
       skills: {
+        where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
         include: { category: true },
         orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
       },

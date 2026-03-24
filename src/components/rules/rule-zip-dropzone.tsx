@@ -3,7 +3,7 @@
 import { useCallback, useId, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { getHubActorFromStorage } from "@/lib/hub-actor-client";
+import { encodeHubActorForRequestHeader, getHubActorFromStorage } from "@/lib/hub-actor-client";
 import type { ZipParsePayload } from "@/components/skills/skill-zip-dropzone";
 
 /** Rule 包：解析 RULE.md，POST /api/upload 时带 kind=rule；支持 ZIP 上传进度 */
@@ -32,7 +32,7 @@ export function RuleZipDropzone({
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/api/upload");
       const actor = getHubActorFromStorage();
-      if (actor) xhr.setRequestHeader("X-Hub-Actor", actor);
+      if (actor) xhr.setRequestHeader("X-Hub-Actor", encodeHubActorForRequestHeader(actor));
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
           setProgress(Math.min(100, Math.round((e.loaded / e.total) * 100)));

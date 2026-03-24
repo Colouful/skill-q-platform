@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { notifyDownloadApiError } from "@/lib/download-toast-client";
 
 type DownloadPayload = {
   version: string;
@@ -38,7 +39,7 @@ export function RuleVersionDownloadButton({
     );
     setPending(false);
     if (res.code !== 0 || !res.data) {
-      toast.error(res.message || "记录失败");
+      notifyDownloadApiError(res.message || "记录失败");
       return;
     }
     const d = res.data;

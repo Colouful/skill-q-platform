@@ -6,6 +6,44 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+/** 更新当前 Agent 档案昵称（站点身份 / 评测署名 / X-Hub-Actor） */
+export async function POST(req: NextRequest) {
+  try {
+    const auth = await getAuthFromRequest(req);
+    if (!auth.agent) {
+      return jsonErr("未登录", 401);
+    }
+
+    let body: { name?: string } = {};
+    try {
+      body = (await req.json()) as { name?: string };
+    } catch {
+      return jsonErr("请求体须为 JSON", 400);
+    }
+
+    const name = (body.name ?? "").trim().slice(0, 100);
+    if (!name) {
+      return jsonErr("缺少 name", 400);
+    }
+
+    const agent = await prisma.agent.update({
+      where: { id: auth.agent.id },
+      data: { name },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        level: true,
+        levelName: true,
+      },
+    });
+
+    return jsonOk({ agent });
+  } catch (e) {
+    return toApiResponse(e);
+  }
+}
+
 /** 当前 Agent：Cookie Session 或 Bearer API Key；Cookie 访问时滑动续期 Session */
 export async function GET(req: NextRequest) {
   try {

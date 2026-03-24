@@ -1,9 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { setHubActorToStorage } from "@/lib/hub-actor-client";
 import { MeApiKeysSection } from "@/components/me/me-api-keys-section";
 import { MeActivitySection, type MeActivityProps } from "@/components/me/me-activity-section";
 import { getNextLevelRequirements, LEVEL_XP_THRESHOLDS } from "@/lib/agent-levels";
@@ -32,6 +36,34 @@ export function MeProfilePanel({
   activity: MeActivityProps;
 }) {
   const router = useRouter();
+  const [nameDraft, setNameDraft] = useState(agent.name);
+  const [nameSaving, setNameSaving] = useState(false);
+
+  useEffect(() => {
+    setNameDraft(agent.name);
+  }, [agent.name]);
+
+  async function saveDisplayName() {
+    const v = nameDraft.trim();
+    if (!v) {
+      toast.error("昵称不能为空");
+      return;
+    }
+    setNameSaving(true);
+    const res = await fetchApi<{ agent: { name: string } }>("/api/auth/me", {
+      method: "POST",
+      body: JSON.stringify({ name: v }),
+    });
+    setNameSaving(false);
+    if (res.code !== 0 || !res.data?.agent) {
+      toast.error(res.message || "保存失败");
+      return;
+    }
+    setHubActorToStorage(res.data.agent.name);
+    toast.success("已更新昵称");
+    window.dispatchEvent(new CustomEvent("agent-session-changed"));
+    router.refresh();
+  }
 
   async function logout() {
     const res = await fetchApi("/api/auth/logout", { method: "POST" });
@@ -73,10 +105,7 @@ export function MeProfilePanel({
           <h1 className="font-[family-name:var(--font-pixel-heading)] text-lg text-[var(--pixel-fg)]">
             🦞 特工档案
           </h1>
-          <p className="mt-1 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-fg)]">
-            {agent.name}
-          </p>
-          <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+          <p className="mt-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
             @{agent.slug} · {agent.levelName} · Lv.{agent.level}
           </p>
           <div className="mt-3 space-y-1">
@@ -105,6 +134,35 @@ export function MeProfilePanel({
         >
           登出
         </Button>
+      </div>
+
+      <div className="space-y-2 border-t-2 border-[var(--pixel-border)]/30 pt-4">
+        <Label htmlFor="me-display-name" className="font-[family-name:var(--font-pixel-body)] text-sm">
+          昵称（站点身份）
+        </Label>
+        <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+          与评测署名、资源作者展示一致；保存后写入档案，并作为请求头{" "}
+          <code className="text-[var(--pixel-fg)]">X-Hub-Actor</code>。生产环境开启{" "}
+          <code className="text-[var(--pixel-fg)]">HUB_AUTH</code> 时，上传/编辑作品须与此昵称一致。
+        </p>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
+          <Input
+            id="me-display-name"
+            value={nameDraft}
+            onChange={(e) => setNameDraft(e.target.value)}
+            maxLength={100}
+            className="border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)] sm:max-w-md"
+            placeholder="对外展示名"
+          />
+          <Button
+            type="button"
+            disabled={nameSaving || nameDraft.trim() === agent.name.trim()}
+            onClick={() => void saveDisplayName()}
+            className="shrink-0 border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]"
+          >
+            {nameSaving ? "保存中…" : "保存昵称"}
+          </Button>
+        </div>
       </div>
 
       <dl

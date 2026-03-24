@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { SkillVersionPublishForm } from "@/components/skills/skill-version-publish-form";
 
 export const dynamic = "force-dynamic";
@@ -13,9 +15,14 @@ export default async function SkillVersionNewPage({
   const { slug } = await params;
   const skill = await prisma.skill.findUnique({
     where: { slug },
-    select: { name: true, slug: true },
+    select: { name: true, slug: true, author: true, authorAgentId: true },
   });
   if (!skill) notFound();
+
+  const viewer = await getOptionalAuthAgentFromCookies();
+  if (!canEditSkillOrRule(viewer, skill.authorAgentId, skill.author)) {
+    notFound();
+  }
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 pb-8">

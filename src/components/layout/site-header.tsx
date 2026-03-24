@@ -10,6 +10,8 @@ import { HeaderResourceMenus } from "@/components/layout/header-resource-menus";
 import { HeaderUploadCta } from "@/components/layout/header-upload-cta";
 import { HeaderDiscoverNav } from "@/components/layout/header-discover-nav";
 import { HeaderAgentAuth } from "@/components/layout/header-agent-auth";
+import { HeaderNotificationsBell } from "@/components/layout/header-notifications-bell";
+import { FontScaleSwitcher } from "@/themes/FontScaleSwitcher";
 import { ThemeSwitcher } from "@/themes/ThemeSwitcher";
 import { cn } from "@/lib/utils";
 
@@ -54,13 +56,15 @@ export function SiteHeader() {
           </div>
         </div>
         {/* 右侧：搜索（md+）→ 登录/身份 → 移动端抽屉 */}
-        <div className="flex min-w-0 shrink-0 items-center justify-end gap-2 sm:gap-3">
+        <div className="flex min-w-0 shrink-0 items-center justify-end gap-1.5 sm:gap-2 md:gap-2.5">
           <Suspense
             fallback={<div className="hidden h-9 w-[min(280px,36vw)] shrink-0 md:block" aria-hidden />}
           >
             <UnifiedSearchBar />
           </Suspense>
+          <FontScaleSwitcher className="hidden sm:block" />
           <ThemeSwitcher className="hidden sm:block" />
+          <HeaderNotificationsBell className="hidden sm:inline-flex" />
           <HeaderAgentAuth className="inline-flex shrink-0" />
           <Sheet>
             <SheetTrigger
@@ -85,9 +89,19 @@ export function SiteHeader() {
                 </p>
                 <div className="flex flex-col gap-2 px-1 md:hidden">
                   <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-muted)]">
+                    字号
+                  </p>
+                  <FontScaleSwitcher className="w-full [&_button]:w-full [&_button]:max-w-none [&_button]:justify-center" />
+                  <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-muted)]">
                     主题
                   </p>
                   <ThemeSwitcher className="w-full [&_button]:w-full [&_button]:max-w-none [&_button]:justify-center" />
+                  <Link
+                    href="/notifications"
+                    className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-fg)] underline"
+                  >
+                    通知中心
+                  </Link>
                   <HeaderAgentAuth className="w-full max-w-none justify-start" />
                 </div>
                 <NavMainLinks mobile />

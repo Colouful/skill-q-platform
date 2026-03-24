@@ -2,7 +2,7 @@
 
 ## Context
 
-AgentHub 需要完善以下功能：下载鉴权、后台管理、批量操作、通知系统、数据看板、SEO 优化、PWA、国际化。
+AgentHub 需要完善以下功能：下载鉴权、后台管理、批量操作、通知系统、数据看板、SEO 优化、PWA。（国际化不作为本次范围。）
 
 ## Decisions
 
@@ -501,69 +501,7 @@ self.addEventListener("fetch", (event) => {
 
 ### 8. 国际化（i18n）
 
-#### 8.1 语言配置
-
-```typescript
-// i18n/config.ts
-export const i18n = {
-  defaultLocale: "zh",
-  locales: ["zh", "en"],
-  localeNames: {
-    zh: "中文",
-    en: "English",
-  },
-} as const;
-
-export type Locale = typeof i18n.locales[number];
-```
-
-#### 8.2 翻译文件
-
-```json
-// i18n/locales/zh.json
-{
-  "common": {
-    "home": "首页",
-    "skills": "Skills",
-    "rules": "Rules",
-    "login": "登录",
-    "register": "注册",
-    "download": "下载",
-    "upload": "上传"
-  }
-}
-
-// i18n/locales/en.json
-{
-  "common": {
-    "home": "Home",
-    "skills": "Skills",
-    "rules": "Rules",
-    "login": "Login",
-    "register": "Register",
-    "download": "Download",
-    "upload": "Upload"
-  }
-}
-```
-
-#### 8.3 语言切换
-
-```typescript
-// 使用 next-intl
-import { useTranslations } from "next-intl";
-
-function Header() {
-  const t = useTranslations("common");
-  return (
-    <nav>
-      <a href="/">{t("home")}</a>
-      <a href="/skills">{t("skills")}</a>
-      <LocaleSwitcher />
-    </nav>
-  );
-}
-```
+**非本次范围**：产品以中文 UI 为主，不引入 next-intl、不做中英文文案拆分与迁移。
 
 ## Migration Plan
 

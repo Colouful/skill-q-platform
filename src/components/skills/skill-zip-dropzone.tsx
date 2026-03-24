@@ -3,7 +3,7 @@
 import { useCallback, useId, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { getHubActorFromStorage } from "@/lib/hub-actor-client";
+import { encodeHubActorForRequestHeader, getHubActorFromStorage } from "@/lib/hub-actor-client";
 
 export type ZipParsePayload = {
   files: { name: string; path: string; content: string }[];
@@ -41,7 +41,7 @@ export function SkillZipDropzone({
       fd.append("file", file);
       const headers = new Headers();
       const actor = getHubActorFromStorage();
-      if (actor) headers.set("X-Hub-Actor", actor);
+      if (actor) headers.set("X-Hub-Actor", encodeHubActorForRequestHeader(actor));
       const res = await fetch("/api/upload", { method: "POST", body: fd, headers });
       const json = (await res.json()) as {
         code: number;

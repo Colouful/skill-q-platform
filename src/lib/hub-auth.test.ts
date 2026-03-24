@@ -53,4 +53,12 @@ describe("hub-auth", () => {
     });
     expect(getHubActor(req)).toBe("me");
   });
+
+  it("getHubActor 解码 URI 编码的中文（与浏览器 fetch 头一致）", () => {
+    const encoded = encodeURIComponent("虾球特工");
+    const req = new Request("http://localhost/", {
+      headers: { "X-Hub-Actor": encoded },
+    });
+    expect(getHubActor(req)).toBe("虾球特工");
+  });
 });

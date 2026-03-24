@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
-import { PixelInput, PixelTextarea } from "@/components/pixel";
+import { PixelTextarea } from "@/components/pixel";
 import { LobsterRatingInput } from "@/components/skills/reviews/lobster-rating-input";
 import type { Review } from "@/generated/prisma";
 
@@ -18,8 +19,25 @@ export function RuleReviewForm({
 }) {
   const [pending, setPending] = useState(false);
   const [rating, setRating] = useState(5);
-  const [author, setAuthor] = useState("");
   const [content, setContent] = useState("");
+  const [meName, setMeName] = useState("");
+  const [gate, setGate] = useState<"loading" | "anon" | "noname" | "ready">("loading");
+
+  useEffect(() => {
+    void fetchApi<{ agent: { name: string } | null }>("/api/auth/me").then((res) => {
+      if (res.code !== 0 || !res.data?.agent) {
+        setGate("anon");
+        return;
+      }
+      const n = res.data.agent.name.trim();
+      if (!n) {
+        setGate("noname");
+        return;
+      }
+      setMeName(n);
+      setGate("ready");
+    });
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -29,7 +47,6 @@ export function RuleReviewForm({
       body: JSON.stringify({
         rating,
         content,
-        author,
       }),
     });
     setPending(false);
@@ -47,6 +64,42 @@ export function RuleReviewForm({
     }
   }
 
+  if (gate === "loading") {
+    return (
+      <div className="border-2 border-[var(--rule-border)] bg-[#fffef8] p-4 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+        加载登录状态…
+      </div>
+    );
+  }
+
+  if (gate === "anon") {
+    return (
+      <div className="space-y-2 border-2 border-[var(--rule-border)] bg-[#fffef8] p-4 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-fg)]">
+        <p>撰写评测需要先登录。</p>
+        <Link
+          href="/me?tab=login"
+          className="inline-block border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] px-3 py-1.5 text-[var(--pixel-fg)] underline-offset-2 hover:brightness-95"
+        >
+          前往特工局登录
+        </Link>
+      </div>
+    );
+  }
+
+  if (gate === "noname") {
+    return (
+      <div className="space-y-2 border-2 border-[var(--rule-border)] bg-[#fffef8] p-4 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-fg)]">
+        <p>请先在特工档案中填写昵称，再撰写评测。</p>
+        <Link
+          href="/me"
+          className="inline-block border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] px-3 py-1.5 text-[var(--pixel-fg)] underline-offset-2 hover:brightness-95"
+        >
+          打开特工档案
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={onSubmit}
@@ -55,22 +108,12 @@ export function RuleReviewForm({
       <p className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
         写评测
       </p>
+      <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+        以「<span className="text-[var(--pixel-fg)]">{meName}</span>」身份发布（与特工档案昵称一致）
+      </p>
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">评分</Label>
         <LobsterRatingInput value={rating} onChange={setRating} />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="rule-review-author" className="font-[family-name:var(--font-pixel-body)]">
-          昵称
-        </Label>
-        <PixelInput
-          id="rule-review-author"
-          required
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          maxLength={100}
-          placeholder="你的昵称"
-        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="rule-review-content" className="font-[family-name:var(--font-pixel-body)]">

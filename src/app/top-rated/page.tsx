@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { DiscoverSkillList } from "@/components/discover/discover-skill-list";
 
 export const dynamic = "force-dynamic";
@@ -6,6 +7,7 @@ export const dynamic = "force-dynamic";
 /** 12.5 高分：按评分 */
 export default async function TopRatedPage() {
   const skills = await prisma.skill.findMany({
+    where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
     include: { category: true },
     orderBy: [{ rating: "desc" }, { reviewCount: "desc" }, { updatedAt: "desc" }],
     take: 48,

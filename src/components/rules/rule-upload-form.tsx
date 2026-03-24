@@ -11,10 +11,17 @@ import { postJsonWithUploadProgress } from "@/lib/client-api";
 import { validateRulePackage } from "@/lib/rule-package-validator";
 import type { Category } from "@/generated/prisma";
 import { RuleZipDropzone } from "@/components/rules/rule-zip-dropzone";
+import {
+  DownloadPolicyRadios,
+  type DownloadPolicyChoice,
+} from "@/components/hub/download-policy-radios";
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
+import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
+import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
 
 export function RuleUploadForm({ categories }: { categories: Category[] }) {
   const router = useRouter();
+  const uploadGate = useUploadLoginGate();
   const [pending, setPending] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -27,6 +34,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
   >(null);
   const [ruleMdPreview, setRuleMdPreview] = useState("");
   const [submitPct, setSubmitPct] = useState<number | null>(null);
+  const [downloadPolicy, setDownloadPolicy] = useState<DownloadPolicyChoice>("public");
 
   if (categories.length === 0) {
     return (
@@ -38,6 +46,10 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (uploadGate.blocked) {
+      toast.error("请先登录后再上传");
+      return;
+    }
     const tagList = tags
       .split(/[,，\s]+/)
       .map((t) => t.trim())
@@ -61,6 +73,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
       categorySlug,
       longDescription: longDescription || undefined,
       tags: tagList.length ? tagList : undefined,
+      downloadPolicy,
       initialFiles: zipFiles && zipFiles.length > 0 ? zipFiles : undefined,
     };
 
@@ -98,6 +111,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
       <h1 className="font-[family-name:var(--font-pixel-heading)] text-lg text-[var(--pixel-fg)]">
         上传 Rule
       </h1>
+      <UploadLoginGateBanner visible={!uploadGate.loading && uploadGate.blocked} />
 
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">从 ZIP 导入（可选）</Label>
@@ -173,6 +187,11 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
           ))}
         </select>
       </div>
+      <DownloadPolicyRadios
+        name="rule-upload-dp"
+        value={downloadPolicy}
+        onChange={setDownloadPolicy}
+      />
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">详细说明（可选）</Label>
         <PixelTextarea
@@ -207,10 +226,18 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
       )}
       <Button
         type="submit"
-        disabled={pending}
+        disabled={pending || uploadGate.loading || uploadGate.blocked}
         className="w-full border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] font-[family-name:var(--font-pixel-body)] text-lg text-[var(--pixel-fg)] shadow-[var(--hub-shadow-card-skill)] hover:bg-[var(--pixel-yellow)]"
       >
-        {pending ? (submitPct != null ? `提交中 ${submitPct}%` : "提交中…") : "创建"}
+        {uploadGate.loading
+          ? "检查登录…"
+          : pending
+            ? submitPct != null
+              ? `提交中 ${submitPct}%`
+              : "提交中…"
+            : uploadGate.blocked
+              ? "请先登录"
+              : "创建"}
       </Button>
     </form>
   );

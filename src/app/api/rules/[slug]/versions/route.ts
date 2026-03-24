@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
-import { assertHubAuthForResourceAuthor } from "@/lib/hub-auth";
+import { assertSkillRuleWriteAccess } from "@/lib/skill-rule-write-access";
+import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
@@ -53,13 +54,21 @@ export async function POST(
     const { slug } = await ctx.params;
     const rule = await prisma.rule.findUnique({
       where: { slug },
-      select: { id: true, author: true },
+      select: { id: true, author: true, authorAgentId: true },
     });
     if (!rule) {
       return jsonErr("Rule 不存在", 404);
     }
 
-    assertHubAuthForResourceAuthor(req, rule.author);
+    const gate = await enforceUploadLoginPolicy(req);
+    if (gate.denied) {
+      return jsonErr(gate.message, 401);
+    }
+
+    await assertSkillRuleWriteAccess(req, {
+      authorAgentId: rule.authorAgentId,
+      author: rule.author,
+    });
 
     const raw = await req.json();
     const parsed = postBody.safeParse(raw);

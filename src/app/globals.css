@@ -47,6 +47,34 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* 仅放大 Tailwind 字号刻度（text-xs / sm / …），不放大整页 rem，避免「整页缩放」观感 */
+  --text-xs: calc(0.75rem * var(--hub-text-multiplier, 1));
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: calc(0.875rem * var(--hub-text-multiplier, 1));
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-base: calc(1rem * var(--hub-text-multiplier, 1));
+  --text-base--line-height: calc(1.5 / 1);
+  --text-lg: calc(1.125rem * var(--hub-text-multiplier, 1));
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-xl: calc(1.25rem * var(--hub-text-multiplier, 1));
+  --text-xl--line-height: calc(1.75 / 1.25);
+  --text-2xl: calc(1.5rem * var(--hub-text-multiplier, 1));
+  --text-2xl--line-height: calc(2 / 1.5);
+  --text-3xl: calc(1.875rem * var(--hub-text-multiplier, 1));
+  --text-3xl--line-height: calc(2.25 / 1.875);
+  --text-4xl: calc(2.25rem * var(--hub-text-multiplier, 1));
+  --text-4xl--line-height: calc(2.5 / 2.25);
+  --text-5xl: calc(3rem * var(--hub-text-multiplier, 1));
+  --text-5xl--line-height: 1;
+  --text-6xl: calc(3.75rem * var(--hub-text-multiplier, 1));
+  --text-6xl--line-height: 1;
+  --text-7xl: calc(4.5rem * var(--hub-text-multiplier, 1));
+  --text-7xl--line-height: 1;
+  --text-8xl: calc(6rem * var(--hub-text-multiplier, 1));
+  --text-8xl--line-height: 1;
+  --text-9xl: calc(8rem * var(--hub-text-multiplier, 1));
+  --text-9xl--line-height: 1;
 }
 
 /* 虾球Hub 像素主题（与 shadcn 变量并存） */
@@ -80,6 +108,8 @@
   --hub-shadow-btn-cyan-hover: 3px 3px 0 0 var(--pixel-border);
   --hub-shadow-btn-outline-hover: 2px 2px 0 0 var(--pixel-border);
   --hub-shadow-btn-rule-hover: 3px 3px 0 0 var(--rule-shadow);
+  /* 全局「文字」放大系数（仅乘在 @theme --text-* 上；间距/布局 rem 不变） */
+  --hub-text-multiplier: 1;
 }
 
 :root {
@@ -115,6 +145,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+}
+
+html[data-font-scale="large"] {
+  --hub-text-multiplier: 1.125;
+}
+
+html[data-font-scale="extraLarge"] {
+  --hub-text-multiplier: 1.25;
 }
 
 .dark {
@@ -327,6 +365,25 @@ html[data-theme="ink"] .pixel-card-frame.pixel-card-frame--rule::after {
   opacity: 0.55;
 }
 
+/* Skills / Rules 列表页「上传 Skill / Rule」：默认街机黄渐变 + 正文色（与顶栏丢 ZIP 一致）。
+ * 勿用 --pixel-cyan 作底：素描 ink 等主题里 cyan 为深灰，会与正文糊成一片。 */
+.hub-list-upload-cta {
+  color: var(--pixel-fg);
+  background-color: var(--pixel-yellow);
+  background-image: linear-gradient(
+    145deg,
+    var(--pixel-yellow) 0%,
+    #f0d060 45%,
+    var(--pixel-yellow) 100%
+  );
+}
+html[data-theme="ink"] .hub-list-upload-cta {
+  background-image: none;
+}
+html[data-theme="apple"] .hub-list-upload-cta {
+  background-color: var(--pixel-cyan);
+}
+
 /* Apple：主操作区轻微纵向渐变（与 PixelButton 变量色衔接） */
 html[data-theme="apple"] .hub-apple-gradient-cta {
   background-image: linear-gradient(
@@ -392,6 +449,271 @@ html[data-theme="apple"] .hub-apple-gradient-cta {
   .home-hero-pixel-cell {
     animation: none;
     opacity: 0.9;
+  }
+}
+
+/* 首页 Hero：苹果风 — 弥散光斑 */
+@keyframes home-hero-apple-drift-a {
+  0%,
+  100% {
+    transform: translate(0, -50%) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(12%, -46%) scale(1.12);
+    opacity: 0.88;
+  }
+}
+
+@keyframes home-hero-apple-drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.48;
+  }
+  50% {
+    transform: translate(-14%, 10%) scale(1.15);
+    opacity: 0.78;
+  }
+}
+
+@keyframes home-hero-apple-drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translate(6%, 18%) scale(1.06);
+    opacity: 0.68;
+  }
+}
+
+@keyframes home-hero-apple-shimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1);
+  }
+}
+
+.home-hero-apple-blob--a {
+  animation: home-hero-apple-drift-a 7s ease-in-out infinite;
+}
+
+.home-hero-apple-blob--b {
+  animation: home-hero-apple-drift-b 8.5s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.home-hero-apple-blob--c {
+  animation: home-hero-apple-drift-c 9s ease-in-out infinite;
+  animation-delay: -4s;
+}
+
+.home-hero-apple-shine {
+  animation: home-hero-apple-shimmer 4s ease-in-out infinite;
+}
+
+/* 首页 Hero：手绘风 — 色块摆动 + 星闪 */
+@keyframes home-hero-sketch-sway {
+  0%,
+  100% {
+    transform: rotate(-2.5deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes home-hero-sketch-blob-a {
+  0%,
+  100% {
+    transform: rotate(-6deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-2deg) translateY(-3px);
+  }
+}
+
+@keyframes home-hero-sketch-blob-b {
+  0%,
+  100% {
+    transform: rotate(6deg) translateY(0);
+  }
+  50% {
+    transform: rotate(10deg) translateY(2px);
+  }
+}
+
+@keyframes home-hero-sketch-blob-c {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1deg) translateY(-2px);
+  }
+}
+
+@keyframes home-hero-sketch-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.92) rotate(-8deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08) rotate(8deg);
+  }
+}
+
+.home-hero-sketch {
+  animation: home-hero-sketch-sway 5s ease-in-out infinite;
+}
+
+.home-hero-sketch-blob:nth-child(1) {
+  animation: home-hero-sketch-blob-a 2.8s ease-in-out infinite;
+}
+
+.home-hero-sketch-blob:nth-child(2) {
+  animation: home-hero-sketch-blob-b 3.2s ease-in-out infinite;
+  animation-delay: -0.6s;
+}
+
+.home-hero-sketch-blob:nth-child(3) {
+  animation: home-hero-sketch-blob-c 2.6s ease-in-out infinite;
+  animation-delay: -1.2s;
+}
+
+.home-hero-sketch-star {
+  animation: home-hero-sketch-twinkle 2.4s ease-in-out infinite;
+}
+
+.home-hero-sketch-star:nth-of-type(2) {
+  animation-delay: -0.8s;
+}
+
+.home-hero-sketch-star:nth-of-type(3) {
+  animation-delay: -1.5s;
+}
+
+/* 首页 Hero：素描风 — 斜线网 + 扫描线 */
+.home-hero-ink-paper {
+  background-image:
+    radial-gradient(circle at 18% 32%, rgba(0, 0, 0, 0.045) 0, transparent 42%),
+    radial-gradient(circle at 82% 68%, rgba(0, 0, 0, 0.035) 0, transparent 38%);
+}
+
+.home-hero-ink-hatch {
+  background-image: repeating-linear-gradient(
+    -42deg,
+    transparent,
+    transparent 5px,
+    color-mix(in srgb, var(--pixel-border) 22%, transparent) 5px,
+    color-mix(in srgb, var(--pixel-border) 22%, transparent) 6px
+  );
+  background-size: 24px 24px;
+  animation: home-hero-ink-hatch-shift 14s linear infinite;
+}
+
+@keyframes home-hero-ink-hatch-shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 24px 24px;
+  }
+}
+
+@keyframes home-hero-ink-sweep-move {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.22;
+  }
+  50% {
+    opacity: 0.14;
+  }
+  88% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateX(320%);
+    opacity: 0;
+  }
+}
+
+.home-hero-ink-sweep {
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    color-mix(in srgb, var(--pixel-fg) 8%, transparent) 48%,
+    transparent 100%
+  );
+  animation: home-hero-ink-sweep-move 6.5s ease-in-out infinite;
+}
+
+@keyframes home-hero-ink-line-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleX(0.88);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scaleX(1);
+  }
+}
+
+.home-hero-ink-line {
+  animation: home-hero-ink-line-breathe 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-apple-blob--a,
+  .home-hero-apple-blob--b,
+  .home-hero-apple-blob--c,
+  .home-hero-apple-shine,
+  .home-hero-sketch,
+  .home-hero-sketch-blob:nth-child(1),
+  .home-hero-sketch-blob:nth-child(2),
+  .home-hero-sketch-blob:nth-child(3),
+  .home-hero-sketch-star,
+  .home-hero-ink-hatch,
+  .home-hero-ink-sweep,
+  .home-hero-ink-line {
+    animation: none;
+  }
+
+  .home-hero-apple-blob--a,
+  .home-hero-apple-blob--b,
+  .home-hero-apple-blob--c {
+    opacity: 0.65;
+  }
+
+  .home-hero-sketch {
+    transform: none;
+  }
+
+  .home-hero-sketch-star {
+    opacity: 0.85;
+    transform: none;
+  }
+
+  .home-hero-ink-hatch {
+    background-position: 0 0;
+  }
+
+  .home-hero-ink-line {
+    opacity: 0.55;
+    transform: none;
   }
 }
 

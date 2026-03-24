@@ -34,10 +34,13 @@ export function SkillDetailActions({
   slug,
   defaultForkName,
   defaultForkAuthor,
+  canEdit,
 }: {
   slug: string;
   defaultForkName: string;
   defaultForkAuthor: string;
+  /** 仅作者（或旧数据且档案昵称与作者展示一致）可编辑/删除 */
+  canEdit: boolean;
 }) {
   const router = useRouter();
   const [forking, setForking] = useState(false);
@@ -90,24 +93,28 @@ export function SkillDetailActions({
 
   return (
     <div className="flex flex-wrap gap-3 border-t-4 border-[var(--pixel-border)] pt-6">
-      <Link
-        href={`/skills/${slug}/edit`}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
-        )}
-      >
-        编辑
-      </Link>
-      <Link
-        href={`/skills/${slug}/editor`}
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
-        )}
-      >
-        在线编辑
-      </Link>
+      {canEdit ? (
+        <>
+          <Link
+            href={`/skills/${slug}/edit`}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
+            )}
+          >
+            编辑
+          </Link>
+          <Link
+            href={`/skills/${slug}/editor`}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
+            )}
+          >
+            在线编辑
+          </Link>
+        </>
+      ) : null}
       <Button
         type="button"
         disabled={forking}
@@ -169,6 +176,7 @@ export function SkillDetailActions({
         </DialogContent>
       </Dialog>
 
+      {canEdit ? (
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <AlertDialogTrigger
           type="button"
@@ -206,6 +214,7 @@ export function SkillDetailActions({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      ) : null}
     </div>
   );
 }

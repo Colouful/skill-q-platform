@@ -1,5 +1,6 @@
 import { type Category, type Prisma, type Rule, type Skill } from "@/generated/prisma";
 import { prisma } from "@/lib/prisma";
+import { MODERATION_STATUS } from "@/lib/moderation";
 
 export type UnifiedSearchType = "all" | "skill" | "rule";
 
@@ -18,17 +19,27 @@ export async function runUnifiedSearch(
   }
 
   const skillWhere: Prisma.SkillWhereInput = {
-    OR: [
-      { name: { contains: trimmed } },
-      { description: { contains: trimmed } },
-      { slug: { contains: trimmed } },
+    AND: [
+      { moderationStatus: MODERATION_STATUS.PUBLISHED },
+      {
+        OR: [
+          { name: { contains: trimmed } },
+          { description: { contains: trimmed } },
+          { slug: { contains: trimmed } },
+        ],
+      },
     ],
   };
   const ruleWhere: Prisma.RuleWhereInput = {
-    OR: [
-      { name: { contains: trimmed } },
-      { description: { contains: trimmed } },
-      { slug: { contains: trimmed } },
+    AND: [
+      { moderationStatus: MODERATION_STATUS.PUBLISHED },
+      {
+        OR: [
+          { name: { contains: trimmed } },
+          { description: { contains: trimmed } },
+          { slug: { contains: trimmed } },
+        ],
+      },
     ],
   };
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Category, Skill } from "@/generated/prisma";
+import { ClampedCardDescription } from "@/components/card/clamped-card-description";
 import { pixelCardVariants } from "@/components/pixel";
 import { cn } from "@/lib/utils";
 import { HighlightText } from "./highlight-text";
@@ -20,20 +21,23 @@ export function SkillCard({
   return (
     <Link
       href={`/skills/${skill.slug}`}
-      className={cn(pixelCardVariants(), "group block")}
+      className={cn(pixelCardVariants(), "group/card flex h-full flex-col")}
     >
       <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-accent)]">
         {skill.category.name}
       </p>
       <h3
-        className={`mt-1 font-[family-name:var(--font-pixel-heading)] text-[var(--pixel-fg)] ${compact ? "text-xs" : "text-sm"}`}
+        className={cn(
+          "mt-1 line-clamp-2 min-h-[2.5rem] font-[family-name:var(--font-pixel-heading)] text-[var(--pixel-fg)]",
+          compact ? "text-xs" : "text-sm",
+        )}
       >
         {hq ? <HighlightText text={skill.name} query={hq} /> : skill.name}
       </h3>
       {!compact && (
-        <p className="mt-2 line-clamp-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+        <ClampedCardDescription>
           {hq ? <HighlightText text={skill.description} query={hq} /> : skill.description}
-        </p>
+        </ClampedCardDescription>
       )}
       <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
         ⭐ {skill.rating.toFixed(1)} · ⬇ {skill.downloads}

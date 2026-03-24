@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { RuleEditForm } from "@/components/rules/rule-edit-form";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +24,11 @@ export default async function RuleEditPage({
     }),
   ]);
   if (!rule) notFound();
+
+  const viewer = await getOptionalAuthAgentFromCookies();
+  if (!canEditSkillOrRule(viewer, rule.authorAgentId, rule.author)) {
+    notFound();
+  }
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl space-y-4 pb-8">

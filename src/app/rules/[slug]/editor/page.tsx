@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { RuleWorkspace } from "@/components/rules/editor/rule-workspace";
 import { parseVersionFilesJson } from "@/lib/skill-file-entries";
 
@@ -16,10 +18,17 @@ export default async function RuleEditorPage({
     select: {
       name: true,
       slug: true,
+      author: true,
+      authorAgentId: true,
       versions: { orderBy: { createdAt: "desc" }, take: 1 },
     },
   });
   if (!rule) notFound();
+
+  const viewer = await getOptionalAuthAgentFromCookies();
+  if (!canEditSkillOrRule(viewer, rule.authorAgentId, rule.author)) {
+    notFound();
+  }
 
   const latest = rule.versions[0];
   const parsed = parseVersionFilesJson(latest?.files);

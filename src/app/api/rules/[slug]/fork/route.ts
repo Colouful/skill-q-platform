@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { jsonOk } from "@/lib/api-response";
 import { ApiError, toApiResponse } from "@/lib/api-errors";
 import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
+import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
+import { isPublishedModeration, MODERATION_STATUS } from "@/lib/moderation";
 import { slugFromName } from "@/lib/skill-slug";
 import { z } from "zod";
 
@@ -25,7 +27,15 @@ export async function POST(
     if (!source) {
       throw new ApiError("Rule 不存在", 404);
     }
+    if (!isPublishedModeration(source.moderationStatus)) {
+      throw new ApiError("仅可复制已上架的 Rule", 400);
+    }
 
+    const gate = await enforceUploadLoginPolicy(req);
+    if (gate.denied) {
+      throw new ApiError(gate.message, 401);
+    }
+    const { auth } = gate;
     const raw = await req.json().catch(() => ({}));
     const parsed = forkBody.safeParse(raw);
     if (!parsed.success) {
@@ -66,6 +76,9 @@ export async function POST(
         categoryId: source.categoryId,
         tags: source.tags ?? undefined,
         forkedFromRuleId: source.id,
+        authorAgentId: auth.agent?.id ?? undefined,
+        downloadPolicy: source.downloadPolicy,
+        moderationStatus: MODERATION_STATUS.PENDING,
         downloads: 0,
         rating: 0,
         reviewCount: 0,

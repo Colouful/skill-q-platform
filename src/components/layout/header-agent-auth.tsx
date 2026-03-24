@@ -3,9 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { toast } from "sonner";
-import { HubActorControl } from "@/components/layout/hub-actor-control";
 import { fetchApi } from "@/lib/client-api";
+import { setHubActorToStorage } from "@/lib/hub-actor-client";
 import { cn } from "@/lib/utils";
 
 type MeAgent = {
@@ -27,7 +26,7 @@ async function fetchAgentSession(): Promise<{ loggedIn: boolean; agent: MeAgent 
 }
 
 /**
- * 未登录：「加入特工局」→ 注册/登录流程；登录后：仅显示「身份」（站点作者 / X-Hub-Actor 配置）。
+ * 未登录：「加入特工局」→ /me；登录后：入口跳转特工档案（昵称在档案内修改）。
  */
 export function HeaderAgentAuth({ className }: { className?: string }) {
   const pathname = usePathname();
@@ -38,6 +37,9 @@ export function HeaderAgentAuth({ className }: { className?: string }) {
     void fetchAgentSession().then((r) => {
       setLoggedIn(r.loggedIn);
       setMeAgent(r.agent);
+      if (r.loggedIn && r.agent?.name) {
+        setHubActorToStorage(r.agent.name);
+      }
     });
   }, []);
 
@@ -50,17 +52,6 @@ export function HeaderAgentAuth({ className }: { className?: string }) {
     window.addEventListener("agent-session-changed", onSession);
     return () => window.removeEventListener("agent-session-changed", onSession);
   }, [refresh]);
-
-  async function logout() {
-    const res = await fetchApi("/api/auth/logout", { method: "POST" });
-    if (res.code !== 0) {
-      toast.error(res.message || "登出失败");
-      return;
-    }
-    toast.success("已登出");
-    window.dispatchEvent(new CustomEvent("agent-session-changed"));
-    refresh();
-  }
 
   if (loggedIn === null) {
     return (
@@ -90,33 +81,25 @@ export function HeaderAgentAuth({ className }: { className?: string }) {
   }
 
   return (
-    <div className={cn("flex max-w-[min(100%,16rem)] items-center gap-1.5 sm:max-w-[20rem]", className)}>
-      <Link
-        href="/me"
-        className="inline-flex min-w-0 max-w-[11rem] flex-1 items-center justify-center gap-1.5 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] px-2 py-1 font-[family-name:var(--font-pixel-body)] text-[10px] font-bold leading-tight text-[var(--pixel-fg)] shadow-[2px_2px_0_0_var(--pixel-border)] transition hover:bg-[var(--pixel-cyan)]/15 sm:max-w-[13rem] sm:text-xs"
-        title={meAgent ? `${meAgent.name} · ${meAgent.levelName}` : "特工局"}
-      >
-        {meAgent?.avatar ? (
-          <img
-            src={meAgent.avatar}
-            alt=""
-            width={28}
-            height={28}
-            className="size-7 shrink-0 border border-[var(--pixel-border)] bg-[var(--pixel-bg)] object-cover"
-          />
-        ) : null}
-        <span className="truncate">{meAgent?.name ?? "特工局"}</span>
-        <span className="ml-0.5 shrink-0 text-[var(--pixel-muted)]">Lv.{meAgent?.level ?? "—"}</span>
-      </Link>
-      <button
-        type="button"
-        onClick={() => void logout()}
-        className="shrink-0 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] px-1.5 py-1 font-[family-name:var(--font-pixel-body)] text-[9px] leading-none text-[var(--pixel-muted)] shadow-[1px_1px_0_0_var(--pixel-border)] hover:bg-[var(--pixel-accent)]/15 hover:text-[var(--pixel-fg)] sm:text-[10px]"
-        aria-label="登出"
-      >
-        登出
-      </button>
-      <HubActorControl className="shrink-0" />
-    </div>
+    <Link
+      href="/me"
+      className={cn(
+        "inline-flex max-w-[min(100%,16rem)] shrink-0 items-center gap-1.5 overflow-hidden rounded-sm border-4 border-[var(--pixel-border)] bg-[#fffef8] px-2 py-1 font-[family-name:var(--font-pixel-body)] text-[10px] font-bold leading-tight text-[var(--pixel-fg)] shadow-[4px_4px_0_0_var(--pixel-border)] transition hover:bg-[var(--pixel-cyan)]/12 sm:max-w-[18rem] sm:text-xs",
+        className,
+      )}
+      title={meAgent ? `${meAgent.name} · ${meAgent.levelName}` : "特工局"}
+    >
+      {meAgent?.avatar ? (
+        <img
+          src={meAgent.avatar}
+          alt=""
+          width={28}
+          height={28}
+          className="size-7 shrink-0 border-2 border-[var(--pixel-border)] bg-[var(--pixel-bg)] object-cover"
+        />
+      ) : null}
+      <span className="min-w-0 truncate">{meAgent?.name ?? "特工局"}</span>
+      <span className="shrink-0 text-[var(--pixel-muted)]">Lv.{meAgent?.level ?? "—"}</span>
+    </Link>
   );
 }

@@ -2,6 +2,8 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { syncSkillReviewStats } from "../src/lib/skill-review-stats";
+import { MODERATION_STATUS } from "../src/lib/moderation";
+import { hashAdminPassword } from "../src/lib/admin-password";
 import { seedRules } from "./seed-rules";
 
 function poolConfigFromDatabaseUrl() {
@@ -73,6 +75,7 @@ async function main() {
         author: "虾球Hub",
         categoryId: devCat.id,
         isFeatured: true,
+        moderationStatus: MODERATION_STATUS.PUBLISHED,
         tags: ["demo", "starter"],
         versions: {
           create: {
@@ -121,6 +124,21 @@ async function main() {
   }
 
   await seedRules(prisma);
+
+  const adminEmail = "admin@agenthub.com";
+  const existingAdmin = await prisma.admin.findUnique({ where: { email: adminEmail } });
+  if (!existingAdmin) {
+    const passwordHash = await hashAdminPassword("Admin@123");
+    await prisma.admin.create({
+      data: {
+        email: adminEmail,
+        passwordHash,
+        role: "admin",
+        permissions: [],
+      },
+    });
+    console.log("Seeded admin:", adminEmail);
+  }
 
   console.log("Seed done. Categories:", CATEGORIES.length);
 }

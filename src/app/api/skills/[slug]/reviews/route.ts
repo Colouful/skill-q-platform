@@ -12,7 +12,6 @@ export const dynamic = "force-dynamic";
 const postBody = z.object({
   rating: z.number().int().min(1).max(5),
   content: z.string().min(1),
-  author: z.string().min(1).max(100),
 });
 
 export async function GET(
@@ -60,16 +59,24 @@ export async function POST(
       return jsonErr("Skill 不存在", 404);
     }
 
+    const auth = await getAuthFromRequest(req);
+    if (!auth.agent) {
+      return jsonErr("请先登录后再撰写评测", 401);
+    }
+
+    const authorName = auth.agent.name.trim();
+    if (!authorName) {
+      return jsonErr("档案昵称为空，请先在特工档案或站点身份中设置名称", 400);
+    }
+
+    assertHubAuthForDeclaredAuthor(req, authorName);
+
     const raw = await req.json();
     const parsed = postBody.safeParse(raw);
     if (!parsed.success) {
       return jsonErr(parsed.error.issues.map((i) => i.message).join("; "), 400);
     }
     const b = parsed.data;
-
-    assertHubAuthForDeclaredAuthor(req, b.author);
-
-    const auth = await getAuthFromRequest(req);
 
     let agentLevelUp: { level: number; levelName: string } | null = null;
     const review = await prisma.$transaction(async (tx) => {
@@ -80,7 +87,7 @@ export async function POST(
           skillId: skill.id,
           rating: b.rating,
           content: b.content.trim(),
-          author: b.author.trim(),
+          author: authorName,
           authorAgentId: auth.agent?.id ?? undefined,
         },
       });

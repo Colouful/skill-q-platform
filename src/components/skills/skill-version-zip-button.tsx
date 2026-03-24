@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { notifyDownloadApiError } from "@/lib/download-toast-client";
 import { downloadSkillVersionZip } from "@/lib/skill-version-zip-client";
 
 /** 13.7 / 13.8 下载 ZIP 包（与「下载此版本」无外链时逻辑一致） */
@@ -24,7 +25,7 @@ export function SkillVersionZipButton({
     downloadSkillVersionZip(
       slug,
       versionLabel,
-      (ok) => {
+      (ok, errMsg) => {
         setPending(false);
         setProgress(null);
         if (ok) {
@@ -32,7 +33,7 @@ export function SkillVersionZipButton({
           router.refresh();
           return;
         }
-        toast.error("下载失败");
+        notifyDownloadApiError(errMsg || "下载失败");
       },
       (p) => setProgress(p),
     );

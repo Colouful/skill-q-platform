@@ -1,0 +1,31 @@
+{
+  "name": "虾球Hub",
+  "short_name": "虾球Hub",
+  "description": "Skill 与 Rule 的发现与分享：榜单、评测、版本与 ZIP 工具链，面向 Agent 的像素风 Hub。",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fffef8",
+  "theme_color": "#ff6b4a",
+  "icons": [
+    {
+      "src": "/icons/pwa-icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
