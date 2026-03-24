@@ -1,5 +1,5 @@
 #!/bin/sh
-# 虾球 Hub：先起 Next standalone，再起 Nginx（前台，供容器主进程）
+# 虾球 Hub：Next standalone + Nginx（单目录 /opt/web）。双包、仅 Node 见仓库根目录 web-start.sh。
 set -e
 
 export NODE_ENV="${NODE_ENV:-production}"

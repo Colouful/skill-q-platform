@@ -19,6 +19,8 @@ services:
       - .env.production
     environment:
       NODE_ENV: production
+      # 与镜像内 /opt/pre、/opt/prod 对应：预发改为 pre
+      CONF_ENV: "${CONF_ENV:-prod}"
     # Linux 下容器访问宿主机上的 MySQL 时常用（Docker 20.10+）
     extra_hosts:
       - "host.docker.internal:host-gateway"
