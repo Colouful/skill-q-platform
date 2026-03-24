@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-03-24
+status: pending
+dependencies:
+  - agenthub-skill-platform
+description: AgentHub 双轨制扩展 — Skill + Rules 双资源平台
+owner: 哞哞🐮
+priority: high
+estimated_days: 15

@@ -1,0 +1,25 @@
+# 虾球Hub — Docker Compose（生产/预发）
+#
+# 使用：
+#   1. 复制 .env.example 为 .env.production（或 .env），填 DATABASE_URL、NEXT_PUBLIC_SITE_URL、MinIO 等
+#   2. docker compose --env-file .env.production up -d --build
+#
+# 数据库：通常使用外部 MySQL/Maria（云 RDS 或自建），不在此编排内；若仅本地试跑可自建 db 服务。
+# 迁移：建议在 CI 或部署脚本中执行 npx prisma migrate deploy，再启动容器。
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: xiaqiu-hub:latest
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env.production
+    environment:
+      NODE_ENV: production
+    # Linux 下容器访问宿主机上的 MySQL 时常用（Docker 20.10+）
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

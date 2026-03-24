@@ -1,0 +1,213 @@
+// 虾球Hub — MySQL utf8mb3（连接串 charset=utf8mb3）
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Agent {
+  id             String    @id @default(uuid()) @db.VarChar(36)
+  name           String    @db.VarChar(100)
+  slug           String    @unique @db.VarChar(100)
+  avatar         String?   @db.VarChar(500)
+  agentType      String    @default("unknown") @db.VarChar(50)
+  level          Int       @default(1)
+  levelName      String    @default("见习特工") @db.VarChar(20)
+  experience     Int       @default(0)
+  apiCallsTotal  Int       @default(0)
+  uploadsCount   Int       @default(0)
+  downloadsCount Int       @default(0)
+  isVerified     Boolean   @default(false)
+  isActive       Boolean   @default(true)
+  lastActiveAt   DateTime?
+  registeredAt   DateTime  @default(now())
+  metadata       Json?
+
+  apiKeys        ApiKey[]
+  sessions       AgentSession[]
+  uploadedSkills Skill[]    @relation("SkillAuthor")
+  uploadedRules  Rule[]     @relation("RuleAuthor")
+  authoredReviews Review[]  @relation("ReviewAuthor")
+
+  @@map("agents")
+  @@index([slug])
+  @@index([agentType])
+  @@index([level])
+}
+
+model ApiKey {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  keyHash     String    @unique @map("key_hash") @db.VarChar(64)
+  keyPrefix   String    @db.VarChar(24)
+  agentId     String    @db.VarChar(36)
+  agent       Agent     @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  name        String    @default("Default") @db.VarChar(50)
+  description String?   @db.Text
+  scopes      Json      @default("[]")
+  rateLimit   Int       @default(100)
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  isRevoked   Boolean   @default(false)
+
+  sessions AgentSession[]
+
+  @@map("api_keys")
+  @@index([agentId])
+  @@index([keyPrefix])
+}
+
+model AgentSession {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  sessionId String   @unique @db.VarChar(64)
+  agentId   String   @db.VarChar(36)
+  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  apiKeyId  String   @db.VarChar(36)
+  apiKey    ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+  userAgent String?  @db.VarChar(500)
+  ipAddress String?  @db.VarChar(50)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("agent_sessions")
+  @@index([sessionId])
+  @@index([agentId])
+}
+
+model Category {
+  id           String   @id @default(uuid())
+  name         String   @db.VarChar(50)
+  slug         String   @db.VarChar(50)
+  description  String?  @db.Text
+  icon         String?  @db.VarChar(255)
+  resourceType String   @default("skill") @db.VarChar(20)
+  sortOrder    Int      @default(0)
+  skills       Skill[]
+  rules        Rule[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([slug, resourceType])
+  @@unique([name, resourceType])
+  @@map("categories")
+}
+
+model Skill {
+  id                String    @id @default(uuid())
+  name              String    @db.VarChar(255)
+  slug              String    @unique @db.VarChar(255)
+  description       String    @db.Text
+  longDescription   String?   @db.Text
+  author            String    @db.VarChar(100)
+  categoryId        String
+  category          Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  downloads         Int       @default(0)
+  rating            Float     @default(0)
+  reviewCount       Int       @default(0)
+  isFeatured        Boolean   @default(false)
+  tags              Json?
+  forkedFromSkillId String?   @db.VarChar(36)
+  authorAgentId     String?   @db.VarChar(36)
+  authorAgent       Agent?    @relation("SkillAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  versions          Version[]
+  reviews           Review[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@map("skills")
+  @@index([categoryId])
+  @@index([slug])
+  @@index([downloads])
+  @@index([rating])
+}
+
+model Rule {
+  id               String        @id @default(uuid())
+  name             String        @db.VarChar(255)
+  slug             String        @unique @db.VarChar(255)
+  description      String        @db.Text
+  longDescription  String?       @db.Text
+  author           String        @db.VarChar(100)
+  categoryId       String
+  category         Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  downloads        Int           @default(0)
+  rating           Float         @default(0)
+  reviewCount      Int           @default(0)
+  isFeatured       Boolean       @default(false)
+  tags             Json?
+  forkedFromRuleId String?       @db.VarChar(36)
+  authorAgentId    String?   @db.VarChar(36)
+  authorAgent      Agent?        @relation("RuleAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  versions         RuleVersion[]
+  reviews          Review[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("rules")
+  @@index([categoryId])
+  @@index([slug])
+  @@index([author])
+  @@index([downloads])
+  @@index([rating])
+}
+
+model Version {
+  id          String   @id @default(uuid())
+  version     String   @db.VarChar(20)
+  skillId     String
+  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  changelog   String?  @db.Text
+  files       Json
+  downloadUrl String?  @db.VarChar(500)
+  isLatest    Boolean  @default(false)
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@map("versions")
+  @@index([skillId])
+  @@unique([skillId, version])
+}
+
+model RuleVersion {
+  id          String   @id @default(uuid())
+  version     String   @db.VarChar(20)
+  ruleId      String
+  rule        Rule     @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  changelog   String?  @db.Text
+  files       Json
+  downloadUrl String?  @db.VarChar(500)
+  isLatest    Boolean  @default(false)
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@map("rule_versions")
+  @@index([ruleId])
+  @@unique([ruleId, version])
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  resourceType String   @default("skill") @db.VarChar(20)
+  resourceId   String   @db.VarChar(36)
+  skillId      String?
+  skill        Skill?   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  ruleId       String?
+  rule         Rule?    @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  rating       Int
+  content       String   @db.Text
+  author        String   @db.VarChar(100)
+  authorAgentId String?   @db.VarChar(36)
+  authorAgent   Agent?   @relation("ReviewAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  isHelpful     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("reviews")
+  @@index([skillId])
+  @@index([ruleId])
+  @@index([resourceType, resourceId])
+}

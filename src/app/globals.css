@@ -1,0 +1,537 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* 虾球Hub 像素主题（与 shadcn 变量并存） */
+:root {
+  --pixel-bg: #f7f3e8;
+  --pixel-fg: #0f380f;
+  --pixel-border: #2c3e50;
+  --pixel-accent: #e74c3c;
+  --pixel-muted: #5c6b7a;
+  --pixel-cyan: #4ecdc4;
+  --pixel-yellow: #ffe66d;
+  /* 7.1.1 Rule 轨语义色（紫色系，与米黄底协调） */
+  --rule-border: #7d6f8a;
+  --rule-shadow: #63586f;
+  --rule-accent: #5d4f6e;
+  /* 与 `src/themes/pixel.theme.ts` 同步，避免首屏无 JS 时缺变量 */
+  --hub-border-width: 4px;
+  --hub-radius-sm: 0px;
+  --hub-radius-md: 0px;
+  --hub-radius-lg: 0px;
+  --hub-corner-dot-size: 4px;
+  --hub-surface-elevated: #fffef8;
+  --hub-shadow-btn-primary: 4px 4px 0 0 var(--pixel-border);
+  --hub-shadow-btn-cyan: 4px 4px 0 0 var(--pixel-border);
+  --hub-shadow-btn-outline: 3px 3px 0 0 var(--pixel-border);
+  --hub-shadow-btn-rule: 4px 4px 0 0 var(--rule-shadow);
+  --hub-shadow-card-skill: 4px 4px 0 0 var(--pixel-border);
+  --hub-shadow-card-rule: 4px 4px 0 0 var(--rule-shadow);
+  --hub-shadow-dialog: 8px 8px 0 0 var(--pixel-border);
+  --hub-shadow-btn-primary-hover: 3px 3px 0 0 var(--pixel-border);
+  --hub-shadow-btn-cyan-hover: 3px 3px 0 0 var(--pixel-border);
+  --hub-shadow-btn-outline-hover: 2px 2px 0 0 var(--pixel-border);
+  --hub-shadow-btn-rule-hover: 3px 3px 0 0 var(--rule-shadow);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+    /* 路由切换时避免短暂白底/透明底闪屏 */
+    background-color: var(--background);
+  }
+  /* 多主题：变量切换时平滑过渡 */
+  html,
+  header,
+  main,
+  footer {
+    transition:
+      background-color 280ms ease,
+      color 280ms ease,
+      border-color 280ms ease;
+  }
+}
+
+/* 手绘风（暖色）：轻晕影铺底 */
+html[data-theme="sketch"] body {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(255, 183, 77, 0.09) 0%, transparent 42%),
+    radial-gradient(circle at 88% 78%, rgba(255, 235, 180, 0.1) 0%, transparent 45%);
+}
+
+/* 素描（ink）：铅笔画纸 — SVG 颗粒+排线+淡横纹；暖灰晕模拟自然光 */
+html[data-theme="ink"] body {
+  background-color: var(--background);
+  background-image:
+    url("/patterns/sketch-paper.svg"),
+    radial-gradient(ellipse 130% 70% at 40% 15%, rgba(120, 108, 92, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 60% at 80% 90%, rgba(90, 82, 72, 0.05) 0%, transparent 45%);
+  background-size: 128px 128px, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: multiply, normal, normal;
+}
+
+/* 主内容区默认实色会挡住画纸，素描主题透出纸纹 */
+html[data-theme="ink"] main#main-content {
+  background-color: transparent !important;
+  background-image:
+    url("/patterns/sketch-paper.svg"),
+    radial-gradient(ellipse 130% 70% at 40% 15%, rgba(120, 108, 92, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse 90% 60% at 80% 90%, rgba(90, 82, 72, 0.05) 0%, transparent 45%);
+  background-size: 128px 128px, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: multiply, normal, normal;
+}
+
+html[data-theme="ink"] footer {
+  background-color: transparent !important;
+  border-color: color-mix(in srgb, var(--pixel-border) 75%, var(--pixel-bg)) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="ink"] body,
+  html[data-theme="ink"] main#main-content {
+    background-image: none;
+    background-color: var(--background);
+  }
+}
+
+/* Hub：Apple / 手绘 / 素描(ink) 改写 border-4；像素风保持 Tailwind 默认 4px 硬边 */
+html[data-theme="apple"] .border-4,
+html[data-theme="sketch"] .border-4,
+html[data-theme="ink"] .border-4 {
+  border-width: var(--hub-border-width) !important;
+  border-radius: var(--hub-radius-md);
+}
+html[data-theme="apple"] .border-b-4,
+html[data-theme="sketch"] .border-b-4,
+html[data-theme="ink"] .border-b-4 {
+  border-bottom-width: var(--hub-border-width) !important;
+}
+html[data-theme="apple"] .border-t-4,
+html[data-theme="sketch"] .border-t-4,
+html[data-theme="ink"] .border-t-4 {
+  border-top-width: var(--hub-border-width) !important;
+}
+html[data-theme="apple"] .border-l-4,
+html[data-theme="sketch"] .border-l-4,
+html[data-theme="ink"] .border-l-4 {
+  border-left-width: var(--hub-border-width) !important;
+}
+html[data-theme="apple"] .border-r-4,
+html[data-theme="sketch"] .border-r-4,
+html[data-theme="ink"] .border-r-4 {
+  border-right-width: var(--hub-border-width) !important;
+}
+
+/* 素描：线框略柔化，像铅笔压痕而非印刷黑线 */
+html[data-theme="ink"] .border-4 {
+  border-color: color-mix(in srgb, var(--pixel-border) 82%, var(--pixel-bg)) !important;
+}
+
+html[data-theme="apple"] header.sticky {
+  background: color-mix(in srgb, var(--pixel-bg) 86%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+}
+
+html[data-theme="sketch"] header.sticky {
+  background: color-mix(in srgb, var(--pixel-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 顶栏：略降饱和保留画纸暖调，不用死灰滤镜 */
+html[data-theme="ink"] header.sticky {
+  background: color-mix(in srgb, var(--pixel-bg) 82%, rgba(255, 252, 248, 0.95));
+  backdrop-filter: blur(12px) saturate(0.88);
+  -webkit-backdrop-filter: blur(12px) saturate(0.88);
+}
+
+/* 顶栏搜索等：覆盖 shadcn Input 默认圆角，像素风强制直角 + 粗边框 */
+html[data-theme="pixel"] [data-slot="input"],
+html[data-theme="pixel"] [data-slot="textarea"] {
+  border-radius: 0 !important;
+}
+html[data-theme="apple"] [data-slot="input"],
+html[data-theme="apple"] [data-slot="textarea"],
+html[data-theme="sketch"] [data-slot="input"],
+html[data-theme="sketch"] [data-slot="textarea"],
+html[data-theme="ink"] [data-slot="input"],
+html[data-theme="ink"] [data-slot="textarea"] {
+  border-radius: var(--hub-radius-md) !important;
+}
+
+/* Apple：输入聚焦略增强（柔和双层环） */
+html[data-theme="apple"] [data-slot="input"]:focus-visible,
+html[data-theme="apple"] [data-slot="textarea"]:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px color-mix(in srgb, var(--pixel-cyan) 45%, transparent);
+}
+
+/* 手绘风：暖色强调聚焦环 */
+html[data-theme="sketch"] [data-slot="input"]:focus-visible,
+html[data-theme="sketch"] [data-slot="textarea"]:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 3px color-mix(in srgb, var(--pixel-accent) 55%, transparent);
+}
+
+/* 素描（ink）：铅笔圈选 — 外缘略虚、像石墨线 */
+html[data-theme="ink"] [data-slot="input"]:focus-visible,
+html[data-theme="ink"] [data-slot="textarea"]:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 3px color-mix(in srgb, var(--pixel-border) 70%, transparent),
+    0 0 12px rgba(74, 70, 66, 0.18);
+}
+
+/* 素描：手写体略拉开字距，拉丁 Caveat 更易读 */
+html[data-theme="ink"] {
+  letter-spacing: 0.02em;
+}
+
+/* 素描 ink：Lucide 图标略柔化，贴近铅笔稿线宽（4.4.5 可选图标风格） */
+html[data-theme="ink"] svg.lucide {
+  opacity: 0.94;
+}
+
+html[data-theme="ink"] .pixel-card-frame.pixel-card-frame--skill::before,
+html[data-theme="ink"] .pixel-card-frame.pixel-card-frame--skill::after,
+html[data-theme="ink"] .pixel-card-frame.pixel-card-frame--rule::before,
+html[data-theme="ink"] .pixel-card-frame.pixel-card-frame--rule::after {
+  opacity: 0.55;
+}
+
+/* Apple：主操作区轻微纵向渐变（与 PixelButton 变量色衔接） */
+html[data-theme="apple"] .hub-apple-gradient-cta {
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--pixel-cyan) 18%, #fff) 0%,
+    color-mix(in srgb, var(--pixel-cyan) 6%, #fff) 100%
+  );
+}
+
+/* 1.8 / 16.1 龙虾走路：4 帧循环，总时长 0.8s（spec: lobster-mascot） */
+@keyframes lobster-walk {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(4px, -2px);
+  }
+  50% {
+    transform: translate(8px, 0);
+  }
+  75% {
+    transform: translate(4px, 2px);
+  }
+}
+
+@keyframes lobster-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.lobster-walk {
+  animation: lobster-walk 0.8s steps(4, end) infinite;
+}
+
+.lobster-bounce {
+  animation: lobster-bounce 0.8s steps(2, end) infinite;
+}
+
+/* 首页 Hero：像素格追逐灯 */
+@keyframes home-pixel-chase {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.home-hero-pixel-cell {
+  animation: home-pixel-chase 1.2s steps(2, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-pixel-cell {
+    animation: none;
+    opacity: 0.9;
+  }
+}
+
+/* 16.2 按钮/可点击块：像素顿挫 hover */
+@keyframes pixel-nudge {
+  50% {
+    transform: translate(1px, 1px);
+  }
+}
+.pixel-btn-nudge:hover {
+  animation: pixel-nudge 0.12s steps(2, end);
+}
+
+/* 14.1 技能/规则卡片：与顶栏上传券同系的角上像素点（可选装饰） */
+.pixel-card-frame.pixel-card-frame--skill::before,
+.pixel-card-frame.pixel-card-frame--skill::after {
+  content: "";
+  position: absolute;
+  width: var(--hub-corner-dot-size, 4px);
+  height: var(--hub-corner-dot-size, 4px);
+  background: var(--pixel-border);
+  pointer-events: none;
+}
+.pixel-card-frame.pixel-card-frame--skill::before {
+  left: -1px;
+  top: -1px;
+}
+.pixel-card-frame.pixel-card-frame--skill::after {
+  right: -1px;
+  bottom: -1px;
+}
+
+.pixel-card-frame.pixel-card-frame--rule::before,
+.pixel-card-frame.pixel-card-frame--rule::after {
+  content: "";
+  position: absolute;
+  width: var(--hub-corner-dot-size, 4px);
+  height: var(--hub-corner-dot-size, 4px);
+  background: var(--rule-border);
+  pointer-events: none;
+}
+.pixel-card-frame.pixel-card-frame--rule::before {
+  left: -1px;
+  top: -1px;
+}
+.pixel-card-frame.pixel-card-frame--rule::after {
+  right: -1px;
+  bottom: -1px;
+}
+
+/* 16.3 卡片 hover 微位移（与 skill-card 叠加） */
+@keyframes pixel-card-nudge {
+  to {
+    transform: translate(2px, 2px);
+  }
+}
+.pixel-card-nudge:hover {
+  animation: pixel-card-nudge 0.15s steps(2, end) forwards;
+}
+
+/* 16.4 列表项入场（steps） */
+@keyframes pixel-list-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.pixel-stagger-children > * {
+  animation: pixel-list-in 0.4s steps(4, end) both;
+}
+.pixel-stagger-children > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.pixel-stagger-children > *:nth-child(2) {
+  animation-delay: 35ms;
+}
+.pixel-stagger-children > *:nth-child(3) {
+  animation-delay: 70ms;
+}
+.pixel-stagger-children > *:nth-child(4) {
+  animation-delay: 105ms;
+}
+.pixel-stagger-children > *:nth-child(5) {
+  animation-delay: 140ms;
+}
+.pixel-stagger-children > *:nth-child(6) {
+  animation-delay: 175ms;
+}
+.pixel-stagger-children > *:nth-child(7) {
+  animation-delay: 210ms;
+}
+.pixel-stagger-children > *:nth-child(8) {
+  animation-delay: 245ms;
+}
+.pixel-stagger-children > *:nth-child(9) {
+  animation-delay: 280ms;
+}
+.pixel-stagger-children > *:nth-child(10) {
+  animation-delay: 315ms;
+}
+.pixel-stagger-children > *:nth-child(11) {
+  animation-delay: 350ms;
+}
+.pixel-stagger-children > *:nth-child(12) {
+  animation-delay: 385ms;
+}
+
+/* 16.5 Modal 打开（淡入 + steps，避免与居中 transform 冲突） */
+@keyframes pixel-modal-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+[data-slot="dialog-content"].pixel-dialog-animate {
+  animation: pixel-modal-pop 0.2s steps(3, end) both;
+}
+
+/* 16.6 Toast 滑入（sonner 容器类 cn-toast） */
+@keyframes pixel-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.group.toaster [data-sonner-toast] {
+  animation: pixel-toast-in 0.35s steps(3, end) both;
+}
+
+/* 18.4 列表项包裹：避免 content-visibility 的绘制包含块裁切 shadow/边框；长列表由 VirtualizedDiscoverSkillGrid 承担 */
+.skill-card-cv {
+  overflow: visible;
+}

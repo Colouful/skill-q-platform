@@ -1,0 +1,68 @@
+schema: spec-driven
+
+# 生成 proposal / design / specs / tasks 时注入给 AI 的项目背景（不会写入产物文件本身）
+context: |
+  产品：AgentHub — 像素风格龙虾主题的 Agent 资源分享平台（类似 https://xiaping.coze.site/）。
+
+  产品定位：双轨制资源平台
+  - Skill 轨：OpenClaw Agent Skills（可执行代码、自动化工具）
+  - Rules 轨：决策规则包（规则集、决策表、评分卡、流程模板）
+  - 通用功能：上传、下载、浏览、搜索、Fork 编辑、评分评测
+
+  核心业务模型：
+  - Skill：可执行的 Agent 代码包（index.ts + SKILL.md）
+  - Rule：决策规则包（JSON/YAML 规则定义 + RULE.md）
+  - 分类：两个大类各自维护独立分类体系
+  - 版本：每个资源支持多版本
+  - 评测：用户对 Skill 和 Rule 分别评分评测
+
+  技术栈与架构：
+  - Next.js 15（App Router），前后端同仓库。
+  - 语言：TypeScript；样式：Tailwind CSS + 自定义像素风格组件。
+  - 数据持久化：PostgreSQL + Prisma ORM。
+  - 设计风格：像素艺术（Pixel Art）+ 龙虾元素（吉祥物、图标、装饰）。
+  - 配色方案：复古游戏机风格 + Skill/Rule 双色体系（Skill 蓝、Rule 紫）。
+
+  服务端 HTTP 约定（必须遵守）：
+  - 仅使用 GET 与 POST，不使用 PUT/PATCH/DELETE。
+  - API 返回统一格式：{ code: number, message: string, data: T }。
+
+  数据库：
+  - 新建表的 SQL 须使用 utf8mb3 字符集（由 Prisma schema 声明）。
+  - 外键约束：分类关联资源、版本关联资源、评测关联资源和用户。
+
+  像素风格设计规范：
+  - 字体：像素字体（Press Start 2P、VT323、Perfect DOS VGA 437）。
+  - 图标：8-bit 像素图标，龙虾主题吉祥物。
+  - 边框：像素化边框（非圆角，阶梯状边缘）。
+  - 动画：帧动画（sprite-based），复古游戏风格。
+  - 配色：
+    * 主色：GameBoy 绿 (#0f380f)、龙虾红 (#e74c3c)
+    * Skill 轨：像素蓝 (#4ecdc4)
+    * Rule 轨：像素紫 (#c44cf3)
+    * 辅助色：像素粉 (#ff6b9d)、像素黄 (#ffe66d)
+    * 背景：米白 (#f7f3e8)、深灰 (#2c3e50)
+
+rules:
+  proposal:
+    - 明确问题陈述、目标用户与成功标准；区分 MVP 与后续迭代。
+    - 包含 Non-goals（明确不做的范围）。
+    - 与「Skill/Rule → 分类 → 版本 → 评测」双轨模型对齐。
+    - 强调像素风格与龙虾元素的视觉独特性。
+    - 说明 Skill 和 Rule 的差异与各自应用场景。
+  design:
+    - 说明 Next.js 前后端职责划分。
+    - 核心数据模型需体现双轨制（Skill 和 Rule 独立表结构）。
+    - API 形状需符合仅 GET/POST 的约束，支持资源类型路由。
+    - UI 组件设计需说明像素风格实现方案（字体、边框、图标、动画）。
+    - 龙虾元素需说明使用场景（吉祥物、加载动画、空状态、成功提示）。
+    - 导航设计需说明 Skill/Rule 切换逻辑。
+  specs:
+    - 需求可测试、可验收；按能力或用户旅程拆分。
+    - 每个 spec 需包含 UI 交互验收标准（像素风格 + 龙虾元素）。
+    - 分别定义 Skill 和 Rule 的独立需求。
+  tasks:
+    - 任务粒度适合单次会话完成（约 2 小时可交付增量）。
+    - 依赖顺序清晰：基础设施 → 双轨数据模型 → Skill CRUD → Rule CRUD → 统一搜索 → 像素风格 UI → 龙虾元素。
+    - 每个 UI 任务需注明像素风格实现细节。
+    - 区分 Skill 任务和 Rule 任务，避免混淆。

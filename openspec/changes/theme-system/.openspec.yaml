@@ -1,0 +1,9 @@
+schema: spec-driven
+created: 2026-03-24
+status: pending
+dependencies:
+  - agenthub-dual-platform
+description: AgentHub 多主题切换系统 — 像素/Apple/手绘三风格无刷新切换
+owner: 哞哞🐮
+priority: high
+estimated_days: 12

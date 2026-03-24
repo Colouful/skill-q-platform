@@ -1,0 +1,48 @@
+import type { HubThemeDefinition } from "./types";
+
+/** 当前线上像素风默认值（与 `src/app/globals.css` :root 块一致） */
+export const pixelTheme: HubThemeDefinition = {
+  meta: {
+    id: "pixel",
+    name: "像素风",
+    description: "8-bit 怀旧与龙虾元素，默认体验",
+    author: "AgentHub",
+    version: "1.0.0",
+    previewColor: "#4ecdc4",
+  },
+  hubCss: {
+    "--pixel-bg": "#f7f3e8",
+    "--pixel-fg": "#0f380f",
+    "--pixel-border": "#2c3e50",
+    "--pixel-accent": "#e74c3c",
+    "--pixel-muted": "#5c6b7a",
+    "--pixel-cyan": "#4ecdc4",
+    "--pixel-yellow": "#ffe66d",
+    "--rule-border": "#7d6f8a",
+    "--rule-shadow": "#63586f",
+    "--rule-accent": "#5d4f6e",
+    "--background": "#f7f3e8",
+    "--foreground": "#0f380f",
+    "--card": "#fffef8",
+    "--muted-foreground": "#5c6b7a",
+    "--border": "#2c3e50",
+    /* 形态：粗描边、无圆角、硬投影（像素块） */
+    "--hub-border-width": "4px",
+    "--hub-radius-sm": "0px",
+    "--hub-radius-md": "0px",
+    "--hub-radius-lg": "0px",
+    "--hub-corner-dot-size": "4px",
+    "--hub-surface-elevated": "#fffef8",
+    "--hub-shadow-btn-primary": "4px 4px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-cyan": "4px 4px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-outline": "3px 3px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-rule": "4px 4px 0 0 var(--rule-shadow)",
+    "--hub-shadow-card-skill": "4px 4px 0 0 var(--pixel-border)",
+    "--hub-shadow-card-rule": "4px 4px 0 0 var(--rule-shadow)",
+    "--hub-shadow-dialog": "8px 8px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-primary-hover": "3px 3px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-cyan-hover": "3px 3px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-outline-hover": "2px 2px 0 0 var(--pixel-border)",
+    "--hub-shadow-btn-rule-hover": "3px 3px 0 0 var(--rule-shadow)",
+  },
+};

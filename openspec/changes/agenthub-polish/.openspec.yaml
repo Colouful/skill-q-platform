@@ -1,0 +1,10 @@
+schema: spec-driven
+created: 2026-03-24
+status: pending
+dependencies:
+  - agent-auth-system
+  - agenthub-dual-platform
+description: AgentHub 功能完善与后台管理系统（含分类管理）
+owner: 哞哞🐮
+priority: medium
+estimated_days: 15

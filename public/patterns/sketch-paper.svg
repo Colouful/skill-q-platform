@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>pencil paper grain</title>
+  <defs>
+    <!-- 石墨颗粒：不规则点大小与透明度 -->
+    <pattern id="g" width="5" height="5" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1.2" r="0.4" fill="#3a342c" opacity="0.05"/>
+      <circle cx="3.2" cy="2.8" r="0.32" fill="#2c2824" opacity="0.042"/>
+      <circle cx="2.4" cy="4.1" r="0.25" fill="#4a443c" opacity="0.035"/>
+    </pattern>
+    <!-- 斜向排线：模拟铅笔排线 -->
+    <pattern id="h1" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(14)">
+      <line x1="0" y1="0" x2="0" y2="24" stroke="#4a4438" stroke-opacity="0.045" stroke-width="0.55"/>
+    </pattern>
+    <pattern id="h2" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-11)">
+      <line x1="0" y1="14" x2="28" y2="14" stroke="#5a5248" stroke-opacity="0.035" stroke-width="0.45"/>
+    </pattern>
+    <!-- 极淡横纹：速写本纸感 -->
+    <pattern id="rule" width="128" height="14" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="13.5" x2="128" y2="13.5" stroke="#5c5448" stroke-opacity="0.028" stroke-width="0.4"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <rect width="100%" height="100%" fill="url(#h1)"/>
+  <rect width="100%" height="100%" fill="url(#h2)"/>
+  <rect width="100%" height="100%" fill="url(#rule)"/>
+</svg>
