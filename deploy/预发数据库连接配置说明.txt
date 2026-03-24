@@ -1,0 +1,41 @@
+================================================================================
+预发「连不上数据库」—— DATABASE_URL 到底配在哪？
+================================================================================
+
+一、代码里读的是什么
+  只读「操作系统给 Node 进程的环境变量」：DATABASE_URL
+  见：src/lib/prisma.ts（没有就去连库会报错或连错）
+
+二、不是配在这些地方（常见误会）
+  · .env.pre / .env.prod —— 默认只给「npm run build:pre / build:prod」构建时用，
+    除非你另外在运行目录放了 .env.production 且 Next 会加载（多数平台不配文件，只配平台 ENV）。
+  · 镜像构建 RUN 里 —— 不要把真实密码写进 Dockerfile。
+  · 连接串里写 localhost / 127.0.0.1 —— 在容器里指的是「容器自己」，不是宿主机或 RDS。
+
+三、正确配置位置（选你实际用的平台）
+  【SRE / 平台「环境变量」表单】
+    在「预发」这条应用/流水线对应的 **ENV / 运行环境变量** 里新增：
+      DATABASE_URL=mysql://用户名:密码@预发数据库主机:3306/库名?charset=utf8mb3
+    主机填：内网 IP、RDS 内网域名、K8s Service 名等（须从预发 Pod 网络能 ping/连上）。
+
+  【Kubernetes】
+    预发 Deployment 里 containers.env（或 envFrom Secret）：
+      - name: DATABASE_URL
+        value: "mysql://..."   # 敏感建议用 Secret
+
+  【docker compose】
+    预发不要用生产的 .env.production。单独建例如 .env.pre.runtime，
+    在 compose 里 env_file 指向它，且填预发库地址；或 environment: 里写 DATABASE_URL。
+
+四、和 CONF_ENV 的关系
+  CONF_ENV 只决定用 /opt/pre 还是 /opt/prod 目录里的代码包。
+  连哪台数据库 **完全由当前 Pod/容器上的 DATABASE_URL 决定**。
+  预发 Pod 必须带「预发库」的 DATABASE_URL，生产 Pod 带「生产库」的。
+
+五、仍连不上时按顺序查
+  1) 预发实例上打印环境（仅排障）：echo 或临时日志里确认 DATABASE_URL 是否为空、是否还是 localhost。
+  2) 从预发 Pod 内对数据库主机:3306 做连通性（telnet/nc），防火墙/安全组是否放行。
+  3) MySQL 用户是否允许从 Pod 网段连接（bind-address、用户 host%）。
+  4) 密码里的特殊字符是否在 URL 里做了编码（@ # 等）。
+
+================================================================================

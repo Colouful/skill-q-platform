@@ -27,5 +27,5 @@
 
 ## 部署与域名（运维）
 
-- **Vercel**：仓库根目录已提供 `vercel.json`（`prisma generate && next build`）；在 Vercel 关联 Git 仓库后导入项目，配置与生产一致的数据库与 `NEXT_PUBLIC_SITE_URL` 等环境变量即可部署。
+- **Vercel**：`vercel.json` 中 `buildCommand` 为 `next build`；安装阶段 `postinstall` 会执行 `npx prisma generate`。在 Vercel 关联 Git 仓库后导入项目，配置与生产一致的数据库与 `NEXT_PUBLIC_SITE_URL` 等环境变量即可部署。
 - **自定义域名**：在 Vercel（或其它平台）项目 **Settings → Domains** 中添加域名并完成 DNS 解析；同时将 `NEXT_PUBLIC_SITE_URL` 设为该公网地址，以便 SEO 与 Open Graph 使用正确 URL。

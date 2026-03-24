@@ -9,7 +9,10 @@ export default defineConfig({
     path: "prisma/migrations",
     seed: "npx tsx prisma/seed.ts",
   },
+  // generate 不连库；未设置时使用占位，迁移与运行仍需真实 DATABASE_URL
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url:
+      process.env["DATABASE_URL"] ??
+      "mysql://127.0.0.1:3306/_prisma_build_placeholder?charset=utf8mb3",
   },
 });
