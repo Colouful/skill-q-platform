@@ -18,7 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 
-ARG NEXT_PUBLIC_SITE_URL_PRE=http://localhost:3000
+ARG NEXT_PUBLIC_SITE_URL_PRE=http://localhost
 ARG NEXT_PUBLIC_SITE_URL_PROD=https://example.com
 
 RUN cp -a /app /opt/pre \
@@ -32,7 +32,7 @@ RUN cp -a /app /opt/prod \
 FROM base AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
+ENV PORT=80
 ENV HOSTNAME=0.0.0.0
 ENV CONF_ENV=prod
 
@@ -44,5 +44,5 @@ RUN chmod +x /opt/web/web-start.sh
 COPY --from=builder /opt/pre /opt/pre
 COPY --from=builder /opt/prod /opt/prod
 
-EXPOSE 3000
+EXPOSE 80
 CMD ["sh", "/opt/web/web-start.sh"]
