@@ -11,6 +11,7 @@ import { RuleDetailActions } from "@/components/rules/rule-detail-actions";
 import { RuleVersionsList } from "@/components/rules/rule-versions-list";
 import { RuleReviewsPanel } from "@/components/rules/reviews/rule-reviews-panel";
 import { DownloadPolicyBadge } from "@/components/hub/download-policy-badge";
+import { rulePath } from "@/lib/slug-url";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const rule = await prisma.rule.findUnique({
     where: { slug },
-    select: { name: true, description: true, moderationStatus: true, authorAgentId: true },
+    select: {
+      slug: true,
+      name: true,
+      description: true,
+      moderationStatus: true,
+      authorAgentId: true,
+    },
   });
   if (!rule) {
     return { title: "Rule" };
@@ -42,7 +49,7 @@ export async function generateMetadata({
       title: rule.name,
       description: desc,
       type: "article",
-      ...(base ? { url: `${base}/rules/${slug}` } : {}),
+      ...(base ? { url: `${base}${rulePath(rule.slug)}` } : {}),
       images: [{ url: "/patterns/sketch-paper.svg", alt: rule.name }],
     },
     twitter: { card: "summary_large_image", title: rule.name, description: desc },
@@ -134,7 +141,7 @@ export default async function RuleDetailPage({
           <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
             Fork 自{" "}
             <Link
-              href={`/rules/${forkParent.slug}`}
+              href={rulePath(forkParent.slug)}
               className="text-[var(--rule-accent)] underline decoration-[var(--rule-border)] decoration-2 underline-offset-2"
             >
               {forkParent.name}

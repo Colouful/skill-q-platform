@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiRulePath, rulePath } from "@/lib/slug-url";
 import {
   DownloadPolicyRadios,
   type DownloadPolicyChoice,
@@ -49,7 +50,7 @@ export function RuleEditForm({
       .split(/[,，\s]+/)
       .map((t) => t.trim())
       .filter(Boolean);
-    const res = await fetchApi(`/api/rules/${rule.slug}`, {
+    const res = await fetchApi(apiRulePath(rule.slug), {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -65,7 +66,7 @@ export function RuleEditForm({
     setPending(false);
     if (res.code === 0) {
       toast.success("已保存");
-      router.push(`/rules/${rule.slug}`);
+      router.push(rulePath(rule.slug));
       router.refresh();
     } else {
       toast.error(res.message || "保存失败");

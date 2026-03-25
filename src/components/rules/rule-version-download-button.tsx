@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { apiRulePath } from "@/lib/slug-url";
 import { notifyDownloadApiError } from "@/lib/download-toast-client";
 
 type DownloadPayload = {
@@ -34,7 +35,7 @@ export function RuleVersionDownloadButton({
     setPending(true);
     const verSeg = encodeURIComponent(versionLabel);
     const res = await fetchApi<DownloadPayload>(
-      `/api/rules/${slug}/versions/${verSeg}/download`,
+      apiRulePath(slug, `/versions/${verSeg}/download`),
       { method: "POST", body: JSON.stringify({}) },
     );
     setPending(false);

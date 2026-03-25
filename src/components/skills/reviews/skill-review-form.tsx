@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath } from "@/lib/slug-url";
 import { PixelTextarea } from "@/components/pixel";
 import { LobsterRatingInput } from "./lobster-rating-input";
 import type { Review } from "@/generated/prisma";
@@ -43,7 +44,7 @@ export function SkillReviewForm({
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
-    const res = await fetchApi<{ review: Review; agentLevelUp: unknown }>(`/api/skills/${slug}/reviews`, {
+    const res = await fetchApi<{ review: Review; agentLevelUp: unknown }>(apiSkillPath(slug, "/reviews"), {
       method: "POST",
       body: JSON.stringify({
         rating,

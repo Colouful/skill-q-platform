@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Category, Skill } from "@/generated/prisma";
 import { ClampedCardDescription } from "@/components/card/clamped-card-description";
 import { pixelCardVariants } from "@/components/pixel";
+import { skillPath } from "@/lib/slug-url";
 import { cn } from "@/lib/utils";
 import { HighlightText } from "./highlight-text";
 
@@ -20,7 +21,7 @@ export function SkillCard({
   const hq = highlightQuery?.trim() ?? "";
   return (
     <Link
-      href={`/skills/${skill.slug}`}
+      href={skillPath(skill.slug)}
       className={cn(pixelCardVariants(), "group/card flex h-full flex-col")}
     >
       <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-accent)]">

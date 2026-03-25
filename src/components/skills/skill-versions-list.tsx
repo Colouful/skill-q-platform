@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { skillPath } from "@/lib/slug-url";
 import type { Version } from "@/generated/prisma";
 
 /** 8.1 版本列表（像素块 + 链到详情） */
@@ -25,7 +26,7 @@ export function SkillVersionsList({
           className="flex items-center justify-between gap-3 border-2 border-[var(--pixel-border)] bg-[#fffef8] px-3 py-2"
         >
           <Link
-            href={`/skills/${slug}/versions/${encodeURIComponent(v.version)}`}
+            href={skillPath(slug, `/versions/${encodeURIComponent(v.version)}`)}
             className="text-[var(--pixel-fg)] underline decoration-[var(--pixel-border)] decoration-2 underline-offset-2 hover:text-[var(--pixel-accent)]"
           >
             {v.version}

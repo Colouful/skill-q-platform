@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath } from "@/lib/slug-url";
 import type { Review } from "@/generated/prisma";
 import { SkillReviewForm } from "./skill-review-form";
 import { LobsterRatingDisplay } from "./lobster-rating-display";
@@ -37,7 +38,7 @@ export function SkillReviewsPanel({
     async (next: Sort) => {
       setLoading(true);
       const q = next === "helpful" ? "helpful" : "latest";
-      const res = await fetchApi<Review[]>(`/api/skills/${slug}/reviews?sort=${q}`);
+      const res = await fetchApi<Review[]>(`${apiSkillPath(slug, "/reviews")}?sort=${q}`);
       setLoading(false);
       if (res.code === 0 && res.data) {
         setReviews(res.data);

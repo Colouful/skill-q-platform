@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Category, Rule } from "@/generated/prisma";
 import { ClampedCardDescription } from "@/components/card/clamped-card-description";
 import { pixelCardVariants } from "@/components/pixel";
+import { rulePath } from "@/lib/slug-url";
 import { cn } from "@/lib/utils";
 import { HighlightText } from "@/components/skill/highlight-text";
 
@@ -20,7 +21,7 @@ export function RuleCard({
   const hq = highlightQuery?.trim() ?? "";
   return (
     <Link
-      href={`/rules/${rule.slug}`}
+      href={rulePath(rule.slug)}
       className={cn(pixelCardVariants({ tone: "rule" }), "group/card flex h-full flex-col")}
     >
       <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--rule-accent)]">

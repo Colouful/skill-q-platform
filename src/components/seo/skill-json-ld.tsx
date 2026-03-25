@@ -1,3 +1,5 @@
+import { skillPath } from "@/lib/slug-url";
+
 /** Skill 详情页 JSON-LD（SoftwareApplication + aggregateRating） */
 export function SkillJsonLd({
   name,
@@ -16,7 +18,7 @@ export function SkillJsonLd({
   rating: number;
   reviewCount: number;
 }) {
-  const url = `${siteOrigin.replace(/\/$/, "")}/skills/${slug}`;
+  const url = `${siteOrigin.replace(/\/$/, "")}${skillPath(slug)}`;
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",

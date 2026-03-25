@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
 import { notifyDownloadApiError } from "@/lib/download-toast-client";
 import { downloadSkillVersionZip } from "@/lib/skill-version-zip-client";
+import { apiSkillPath } from "@/lib/slug-url";
 
 type DownloadPayload = {
   version: string;
@@ -44,7 +45,7 @@ export function SkillVersionDownloadButton({
       setPending(true);
       const verSeg = encodeURIComponent(versionLabel);
       const res = await fetchApi<DownloadPayload>(
-        `/api/skills/${slug}/versions/${verSeg}/download`,
+        apiSkillPath(slug, `/versions/${verSeg}/download`),
         { method: "POST", body: JSON.stringify({}) },
       );
       setPending(false);

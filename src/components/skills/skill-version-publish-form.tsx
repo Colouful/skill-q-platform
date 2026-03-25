@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath, skillPath } from "@/lib/slug-url";
 import { PixelInput, PixelTextarea } from "@/components/pixel";
 
 /** 8.3 发布新版本 */
@@ -33,7 +34,7 @@ export function SkillVersionPublishForm({ slug }: { slug: string }) {
     }
 
     setPending(true);
-    const res = await fetchApi<{ version: string }>(`/api/skills/${slug}/versions`, {
+    const res = await fetchApi<{ version: string }>(apiSkillPath(slug, "/versions"), {
       method: "POST",
       body: JSON.stringify({
         version: version.trim(),
@@ -46,7 +47,7 @@ export function SkillVersionPublishForm({ slug }: { slug: string }) {
     setPending(false);
     if (res.code === 0 && res.data?.version) {
       toast.success("版本已发布 🦞");
-      router.push(`/skills/${slug}/versions/${encodeURIComponent(res.data.version)}`);
+      router.push(skillPath(slug, `/versions/${encodeURIComponent(res.data.version)}`));
       router.refresh();
     } else {
       toast.error(res.message || "发布失败");

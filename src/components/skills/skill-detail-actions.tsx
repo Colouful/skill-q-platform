@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath, skillPath } from "@/lib/slug-url";
 import { LobsterCelebrate } from "@/components/lobster";
 
 /** 4.8 删除 + Fork；11.1 Fork 表单 */
@@ -58,7 +59,7 @@ export function SkillDetailActions({
 
   async function doFork() {
     setForking(true);
-    const res = await fetchApi<{ slug: string }>(`/api/skills/${slug}/fork`, {
+    const res = await fetchApi<{ slug: string }>(apiSkillPath(slug, "/fork"), {
       method: "POST",
       body: JSON.stringify({
         name: forkName.trim(),
@@ -69,7 +70,7 @@ export function SkillDetailActions({
     if (res.code === 0 && res.data?.slug) {
       toast.success("Fork 成功 🦞");
       setForkOpen(false);
-      router.push(`/skills/${res.data.slug}`);
+      router.push(skillPath(res.data.slug));
     } else {
       toast.error(res.message || "Fork 失败");
     }
@@ -77,7 +78,7 @@ export function SkillDetailActions({
 
   async function del() {
     setDeleting(true);
-    const res = await fetchApi(`/api/skills/${slug}/delete`, {
+    const res = await fetchApi(apiSkillPath(slug, "/delete"), {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -96,7 +97,7 @@ export function SkillDetailActions({
       {canEdit ? (
         <>
           <Link
-            href={`/skills/${slug}/edit`}
+            href={skillPath(slug, "/edit")}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
@@ -105,7 +106,7 @@ export function SkillDetailActions({
             编辑
           </Link>
           <Link
-            href={`/skills/${slug}/editor`}
+            href={skillPath(slug, "/editor")}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",

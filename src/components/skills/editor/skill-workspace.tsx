@@ -9,6 +9,7 @@ import { PixelButton, PixelInput, PixelTextarea } from "@/components/pixel";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath, skillPath } from "@/lib/slug-url";
 import {
   type SkillFileEntry,
   languageFromPath,
@@ -99,7 +100,7 @@ export function SkillWorkspace({
       return;
     }
     setSaving(true);
-    const res = await fetchApi<Version>(`/api/skills/${slug}/versions`, {
+    const res = await fetchApi<Version>(apiSkillPath(slug, "/versions"), {
       method: "POST",
       body: JSON.stringify({
         version: ver,
@@ -115,7 +116,7 @@ export function SkillWorkspace({
     setSaving(false);
     if (res.code === 0 && res.data) {
       toast.success("已保存新版本 🦞");
-      router.push(`/skills/${slug}/versions/${encodeURIComponent(res.data.version)}`);
+      router.push(skillPath(slug, `/versions/${encodeURIComponent(res.data.version)}`));
       router.refresh();
     } else {
       toast.error(res.message || "保存失败");
@@ -129,7 +130,7 @@ export function SkillWorkspace({
           Skills
         </Link>
         <span className="mx-1">/</span>
-        <Link href={`/skills/${slug}`} className="hover:text-[var(--pixel-fg)]">
+        <Link href={skillPath(slug)} className="hover:text-[var(--pixel-fg)]">
           {skillName}
         </Link>
         <span className="mx-1">/</span>

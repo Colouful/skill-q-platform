@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { skillPath } from "@/lib/slug-url";
 import type { Category } from "@/generated/prisma";
 import { SkillZipDropzone } from "@/components/skills/skill-zip-dropzone";
 import {
@@ -74,7 +75,7 @@ export function SkillUploadForm({ categories }: { categories: Category[] }) {
       } else {
         toast.success("创建成功 🦞");
       }
-      router.push(`/skills/${slug}`);
+      router.push(skillPath(slug));
     } else {
       toast.error(res.message || "创建失败");
     }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { AnalyticsHighlights } from "@/lib/admin-analytics-queries";
+import { rulePath, skillPath } from "@/lib/slug-url";
 
 function formatDate(d: Date) {
   try {
@@ -32,7 +33,7 @@ export function AdminDashboardHighlights({ data }: { data: AnalyticsHighlights }
                   {i + 1}.
                 </span>
                 <Link
-                  href={`/skills/${s.slug}`}
+                  href={skillPath(s.slug)}
                   className="min-w-0 flex-1 truncate font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-accent)] underline"
                   target="_blank"
                   rel="noreferrer"
@@ -65,7 +66,7 @@ export function AdminDashboardHighlights({ data }: { data: AnalyticsHighlights }
                   {i + 1}.
                 </span>
                 <Link
-                  href={`/rules/${r.slug}`}
+                  href={rulePath(r.slug)}
                   className="min-w-0 flex-1 truncate font-[family-name:var(--font-pixel-body)] text-xs text-[var(--rule-accent)] underline"
                   target="_blank"
                   rel="noreferrer"

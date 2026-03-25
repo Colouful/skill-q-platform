@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { apiRulePath } from "@/lib/slug-url";
 import type { Review } from "@/generated/prisma";
 import { LobsterRatingDisplay } from "@/components/skills/reviews/lobster-rating-display";
 import { RuleReviewForm } from "./rule-review-form";
@@ -36,7 +37,7 @@ export function RuleReviewsPanel({
     async (next: Sort) => {
       setLoading(true);
       const q = next === "helpful" ? "helpful" : "latest";
-      const res = await fetchApi<Review[]>(`/api/rules/${slug}/reviews?sort=${q}`);
+      const res = await fetchApi<Review[]>(`${apiRulePath(slug, "/reviews")}?sort=${q}`);
       setLoading(false);
       if (res.code === 0 && res.data) {
         setReviews(res.data);

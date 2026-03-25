@@ -9,6 +9,7 @@ import { PixelButton, PixelInput, PixelTextarea } from "@/components/pixel";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiRulePath, rulePath } from "@/lib/slug-url";
 import {
   type SkillFileEntry,
   languageFromPath,
@@ -98,7 +99,7 @@ export function RuleWorkspace({
       return;
     }
     setSaving(true);
-    const res = await fetchApi<RuleVersion>(`/api/rules/${slug}/versions`, {
+    const res = await fetchApi<RuleVersion>(apiRulePath(slug, "/versions"), {
       method: "POST",
       body: JSON.stringify({
         version: ver,
@@ -114,7 +115,7 @@ export function RuleWorkspace({
     setSaving(false);
     if (res.code === 0 && res.data) {
       toast.success("已保存新版本 🦞");
-      router.push(`/rules/${slug}`);
+      router.push(rulePath(slug));
       router.refresh();
     } else {
       toast.error(res.message || "保存失败");
@@ -128,7 +129,7 @@ export function RuleWorkspace({
           Rules
         </Link>
         <span className="mx-1">/</span>
-        <Link href={`/rules/${slug}`} className="hover:text-[var(--pixel-fg)]">
+        <Link href={rulePath(slug)} className="hover:text-[var(--pixel-fg)]">
           {ruleName}
         </Link>
         <span className="mx-1">/</span>

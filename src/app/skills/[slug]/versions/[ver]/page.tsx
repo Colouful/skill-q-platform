@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { skillPath } from "@/lib/slug-url";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SkillVersionDownloadButton } from "@/components/skills/skill-version-download-button";
@@ -46,7 +47,7 @@ export default async function SkillVersionDetailPage({
           Skills
         </Link>
         <span className="mx-1">/</span>
-        <Link href={`/skills/${skill.slug}`} className="hover:text-[var(--pixel-fg)]">
+        <Link href={skillPath(skill.slug)} className="hover:text-[var(--pixel-fg)]">
           {skill.name}
         </Link>
         <span className="mx-1">/</span>

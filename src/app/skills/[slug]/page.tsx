@@ -11,6 +11,7 @@ import { SkillDetailActions } from "@/components/skills/skill-detail-actions";
 import { SkillVersionsList } from "@/components/skills/skill-versions-list";
 import { SkillReviewsPanel } from "@/components/skills/reviews/skill-reviews-panel";
 import { DownloadPolicyBadge } from "@/components/hub/download-policy-badge";
+import { skillPath } from "@/lib/slug-url";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,13 @@ export async function generateMetadata({
   const { slug } = await params;
   const skill = await prisma.skill.findUnique({
     where: { slug },
-    select: { name: true, description: true, moderationStatus: true, authorAgentId: true },
+    select: {
+      slug: true,
+      name: true,
+      description: true,
+      moderationStatus: true,
+      authorAgentId: true,
+    },
   });
   if (!skill) {
     return { title: "Skill" };
@@ -42,7 +49,7 @@ export async function generateMetadata({
       title: skill.name,
       description: desc,
       type: "article",
-      ...(base ? { url: `${base}/skills/${slug}` } : {}),
+      ...(base ? { url: `${base}${skillPath(skill.slug)}` } : {}),
       images: [{ url: "/patterns/sketch-paper.svg", alt: skill.name }],
     },
     twitter: {
@@ -154,7 +161,7 @@ export default async function SkillDetailPage({
           </h2>
           {canEdit ? (
             <Link
-              href={`/skills/${skill.slug}/versions/new`}
+              href={skillPath(skill.slug, "/versions/new")}
               className="border-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)] px-3 py-1 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-95"
             >
               发布新版本

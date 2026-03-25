@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 import { MODERATION_STATUS } from "@/lib/moderation";
+import { rulePath, skillPath } from "@/lib/slug-url";
 
 /** 构建期不预渲染，避免 Docker/CI 从构建机 IP 连库被拒导致超时 */
 export const dynamic = "force-dynamic";
@@ -30,13 +31,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticEntries,
     ...skills.map((s) => ({
-      url: `${base}/skills/${s.slug}`,
+      url: `${base}${skillPath(s.slug)}`,
       lastModified: s.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.75,
     })),
     ...rules.map((r) => ({
-      url: `${base}/rules/${r.slug}`,
+      url: `${base}${rulePath(r.slug)}`,
       lastModified: r.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.75,

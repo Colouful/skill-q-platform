@@ -1,3 +1,5 @@
+import { rulePath } from "@/lib/slug-url";
+
 /** Rule 详情页 JSON-LD（CreativeWork） */
 export function RuleJsonLd({
   name,
@@ -12,7 +14,7 @@ export function RuleJsonLd({
   author: string;
   siteOrigin: string;
 }) {
-  const url = `${siteOrigin.replace(/\/$/, "")}/rules/${slug}`;
+  const url = `${siteOrigin.replace(/\/$/, "")}${rulePath(slug)}`;
   const data = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",

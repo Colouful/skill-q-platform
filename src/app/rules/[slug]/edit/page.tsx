@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { rulePath } from "@/lib/slug-url";
 import { prisma } from "@/lib/prisma";
 import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
 import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
@@ -37,7 +38,7 @@ export default async function RuleEditPage({
           Rules
         </Link>
         <span className="mx-1">/</span>
-        <Link href={`/rules/${rule.slug}`} className="hover:text-[var(--pixel-fg)]">
+        <Link href={rulePath(rule.slug)} className="hover:text-[var(--pixel-fg)]">
           {rule.name}
         </Link>
         <span className="mx-1">/</span>

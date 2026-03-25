@@ -1,3 +1,5 @@
+import { apiSkillPath } from "@/lib/slug-url";
+
 /** 客户端：从 export-zip 拉取 ZIP 并触发浏览器保存 */
 export function downloadSkillVersionZip(
   slug: string,
@@ -5,7 +7,7 @@ export function downloadSkillVersionZip(
   onDone: (ok: boolean, errorMessage?: string) => void,
   onProgress?: (pct: number | null) => void,
 ): void {
-  const url = `/api/skills/${slug}/versions/${encodeURIComponent(versionLabel)}/export-zip`;
+  const url = apiSkillPath(slug, `/versions/${encodeURIComponent(versionLabel)}/export-zip`);
   const xhr = new XMLHttpRequest();
   xhr.open("POST", url);
   xhr.responseType = "blob";

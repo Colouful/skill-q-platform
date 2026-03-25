@@ -18,6 +18,7 @@ import {
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
+import { rulePath } from "@/lib/slug-url";
 
 export function RuleUploadForm({ categories }: { categories: Category[] }) {
   const router = useRouter();
@@ -91,7 +92,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
         } else {
           toast.success("Rule 创建成功 🦞");
         }
-        router.push(`/rules/${slug}`);
+        router.push(rulePath(slug));
       } else {
         toast.error(res.message || "创建失败");
       }

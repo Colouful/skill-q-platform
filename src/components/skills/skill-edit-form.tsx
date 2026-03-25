@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { apiSkillPath, skillPath } from "@/lib/slug-url";
 import {
   DownloadPolicyRadios,
   type DownloadPolicyChoice,
@@ -49,7 +50,7 @@ export function SkillEditForm({
       .split(/[,，\s]+/)
       .map((t) => t.trim())
       .filter(Boolean);
-    const res = await fetchApi(`/api/skills/${skill.slug}`, {
+    const res = await fetchApi(apiSkillPath(skill.slug), {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -65,7 +66,7 @@ export function SkillEditForm({
     setPending(false);
     if (res.code === 0) {
       toast.success("已保存 🦞");
-      router.push(`/skills/${skill.slug}`);
+      router.push(skillPath(skill.slug));
       router.refresh();
     } else {
       toast.error(res.message || "保存失败");

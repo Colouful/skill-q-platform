@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { SkillWithCategory, RuleWithCategory } from "@/lib/unified-search";
+import { rulePath, skillPath } from "@/lib/slug-url";
 import { HighlightText } from "@/components/skill/highlight-text";
 
 export function UnifiedSearchResults({
@@ -48,7 +49,7 @@ export function UnifiedSearchResults({
                 className="border-2 border-[var(--pixel-border)] bg-[#fffef8] px-3 py-2 font-[family-name:var(--font-pixel-body)] text-sm"
               >
                 <Link
-                  href={`/skills/${s.slug}`}
+                  href={skillPath(s.slug)}
                   className="font-medium text-[var(--pixel-fg)] underline decoration-[var(--pixel-border)] decoration-2 underline-offset-2 hover:text-[var(--pixel-accent)]"
                 >
                   <HighlightText text={s.name} query={hq} />
@@ -77,7 +78,7 @@ export function UnifiedSearchResults({
                 className="border-2 border-[var(--rule-border)] bg-[#fffef8] px-3 py-2 font-[family-name:var(--font-pixel-body)] text-sm"
               >
                 <Link
-                  href={`/rules/${r.slug}`}
+                  href={rulePath(r.slug)}
                   className="font-medium text-[var(--pixel-fg)] underline decoration-[var(--rule-border)] decoration-2 underline-offset-2 hover:text-[var(--rule-accent)]"
                 >
                   <HighlightText text={r.name} query={hq} />

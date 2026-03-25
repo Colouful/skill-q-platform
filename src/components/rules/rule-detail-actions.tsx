@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { fetchApi } from "@/lib/client-api";
+import { apiRulePath, rulePath } from "@/lib/slug-url";
 import { LobsterCelebrate } from "@/components/lobster";
 
 export function RuleDetailActions({
@@ -56,7 +57,7 @@ export function RuleDetailActions({
 
   async function doFork() {
     setForking(true);
-    const res = await fetchApi<{ slug: string }>(`/api/rules/${slug}/fork`, {
+    const res = await fetchApi<{ slug: string }>(apiRulePath(slug, "/fork"), {
       method: "POST",
       body: JSON.stringify({
         name: forkName.trim(),
@@ -67,7 +68,7 @@ export function RuleDetailActions({
     if (res.code === 0 && res.data?.slug) {
       toast.success("Fork 成功");
       setForkOpen(false);
-      router.push(`/rules/${res.data.slug}/edit`);
+      router.push(rulePath(res.data.slug, "/edit"));
     } else {
       toast.error(res.message || "Fork 失败");
     }
@@ -75,7 +76,7 @@ export function RuleDetailActions({
 
   async function del() {
     setDeleting(true);
-    const res = await fetchApi(`/api/rules/${slug}/delete`, {
+    const res = await fetchApi(apiRulePath(slug, "/delete"), {
       method: "POST",
       body: JSON.stringify({}),
     });
@@ -94,7 +95,7 @@ export function RuleDetailActions({
       {canEdit ? (
         <>
           <Link
-            href={`/rules/${slug}/edit`}
+            href={rulePath(slug, "/edit")}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "border-4 border-[var(--pixel-border)] font-[family-name:var(--font-pixel-body)]",
@@ -103,7 +104,7 @@ export function RuleDetailActions({
             元数据
           </Link>
           <Link
-            href={`/rules/${slug}/editor`}
+            href={rulePath(slug, "/editor")}
             className={cn(
               buttonVariants({ variant: "outline" }),
               "border-4 border-[var(--rule-border)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]",
