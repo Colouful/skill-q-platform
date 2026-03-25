@@ -13,6 +13,12 @@ RUN（与 package.json 中脚本一致，无 widget）
   2) cp -R ./ /opt/pre && cd /opt/pre && npm run build:pre
   3) cp -R ./ /opt/prod && cd /opt/prod && npm run build:prod
 
+【.env.pre / .env.prod 与构建失败】
+  · 这两个文件默认不进 Git，Docker COPY 后镜像里往往「没有该文件」——此时 scripts/build-env.sh 会跳过 source，不算错误。
+  · 若日志仍出现「.: .env.pre: file not found」且指向 build-env.sh 某行：多为旧版脚本或行尾 CRLF；请拉最新仓库并确保脚本为 LF。
+  · 无文件时必须在 SRE「ENV」或 RUN 里 export：NEXT_PUBLIC_SITE_URL、DATABASE_URL（或 DB_HOST/DB_USER/DB_PASSWORD/DB_DATABASE）等，否则 next build 会报 DATABASE_URL 未配置。
+  · 若希望用文件：在构建流水线里于 COPY 之后、RUN build 之前生成 /opt/web/.env.pre（从密钥平台写出），并确认 .dockerignore 未排除该文件。
+
 【重要】不要用「npm install --force」代替第 1 步
   · 与 lock 不一致、易偶发失败；npm 可能报 Exit handler never called!（多为进程被 kill 或 npm 自身 bug）。
   · 务必使用「npm ci」，且 COPY 里包含 package-lock.json。
