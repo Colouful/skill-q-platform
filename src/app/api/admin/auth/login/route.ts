@@ -14,7 +14,8 @@ import { toApiResponse } from "@/lib/api-errors";
 export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
-  email: z.string().email(),
+  /** 存 admins.email，可为账号如 admin，不限定邮箱格式 */
+  email: z.string().trim().min(1).max(255),
   password: z.string().min(1),
 });
 
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
     const raw = await req.json();
     const parsed = bodySchema.safeParse(raw);
     if (!parsed.success) {
-      return jsonErr("邮箱或密码无效", 400);
+      return jsonErr("账号或密码无效", 400);
     }
     const email = parsed.data.email.trim().toLowerCase();
     const admin = await prisma.admin.findUnique({ where: { email } });

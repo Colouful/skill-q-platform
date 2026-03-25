@@ -125,19 +125,19 @@ async function main() {
 
   await seedRules(prisma);
 
-  const adminEmail = "admin@agenthub.com";
-  const existingAdmin = await prisma.admin.findUnique({ where: { email: adminEmail } });
+  const adminLogin = "admin";
+  const existingAdmin = await prisma.admin.findUnique({ where: { email: adminLogin } });
   if (!existingAdmin) {
     const passwordHash = await hashAdminPassword("Admin@123");
     await prisma.admin.create({
       data: {
-        email: adminEmail,
+        email: adminLogin,
         passwordHash,
         role: "admin",
         permissions: [],
       },
     });
-    console.log("Seeded admin:", adminEmail);
+    console.log("Seeded admin login:", adminLogin, "(password: Admin@123)");
   }
 
   console.log("Seed done. Categories:", CATEGORIES.length);

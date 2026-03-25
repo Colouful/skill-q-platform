@@ -13,6 +13,25 @@ RUN（与 package.json 中脚本一致，无 widget）
   2) cp -R ./ /opt/pre && cd /opt/pre && npm run build:pre
   3) cp -R ./ /opt/prod && cd /opt/prod && npm run build:prod
 
+【重要】不要用「npm install --force」代替第 1 步
+  · 与 lock 不一致、易偶发失败；npm 可能报 Exit handler never called!（多为进程被 kill 或 npm 自身 bug）。
+  · 务必使用「npm ci」，且 COPY 里包含 package-lock.json。
+  · 若仍失败：给构建机/容器加大内存（建议 ≥4G）；或在 install/ci 前加：
+      export NODE_OPTIONS="--max-old-space-size=4096"
+    可选减轻 npm 负担：
+      npm ci --no-audit --no-fund
+  · 内网 registry（.npmrc）超时也会导致异常退出，检查构建环境能否访问 nodejs.100credit.cn。
+
+【Prisma】postinstall / prisma generate 报 binaries.prisma.sh 下载失败
+  含义：npx prisma generate 会从公网 https://binaries.prisma.sh 拉取当前平台引擎（如 debian-openssl-3.0.x 的 schema-engine）。
+  常见原因：构建机/容器不能出公网、防火墙拦截、需走代理未配置、DNS/TLS 问题。
+  处理方向（择一，由运维定）：
+  1) 构建阶段放行对 binaries.prisma.sh（及 Prisma 文档要求的域名）的 HTTPS 出站；
+  2) 配置构建环境 HTTP(S)_PROXY（若公司统一代理）；
+  3) 若有内网镜像，在构建 RUN 前 export PRISMA_ENGINES_MIRROR=...（具体地址由内网制品库提供）；
+  4) 临时排障可 pnpm i --ignore-scripts / npm ci --ignore-scripts，再在能访问镜像的步骤单独执行 npx prisma generate（根本仍要解决引擎下载可达性）。
+  说明：npm 包从你们 nodejs.100credit.cn 拉取成功，与 Prisma 引擎 CDN 是两条链路，内网 npm 通了不代表 binaries.prisma.sh 也能通。
+
 CMD
   ["sh", "web-start.sh"]
   （工作目录需为 /opt/web；脚本内 cd /opt/$CONF_ENV 后执行 npm run start，要求该目录下为完整构建树含 node_modules）
@@ -27,10 +46,13 @@ CMD
   - 变量名与含义见根目录 .env.example（如 DATABASE_URL、REDIS_*、MINIO_*、HUB_*）。
   预发 Pod 填预发库的 URL，生产 Pod 填生产库的 URL；与 CONF_ENV 只是「选 /opt/pre 或 /opt/prod 目录」组合使用。
 
-预发/生产构建差异（只影响打进前端的 NEXT_PUBLIC_*）
-  构建前准备 .env.pre / .env.prod（模板见 .env.pre.example、.env.prod.example），
-  或仅在构建命令前 export NEXT_PUBLIC_SITE_URL=...
-  说明：.env.pre / .env.prod 默认只给 build:pre / build:prod 用；连库配置除非你们平台在「启动容器」时再挂载 env 文件，否则仍按上面「两套部署各注入」处理。
+预发/生产构建差异
+  · 构建前根目录需有 .env.pre / .env.prod：新同事可 cp deploy/env.pre.template .env.pre（prod 同理）；或 CI 从密钥生成该文件；或仅 export 同名变量，
+    内可写 NEXT_PUBLIC_SITE_URL 与 DB_HOST、DB_USER、DB_PASSWORD、DB_DATABASE、REDIS_*、MINIO_* 等。
+  · 未写 DATABASE_URL 时，scripts/build-env.sh 会根据 DB_* 自动拼接 DATABASE_URL（密码特殊字符已编码）。
+  · 或在 RUN 里 export：与 .env.pre 相同变量名即可。
+  · 安全：密钥若参与 next build，可能进入镜像 .next 产物；能接受的方案是「预发镜像只连预发、生产镜像只连生产」。
+    更高安全做法是镜像构建不写密钥，仅在 K8s 运行期注入（此时运行进程仍需能读到 DB_* 或 DATABASE_URL）。
 
 迁移
   勿写进镜像构建 RUN；在发布流水线对目标库执行 npx prisma migrate deploy

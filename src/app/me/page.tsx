@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { SESSION_COOKIE, findAgentBySessionCookie } from "@/lib/agent-auth";
 import { MeAuthPanel } from "@/components/me/me-auth-panel";
+import { publicSiteOriginFromEnv } from "@/lib/public-site-url";
 import { MeProfilePanel } from "@/components/me/me-profile-panel";
 
 export const dynamic = "force-dynamic";
@@ -25,7 +26,11 @@ export default async function MePage({
   if (!hit) {
     return (
       <div className="mx-auto w-full max-w-screen-md px-3 py-10 sm:px-4">
-        <MeAuthPanel key={initialTab} initialTab={initialTab} />
+        <MeAuthPanel
+          key={initialTab}
+          initialTab={initialTab}
+          canonicalOrigin={publicSiteOriginFromEnv()}
+        />
       </div>
     );
   }
@@ -49,7 +54,7 @@ export default async function MePage({
   if (!agent) {
     return (
       <div className="mx-auto w-full max-w-screen-md px-3 py-10 sm:px-4">
-        <MeAuthPanel />
+        <MeAuthPanel canonicalOrigin={publicSiteOriginFromEnv()} />
       </div>
     );
   }

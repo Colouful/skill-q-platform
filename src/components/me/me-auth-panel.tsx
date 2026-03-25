@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,27 @@ import { fetchApi } from "@/lib/client-api";
 
 type Tab = "register" | "login";
 
-export function MeAuthPanel({ initialTab = "register" }: { initialTab?: Tab }) {
+export function MeAuthPanel({
+  initialTab = "register",
+  /** 来自 NEXT_PUBLIC_SITE_URL（预发如 https://skillq-pre.100credit.cn），复制链接时用 */
+  canonicalOrigin = "",
+}: {
+  initialTab?: Tab;
+  canonicalOrigin?: string;
+}) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>(initialTab);
   const [apiKey, setApiKey] = useState("");
   const [pending, setPending] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [clientOrigin, setClientOrigin] = useState("");
 
-  const guideUrl =
-    typeof window !== "undefined" ? `${window.location.origin}/hub-skill.md` : "";
+  useEffect(() => {
+    setClientOrigin(window.location.origin);
+  }, []);
+
+  const base = canonicalOrigin.trim() || clientOrigin;
+  const guideUrl = base ? `${base.replace(/\/$/, "")}/hub-skill.md` : "";
 
   async function copyGuide() {
     try {

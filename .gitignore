@@ -30,12 +30,6 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files（密钥勿入库；允许提交示例模板）
-.env*
-!.env.example
-!.env.pre.example
-!.env.prod.example
-
 # vercel
 .vercel
 

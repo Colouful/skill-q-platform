@@ -1,6 +1,22 @@
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@/generated/prisma";
 
+function databaseUrlFromEnv(): string {
+  const direct = process.env.DATABASE_URL?.trim();
+  if (direct) return direct;
+  const host = process.env.DB_HOST?.trim();
+  const port = process.env.DB_PORT?.trim() || "3306";
+  const user = process.env.DB_USER?.trim();
+  const password = process.env.DB_PASSWORD ?? "";
+  const database = process.env.DB_DATABASE?.trim();
+  if (host && user && database) {
+    return `mysql://${encodeURIComponent(user)}:${encodeURIComponent(password)}@${host}:${port}/${encodeURIComponent(database)}?charset=utf8mb3`;
+  }
+  throw new Error(
+    "DATABASE_URL 未配置（可设置 DATABASE_URL，或 DB_HOST、DB_PORT、DB_USER、DB_PASSWORD、DB_DATABASE）",
+  );
+}
+
 function poolConfigFromDatabaseUrl(): {
   host: string;
   port: number;
@@ -11,10 +27,7 @@ function poolConfigFromDatabaseUrl(): {
   connectionLimit: number;
   acquireTimeout: number;
 } {
-  const raw = process.env.DATABASE_URL;
-  if (!raw) {
-    throw new Error("DATABASE_URL 未配置");
-  }
+  const raw = databaseUrlFromEnv();
   const u = new URL(raw);
   const database = u.pathname.replace(/^\//, "") || undefined;
   const charset = u.searchParams.get("charset") ?? undefined;

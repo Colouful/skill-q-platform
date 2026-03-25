@@ -39,9 +39,9 @@ export default function AdminLoginPage() {
       </h1>
       <form onSubmit={onSubmit} className="mt-6 space-y-4">
         <div className="space-y-2">
-          <Label className="font-[family-name:var(--font-pixel-body)]">邮箱</Label>
+          <Label className="font-[family-name:var(--font-pixel-body)]">账号</Label>
           <PixelInput
-            type="email"
+            type="text"
             autoComplete="username"
             required
             value={email}

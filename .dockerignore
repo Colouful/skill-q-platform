@@ -6,8 +6,9 @@ out
 .env
 .env.*
 !.env.example
-!.env.pre.example
-!.env.prod.example
+# 构建机若用 build:pre / build:prod 读本地文件，需把二者打进 context（仍勿提交 Git）
+!.env.pre
+!.env.prod
 .vscode
 .idea
 .DS_Store

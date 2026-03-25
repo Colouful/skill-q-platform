@@ -19,5 +19,13 @@ if [ -f ".env.${ENV_NAME}" ]; then
   set +a
 fi
 
+# 支持分变量 DB_*：未设 DATABASE_URL 时由脚本拼接（CI/SRE 也可只 export DB_*）
+if [ -z "${DATABASE_URL:-}" ] && [ -n "${DB_HOST:-}" ]; then
+  _db_url="$(node scripts/compose-database-url.cjs)"
+  if [ -n "$_db_url" ]; then
+    export DATABASE_URL="$_db_url"
+  fi
+fi
+
 npx prisma generate
 exec next build
