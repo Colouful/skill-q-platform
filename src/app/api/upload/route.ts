@@ -1,8 +1,16 @@
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { checkApiRateLimit, getRequestIp } from "@/lib/api-rate-limit";
-import { importRuleZip } from "@/lib/rule-zip-import";
-import { importSkillZip } from "@/lib/skill-zip-import";
+import {
+  importRuleMarkdownFile,
+  importRuleZip,
+  type RuleZipImportResult,
+} from "@/lib/rule-zip-import";
+import {
+  importSkillFolderFromBrowserFiles,
+  importSkillZip,
+  type SkillZipImportResult,
+} from "@/lib/skill-zip-import";
 import { isMinioConfigured, storeSkillZipArchive } from "@/lib/minio";
 
 export const dynamic = "force-dynamic";
@@ -17,17 +25,10 @@ export async function POST(req: Request) {
     }
 
     const form = await req.formData();
-    const file = form.get("file");
-    if (!file || typeof file === "string") {
-      return jsonErr("请使用 multipart 上传 file 字段（ZIP 文件）", 400);
-    }
-    const buf = await file.arrayBuffer();
-    const originalName = file instanceof File ? file.name : "upload.zip";
     const kind = String(form.get("kind") ?? "skill").toLowerCase();
+    const mode = String(form.get("mode") ?? "zip").toLowerCase();
 
-    const result =
-      kind === "rule" ? await importRuleZip(buf) : await importSkillZip(buf);
-
+    let result: SkillZipImportResult | RuleZipImportResult;
     let objectStorage:
       | { stored: true; bucket: string; objectKey: string; size: number }
       | { stored: false; reason: "disabled" | "error"; message?: string } = {
@@ -35,19 +36,49 @@ export async function POST(req: Request) {
       reason: "disabled",
     };
 
-    if (isMinioConfigured()) {
-      try {
-        const meta = await storeSkillZipArchive(buf, originalName);
-        objectStorage = {
-          stored: true,
-          bucket: meta.bucket,
-          objectKey: meta.objectKey,
-          size: meta.size,
-        };
-      } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.error("[upload] MinIO 归档失败:", message);
-        objectStorage = { stored: false, reason: "error", message };
+    if (mode === "folder") {
+      if (kind === "rule") {
+        return jsonErr("Rule 请使用单文件 .md 或 ZIP 上传（不支持文件夹模式）", 400);
+      }
+      const files = form.getAll("files").filter((v): v is File => v instanceof File);
+      if (files.length === 0) {
+        return jsonErr("请选择文件夹（mode=folder 时须提交 files 字段）", 400);
+      }
+      result = await importSkillFolderFromBrowserFiles(files);
+    } else {
+      const file = form.get("file");
+      if (!file || typeof file === "string") {
+        return jsonErr("请使用 multipart 上传 file 字段（Skill 为 ZIP；Rule 可为 .md 或 ZIP），或 mode=folder 多文件上传", 400);
+      }
+      const buf = await file.arrayBuffer();
+      const originalName = file instanceof File ? file.name : "upload.zip";
+      const lowerName = originalName.toLowerCase();
+      if (kind === "rule") {
+        if (lowerName.endsWith(".md")) {
+          result = importRuleMarkdownFile(buf, originalName);
+        } else if (lowerName.endsWith(".zip")) {
+          result = await importRuleZip(buf);
+        } else {
+          return jsonErr("Rule 请上传 .md 或 .zip 文件", 400);
+        }
+      } else {
+        result = await importSkillZip(buf);
+      }
+
+      if (isMinioConfigured() && lowerName.endsWith(".zip")) {
+        try {
+          const meta = await storeSkillZipArchive(buf, originalName);
+          objectStorage = {
+            stored: true,
+            bucket: meta.bucket,
+            objectKey: meta.objectKey,
+            size: meta.size,
+          };
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          console.error("[upload] MinIO 归档失败:", message);
+          objectStorage = { stored: false, reason: "error", message };
+        }
       }
     }
 

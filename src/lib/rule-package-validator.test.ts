@@ -25,8 +25,25 @@ describe("validateRulePackage", () => {
     expect(r.ok).toBe(true);
   });
 
-  it("有文件但缺少 RULE.md 时报错", () => {
+  it("有文件但缺少 .md 主说明时报错", () => {
     const r = validateRulePackage([{ name: "a.json", path: "a.json", content: "{}" }]);
+    expect(r.ok).toBe(false);
+    expect(r.errors.some((e) => e.includes(".md"))).toBe(true);
+  });
+
+  it("任意文件名的 .md 可作为主说明", () => {
+    const r = validateRulePackage([
+      { name: "my-style.md", path: "docs/my-style.md", content: "# hi" },
+      { name: "a.json", path: "a.json", content: "{}" },
+    ]);
+    expect(r.ok).toBe(true);
+  });
+
+  it("多个 .md 且未命名 RULE.md 时报错", () => {
+    const r = validateRulePackage([
+      { name: "a.md", path: "a.md", content: "x" },
+      { name: "b.md", path: "b.md", content: "y" },
+    ]);
     expect(r.ok).toBe(false);
     expect(r.errors.some((e) => e.includes("RULE.md"))).toBe(true);
   });

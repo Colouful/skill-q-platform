@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { fetchApi } from "@/lib/client-api";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { apiRulePath, rulePath } from "@/lib/slug-url";
 import { LobsterCelebrate } from "@/components/lobster";
 
@@ -57,18 +58,26 @@ export function RuleDetailActions({
 
   async function doFork() {
     setForking(true);
-    const res = await fetchApi<{ slug: string }>(apiRulePath(slug, "/fork"), {
-      method: "POST",
-      body: JSON.stringify({
-        name: forkName.trim(),
-        author: forkAuthor.trim(),
-      }),
-    });
+    const res = await fetchApi<{ slug: string; moderationStatus: string }>(
+      apiRulePath(slug, "/fork"),
+      {
+        method: "POST",
+        body: JSON.stringify({
+          name: forkName.trim(),
+          author: forkAuthor.trim(),
+        }),
+      },
+    );
     setForking(false);
     if (res.code === 0 && res.data?.slug) {
-      toast.success("Fork 成功");
       setForkOpen(false);
-      router.push(rulePath(res.data.slug, "/edit"));
+      if (res.data.moderationStatus === MODERATION_STATUS.PENDING) {
+        toast.success("Fork 成功，待审核通过后将公开展示");
+        router.push("/rules");
+      } else {
+        toast.success("Fork 成功");
+        router.push(rulePath(res.data.slug, "/edit"));
+      }
     } else {
       toast.error(res.message || "Fork 失败");
     }

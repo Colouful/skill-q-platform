@@ -7,7 +7,6 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { UnifiedSearchBar } from "@/components/search/unified-search-bar";
 import { HeaderResourceMenus } from "@/components/layout/header-resource-menus";
-import { HeaderUploadCta } from "@/components/layout/header-upload-cta";
 import { HeaderDiscoverNav } from "@/components/layout/header-discover-nav";
 import { HeaderAgentAuth } from "@/components/layout/header-agent-auth";
 import { HeaderNotificationsBell } from "@/components/layout/header-notifications-bell";
@@ -43,7 +42,6 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 w-full shrink-0 border-b-4 border-[var(--pixel-border)] bg-[var(--pixel-bg)]">
       <div className="mx-auto flex h-14 w-full max-w-screen-2xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-4 lg:px-5">
         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8">
-          <HeaderUploadCta />
           <Link
             href="/"
             className="shrink-0 font-[family-name:var(--font-pixel-heading)] text-sm font-normal tracking-tight text-[var(--pixel-fg)] sm:text-base"

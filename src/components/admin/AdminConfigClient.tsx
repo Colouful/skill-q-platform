@@ -16,6 +16,7 @@ type ConfigPayload = {
   registerMaxPerHour: string;
   maintenanceMode: string;
   uploadRequiresLogin: string;
+  resourceUploadRequiresModeration: string;
 };
 
 export function AdminConfigClient() {
@@ -28,6 +29,8 @@ export function AdminConfigClient() {
   const [registerMaxPerHour, setRegisterMaxPerHour] = useState("10");
   const [maintenanceMode, setMaintenanceMode] = useState("false");
   const [uploadRequiresLogin, setUploadRequiresLogin] = useState("false");
+  const [resourceUploadRequiresModeration, setResourceUploadRequiresModeration] =
+    useState("true");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -43,6 +46,7 @@ export function AdminConfigClient() {
     setRegisterMaxPerHour(res.data.registerMaxPerHour);
     setMaintenanceMode(res.data.maintenanceMode);
     setUploadRequiresLogin(res.data.uploadRequiresLogin);
+    setResourceUploadRequiresModeration(res.data.resourceUploadRequiresModeration ?? "true");
   }, []);
 
   useEffect(() => {
@@ -58,6 +62,10 @@ export function AdminConfigClient() {
       { key: SYSTEM_CONFIG_KEYS.REGISTER_MAX_PER_HOUR, value: registerMaxPerHour },
       { key: SYSTEM_CONFIG_KEYS.MAINTENANCE_MODE, value: maintenanceMode },
       { key: SYSTEM_CONFIG_KEYS.UPLOAD_REQUIRES_LOGIN, value: uploadRequiresLogin },
+      {
+        key: SYSTEM_CONFIG_KEYS.RESOURCE_UPLOAD_REQUIRES_MODERATION,
+        value: resourceUploadRequiresModeration,
+      },
     ];
     for (const p of pairs) {
       const res = await fetchApi("/api/admin/config/update", {
@@ -136,6 +144,19 @@ export function AdminConfigClient() {
         >
           <option value="false">允许匿名上传（仍受限流与 HUB_AUTH 约束）</option>
           <option value="true">必须登录（Cookie 会话或 Bearer API Key）</option>
+        </select>
+      </div>
+      <div>
+        <Label>
+          新建 / Fork 需人工审核（开启为待审核 pending，关闭则直接上架 published；默认开启）
+        </Label>
+        <select
+          className={pixelSelectClassName + " mt-1 w-full"}
+          value={resourceUploadRequiresModeration === "true" ? "true" : "false"}
+          onChange={(e) => setResourceUploadRequiresModeration(e.target.value)}
+        >
+          <option value="true">需要审核（创建后先不公开，通过后展示）</option>
+          <option value="false">无需审核（创建后立即公开；前台跳转详情）</option>
         </select>
       </div>
       <Button type="button" className="border-2" disabled={busy} onClick={() => void save()}>

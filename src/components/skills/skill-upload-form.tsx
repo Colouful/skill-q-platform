@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { fetchApi } from "@/lib/client-api";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { skillPath } from "@/lib/slug-url";
 import type { Category } from "@/generated/prisma";
 import { SkillZipDropzone } from "@/components/skills/skill-zip-dropzone";
@@ -17,7 +18,7 @@ import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pi
 import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
 
-/** 4.3 上传 Skill 表单（像素风格） + 13.2 ZIP 导入 */
+/** 4.3 上传 Skill 表单（像素风格） + ZIP / 本地文件夹导入 */
 export function SkillUploadForm({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const uploadGate = useUploadLoginGate();
@@ -52,7 +53,10 @@ export function SkillUploadForm({ categories }: { categories: Category[] }) {
       .split(/[,，\s]+/)
       .map((t) => t.trim())
       .filter(Boolean);
-    const res = await fetchApi<{ skill: { slug: string }; agentLevelUp: unknown }>("/api/skills", {
+    const res = await fetchApi<{
+      skill: { slug: string; moderationStatus: string };
+      agentLevelUp: unknown;
+    }>("/api/skills", {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -67,15 +71,27 @@ export function SkillUploadForm({ categories }: { categories: Category[] }) {
       }),
     });
     setPending(false);
-    const slug = res.data?.skill?.slug;
-    if (res.code === 0 && slug) {
+    const skill = res.data?.skill;
+    const slug = skill?.slug;
+    if (res.code === 0 && slug && skill) {
+      const pending = skill.moderationStatus === MODERATION_STATUS.PENDING;
       if (res.data?.agentLevelUp) {
         const u = res.data.agentLevelUp as { level: number; levelName: string };
-        toast.success(`创建成功 · 升至 Lv.${u.level} ${u.levelName} 🦞`);
+        toast.success(
+          pending
+            ? `已提交审核 · 升至 Lv.${u.level} ${u.levelName}，通过后将在列表展示 🦞`
+            : `创建成功 · 升至 Lv.${u.level} ${u.levelName} 🦞`,
+        );
       } else {
-        toast.success("创建成功 🦞");
+        toast.success(
+          pending ? "已提交，管理员审核通过后将公开展示 🦞" : "创建成功 🦞",
+        );
       }
-      router.push(skillPath(slug));
+      if (pending) {
+        router.push("/skills");
+      } else {
+        router.push(skillPath(slug));
+      }
     } else {
       toast.error(res.message || "创建失败");
     }
@@ -92,7 +108,7 @@ export function SkillUploadForm({ categories }: { categories: Category[] }) {
       <UploadLoginGateBanner visible={!uploadGate.loading && uploadGate.blocked} />
 
       <div className="space-y-2">
-        <Label className="font-[family-name:var(--font-pixel-body)]">从 ZIP 导入（可选）</Label>
+        <Label className="font-[family-name:var(--font-pixel-body)]">从 ZIP 或文件夹导入（可选）</Label>
         <SkillZipDropzone
           onParsed={(p) => {
             setZipFiles(p.files);

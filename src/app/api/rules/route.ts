@@ -9,7 +9,7 @@ import { rateLimitForAgentLevel } from "@/lib/agent-levels";
 import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
 import { slugFromName } from "@/lib/skill-slug";
 import { MODERATION_STATUS } from "@/lib/moderation";
-import { getDefaultDownloadPolicy } from "@/lib/system-config";
+import { getDefaultDownloadPolicy, getResourceUploadRequiresModeration } from "@/lib/system-config";
 import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { z } from "zod";
 
@@ -127,6 +127,10 @@ export async function POST(req: Request) {
       b.initialFiles && b.initialFiles.length > 0 ? b.initialFiles : [];
 
     const defaultPolicy = await getDefaultDownloadPolicy();
+    const requiresModeration = await getResourceUploadRequiresModeration();
+    const initialModeration = requiresModeration
+      ? MODERATION_STATUS.PENDING
+      : MODERATION_STATUS.PUBLISHED;
 
     let agentLevelUp: { level: number; levelName: string } | null = null;
     const rule = await prisma.$transaction(async (tx) => {
@@ -140,12 +144,12 @@ export async function POST(req: Request) {
           categoryId: category.id,
           tags: tagsJson,
           downloadPolicy: b.downloadPolicy ?? defaultPolicy,
-          moderationStatus: MODERATION_STATUS.PENDING,
+          moderationStatus: initialModeration,
           authorAgentId: auth.agent?.id ?? undefined,
           versions: {
             create: {
               version: "1.0.0",
-              changelog: initialFiles.length ? "从 ZIP 导入的初始版本" : "初始版本",
+              changelog: initialFiles.length ? "从 Markdown 或 ZIP 导入的初始版本" : "初始版本",
               files: initialFiles,
               isLatest: true,
             },

@@ -1,5 +1,9 @@
 import type { ZipImportFile } from "@/lib/rule-zip-import";
-import { isRuleManifestPath } from "@/lib/rule-manifest-path";
+import {
+  isMarkdownFilenamePath,
+  isRuleManifestPath,
+  isRulePrimaryMarkdownPath,
+} from "@/lib/rule-manifest-path";
 
 export type RulePackageValidation = {
   ok: boolean;
@@ -16,9 +20,15 @@ export function validateRulePackage(files: ZipImportFile[] | null | undefined): 
     return { ok: true, errors, warnings };
   }
 
-  const hasRuleMd = files.some((f) => isRuleManifestPath(f.path));
+  const hasRuleMd = files.some((f) => isRulePrimaryMarkdownPath(f.path));
   if (!hasRuleMd) {
-    errors.push("ZIP 中须包含 RULE.md 或 RULE.md.txt（可在子目录；大小写不敏感）");
+    errors.push("包中须包含至少一个 .md 文件作为主说明（任意文件名即可；RULE.md / RULE.md.txt 仍受支持）");
+  }
+
+  const hasManifest = files.some((f) => isRuleManifestPath(f.path));
+  const mdBasics = files.filter((f) => isMarkdownFilenamePath(f.path));
+  if (!hasManifest && mdBasics.length > 1) {
+    errors.push("存在多个 .md 文件时，请将主说明命名为 RULE.md / rule.md（或 RULE.md.txt）");
   }
 
   const hasRuleLike = files.some((f) => {

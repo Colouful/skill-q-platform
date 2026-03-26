@@ -6,8 +6,22 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { PixelButton, PixelInput, PixelTextarea } from "@/components/pixel";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { AddPathDialog } from "@/components/hub/add-path-dialog";
+import { FilePathTreeView } from "@/components/hub/file-path-tree-view";
 import { fetchApi } from "@/lib/client-api";
 import { apiRulePath, rulePath } from "@/lib/slug-url";
 import {
@@ -15,8 +29,12 @@ import {
   languageFromPath,
   suggestNextPatchVersion,
 } from "@/lib/skill-file-entries";
+import {
+  buildFilePathTree,
+  collectParentFolderPrefixes,
+  suggestDefaultParentPrefix,
+} from "@/lib/path-file-tree";
 import type { RuleVersion } from "@/generated/prisma";
-import { cn } from "@/lib/utils";
 
 const EDITOR_HEIGHT = "min(calc(100dvh - 14rem), 560px)";
 
@@ -32,7 +50,23 @@ const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
   ),
 });
 
-/** Monaco + 文件树 + 保存为新 Rule 版本 */
+function joinPath(parent: string, name: string): string {
+  const p = parent.replace(/^\/+|\/+$/g, "");
+  const n = name.replace(/^\/+|\/+$/g, "");
+  return p ? `${p}/${n}` : n;
+}
+
+function pruneVirtualWhenFileAdded(virtual: string[], filePath: string): string[] {
+  const norm = filePath.replace(/^\/+/, "");
+  return virtual.filter((v) => norm !== v && !norm.startsWith(`${v}/`));
+}
+
+function folderPathTaken(fullFolder: string, files: SkillFileEntry[], virtual: string[]): boolean {
+  if (virtual.includes(fullFolder)) return true;
+  return files.some((f) => f.path === fullFolder || f.path.startsWith(`${fullFolder}/`));
+}
+
+/** Monaco + 树形文件 + 保存为新 Rule 版本 */
 export function RuleWorkspace({
   slug,
   ruleName,
@@ -46,43 +80,103 @@ export function RuleWorkspace({
 }) {
   const router = useRouter();
   const [files, setFiles] = useState<SkillFileEntry[]>(initialFiles);
+  const [virtualFolderPrefixes, setVirtualFolderPrefixes] = useState<string[]>([]);
   const [activePath, setActivePath] = useState(() => initialFiles[0]?.path ?? "RULE.md");
   const [version, setVersion] = useState(() => suggestNextPatchVersion(latestVersionLabel));
   const [changelog, setChangelog] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const activeFile = useMemo(
-    () => files.find((f) => f.path === activePath),
-    [files, activePath],
+  const [addOpen, setAddOpen] = useState(false);
+  const [addMode, setAddMode] = useState<"file" | "folder">("file");
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+
+  const treeNodes = useMemo(
+    () => buildFilePathTree(files, virtualFolderPrefixes),
+    [files, virtualFolderPrefixes],
   );
+
+  const preferredParentForAddDialog = useMemo(
+    () => suggestDefaultParentPrefix(files, virtualFolderPrefixes),
+    [files, virtualFolderPrefixes],
+  );
+
+  const parentOptionsForDialog = useMemo(() => {
+    const fromFiles = collectParentFolderPrefixes(files);
+    const set = new Set<string>(["", ...fromFiles, ...virtualFolderPrefixes]);
+    for (const v of virtualFolderPrefixes) {
+      let acc = "";
+      for (const seg of v.split("/").filter(Boolean)) {
+        acc = acc ? `${acc}/${seg}` : seg;
+        set.add(acc);
+      }
+    }
+    return [...set].sort((a, b) => {
+      if (a === "") return -1;
+      if (b === "") return 1;
+      return a.localeCompare(b);
+    });
+  }, [files, virtualFolderPrefixes]);
+
+  const activeFile = useMemo(() => files.find((f) => f.path === activePath), [files, activePath]);
 
   const editorValue = activeFile?.content ?? "";
 
   const updateContent = useCallback((path: string, content: string) => {
-    setFiles((prev) =>
-      prev.map((f) => (f.path === path ? { ...f, content } : f)),
-    );
+    setFiles((prev) => prev.map((f) => (f.path === path ? { ...f, content } : f)));
   }, []);
 
-  function addFile() {
-    const raw = window.prompt("新文件路径（相对根目录，如 rules/order.json）");
-    if (!raw?.trim()) return;
-    const path = raw.trim().replace(/^\/+/, "").replace(/\\/g, "/");
-    if (files.some((f) => f.path === path)) {
-      toast.error("该路径已存在");
-      return;
-    }
-    const name = path.split("/").pop() || path;
-    setFiles((prev) => [...prev, { name, path, content: "" }].sort((a, b) => a.path.localeCompare(b.path)));
-    setActivePath(path);
+  function openAdd(mode: "file" | "folder") {
+    setAddMode(mode);
+    setAddOpen(true);
   }
 
-  function removeFile(path: string) {
+  function handleAddConfirm({ parentPrefix, name }: { parentPrefix: string; name: string }) {
+    if (addMode === "folder") {
+      const full = joinPath(parentPrefix, name);
+      if (folderPathTaken(full, files, virtualFolderPrefixes)) {
+        toast.error("该目录已存在或已有文件占用");
+        return false;
+      }
+      setVirtualFolderPrefixes((prev) =>
+        [...new Set([...prev, full])].sort((a, b) => a.localeCompare(b)),
+      );
+      toast.success(`已添加空目录 ${full}`);
+      return;
+    }
+
+    const fullPath = joinPath(parentPrefix, name);
+    if (files.some((f) => f.path === fullPath)) {
+      toast.error("该路径已存在");
+      return false;
+    }
+    const fileName = name.split("/").pop() || name;
+    setFiles((prev) =>
+      [...prev, { name: fileName, path: fullPath, content: "" }].sort((a, b) =>
+        a.path.localeCompare(b.path),
+      ),
+    );
+    setVirtualFolderPrefixes((prev) => pruneVirtualWhenFileAdded(prev, fullPath));
+    setActivePath(fullPath);
+    toast.success(`已创建 ${fullPath}`);
+  }
+
+  function removeVirtualFolder(prefix: string) {
+    setVirtualFolderPrefixes((prev) => prev.filter((p) => p !== prefix));
+    toast.message(`已移除空目录 ${prefix}`);
+  }
+
+  function confirmRemoveFile(path: string) {
     if (files.length <= 1) {
       toast.error("至少保留一个文件");
       return;
     }
-    if (!window.confirm(`删除 ${path}？`)) return;
+    setDeleteTarget(path);
+  }
+
+  function executeRemoveFile() {
+    const path = deleteTarget;
+    if (!path) return;
+    setDeleteTarget(null);
     setFiles((prev) => {
       const next = prev.filter((f) => f.path !== path);
       if (path === activePath) {
@@ -90,6 +184,7 @@ export function RuleWorkspace({
       }
       return next;
     });
+    toast.message(`已删除 ${path}`);
   }
 
   async function saveVersion() {
@@ -115,6 +210,7 @@ export function RuleWorkspace({
     setSaving(false);
     if (res.code === 0 && res.data) {
       toast.success("已保存新版本 🦞");
+      setVirtualFolderPrefixes([]);
       router.push(rulePath(slug));
       router.refresh();
     } else {
@@ -145,50 +241,59 @@ export function RuleWorkspace({
         </p>
       </header>
 
-      <div className="grid min-h-0 grid-cols-1 gap-3 lg:min-h-[min(72vh,620px)] lg:grid-cols-[minmax(0,220px)_1fr]">
-        <aside className="flex max-h-36 flex-col border-4 border-[var(--rule-border)] bg-[#fffef8] lg:max-h-[min(72vh,620px)]">
-          <div className="flex items-center justify-between border-b-2 border-[var(--rule-border)] px-2 py-2">
+      <div className="grid min-h-0 grid-cols-1 gap-3 lg:min-h-[min(72vh,620px)] lg:grid-cols-[minmax(0,260px)_1fr]">
+        <aside className="flex max-h-56 flex-col border-4 border-[var(--rule-border)] bg-[#fffef8] lg:max-h-[min(72vh,620px)]">
+          <div className="flex items-center justify-between gap-1 border-b-2 border-[var(--rule-border)] px-2 py-2">
             <span className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
               文件
             </span>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="h-7 border-2 border-[var(--rule-border)] text-xs"
-              onClick={addFile}
-            >
-              +
-            </Button>
-          </div>
-          <ul className="flex min-h-0 flex-1 flex-row gap-1 overflow-x-auto overflow-y-hidden p-2 font-[family-name:var(--font-pixel-body)] text-xs lg:flex-col lg:overflow-y-auto lg:overflow-x-visible">
-            {files.map((f) => (
-              <li
-                key={f.path}
-                className="flex min-w-0 max-w-[11rem] shrink-0 items-center gap-1 rounded border-2 border-transparent py-0.5 lg:max-w-none lg:w-full"
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                type="button"
+                className="inline-flex h-7 items-center rounded-md border-2 border-[var(--rule-border)] bg-[#fffef8] px-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:bg-[var(--pixel-cyan)]/20"
               >
-                <button
-                  type="button"
-                  onClick={() => setActivePath(f.path)}
-                  className={cn(
-                    "min-w-0 flex-1 truncate rounded px-1 text-left hover:bg-[var(--pixel-cyan)]/25",
-                    activePath === f.path &&
-                      "bg-[var(--pixel-yellow)]/40 font-medium text-[var(--pixel-fg)]",
-                  )}
+                新增
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="border-2 border-[var(--rule-border)] bg-[#fffef8]"
+              >
+                <DropdownMenuItem
+                  className="font-[family-name:var(--font-pixel-body)] text-xs"
+                  onClick={() => openAdd("file")}
                 >
-                  {f.path}
-                </button>
-                <button
-                  type="button"
-                  className="shrink-0 text-[var(--pixel-muted)] hover:text-[var(--rule-accent)]"
-                  aria-label={`删除 ${f.path}`}
-                  onClick={() => removeFile(f.path)}
+                  新建文件…
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="font-[family-name:var(--font-pixel-body)] text-xs"
+                  onClick={() => openAdd("folder")}
                 >
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
+                  新建文件夹…
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <FilePathTreeView
+            nodes={treeNodes}
+            selectedPath={activePath}
+            onSelectFile={(path) => setActivePath(path)}
+            onRemoveVirtualFolder={removeVirtualFolder}
+            renderFileActions={(node) => (
+              <button
+                type="button"
+                className="shrink-0 text-[var(--pixel-muted)] hover:text-[var(--rule-accent)]"
+                aria-label={`删除 ${node.fullPath}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  confirmRemoveFile(node.fullPath);
+                }}
+              >
+                ×
+              </button>
+            )}
+            theme="rule"
+            className="flex min-h-0 flex-1 flex-col"
+          />
         </aside>
 
         <div
@@ -214,6 +319,51 @@ export function RuleWorkspace({
         </div>
       </div>
 
+      <AddPathDialog
+        open={addOpen}
+        onOpenChange={setAddOpen}
+        mode={addMode}
+        parentOptions={parentOptionsForDialog}
+        preferredParentPrefix={preferredParentForAddDialog}
+        onConfirm={handleAddConfirm}
+      />
+
+      <Dialog open={deleteTarget != null} onOpenChange={(o) => !o && setDeleteTarget(null)}>
+        <DialogContent
+          className="max-w-sm border-4 border-[var(--rule-border)] bg-[#fffef8]"
+          showCloseButton
+        >
+          <DialogHeader>
+            <DialogTitle className="font-[family-name:var(--font-pixel-heading)] text-[var(--pixel-fg)]">
+              删除文件
+            </DialogTitle>
+          </DialogHeader>
+          <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+            确定删除{" "}
+            <span className="break-all font-mono text-[var(--pixel-fg)]">{deleteTarget}</span>？
+          </p>
+          <DialogFooter className="border-t-0">
+            <PixelButton
+              type="button"
+              variant="outline"
+              size="md"
+              className="border-[var(--rule-border)] shadow-[3px_3px_0_0_var(--rule-shadow)]"
+              onClick={() => setDeleteTarget(null)}
+            >
+              取消
+            </PixelButton>
+            <PixelButton
+              type="button"
+              variant="rule"
+              size="md"
+              onClick={executeRemoveFile}
+            >
+              删除
+            </PixelButton>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <div className="space-y-3 border-t-4 border-[var(--rule-border)] pt-4">
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="space-y-2">
@@ -228,7 +378,10 @@ export function RuleWorkspace({
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="rule-ws-changelog" className="font-[family-name:var(--font-pixel-body)]">
+            <Label
+              htmlFor="rule-ws-changelog"
+              className="font-[family-name:var(--font-pixel-body)]"
+            >
               更新说明
             </Label>
             <PixelTextarea

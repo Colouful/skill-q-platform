@@ -18,6 +18,7 @@ import {
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
+import { MODERATION_STATUS } from "@/lib/moderation";
 import { rulePath } from "@/lib/slug-url";
 
 export function RuleUploadForm({ categories }: { categories: Category[] }) {
@@ -79,20 +80,31 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
     };
 
     try {
-      const res = await postJsonWithUploadProgress<{ rule: { slug: string }; agentLevelUp: unknown }>(
-        "/api/rules",
-        body,
-        (p) => setSubmitPct(p),
-      );
-      const slug = res.data?.rule?.slug;
-      if (res.code === 0 && slug) {
+      const res = await postJsonWithUploadProgress<{
+        rule: { slug: string; moderationStatus: string };
+        agentLevelUp: unknown;
+      }>("/api/rules", body, (p) => setSubmitPct(p));
+      const rule = res.data?.rule;
+      const slug = rule?.slug;
+      if (res.code === 0 && slug && rule) {
+        const pending = rule.moderationStatus === MODERATION_STATUS.PENDING;
         if (res.data?.agentLevelUp) {
           const u = res.data.agentLevelUp as { level: number; levelName: string };
-          toast.success(`Rule 创建成功 · 升至 Lv.${u.level} ${u.levelName} 🦞`);
+          toast.success(
+            pending
+              ? `已提交审核 · 升至 Lv.${u.level} ${u.levelName}，通过后将在列表展示 🦞`
+              : `Rule 创建成功 · 升至 Lv.${u.level} ${u.levelName} 🦞`,
+          );
         } else {
-          toast.success("Rule 创建成功 🦞");
+          toast.success(
+            pending ? "已提交，管理员审核通过后将公开展示 🦞" : "Rule 创建成功 🦞",
+          );
         }
-        router.push(rulePath(slug));
+        if (pending) {
+          router.push("/rules");
+        } else {
+          router.push(rulePath(slug));
+        }
       } else {
         toast.error(res.message || "创建失败");
       }
@@ -115,7 +127,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
       <UploadLoginGateBanner visible={!uploadGate.loading && uploadGate.blocked} />
 
       <div className="space-y-2">
-        <Label className="font-[family-name:var(--font-pixel-body)]">从 ZIP 导入（可选）</Label>
+        <Label className="font-[family-name:var(--font-pixel-body)]">从 Markdown 或 ZIP 导入（可选）</Label>
         <RuleZipDropzone
           onParsed={(p) => {
             setZipFiles(p.files);
@@ -136,7 +148,7 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
         {ruleMdPreview.trim().length > 0 && (
           <div className="space-y-1">
             <p className="font-[family-name:var(--font-pixel-body)] text-xs font-medium text-[var(--rule-accent)]">
-              RULE.md 正文预览
+              Markdown 正文预览
             </p>
             <div className="max-h-56 overflow-y-auto border-2 border-[var(--rule-border)] bg-[#fffef8] p-3 text-left text-sm text-[var(--pixel-fg)] [&_a]:text-[var(--rule-accent)] [&_code]:rounded [&_code]:bg-black/5 [&_pre]:overflow-x-auto">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{ruleMdPreview}</ReactMarkdown>

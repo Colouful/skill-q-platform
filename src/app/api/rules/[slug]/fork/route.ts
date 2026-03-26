@@ -5,6 +5,7 @@ import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
 import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { isPublishedModeration, MODERATION_STATUS } from "@/lib/moderation";
 import { slugFromName } from "@/lib/skill-slug";
+import { getResourceUploadRequiresModeration } from "@/lib/system-config";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,11 @@ export async function POST(
       downloads: 0,
     }));
 
+    const requiresModeration = await getResourceUploadRequiresModeration();
+    const initialModeration = requiresModeration
+      ? MODERATION_STATUS.PENDING
+      : MODERATION_STATUS.PUBLISHED;
+
     const rule = await prisma.rule.create({
       data: {
         name: baseName,
@@ -78,7 +84,7 @@ export async function POST(
         forkedFromRuleId: source.id,
         authorAgentId: auth.agent?.id ?? undefined,
         downloadPolicy: source.downloadPolicy,
-        moderationStatus: MODERATION_STATUS.PENDING,
+        moderationStatus: initialModeration,
         downloads: 0,
         rating: 0,
         reviewCount: 0,

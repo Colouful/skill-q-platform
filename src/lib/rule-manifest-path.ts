@@ -11,3 +11,18 @@ export function normalizeZipEntryPath(relPath: string): string {
 export function isRuleManifestPath(normalizedPath: string): boolean {
   return /(^|\/)rule\.md(\.txt)?$/i.test(normalizedPath);
 }
+
+const MD_BASENAME = /\.md$/i;
+
+/** 路径末段是否为 .md（任意名称，如 coding-style.md） */
+export function isMarkdownFilenamePath(normalizedPath: string): boolean {
+  const seg = normalizeZipEntryPath(normalizedPath).split("/").pop() || "";
+  return MD_BASENAME.test(seg);
+}
+
+/**
+ * 可作为 Rule 主说明的 Markdown 路径：约定名 RULE.md / RULE.md.txt，或任意 *.md。
+ */
+export function isRulePrimaryMarkdownPath(normalizedPath: string): boolean {
+  return isRuleManifestPath(normalizedPath) || isMarkdownFilenamePath(normalizedPath);
+}

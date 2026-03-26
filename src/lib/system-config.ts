@@ -18,6 +18,7 @@ function defaultMap(): Record<string, string> {
     [SYSTEM_CONFIG_KEYS.REGISTER_MAX_PER_HOUR]: "10",
     [SYSTEM_CONFIG_KEYS.MAINTENANCE_MODE]: "false",
     [SYSTEM_CONFIG_KEYS.UPLOAD_REQUIRES_LOGIN]: "false",
+    [SYSTEM_CONFIG_KEYS.RESOURCE_UPLOAD_REQUIRES_MODERATION]: "true",
   };
 }
 
@@ -88,4 +89,12 @@ export async function getUploadRequiresLogin(): Promise<boolean> {
   const map = await getSystemConfigMap();
   const raw = map[SYSTEM_CONFIG_KEYS.UPLOAD_REQUIRES_LOGIN]?.toLowerCase().trim();
   return raw === "true" || raw === "1" || raw === "yes";
+}
+
+export async function getResourceUploadRequiresModeration(): Promise<boolean> {
+  const map = await getSystemConfigMap();
+  const raw =
+    map[SYSTEM_CONFIG_KEYS.RESOURCE_UPLOAD_REQUIRES_MODERATION]?.toLowerCase().trim();
+  if (raw === "false" || raw === "0" || raw === "no") return false;
+  return true;
 }

@@ -19,6 +19,8 @@ export async function GET(req: Request) {
       registerMaxPerHour: map[SYSTEM_CONFIG_KEYS.REGISTER_MAX_PER_HOUR],
       maintenanceMode: map[SYSTEM_CONFIG_KEYS.MAINTENANCE_MODE],
       uploadRequiresLogin: map[SYSTEM_CONFIG_KEYS.UPLOAD_REQUIRES_LOGIN],
+      resourceUploadRequiresModeration:
+        map[SYSTEM_CONFIG_KEYS.RESOURCE_UPLOAD_REQUIRES_MODERATION],
     });
   } catch (e) {
     return toApiResponse(e);

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SkillVersionDownloadButton } from "@/components/skills/skill-version-download-button";
 import { SkillVersionZipButton } from "@/components/skills/skill-version-zip-button";
+import { SkillVersionFileExplorer } from "@/components/skills/skill-version-file-explorer";
 
 export const dynamic = "force-dynamic";
 
@@ -103,19 +104,7 @@ export default async function SkillVersionDetailPage({
             暂无文件条目（可在外链下载或后续补充）
           </p>
         ) : (
-          <ul className="mt-2 space-y-2 border-2 border-[var(--pixel-border)] bg-[#fffef8] p-3 font-[family-name:var(--font-pixel-body)] text-xs sm:text-sm">
-            {fileEntries.map((f, i) => (
-              <li key={`${f.path}-${i}`} className="border-b border-[var(--pixel-border)]/40 pb-2 last:border-0 last:pb-0">
-                <span className="text-[var(--pixel-fg)]">{f.name}</span>
-                <span className="text-[var(--pixel-muted)]"> — {f.path}</span>
-                {f.content !== undefined && (
-                  <pre className="mt-1 max-h-40 overflow-auto whitespace-pre-wrap font-[family-name:var(--font-mono)] text-[10px] text-[var(--pixel-muted)]">
-                    {f.content}
-                  </pre>
-                )}
-              </li>
-            ))}
-          </ul>
+          <SkillVersionFileExplorer files={fileEntries} />
         )}
       </section>
     </article>

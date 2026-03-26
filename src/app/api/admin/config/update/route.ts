@@ -59,6 +59,13 @@ function validateValue(
       }
       return { ok: true, value: low === "true" || v === "1" ? "true" : "false" };
     }
+    case SYSTEM_CONFIG_KEYS.RESOURCE_UPLOAD_REQUIRES_MODERATION: {
+      const low = v.toLowerCase();
+      if (!["true", "false", "0", "1"].includes(low)) {
+        return { ok: false, message: "上传需人工审核须为 true / false" };
+      }
+      return { ok: true, value: low === "true" || v === "1" ? "true" : "false" };
+    }
     default:
       return { ok: false, message: "不支持的配置项" };
   }

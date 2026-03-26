@@ -1,5 +1,10 @@
 import JSZip from "jszip";
-import { isRuleManifestPath, normalizeZipEntryPath } from "@/lib/rule-manifest-path";
+import {
+  isMarkdownFilenamePath,
+  isRuleManifestPath,
+  isRulePrimaryMarkdownPath,
+  normalizeZipEntryPath,
+} from "@/lib/rule-manifest-path";
 import { metaToRuleHints, parseSkillMd } from "@/lib/skill-md-parse";
 import { scanSkillZipForRiskPatterns } from "@/lib/skill-zip-security-scan";
 
@@ -19,7 +24,63 @@ export type RuleZipImportResult = {
   issues: string[];
 };
 
-/** 解压 Rule ZIP、校验路径与大小、解析 RULE.md（frontmatter 同 SKILL.md） */
+function pickRuleMarkdownSource(files: ZipImportFile[], issues: string[]): ZipImportFile | null {
+  const byManifest = files.find((f) => isRuleManifestPath(f.path));
+  if (byManifest) return byManifest;
+
+  const mdOnly = files.filter((f) => isMarkdownFilenamePath(f.path));
+  if (mdOnly.length === 1) {
+    issues.push(`已使用唯一 Markdown 文件「${mdOnly[0]!.path}」作为规则说明`);
+    return mdOnly[0]!;
+  }
+  if (mdOnly.length > 1) {
+    issues.push(
+      "ZIP 内存在多个 .md 文件，请只保留一个主说明，或将其命名为 RULE.md / rule.md 以明确入口",
+    );
+    return null;
+  }
+  return null;
+}
+
+function finalizeRuleImportFromMarkdown(
+  ruleFile: ZipImportFile,
+  allFiles: ZipImportFile[],
+  issues: string[],
+): RuleZipImportResult {
+  const p = parseSkillMd(ruleFile.content);
+  const hints = metaToRuleHints(p.meta);
+  return {
+    files: allFiles,
+    ruleMdPath: ruleFile.path,
+    meta: p.meta,
+    body: p.body,
+    hints,
+    issues,
+  };
+}
+
+/** 单文件 .md 上传（任意文件名，frontmatter 同 SKILL.md） */
+export function importRuleMarkdownFile(buffer: ArrayBuffer, originalFileName: string): RuleZipImportResult {
+  const issues: string[] = [];
+  if (buffer.byteLength > MAX_SINGLE_FILE) {
+    throw new Error(`Markdown 超过 ${MAX_SINGLE_FILE / 1024 / 1024}MB 限制`);
+  }
+  const baseName = originalFileName.replace(/\\/g, "/").split("/").pop() || originalFileName;
+  if (!/\.md$/i.test(baseName)) {
+    throw new Error("请上传扩展名为 .md 的 Markdown 文件");
+  }
+  const normalized = normalizeZipEntryPath(baseName);
+  const text = new TextDecoder("utf-8", { fatal: false }).decode(new Uint8Array(buffer));
+  const files: ZipImportFile[] = [{ name: baseName, path: normalized, content: text }];
+
+  for (const msg of scanSkillZipForRiskPatterns(files)) {
+    issues.push(`安全提示: ${msg}`);
+  }
+
+  return finalizeRuleImportFromMarkdown(files[0]!, files, issues);
+}
+
+/** 解压 Rule ZIP、校验路径与大小；主说明为 RULE.md，或 ZIP 内唯一的 .md 文件（frontmatter 同 SKILL.md） */
 export async function importRuleZip(buffer: ArrayBuffer): Promise<RuleZipImportResult> {
   if (buffer.byteLength > MAX_ZIP_BYTES) {
     throw new Error(`ZIP 超过 ${MAX_ZIP_BYTES / 1024 / 1024}MB 限制`);
@@ -51,9 +112,9 @@ export async function importRuleZip(buffer: ArrayBuffer): Promise<RuleZipImportR
     const entry = zip.files[relPath];
     const buf = await entry.async("uint8array");
     if (buf.length > MAX_SINGLE_FILE) {
-      if (isRuleManifestPath(normalized)) {
+      if (isRulePrimaryMarkdownPath(normalized)) {
         issues.push(
-          `检测到 RULE 主说明文件但超过 ${MAX_SINGLE_FILE / 1024 / 1024}MB 限制已跳过：${normalized}（请压缩正文或拆分附件）`,
+          `检测到 Rule 主 Markdown 但超过 ${MAX_SINGLE_FILE / 1024 / 1024}MB 限制已跳过：${normalized}（请压缩正文或拆分附件）`,
         );
       } else {
         issues.push(`已跳过大文件: ${relPath}`);
@@ -80,30 +141,25 @@ export async function importRuleZip(buffer: ArrayBuffer): Promise<RuleZipImportR
     issues.push(`安全提示: ${msg}`);
   }
 
-  const ruleFile = files.find((f) => isRuleManifestPath(f.path));
-  let meta: Record<string, string> = {};
-  let body = "";
-  if (ruleFile) {
-    const p = parseSkillMd(ruleFile.content);
-    meta = p.meta;
-    body = p.body;
-  } else {
-    const hint = issues.some((m) => m.includes("RULE 主说明文件但超过"))
-      ? "（若上方提示主文件超大，请先缩小 RULE.md 再打包）"
+  const ruleFile = pickRuleMarkdownSource(files, issues);
+  if (!ruleFile) {
+    const hint = issues.some((m) => m.includes("主 Markdown 但超过"))
+      ? "（若上方提示主文件超大，请先缩小正文再上传）"
       : "";
-    issues.push(
-      `未找到 RULE.md（或 RULE.md.txt）。请保证 ZIP 内存在名为 rule.md / RULE.md 的文件，可在任意子目录；需与 SKILL 包区分故约定此文件名。${hint}`,
-    );
+    if (!issues.some((m) => m.includes("多个 .md"))) {
+      issues.push(
+        `未找到可用的 Rule 说明：请放入至少一个 .md 文件，或将主文件命名为 RULE.md / rule.md（可在子目录）。${hint}`,
+      );
+    }
+    return {
+      files,
+      ruleMdPath: null,
+      meta: {},
+      body: "",
+      hints: {},
+      issues,
+    };
   }
 
-  const hints = metaToRuleHints(meta);
-
-  return {
-    files,
-    ruleMdPath: ruleFile?.path ?? null,
-    meta,
-    body,
-    hints,
-    issues,
-  };
+  return finalizeRuleImportFromMarkdown(ruleFile, files, issues);
 }

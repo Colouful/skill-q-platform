@@ -6,18 +6,75 @@ import { cn } from "@/lib/utils";
 import { encodeHubActorForRequestHeader, getHubActorFromStorage } from "@/lib/hub-actor-client";
 import type { ZipParsePayload } from "@/components/skills/skill-zip-dropzone";
 
-/** Rule 包：解析 RULE.md，POST /api/upload 时带 kind=rule；支持 ZIP 上传进度 */
+type UploadJson = {
+  code: number;
+  message?: string;
+  data?: {
+    files: { name: string; path: string; content: string }[];
+    hints: { name?: string; description?: string };
+    body: string;
+    issues: string[];
+    objectStorage?: ZipParsePayload["objectStorage"];
+  };
+};
+
+function applyParsed(json: UploadJson, onParsed: (p: ZipParsePayload) => void) {
+  if (!json.data) return;
+  const d = json.data;
+  onParsed({
+    files: d.files,
+    hints: d.hints ?? {},
+    body: d.body ?? "",
+    issues: d.issues ?? [],
+    objectStorage: d.objectStorage,
+  });
+}
+
+/** Rule：单文件 .md（推荐）或 ZIP；POST /api/upload kind=rule */
 export function RuleZipDropzone({
   onParsed,
 }: {
   onParsed: (p: ZipParsePayload) => void;
 }) {
-  const id = useId();
+  const mdId = useId();
+  const zipId = useId();
   const [drag, setDrag] = useState(false);
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<number | null>(null);
 
-  const parseFile = useCallback(
+  const parseMarkdownFile = useCallback(
+    async (file: File) => {
+      if (!file.name.toLowerCase().endsWith(".md")) {
+        toast.error("请上传 .md 文件");
+        return;
+      }
+      setBusy(true);
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("kind", "rule");
+      const headers = new Headers();
+      const actor = getHubActorFromStorage();
+      if (actor) headers.set("X-Hub-Actor", encodeHubActorForRequestHeader(actor));
+      let json: UploadJson;
+      try {
+        const res = await fetch("/api/upload", { method: "POST", body: fd, headers });
+        json = (await res.json()) as UploadJson;
+        if (!res.ok || json.code !== 0 || !json.data) {
+          toast.error(json.message || "解析失败");
+          return;
+        }
+        applyParsed(json, onParsed);
+        toast.success("Markdown 解析完成 🦞");
+      } catch {
+        toast.error("上传失败");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [onParsed],
+  );
+
+  const parseZipFile = useCallback(
     (file: File) => {
       if (!file.name.toLowerCase().endsWith(".zip")) {
         toast.error("请上传 .zip 格式的 Rule 包");
@@ -41,19 +98,9 @@ export function RuleZipDropzone({
       xhr.onload = () => {
         setBusy(false);
         setProgress(null);
-        let json: {
-          code: number;
-          message?: string;
-          data?: {
-            files: { name: string; path: string; content: string }[];
-            hints: { name?: string; description?: string };
-            body: string;
-            issues: string[];
-            objectStorage?: ZipParsePayload["objectStorage"];
-          };
-        };
+        let json: UploadJson;
         try {
-          json = JSON.parse(xhr.responseText) as typeof json;
+          json = JSON.parse(xhr.responseText) as UploadJson;
         } catch {
           toast.error("解析响应失败");
           return;
@@ -62,15 +109,8 @@ export function RuleZipDropzone({
           toast.error(json.message || "解析失败");
           return;
         }
-        const d = json.data;
-        onParsed({
-          files: d.files,
-          hints: d.hints ?? {},
-          body: d.body ?? "",
-          issues: d.issues ?? [],
-          objectStorage: d.objectStorage,
-        });
-        const os = d.objectStorage;
+        applyParsed(json, onParsed);
+        const os = json.data.objectStorage;
         if (os?.stored) {
           toast.success("ZIP 解析完成，已写入对象存储 🦞");
         } else {
@@ -90,6 +130,16 @@ export function RuleZipDropzone({
     [onParsed],
   );
 
+  const routeFile = useCallback(
+    (file: File) => {
+      const n = file.name.toLowerCase();
+      if (n.endsWith(".md")) void parseMarkdownFile(file);
+      else if (n.endsWith(".zip")) parseZipFile(file);
+      else toast.error("请上传 .md 或 .zip");
+    },
+    [parseMarkdownFile, parseZipFile],
+  );
+
   return (
     <div
       onDragOver={(e) => {
@@ -101,24 +151,36 @@ export function RuleZipDropzone({
         e.preventDefault();
         setDrag(false);
         const f = e.dataTransfer.files?.[0];
-        if (f) parseFile(f);
+        if (f) routeFile(f);
       }}
     >
       <input
-        id={id}
+        id={mdId}
+        type="file"
+        accept=".md,text/markdown"
+        className="sr-only"
+        disabled={busy}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) void parseMarkdownFile(f);
+          e.target.value = "";
+        }}
+      />
+      <input
+        id={zipId}
         type="file"
         accept=".zip,application/zip"
         className="sr-only"
         disabled={busy}
         onChange={(e) => {
           const f = e.target.files?.[0];
-          if (f) parseFile(f);
+          if (f) parseZipFile(f);
+          e.target.value = "";
         }}
       />
-      <label
-        htmlFor={id}
+      <div
         className={cn(
-          "flex cursor-pointer flex-col items-center justify-center gap-2 border-4 border-dashed px-4 py-8 text-center font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)] transition",
+          "flex flex-col items-center justify-center gap-3 border-4 border-dashed px-4 py-8 text-center font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)] transition",
           drag
             ? "border-[var(--rule-accent)] bg-[var(--pixel-cyan)]/15 text-[var(--pixel-fg)]"
             : "border-[var(--rule-border)] bg-[#fffef8] hover:border-[var(--rule-accent)]/60",
@@ -126,9 +188,33 @@ export function RuleZipDropzone({
         )}
       >
         <span className="text-[var(--pixel-fg)]">
-          {busy ? `上传中…${progress != null ? ` ${progress}%` : ""}` : "拖拽 Rule ZIP 到此处，或点击选择"}
+          {busy
+            ? progress != null
+              ? `上传中… ${progress}%`
+              : "处理中…"
+            : "拖拽 .md 或 ZIP 到此处，或点击下方选择"}
         </span>
-        <span className="text-xs">需包含 RULE.md；单包 ≤10MB</span>
+        <span className="text-xs">
+          推荐直接上传 Markdown（任意文件名）；ZIP 内需有 .md 主说明，多文件时请用 RULE.md 标明入口；单文件 ≤2MB，ZIP ≤10MB
+        </span>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            disabled={busy}
+            className="border-2 border-[var(--rule-border)] bg-[var(--pixel-cyan)]/30 px-3 py-1.5 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-105"
+            onClick={() => document.getElementById(mdId)?.click()}
+          >
+            选择 Markdown
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            className="border-2 border-[var(--rule-border)] bg-[var(--pixel-yellow)]/40 px-3 py-1.5 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-fg)] hover:brightness-105"
+            onClick={() => document.getElementById(zipId)?.click()}
+          >
+            选择 ZIP
+          </button>
+        </div>
         {busy && progress != null && (
           <div
             className="h-2 w-full max-w-xs overflow-hidden border-2 border-[var(--rule-border)] bg-[#fffef8]"
@@ -143,7 +229,7 @@ export function RuleZipDropzone({
             />
           </div>
         )}
-      </label>
+      </div>
     </div>
   );
 }
