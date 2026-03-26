@@ -11,6 +11,7 @@ import { slugFromName } from "@/lib/skill-slug";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { getDefaultDownloadPolicy, getResourceUploadRequiresModeration } from "@/lib/system-config";
 import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
+import { PRISMA_TX_LARGE_WRITE } from "@/lib/prisma-transaction-options";
 import { z } from "zod";
 
 export const dynamic = "force-dynamic";
@@ -133,42 +134,43 @@ export async function POST(req: Request) {
       : MODERATION_STATUS.PUBLISHED;
 
     let agentLevelUp: { level: number; levelName: string } | null = null;
-    const rule = await prisma.$transaction(async (tx) => {
-      const r = await tx.rule.create({
-        data: {
-          name: b.name.trim(),
-          slug,
-          description: b.description,
-          longDescription: b.longDescription?.trim() || null,
-          author: b.author.trim(),
-          categoryId: category.id,
-          tags: tagsJson,
-          downloadPolicy: b.downloadPolicy ?? defaultPolicy,
-          moderationStatus: initialModeration,
-          authorAgentId: auth.agent?.id ?? undefined,
-          versions: {
-            create: {
-              version: "1.0.0",
-              changelog: initialFiles.length ? "从 Markdown 或 ZIP 导入的初始版本" : "初始版本",
-              files: initialFiles,
-              isLatest: true,
+    const rule = await prisma.$transaction(
+      async (tx) => {
+        const r = await tx.rule.create({
+          data: {
+            name: b.name.trim(),
+            slug,
+            description: b.description,
+            longDescription: b.longDescription?.trim() || null,
+            author: b.author.trim(),
+            categoryId: category.id,
+            tags: tagsJson,
+            downloadPolicy: b.downloadPolicy ?? defaultPolicy,
+            moderationStatus: initialModeration,
+            authorAgentId: auth.agent?.id ?? undefined,
+            versions: {
+              create: {
+                version: "1.0.0",
+                changelog: initialFiles.length ? "从 Markdown 或 ZIP 导入的初始版本" : "初始版本",
+                files: initialFiles,
+                isLatest: true,
+              },
             },
           },
-        },
-        include: { category: true, versions: true },
-      });
-      if (auth.agent) {
-        await tx.agent.update({
-          where: { id: auth.agent.id },
-          data: { uploadsCount: { increment: 1 } },
+          include: { category: true, versions: true },
         });
-        const xp = await applyExperienceDelta(tx, auth.agent.id, XP_UPLOAD_RESOURCE);
-        if (xp?.leveledUp) {
-          agentLevelUp = { level: xp.level, levelName: xp.levelName };
+        if (auth.agent) {
+          const xp = await applyExperienceDelta(tx, auth.agent.id, XP_UPLOAD_RESOURCE, {
+            incrementUploads: true,
+          });
+          if (xp?.leveledUp) {
+            agentLevelUp = { level: xp.level, levelName: xp.levelName };
+          }
         }
-      }
-      return r;
-    });
+        return r;
+      },
+      PRISMA_TX_LARGE_WRITE,
+    );
 
     return jsonOk({ rule, agentLevelUp }, "创建成功", { headers: rateLimitResponseHeaders(rl) });
   } catch (e) {

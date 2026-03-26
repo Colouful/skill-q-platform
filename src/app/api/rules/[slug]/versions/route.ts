@@ -4,6 +4,7 @@ import { toApiResponse } from "@/lib/api-errors";
 import { assertSkillRuleWriteAccess } from "@/lib/skill-rule-write-access";
 import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { z } from "zod";
+import { PRISMA_TX_LARGE_WRITE } from "@/lib/prisma-transaction-options";
 
 export const dynamic = "force-dynamic";
 
@@ -87,25 +88,28 @@ export async function POST(
 
     const wantLatest = b.isLatest !== false;
 
-    const created = await prisma.$transaction(async (tx) => {
-      if (wantLatest) {
-        await tx.ruleVersion.updateMany({
-          where: { ruleId: rule.id },
-          data: { isLatest: false },
-        });
-      }
+    const created = await prisma.$transaction(
+      async (tx) => {
+        if (wantLatest) {
+          await tx.ruleVersion.updateMany({
+            where: { ruleId: rule.id },
+            data: { isLatest: false },
+          });
+        }
 
-      return tx.ruleVersion.create({
-        data: {
-          ruleId: rule.id,
-          version: ver,
-          changelog: b.changelog?.trim() || null,
-          files: b.files,
-          downloadUrl: b.downloadUrl?.trim() || null,
-          isLatest: wantLatest,
-        },
-      });
-    });
+        return tx.ruleVersion.create({
+          data: {
+            ruleId: rule.id,
+            version: ver,
+            changelog: b.changelog?.trim() || null,
+            files: b.files,
+            downloadUrl: b.downloadUrl?.trim() || null,
+            isLatest: wantLatest,
+          },
+        });
+      },
+      PRISMA_TX_LARGE_WRITE,
+    );
 
     return jsonOk(created, "版本已创建");
   } catch (e) {

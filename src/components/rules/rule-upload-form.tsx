@@ -20,6 +20,7 @@ import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { rulePath } from "@/lib/slug-url";
+import { takeHeadingAndFirstParagraph } from "@/lib/first-paragraph";
 
 export function RuleUploadForm({ categories }: { categories: Category[] }) {
   const router = useRouter();
@@ -134,7 +135,10 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
             setRuleMdPreview(p.body || "");
             if (p.hints.name) setName((n) => n || p.hints.name!);
             if (p.hints.description) setDescription((d) => d || p.hints.description!);
-            if (p.body) setLongDescription((l) => l || p.body);
+            if (p.body) {
+              const excerpt = takeHeadingAndFirstParagraph(p.body);
+              if (excerpt) setLongDescription((l) => l || excerpt);
+            }
             if (p.issues.length) {
               toast.message(p.issues.join("；"), { duration: 6000 });
             }

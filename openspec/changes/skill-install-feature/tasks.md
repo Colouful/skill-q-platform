@@ -1,5 +1,7 @@
 # Tasks: Skill 便捷安装功能
 
+> **实现记录（仓库已落地）**：Phase 1–4 已按本文实现；OpenSpec 若未识别勾选任务，以代码与本文「实现记录」为准。
+
 ## Phase 1: 基础设施
 
 ### Task 1.1: 创建环境变量配置
@@ -191,6 +193,21 @@
 - **Phase 3**: 6 小时（集成与测试）
 - **Phase 4**: 4 小时（优化与文档）
 - **总计**: 约 22 小时（约 11 个任务单元，每单元 2 小时）
+
+## 实现记录（已完成）
+
+- [x] 1.1 `.env.example`、`docs/deploy-checklist.md` 已补充 `SKILLHUB_*`
+- [x] 1.2 `GET /api/skills/[slug]/install-info` + `src/lib/skill-install-info.ts`
+- [x] 1.3 `src/lib/install-types.ts`
+- [x] 2.1–2.4 `src/components/skills/install/*`
+- [x] 3.1 Skill 详情页集成（仅已上架展示）
+- [x] 3.2 骨架屏 `skill-install-skeleton`
+- [x] 3.3 Vitest：`skill-install-info`、`install-info` API、`skill-install-section`
+- [x] 3.4 E2E：`e2e/skill-install.spec.ts`（无种子时 skip）
+- [x] 4.1 错误 + 重试
+- [x] 4.2 代码块 `overflow-x-auto`、复制按钮绝对定位
+- [x] 4.3 `docs/user-guide.md`
+- [x] 4.4 `docs/api.md`
 
 ## Notes
 

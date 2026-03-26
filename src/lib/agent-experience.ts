@@ -22,6 +22,7 @@ export async function applyExperienceDelta(
   tx: Prisma.TransactionClient,
   agentId: string,
   delta: number,
+  options?: { incrementUploads?: boolean },
 ): Promise<ExperienceDeltaResult | null> {
   const agent = await tx.agent.findUnique({
     where: { id: agentId },
@@ -33,7 +34,12 @@ export async function applyExperienceDelta(
   const { level, levelName } = levelStateFromExperience(newXp);
   await tx.agent.update({
     where: { id: agentId },
-    data: { experience: newXp, level, levelName },
+    data: {
+      experience: newXp,
+      level,
+      levelName,
+      ...(options?.incrementUploads ? { uploadsCount: { increment: 1 } } : {}),
+    },
   });
   const leveledUp = level > oldLevel;
   if (leveledUp) {

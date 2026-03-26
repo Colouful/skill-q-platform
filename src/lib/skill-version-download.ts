@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { PRISMA_TX_LARGE_WRITE } from "@/lib/prisma-transaction-options";
 import {
   applyExperienceDelta,
   AUTHOR_DOWNLOADS_PER_XP_CHUNK,
@@ -91,7 +92,7 @@ export async function executeSkillVersionDownload(slug: string, versionLabel: st
     });
 
     return { version, skillDownloads: skillRow.downloads };
-  });
+  }, PRISMA_TX_LARGE_WRITE);
 
   if (skill.authorAgentId && result.version.downloads === 1) {
     const selfDownload = auth.agent?.id === skill.authorAgentId;

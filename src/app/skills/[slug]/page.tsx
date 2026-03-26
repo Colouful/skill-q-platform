@@ -12,7 +12,6 @@ import { SkillVersionsList } from "@/components/skills/skill-versions-list";
 import { SkillReviewsPanel } from "@/components/skills/reviews/skill-reviews-panel";
 import { DownloadPolicyBadge } from "@/components/hub/download-policy-badge";
 import { skillPath } from "@/lib/slug-url";
-
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
@@ -100,7 +99,7 @@ export default async function SkillDetailPage({
     : [];
 
   return (
-    <article className="mx-auto w-full max-w-4xl space-y-6 pb-8">
+    <article className="mx-auto w-full max-w-6xl px-4 pb-8 sm:px-5 xl:max-w-7xl">
       <SkillJsonLd
         name={skill.name}
         description={skill.description}
@@ -110,7 +109,7 @@ export default async function SkillDetailPage({
         rating={skill.rating}
         reviewCount={skill.reviewCount}
       />
-      <nav className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+      <nav className="mb-6 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
         <Link href="/skills" className="hover:text-[var(--pixel-fg)]">
           Skills
         </Link>
@@ -118,6 +117,7 @@ export default async function SkillDetailPage({
         <span className="text-[var(--pixel-fg)]">{skill.name}</span>
       </nav>
 
+      <div className="min-w-0 space-y-6">
       <header className="border-b-4 border-[var(--pixel-border)] pb-6">
         <p className="font-[family-name:var(--font-pixel-body)] text-[var(--pixel-accent)]">
           {skill.category.name}
@@ -179,6 +179,7 @@ export default async function SkillDetailPage({
         defaultForkAuthor={skill.author}
         canEdit={canEdit}
       />
+      </div>
     </article>
   );
 }

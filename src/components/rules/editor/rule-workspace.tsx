@@ -352,12 +352,7 @@ export function RuleWorkspace({
             >
               取消
             </PixelButton>
-            <PixelButton
-              type="button"
-              variant="rule"
-              size="md"
-              onClick={executeRemoveFile}
-            >
+            <PixelButton type="button" variant="rule" size="md" onClick={executeRemoveFile}>
               删除
             </PixelButton>
           </DialogFooter>

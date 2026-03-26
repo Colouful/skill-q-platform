@@ -17,6 +17,7 @@ import {
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
+import { takeHeadingAndFirstParagraph } from "@/lib/first-paragraph";
 
 /** 4.3 上传 Skill 表单（像素风格） + ZIP / 本地文件夹导入 */
 export function SkillUploadForm({ categories }: { categories: Category[] }) {
@@ -114,7 +115,10 @@ export function SkillUploadForm({ categories }: { categories: Category[] }) {
             setZipFiles(p.files);
             if (p.hints.name) setName((n) => n || p.hints.name!);
             if (p.hints.description) setDescription((d) => d || p.hints.description!);
-            if (p.body) setLongDescription((l) => l || p.body);
+            if (p.body) {
+              const excerpt = takeHeadingAndFirstParagraph(p.body);
+              if (excerpt) setLongDescription((l) => l || excerpt);
+            }
             if (p.issues.length) {
               toast.message(p.issues.join("；"), { duration: 6000 });
             }
