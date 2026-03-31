@@ -19,6 +19,8 @@
     "db:seed:agents": "npx tsx prisma/seed-agents.ts",
     "db:verify:seed-agents": "npx tsx prisma/verify-seed-agents.ts",
     "db:repair-agent-auth": "tsx scripts/repair-agent-auth-schema.ts",
+    "import:skills-local": "tsx scripts/import-local-skills.ts",
+    "import:rules-local": "tsx scripts/import-local-rules.ts",
     "postinstall": "npx prisma generate"
   },
   "dependencies": {
@@ -42,6 +44,7 @@
     "github-slugger": "^2.0.0",
     "highlight.js": "^11.11.1",
     "ioredis": "^5.10.1",
+    "js-yaml": "^4.1.1",
     "jszip": "^3.10.1",
     "lowlight": "^3.3.0",
     "lucide-react": "^0.577.0",
@@ -82,6 +85,8 @@
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^29.0.1",
     "prettier": "^3.8.1",
+    "stylelint": "^17.6.0",
+    "stylelint-config-standard": "^40.0.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5",

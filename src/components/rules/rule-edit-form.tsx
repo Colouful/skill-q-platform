@@ -11,33 +11,42 @@ import {
   DownloadPolicyRadios,
   type DownloadPolicyChoice,
 } from "@/components/hub/download-policy-radios";
+import { ProfileCheckboxGroup } from "@/components/hub/profile-checkbox-group";
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { normalizeDownloadPolicy } from "@/lib/download-policy";
+import { sanitizeCatalogSlug } from "@/lib/catalog-slug";
+import { readStoredSupportedProfiles } from "@/lib/profile-options";
 import type { Category, Rule } from "@/generated/prisma";
 
 export function RuleEditForm({
   rule,
   categories,
   expectedUpdatedAt,
+  successRedirectPath,
 }: {
   rule: Rule & { category: Category };
   categories: Category[];
   /** 乐观锁：须与当前 Rule.updatedAt 一致 */
   expectedUpdatedAt: string;
+  successRedirectPath?: string;
 }) {
+  const summaryTextareaClassName = "h-24 resize-none overflow-y-auto";
+  const detailTextareaClassName = "h-40 resize-none overflow-y-auto";
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [name, setName] = useState(rule.name);
+  const [slug, setSlug] = useState(rule.slug);
   const [description, setDescription] = useState(rule.description);
   const [author, setAuthor] = useState(rule.author);
   const [categorySlug, setCategorySlug] = useState(rule.category.slug);
   const [longDescription, setLongDescription] = useState(rule.longDescription ?? "");
   const [tags, setTags] = useState(
     Array.isArray(rule.tags)
-      ? (rule.tags as unknown[])
-          .filter((t): t is string => typeof t === "string")
-          .join(", ")
+      ? (rule.tags as unknown[]).filter((t): t is string => typeof t === "string").join(", ")
       : "",
+  );
+  const [supportedProfiles, setSupportedProfiles] = useState(
+    readStoredSupportedProfiles(rule.supportedProfiles).profiles,
   );
   const [downloadPolicy, setDownloadPolicy] = useState<DownloadPolicyChoice>(
     normalizeDownloadPolicy(rule.downloadPolicy),
@@ -54,11 +63,13 @@ export function RuleEditForm({
       method: "POST",
       body: JSON.stringify({
         name,
+        slug,
         description,
         author,
         categorySlug,
         longDescription: longDescription || null,
         tags: tagList,
+        supportedProfiles,
         downloadPolicy,
         expectedUpdatedAt,
       }),
@@ -66,7 +77,14 @@ export function RuleEditForm({
     setPending(false);
     if (res.code === 0) {
       toast.success("已保存");
-      router.push(rulePath(rule.slug));
+      const nextSlug =
+        res.data &&
+        typeof res.data === "object" &&
+        "slug" in res.data &&
+        typeof res.data.slug === "string"
+          ? res.data.slug
+          : rule.slug;
+      router.push(successRedirectPath ?? rulePath(nextSlug));
       router.refresh();
     } else {
       toast.error(res.message || "保存失败");
@@ -86,10 +104,20 @@ export function RuleEditForm({
         <PixelInput required value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">唯一标识（Slug）</Label>
+        <PixelInput
+          required
+          value={slug}
+          onChange={(e) => setSlug(sanitizeCatalogSlug(e.target.value))}
+          placeholder="rule-stock-analysis"
+        />
+      </div>
+      <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">简介</Label>
         <PixelTextarea
           required
           rows={3}
+          className={summaryTextareaClassName}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -113,6 +141,14 @@ export function RuleEditForm({
           ))}
         </select>
       </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">适用 Profile</Label>
+        <ProfileCheckboxGroup
+          value={supportedProfiles}
+          onChange={setSupportedProfiles}
+          disabled={pending}
+        />
+      </div>
       <DownloadPolicyRadios
         name="rule-edit-dp"
         value={downloadPolicy}
@@ -122,6 +158,7 @@ export function RuleEditForm({
         <Label className="font-[family-name:var(--font-pixel-body)]">详细说明</Label>
         <PixelTextarea
           rows={5}
+          className={detailTextareaClassName}
           value={longDescription}
           onChange={(e) => setLongDescription(e.target.value)}
         />

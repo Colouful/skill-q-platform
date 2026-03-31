@@ -15,23 +15,35 @@ import {
   DownloadPolicyRadios,
   type DownloadPolicyChoice,
 } from "@/components/hub/download-policy-radios";
+import { ProfileCheckboxGroup } from "@/components/hub/profile-checkbox-group";
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { UploadLoginGateBanner } from "@/components/hub/upload-login-gate-banner";
 import { useUploadLoginGate } from "@/components/hub/use-upload-login-gate";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { rulePath } from "@/lib/slug-url";
 import { takeHeadingAndFirstParagraph } from "@/lib/first-paragraph";
+import { sanitizeCatalogSlug } from "@/lib/catalog-slug";
 
-export function RuleUploadForm({ categories }: { categories: Category[] }) {
+export function RuleUploadForm({
+  categories,
+  adminMode = false,
+  successRedirectPath,
+}: {
+  categories: Category[];
+  adminMode?: boolean;
+  successRedirectPath?: string;
+}) {
   const router = useRouter();
-  const uploadGate = useUploadLoginGate();
+  const uploadGate = useUploadLoginGate({ disabled: adminMode });
   const [pending, setPending] = useState(false);
   const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
   const [author, setAuthor] = useState("");
   const [categorySlug, setCategorySlug] = useState(categories[0]?.slug ?? "");
   const [longDescription, setLongDescription] = useState("");
   const [tags, setTags] = useState("");
+  const [supportedProfiles, setSupportedProfiles] = useState<string[]>([]);
   const [zipFiles, setZipFiles] = useState<
     { name: string; path: string; content: string }[] | null
   >(null);
@@ -71,11 +83,13 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
     setSubmitPct(0);
     const body = {
       name,
+      slug: slug.trim() || undefined,
       description,
       author,
       categorySlug,
       longDescription: longDescription || undefined,
       tags: tagList.length ? tagList : undefined,
+      supportedProfiles,
       downloadPolicy,
       initialFiles: zipFiles && zipFiles.length > 0 ? zipFiles : undefined,
     };
@@ -93,15 +107,21 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
           const u = res.data.agentLevelUp as { level: number; levelName: string };
           toast.success(
             pending
-              ? `已提交审核 · 升至 Lv.${u.level} ${u.levelName}，通过后将在列表展示 🦞`
+              ? `${adminMode ? "已创建并进入待审" : "已提交审核"} · 升至 Lv.${u.level} ${u.levelName}，通过后将在列表展示 🦞`
               : `Rule 创建成功 · 升至 Lv.${u.level} ${u.levelName} 🦞`,
           );
         } else {
           toast.success(
-            pending ? "已提交，管理员审核通过后将公开展示 🦞" : "Rule 创建成功 🦞",
+            pending
+              ? adminMode
+                ? "创建成功，当前资源已进入待审列表 🦞"
+                : "已提交，管理员审核通过后将公开展示 🦞"
+              : "Rule 创建成功 🦞",
           );
         }
-        if (pending) {
+        if (successRedirectPath) {
+          router.push(successRedirectPath);
+        } else if (pending) {
           router.push("/rules");
         } else {
           router.push(rulePath(slug));
@@ -123,12 +143,14 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
       className="mx-auto max-w-xl space-y-4 border-4 border-[var(--pixel-border)] bg-[#fffef8] p-6 shadow-[6px_6px_0_0_var(--pixel-border)]"
     >
       <h1 className="font-[family-name:var(--font-pixel-heading)] text-lg text-[var(--pixel-fg)]">
-        上传 Rule
+        {adminMode ? "新建 Rule" : "上传 Rule"}
       </h1>
-      <UploadLoginGateBanner visible={!uploadGate.loading && uploadGate.blocked} />
+      <UploadLoginGateBanner visible={!adminMode && !uploadGate.loading && uploadGate.blocked} />
 
       <div className="space-y-2">
-        <Label className="font-[family-name:var(--font-pixel-body)]">从 Markdown 或 ZIP 导入（可选）</Label>
+        <Label className="font-[family-name:var(--font-pixel-body)]">
+          从 Markdown 或 ZIP 导入（可选）
+        </Label>
         <RuleZipDropzone
           onParsed={(p) => {
             setZipFiles(p.files);
@@ -171,6 +193,15 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
         />
       </div>
       <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">唯一标识（Slug，可选）</Label>
+        <PixelInput
+          value={slug}
+          onChange={(e) => setSlug(sanitizeCatalogSlug(e.target.value))}
+          placeholder="留空则创建时自动生成"
+          className="bg-[#fffef8]"
+        />
+      </div>
+      <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">简介</Label>
         <PixelTextarea
           required
@@ -203,6 +234,14 @@ export function RuleUploadForm({ categories }: { categories: Category[] }) {
             </option>
           ))}
         </select>
+      </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">适用 Profile</Label>
+        <ProfileCheckboxGroup
+          value={supportedProfiles}
+          onChange={setSupportedProfiles}
+          disabled={pending || uploadGate.loading}
+        />
       </div>
       <DownloadPolicyRadios
         name="rule-upload-dp"

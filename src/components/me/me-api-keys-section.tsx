@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { formatDateTimeShanghai } from "@/lib/date-format";
 
 type KeyRow = {
   id: string;
@@ -160,7 +161,7 @@ export function MeApiKeysSection() {
                 ) : null}
                 {!k.isRevoked && k.expiresAt && new Date(k.expiresAt) > new Date() ? (
                   <span className="ml-1 text-[var(--pixel-muted)]">
-                    （宽限至 {new Date(k.expiresAt).toLocaleString()}）
+                    （宽限至 {formatDateTimeShanghai(k.expiresAt)}）
                   </span>
                 ) : null}
                 {k.isRevoked && (

@@ -1,7 +1,7 @@
 /**
  * 虾球Hub PWA：预缓存离线壳页；导航请求网络优先，失败回退 /offline；其余 GET 网络优先并写入缓存以便二次离线可用。
  */
-const CACHE_NAME = "xiaqiu-hub-pwa-v1";
+const CACHE_NAME = "xiaqiu-hub-pwa-v2";
 const PRECACHE_URLS = ["/offline", "/manifest.json", "/icons/pwa-icon.svg"];
 
 self.addEventListener("install", (event) => {
@@ -36,6 +36,12 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   const isHtmlNavigation = request.mode === "navigate";
+  const isNextAsset = url.pathname.startsWith("/_next/");
+  const isApiRequest = url.pathname.startsWith("/api/");
+
+  if (isNextAsset || isApiRequest) {
+    return;
+  }
 
   if (isHtmlNavigation) {
     event.respondWith(

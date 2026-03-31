@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAdminFromSessionCookie } from "@/lib/admin-auth";
+import { getAdminFromSessionCookie, publicAdminSummary } from "@/lib/admin-auth";
 import { AdminShell } from "@/components/admin/AdminShell";
 
 export default async function AdminProtectedLayout({ children }: { children: React.ReactNode }) {
@@ -7,5 +7,5 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
   if (!admin) {
     redirect("/admin/login");
   }
-  return <AdminShell admin={admin}>{children}</AdminShell>;
+  return <AdminShell admin={publicAdminSummary(admin)}>{children}</AdminShell>;
 }

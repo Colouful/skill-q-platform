@@ -37,10 +37,39 @@ npm run dev
 | `npm test` | Vitest |
 | `npm run test:e2e` | Playwright（需先启动站点） |
 | `npm run verify` | `tsc` + Vitest（提交前自检；`npm run lint` 需本地 ESLint 可用） |
+| `npm run import:skills-local -- --source <dir>` | 从本地目录递归扫描 `SKILL.md` 并通过 `/api/skills` 导入 |
+| `npm run import:rules-local -- --source <dir>` | 从本地目录递归扫描 Rule Markdown 并通过 `/api/rules` 导入 |
 
 ## 环境变量
 
 见根目录 `.env.example`（`NEXT_PUBLIC_SITE_URL`、`HUB_AUTH`、`HUB_ADMIN_SECRET`、黑名单 `HUB_BLOCKLIST_*`、数据库与可选 MinIO / Redis）。
+
+## 本地 Skill 导入
+
+单个 Skill 可直接在上传页点击“选择文件夹”导入。若需要把另一个仓库里的多个 Skill 批量导入当前站点，可使用：
+
+```bash
+npm run import:skills-local -- \
+  --source /Users/lizhenwei/workspace/vueworkspace/bairong/br-ai-spec/.agents/skills \
+  --author lizhenwei \
+  --dry-run
+```
+
+确认扫描结果后，去掉 `--dry-run` 即可真正创建。若站点开启了“上传需登录”，再补 `--bearer <Agent API Key>`；若仅开启 `HUB_AUTH`，确保 `--author` 与 `--hub-actor` 一致即可。
+若同一批次里存在重名 Skill（如 `react/vue` 下的 `create-api`），脚本会自动追加路径后缀，避免导入后展示名冲突。
+
+## 本地 Rule 导入
+
+若需要把另一个仓库里的多个 Rule Markdown 批量导入当前站点，可使用：
+
+```bash
+npm run import:rules-local -- \
+  --source /Users/lizhenwei/workspace/vueworkspace/bairong/br-ai-spec/.agents/rules \
+  --author lizhenwei \
+  --dry-run
+```
+
+确认扫描结果后，去掉 `--dry-run` 即可真正创建。脚本会为这批本地 Rule 推断中文名称、稳定英文 slug、分类与标签；若站点开启了“上传需登录”，再补 `--bearer <Agent API Key>`；若仅开启 `HUB_AUTH`，确保 `--author` 与 `--hub-actor` 一致即可。
 
 ## 许可
 

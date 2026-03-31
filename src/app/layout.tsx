@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Caveat, Press_Start_2P, VT323 } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -26,6 +27,28 @@ const fontInk = Caveat({
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const devServiceWorkerCleanupScript = `
+(() => {
+  if (typeof window === "undefined") return;
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker
+    .getRegistrations()
+    .then((registrations) => Promise.allSettled(registrations.map((registration) => registration.unregister())))
+    .catch(() => {});
+  if (!("caches" in window)) return;
+  caches
+    .keys()
+    .then((keys) =>
+      Promise.allSettled(
+        keys
+          .filter((key) => key.startsWith("xiaqiu-hub-pwa-"))
+          .map((key) => caches.delete(key)),
+      ),
+    )
+    .catch(() => {});
+})();
+`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -81,7 +104,14 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${fontHeading.variable} ${fontBody.variable} ${fontInk.variable}`}
     >
-      <body className="min-h-0 overflow-hidden antialiased">
+      <head>
+        {process.env.NODE_ENV !== "production" ? (
+          <Script id="dev-service-worker-cleanup" strategy="beforeInteractive">
+            {devServiceWorkerCleanupScript}
+          </Script>
+        ) : null}
+      </head>
+      <body suppressHydrationWarning className="min-h-0 overflow-hidden antialiased">
         <Providers>
           <a
             href="#main-content"

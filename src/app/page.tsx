@@ -1,25 +1,41 @@
 import { prisma } from "@/lib/prisma";
 import { MODERATION_STATUS } from "@/lib/moderation";
+import { CATALOG_PUBLISH_STATUS } from "@/lib/catalog";
 import { HomeHeroDecor } from "@/components/home/home-hero-decor";
 import { ShrimpBallPixel } from "@/components/mascot/shrimp-ball-pixel";
 import { SkillCard } from "@/components/skill/skill-card";
+import { ScenarioCard } from "@/components/scenarios/scenario-card";
+import Link from "next/link";
+import { AI_SPEC_PACKAGE_SPEC } from "@/lib/ai-spec-cli";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const featured = await prisma.skill.findMany({
-    where: { isFeatured: true, moderationStatus: MODERATION_STATUS.PUBLISHED },
-    take: 6,
-    include: { category: true },
-    orderBy: { updatedAt: "desc" },
-  });
-
-  const recent = await prisma.skill.findMany({
-    where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
-    take: 8,
-    include: { category: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const [featured, recent, featuredScenarios] = await Promise.all([
+    prisma.skill.findMany({
+      where: { isFeatured: true, moderationStatus: MODERATION_STATUS.PUBLISHED },
+      take: 6,
+      include: { category: true },
+      orderBy: { updatedAt: "desc" },
+    }),
+    prisma.skill.findMany({
+      where: { moderationStatus: MODERATION_STATUS.PUBLISHED },
+      take: 8,
+      include: { category: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.scenarioPackage.findMany({
+      where: { publishStatus: CATALOG_PUBLISH_STATUS.PUBLISHED, isFeatured: true },
+      take: 3,
+      include: {
+        entryRole: { select: { name: true } },
+        roles: { select: { id: true } },
+        skills: { select: { id: true } },
+        rules: { select: { id: true } },
+      },
+      orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
+    }),
+  ]);
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl space-y-10 pb-8">
@@ -71,6 +87,54 @@ export default async function HomePage() {
               <SkillCard skill={s} compact />
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="space-y-4 border-t-4 border-[var(--pixel-border)] pt-8">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
+            场景方案推荐
+          </h2>
+          <Link
+            href="/scenarios"
+            className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)] underline"
+          >
+            查看全部
+          </Link>
+        </div>
+        {featuredScenarios.length === 0 ? (
+          <p className="font-[family-name:var(--font-pixel-body)] text-[var(--pixel-muted)]">
+            还没有已发布的场景方案。
+          </p>
+        ) : (
+          <div className="grid gap-4 lg:grid-cols-3">
+            {featuredScenarios.map((scenario) => (
+              <div key={scenario.id} className="min-w-0">
+                <ScenarioCard scenario={scenario} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="border-4 border-[var(--pixel-border)] bg-[#fffef8] p-5 shadow-[4px_4px_0_0_var(--pixel-border)]">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-2">
+            <p className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
+              项目接入入口
+            </p>
+            <p className="max-w-2xl font-[family-name:var(--font-pixel-body)] text-base text-[var(--pixel-muted)]">
+              按场景方案生成安装清单，再用{" "}
+              <code className="font-mono text-[var(--pixel-fg)]">{`npx ${AI_SPEC_PACKAGE_SPEC} init`}</code>{" "}
+              安装到目标项目。一期先提供场景快捷接入，不影响现有 Skill / Rule 入口。
+            </p>
+          </div>
+          <Link
+            href="/install"
+            className="inline-flex w-fit items-center justify-center border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] px-4 py-2 font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)] shadow-[4px_4px_0_0_var(--pixel-border)] transition hover:-translate-y-px"
+          >
+            打开项目接入
+          </Link>
         </div>
       </section>
     </div>

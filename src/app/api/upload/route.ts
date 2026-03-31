@@ -1,11 +1,17 @@
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { checkApiRateLimit, getRequestIp } from "@/lib/api-rate-limit";
+import { prisma } from "@/lib/prisma";
 import {
   importRuleMarkdownFile,
   importRuleZip,
   type RuleZipImportResult,
 } from "@/lib/rule-zip-import";
+import {
+  importRoleMarkdownFile,
+  importRoleZip,
+  type RoleImportResult,
+} from "@/lib/role-import";
 import {
   importSkillFolderFromBrowserFiles,
   importSkillZip,
@@ -28,7 +34,7 @@ export async function POST(req: Request) {
     const kind = String(form.get("kind") ?? "skill").toLowerCase();
     const mode = String(form.get("mode") ?? "zip").toLowerCase();
 
-    let result: SkillZipImportResult | RuleZipImportResult;
+    let result: SkillZipImportResult | RuleZipImportResult | RoleImportResult;
     let objectStorage:
       | { stored: true; bucket: string; objectKey: string; size: number }
       | { stored: false; reason: "disabled" | "error"; message?: string } = {
@@ -37,8 +43,8 @@ export async function POST(req: Request) {
     };
 
     if (mode === "folder") {
-      if (kind === "rule") {
-        return jsonErr("Rule 请使用单文件 .md 或 ZIP 上传（不支持文件夹模式）", 400);
+      if (kind === "rule" || kind === "role") {
+        return jsonErr(`${kind === "rule" ? "Rule" : "专家"} 请使用单文件 .md 或 ZIP 上传（不支持文件夹模式）`, 400);
       }
       const files = form.getAll("files").filter((v): v is File => v instanceof File);
       if (files.length === 0) {
@@ -48,7 +54,7 @@ export async function POST(req: Request) {
     } else {
       const file = form.get("file");
       if (!file || typeof file === "string") {
-        return jsonErr("请使用 multipart 上传 file 字段（Skill 为 ZIP；Rule 可为 .md 或 ZIP），或 mode=folder 多文件上传", 400);
+        return jsonErr("请使用 multipart 上传 file 字段（Skill 为 ZIP；Rule / 专家 可为 .md 或 ZIP），或 mode=folder 多文件上传", 400);
       }
       const buf = await file.arrayBuffer();
       const originalName = file instanceof File ? file.name : "upload.zip";
@@ -60,6 +66,14 @@ export async function POST(req: Request) {
           result = await importRuleZip(buf);
         } else {
           return jsonErr("Rule 请上传 .md 或 .zip 文件", 400);
+        }
+      } else if (kind === "role") {
+        if (lowerName.endsWith(".md")) {
+          result = importRoleMarkdownFile(buf, originalName);
+        } else if (lowerName.endsWith(".zip")) {
+          result = await importRoleZip(buf);
+        } else {
+          return jsonErr("专家请上传 .md 或 .zip 文件", 400);
         }
       } else {
         result = await importSkillZip(buf);
@@ -80,6 +94,41 @@ export async function POST(req: Request) {
           objectStorage = { stored: false, reason: "error", message };
         }
       }
+    }
+
+    if (kind === "role") {
+      const roleResult = result as RoleImportResult;
+      const matchedDomains =
+        roleResult.roleData.domains.length > 0
+          ? await prisma.capabilityDomain.findMany({
+              where: {
+                slug: {
+                  in: roleResult.roleData.domains,
+                },
+              },
+              select: { id: true, slug: true },
+            })
+          : [];
+      const matchedSlugSet = new Set(matchedDomains.map((item) => item.slug));
+      const unmatchedDomains = roleResult.roleData.domains.filter((slug) => !matchedSlugSet.has(slug));
+      const issues = [...roleResult.issues];
+      if (unmatchedDomains.length > 0) {
+        issues.push(`以下能力域未匹配到 Hub 字典，请手动补选：${unmatchedDomains.join(" / ")}`);
+      }
+      if (roleResult.ignoredMetaKeys.length > 0) {
+        issues.push(`已忽略未识别的 frontmatter 字段：${roleResult.ignoredMetaKeys.join(", ")}`);
+      }
+
+      return jsonOk(
+        {
+          ...roleResult,
+          mappedDomainIds: matchedDomains.map((item) => item.id),
+          unmatchedDomains,
+          issues,
+          objectStorage,
+        },
+        "解析完成",
+      );
     }
 
     return jsonOk({ ...result, objectStorage }, "解析完成");

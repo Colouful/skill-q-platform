@@ -11,6 +11,18 @@ export function isPublishedModeration(s: string | null | undefined): boolean {
   return (s ?? MODERATION_STATUS.PUBLISHED) === MODERATION_STATUS.PUBLISHED;
 }
 
+export function moderationStatusLabel(value: string | null | undefined): string {
+  switch (value) {
+    case MODERATION_STATUS.PENDING:
+      return "待审核";
+    case MODERATION_STATUS.REJECTED:
+      return "已拒绝";
+    case MODERATION_STATUS.PUBLISHED:
+    default:
+      return "已发布";
+  }
+}
+
 /** 未上架资源仅作者本人可浏览（管理员在后台用列表 API 处理，不依赖前台详情）。 */
 export function canViewUnpublishedResource(
   moderationStatus: string | null | undefined,

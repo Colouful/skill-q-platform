@@ -7,9 +7,9 @@ import GitHubSlugger from "github-slugger";
  */
 const ASCII_URL_SLUG = /^[a-z0-9._-]+$/;
 
-export function slugFromName(name: string): string {
+export function slugFromName(name: string, fallbackPrefix = "skill"): string {
   const slugger = new GitHubSlugger();
   const base = slugger.slug(name.trim());
   if (base && ASCII_URL_SLUG.test(base)) return base;
-  return `skill-${Date.now().toString(36)}-${randomBytes(3).toString("hex")}`;
+  return `${fallbackPrefix}-${Date.now().toString(36)}-${randomBytes(3).toString("hex")}`;
 }

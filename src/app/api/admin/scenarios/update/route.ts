@@ -1,0 +1,124 @@
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import { jsonErr, jsonOk } from "@/lib/api-response";
+import { toApiResponse } from "@/lib/api-errors";
+import { requireAdminJson } from "@/lib/admin-api-route";
+import { normalizeCatalogSlug } from "@/lib/catalog-slug";
+
+export const dynamic = "force-dynamic";
+
+const bodySchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1).max(255),
+  slug: z.string().optional().default(""),
+  description: z.string().min(1),
+  longDescription: z.string().optional().nullable(),
+  publishStatus: z.enum(["draft", "published"]).default("draft"),
+  tags: z.array(z.string()).default([]),
+  supportedProfiles: z.array(z.string()).default([]),
+  recommendedIdes: z.array(z.string()).default([]),
+  entryRoleId: z.string().nullable().optional(),
+  isFeatured: z.boolean().default(false),
+  roles: z.array(z.object({ id: z.string().min(1), isOptional: z.boolean().default(false) })).default([]),
+  skills: z.array(z.string()).default([]),
+  rules: z.array(z.string()).default([]),
+  roleIds: z.array(z.string()).default([]),
+  skillIds: z.array(z.string()).default([]),
+  ruleIds: z.array(z.string()).default([]),
+  domainIds: z.array(z.string()).default([]),
+});
+
+export async function POST(req: Request) {
+  try {
+    const gate = await requireAdminJson(req);
+    if (!gate.ok) return gate.response;
+
+    const raw = await req.json();
+    const parsed = bodySchema.safeParse(raw);
+    if (!parsed.success) {
+      return jsonErr(parsed.error.issues.map((i) => i.message).join("; "), 400);
+    }
+    const b = parsed.data;
+    const slug = normalizeCatalogSlug(b.slug || b.name, "scenario");
+    const roleEntries =
+      b.roles.length > 0
+        ? b.roles
+        : b.roleIds.map((id) => ({ id, isOptional: false }));
+    const skillIds = b.skills.length > 0 ? b.skills : b.skillIds;
+    const ruleIds = b.rules.length > 0 ? b.rules : b.ruleIds;
+
+    try {
+      const scenario = await prisma.$transaction(async (tx) => {
+        const updated = await tx.scenarioPackage.update({
+          where: { id: b.id },
+          data: {
+            name: b.name.trim(),
+            slug,
+            description: b.description.trim(),
+            longDescription: b.longDescription?.trim() || null,
+            publishStatus: b.publishStatus,
+            tags: b.tags,
+            supportedProfiles: b.supportedProfiles,
+            recommendedIdes: b.recommendedIdes,
+            entryRoleId: b.entryRoleId || null,
+            isFeatured: b.isFeatured,
+          },
+        });
+
+        await tx.scenarioPackageRole.deleteMany({ where: { scenarioPackageId: updated.id } });
+        await tx.scenarioPackageSkill.deleteMany({ where: { scenarioPackageId: updated.id } });
+        await tx.scenarioPackageRule.deleteMany({ where: { scenarioPackageId: updated.id } });
+        await tx.scenarioDomainLink.deleteMany({ where: { scenarioPackageId: updated.id } });
+
+        if (roleEntries.length > 0) {
+          await tx.scenarioPackageRole.createMany({
+            data: roleEntries.map((role, index) => ({
+              scenarioPackageId: updated.id,
+              roleId: role.id,
+              sortOrder: index,
+              isOptional: role.isOptional,
+            })),
+          });
+        }
+        if (skillIds.length > 0) {
+          await tx.scenarioPackageSkill.createMany({
+            data: skillIds.map((skillId, index) => ({
+              scenarioPackageId: updated.id,
+              skillId,
+              sortOrder: index,
+            })),
+          });
+        }
+        if (ruleIds.length > 0) {
+          await tx.scenarioPackageRule.createMany({
+            data: ruleIds.map((ruleId, index) => ({
+              scenarioPackageId: updated.id,
+              ruleId,
+              sortOrder: index,
+            })),
+          });
+        }
+        if (b.domainIds.length > 0) {
+          await tx.scenarioDomainLink.createMany({
+            data: b.domainIds.map((domainId) => ({
+              scenarioPackageId: updated.id,
+              domainId,
+            })),
+          });
+        }
+
+        return updated;
+      });
+
+      return jsonOk({ scenario }, "已更新");
+    } catch (e: unknown) {
+      const unique = e && typeof e === "object" && "code" in e && (e as { code?: string }).code === "P2002";
+      if (unique) {
+        return jsonErr("名称或 Slug 已存在", 400);
+      }
+      throw e;
+    }
+  } catch (e) {
+    return toApiResponse(e);
+  }
+}

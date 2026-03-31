@@ -4,9 +4,12 @@ import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { checkApiRateLimit, getRequestIp, rateLimitResponseHeaders } from "@/lib/api-rate-limit";
 import { getAuthFromRequest, publicAgentSummary } from "@/lib/agent-auth";
+import { getAdminFromRequest } from "@/lib/admin-auth";
 import { applyExperienceDelta, XP_UPLOAD_RESOURCE } from "@/lib/agent-experience";
 import { rateLimitForAgentLevel } from "@/lib/agent-levels";
 import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
+import { ASCII_URL_SLUG } from "@/lib/catalog-slug";
+import { normalizeSupportedProfilesList } from "@/lib/profile-options";
 import { slugFromName } from "@/lib/skill-slug";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { getDefaultDownloadPolicy, getResourceUploadRequiresModeration } from "@/lib/system-config";
@@ -26,11 +29,13 @@ const downloadPolicyEnum = z.enum(["public", "login", "author"]);
 
 const postBody = z.object({
   name: z.string().min(1).max(255),
+  slug: z.string().min(1).max(255).optional(),
   description: z.string().min(1),
   author: z.string().min(1).max(100),
   categorySlug: z.string().min(1),
   longDescription: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  supportedProfiles: z.array(z.string()).optional(),
   downloadPolicy: downloadPolicyEnum.optional(),
   /** 来自 ZIP 解析后的初始文件清单，写入 1.0.0 版本 */
   initialFiles: z.array(fileEntry).max(200).optional(),
@@ -84,11 +89,12 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const admin = await getAdminFromRequest(req);
     const gate = await enforceUploadLoginPolicy(req);
-    if (gate.denied) {
+    if (gate.denied && !admin) {
       return jsonErr(gate.message, 401);
     }
-    const { auth } = gate;
+    const auth = gate.denied ? { agent: null } : gate.auth;
     const ip = getRequestIp(req);
     const rl = auth.agent
       ? await checkApiRateLimit(`api:skills:create:agent:${auth.agent.id}`, {
@@ -97,7 +103,9 @@ export async function POST(req: Request) {
         })
       : await checkApiRateLimit(`api:skills:create:${ip}`, { max: 30, windowMs: 60_000 });
     if (!rl.ok) {
-      return jsonErr("创建请求过于频繁，请稍后再试", 429, 1, { headers: rateLimitResponseHeaders(rl) });
+      return jsonErr("创建请求过于频繁，请稍后再试", 429, 1, {
+        headers: rateLimitResponseHeaders(rl),
+      });
     }
 
     const raw = await req.json();
@@ -106,8 +114,14 @@ export async function POST(req: Request) {
       return jsonErr(parsed.error.issues.map((i) => i.message).join("; "), 400);
     }
     const b = parsed.data;
+    const supportedProfiles = normalizeSupportedProfilesList(b.supportedProfiles);
+    if (supportedProfiles.invalid.length > 0) {
+      return jsonErr(`存在不支持的 Profile：${supportedProfiles.invalid.join("、")}`, 400);
+    }
 
-    assertHubAuthForDeclaredAuthor(req, b.author);
+    if (!admin) {
+      assertHubAuthForDeclaredAuthor(req, b.author);
+    }
 
     const category = await prisma.category.findUnique({
       where: { slug_resourceType: { slug: b.categorySlug, resourceType: "skill" } },
@@ -116,17 +130,23 @@ export async function POST(req: Request) {
       return jsonErr("分类不存在", 400);
     }
 
-    let slug = slugFromName(b.name);
+    const requestedSlug = b.slug?.trim().toLowerCase();
+    if (requestedSlug && !ASCII_URL_SLUG.test(requestedSlug)) {
+      return jsonErr("Slug 仅支持小写字母、数字、点、下划线和短横线", 400);
+    }
+
+    let slug = requestedSlug || slugFromName(b.name);
     const exists = await prisma.skill.findUnique({ where: { slug } });
     if (exists) {
+      if (requestedSlug) {
+        return jsonErr("Slug 已存在", 409);
+      }
       slug = `${slug}-${crypto.randomUUID().slice(0, 8)}`;
     }
 
-    const tagsJson: Prisma.InputJsonValue =
-      b.tags && b.tags.length > 0 ? b.tags : [];
+    const tagsJson: Prisma.InputJsonValue = b.tags && b.tags.length > 0 ? b.tags : [];
 
-    const initialFiles =
-      b.initialFiles && b.initialFiles.length > 0 ? b.initialFiles : [];
+    const initialFiles = b.initialFiles && b.initialFiles.length > 0 ? b.initialFiles : [];
 
     const defaultPolicy = await getDefaultDownloadPolicy();
     const requiresModeration = await getResourceUploadRequiresModeration();
@@ -135,43 +155,41 @@ export async function POST(req: Request) {
       : MODERATION_STATUS.PUBLISHED;
 
     let agentLevelUp: { level: number; levelName: string } | null = null;
-    const skill = await prisma.$transaction(
-      async (tx) => {
-        const s = await tx.skill.create({
-          data: {
-            name: b.name.trim(),
-            slug,
-            description: b.description,
-            longDescription: b.longDescription?.trim() || null,
-            author: b.author.trim(),
-            categoryId: category.id,
-            tags: tagsJson,
-            downloadPolicy: b.downloadPolicy ?? defaultPolicy,
-            moderationStatus: initialModeration,
-            authorAgentId: auth.agent?.id ?? undefined,
-            versions: {
-              create: {
-                version: "1.0.0",
-                changelog: initialFiles.length ? "从 ZIP 导入的初始版本" : "初始版本",
-                files: initialFiles,
-                isLatest: true,
-              },
+    const skill = await prisma.$transaction(async (tx) => {
+      const s = await tx.skill.create({
+        data: {
+          name: b.name.trim(),
+          slug,
+          description: b.description,
+          longDescription: b.longDescription?.trim() || null,
+          author: b.author.trim(),
+          categoryId: category.id,
+          tags: tagsJson,
+          supportedProfiles: supportedProfiles.profiles,
+          downloadPolicy: b.downloadPolicy ?? defaultPolicy,
+          moderationStatus: initialModeration,
+          authorAgentId: auth.agent?.id ?? undefined,
+          versions: {
+            create: {
+              version: "1.0.0",
+              changelog: initialFiles.length ? "从 ZIP 导入的初始版本" : "初始版本",
+              files: initialFiles,
+              isLatest: true,
             },
           },
-          include: { category: true, versions: true },
+        },
+        include: { category: true, versions: true },
+      });
+      if (auth.agent) {
+        const xp = await applyExperienceDelta(tx, auth.agent.id, XP_UPLOAD_RESOURCE, {
+          incrementUploads: true,
         });
-        if (auth.agent) {
-          const xp = await applyExperienceDelta(tx, auth.agent.id, XP_UPLOAD_RESOURCE, {
-            incrementUploads: true,
-          });
-          if (xp?.leveledUp) {
-            agentLevelUp = { level: xp.level, levelName: xp.levelName };
-          }
+        if (xp?.leveledUp) {
+          agentLevelUp = { level: xp.level, levelName: xp.levelName };
         }
-        return s;
-      },
-      PRISMA_TX_LARGE_WRITE,
-    );
+      }
+      return s;
+    }, PRISMA_TX_LARGE_WRITE);
 
     return jsonOk({ skill, agentLevelUp }, "创建成功", { headers: rateLimitResponseHeaders(rl) });
   } catch (e) {

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { jsonErr, jsonOk } from "@/lib/api-response";
+import { jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { getAuthFromRequest } from "@/lib/agent-auth";
 
@@ -9,7 +9,7 @@ export async function GET(_req: Request) {
   try {
     const auth = await getAuthFromRequest(_req);
     if (!auth.agent) {
-      return jsonErr("请先登录", 401);
+      return jsonOk({ count: 0 });
     }
 
     const count = await prisma.hubNotification.count({

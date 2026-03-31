@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { formatDateTimeShanghai } from "@/lib/date-format";
 
 type Row = {
   id: string;
@@ -93,7 +94,7 @@ export function NotificationsPageClient() {
               <p className="font-medium text-[var(--pixel-fg)]">{n.title}</p>
               <p className="mt-1 whitespace-pre-wrap text-[var(--pixel-muted)]">{n.content}</p>
               <p className="mt-2 text-xs text-[var(--pixel-muted)]">
-                {new Date(n.createdAt).toLocaleString("zh-CN")} · {n.type}
+                {formatDateTimeShanghai(n.createdAt)} · {n.type}
               </p>
               {!n.isRead && (
                 <Button type="button" size="sm" variant="outline" className="mt-2 h-7 border px-2 text-xs" onClick={() => void markRead(n.id)}>

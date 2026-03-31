@@ -5,20 +5,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { formatDateTimeShanghai } from "@/lib/date-format";
 import { apiSkillPath } from "@/lib/slug-url";
 import type { Review } from "@/generated/prisma";
 import { SkillReviewForm } from "./skill-review-form";
 import { LobsterRatingDisplay } from "./lobster-rating-display";
 
 type Sort = "latest" | "helpful";
-
-function formatDate(d: Date | string) {
-  const x = typeof d === "string" ? new Date(d) : d;
-  return x.toLocaleString("zh-CN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-}
 
 /** 10.3–10.5 评测列表、排序、有用 */
 export function SkillReviewsPanel({
@@ -138,7 +131,7 @@ export function SkillReviewsPanel({
                       : r.createdAt.toISOString()
                   }
                 >
-                  {formatDate(r.createdAt)}
+                  {formatDateTimeShanghai(r.createdAt)}
                 </time>
               </div>
               <div className="mt-2">

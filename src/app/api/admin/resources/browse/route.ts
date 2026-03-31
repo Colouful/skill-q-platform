@@ -49,16 +49,17 @@ export async function GET(req: Request) {
       };
       const [total, rows] = await prisma.$transaction([
         prisma.skill.count({ where }),
-        prisma.skill.findMany({
-          where,
-          skip,
-          take: pageSize,
-          orderBy: { updatedAt: "desc" },
+      prisma.skill.findMany({
+        where,
+        skip,
+        take: pageSize,
+        orderBy: { updatedAt: "desc" },
           select: {
             id: true,
             name: true,
             slug: true,
             categoryId: true,
+            tags: true,
             moderationStatus: true,
             category: { select: { name: true, slug: true } },
           },
@@ -71,6 +72,9 @@ export async function GET(req: Request) {
           slug: r.slug,
           categoryId: r.categoryId,
           categoryName: r.category.name,
+          tags: Array.isArray(r.tags)
+            ? r.tags.filter((tag): tag is string => typeof tag === "string")
+            : [],
           moderationStatus: r.moderationStatus,
         })),
         total,
@@ -102,6 +106,7 @@ export async function GET(req: Request) {
           name: true,
           slug: true,
           categoryId: true,
+          tags: true,
           moderationStatus: true,
           category: { select: { name: true, slug: true } },
         },
@@ -114,6 +119,9 @@ export async function GET(req: Request) {
         slug: r.slug,
         categoryId: r.categoryId,
         categoryName: r.category.name,
+        tags: Array.isArray(r.tags)
+          ? r.tags.filter((tag): tag is string => typeof tag === "string")
+          : [],
         moderationStatus: r.moderationStatus,
       })),
       total,

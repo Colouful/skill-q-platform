@@ -18,8 +18,10 @@ type MeAgent = {
 };
 
 async function fetchAgentSession(): Promise<{ loggedIn: boolean; agent: MeAgent | null }> {
-  const res = await fetchApi<{ agent: MeAgent | null }>("/api/auth/me");
-  if (res.code !== 0 || !res.data?.agent) {
+  const res = await fetchApi<{ loggedIn: boolean; agent: MeAgent | null }>(
+    "/api/auth/session-summary",
+  );
+  if (res.code !== 0 || !res.data?.loggedIn || !res.data.agent) {
     return { loggedIn: false, agent: null };
   }
   return { loggedIn: true, agent: res.data.agent };
@@ -29,9 +31,10 @@ async function fetchAgentSession(): Promise<{ loggedIn: boolean; agent: MeAgent 
  * 未登录：「加入特工局」→ /me；登录后：入口跳转特工档案（昵称在档案内修改）。
  */
 export function HeaderAgentAuth({ className }: { className?: string }) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
   const [meAgent, setMeAgent] = useState<MeAgent | null>(null);
+  const isAdminArea = pathname.startsWith("/admin");
 
   const refresh = useCallback(() => {
     void fetchAgentSession().then((r) => {
@@ -44,14 +47,24 @@ export function HeaderAgentAuth({ className }: { className?: string }) {
   }, []);
 
   useEffect(() => {
+    if (isAdminArea) {
+      setLoggedIn(false);
+      setMeAgent(null);
+      return;
+    }
     refresh();
-  }, [refresh, pathname]);
+  }, [isAdminArea, refresh]);
 
   useEffect(() => {
+    if (isAdminArea) return;
     const onSession = () => refresh();
     window.addEventListener("agent-session-changed", onSession);
     return () => window.removeEventListener("agent-session-changed", onSession);
-  }, [refresh]);
+  }, [isAdminArea, refresh]);
+
+  if (isAdminArea) {
+    return null;
+  }
 
   if (loggedIn === null) {
     return (

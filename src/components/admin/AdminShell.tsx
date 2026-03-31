@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { fetchApi } from "@/lib/client-api";
-import type { AuthAdmin } from "@/lib/admin-auth";
 import { cn } from "@/lib/utils";
 
 export function AdminShell({
   admin,
   children,
 }: {
-  admin: AuthAdmin;
+  admin: {
+    id: string;
+    email: string;
+    role: string;
+  };
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -28,9 +31,35 @@ export function AdminShell({
     { href: "/admin/agents", label: "用户管理" },
     { href: "/admin/config", label: "系统配置" },
     { href: "/admin/categories", label: "分类管理" },
+    { href: "/admin/skills/manage", label: "Skill 管理" },
+    { href: "/admin/rules/manage", label: "Rule 管理" },
     { href: "/admin/skills", label: "待审 Skill" },
     { href: "/admin/rules", label: "待审 Rule" },
+    { href: "/admin/roles", label: "专家管理" },
+    { href: "/admin/scenarios", label: "场景方案" },
+    { href: "/admin/install-presets", label: "安装预设" },
   ];
+
+  function isActive(href: string) {
+    if (href === "/admin") return pathname === "/admin";
+    if (href === "/admin/skills") return pathname === "/admin/skills";
+    if (href === "/admin/rules") return pathname === "/admin/rules";
+    if (href === "/admin/skills/manage") {
+      return (
+        pathname === "/admin/skills/manage" ||
+        pathname === "/admin/skills/new" ||
+        pathname.startsWith("/admin/skills/") && pathname.endsWith("/edit")
+      );
+    }
+    if (href === "/admin/rules/manage") {
+      return (
+        pathname === "/admin/rules/manage" ||
+        pathname === "/admin/rules/new" ||
+        pathname.startsWith("/admin/rules/") && pathname.endsWith("/edit")
+      );
+    }
+    return pathname.startsWith(href);
+  }
 
   return (
     <div className="flex min-h-[70vh] flex-col gap-4 md:flex-row">
@@ -46,7 +75,7 @@ export function AdminShell({
               href={n.href}
               className={cn(
                 "rounded-sm border-2 border-transparent px-2 py-1 font-[family-name:var(--font-pixel-body)] text-sm",
-                (n.href === "/admin" ? pathname === "/admin" : pathname.startsWith(n.href))
+                isActive(n.href)
                   ? "border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/25"
                   : "hover:border-[var(--pixel-border)]/60",
               )}

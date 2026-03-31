@@ -49,7 +49,7 @@ export async function POST(
 
     assertHubAuthForDeclaredAuthor(req, author);
 
-    let newSlug = slugFromName(baseName);
+    let newSlug = slugFromName(baseName, "rule");
     const exists = await prisma.rule.findUnique({ where: { slug: newSlug } });
     if (exists) {
       newSlug = `${newSlug}-${crypto.randomUUID().slice(0, 8)}`;

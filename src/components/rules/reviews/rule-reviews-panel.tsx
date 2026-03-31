@@ -5,20 +5,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
+import { formatDateTimeShanghai } from "@/lib/date-format";
 import { apiRulePath } from "@/lib/slug-url";
 import type { Review } from "@/generated/prisma";
 import { LobsterRatingDisplay } from "@/components/skills/reviews/lobster-rating-display";
 import { RuleReviewForm } from "./rule-review-form";
 
 type Sort = "latest" | "helpful";
-
-function formatDate(d: Date | string) {
-  const x = typeof d === "string" ? new Date(d) : d;
-  return x.toLocaleString("zh-CN", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-}
 
 export function RuleReviewsPanel({
   slug,
@@ -137,7 +130,7 @@ export function RuleReviewsPanel({
                       : r.createdAt.toISOString()
                   }
                 >
-                  {formatDate(r.createdAt)}
+                  {formatDateTimeShanghai(r.createdAt)}
                 </time>
               </div>
               <div className="mt-2">

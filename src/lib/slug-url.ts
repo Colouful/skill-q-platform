@@ -15,3 +15,19 @@ export function apiSkillPath(slug: string, suffix = ""): string {
 export function apiRulePath(slug: string, suffix = ""): string {
   return `/api/rules/${encodeURIComponent(slug)}${suffix}`;
 }
+
+export function rolePath(slug: string, suffix = ""): string {
+  return `/roles/${encodeURIComponent(slug)}${suffix}`;
+}
+
+export function scenarioPath(slug: string, suffix = ""): string {
+  return `/scenarios/${encodeURIComponent(slug)}${suffix}`;
+}
+
+export function apiRolePath(slug: string, suffix = ""): string {
+  return `/api/roles/${encodeURIComponent(slug)}${suffix}`;
+}
+
+export function apiScenarioPath(slug: string, suffix = ""): string {
+  return `/api/scenarios/${encodeURIComponent(slug)}${suffix}`;
+}

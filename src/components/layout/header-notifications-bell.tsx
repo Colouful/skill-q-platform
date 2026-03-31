@@ -1,37 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Bell } from "lucide-react";
 import { fetchApi } from "@/lib/client-api";
 import { cn } from "@/lib/utils";
 
 /** 仅登录用户展示；未登录不占位 */
 export function HeaderNotificationsBell({ className }: { className?: string }) {
+  const pathname = usePathname() ?? "";
   const [show, setShow] = useState(false);
   const [count, setCount] = useState(0);
+  const isAdminArea = pathname.startsWith("/admin");
+
+  const tick = useCallback(async () => {
+    const session = await fetchApi<{ loggedIn: boolean }>("/api/auth/session-summary");
+    if (session.code !== 0 || !session.data?.loggedIn) {
+      setShow(false);
+      setCount(0);
+      return;
+    }
+
+    const res = await fetchApi<{ count: number }>("/api/notifications/unread-count");
+    if (res.code === 0 && res.data) {
+      setShow(true);
+      setCount(res.data.count);
+      return;
+    }
+    setShow(false);
+    setCount(0);
+  }, []);
 
   useEffect(() => {
+    if (isAdminArea) {
+      setShow(false);
+      setCount(0);
+      return;
+    }
     let cancelled = false;
-    const tick = async () => {
-      const res = await fetchApi<{ count: number }>("/api/notifications/unread-count");
+    const run = async () => {
       if (cancelled) return;
-      if (res.code === 401) {
-        setShow(false);
-        return;
-      }
-      if (res.code === 0 && res.data) {
-        setShow(true);
-        setCount(res.data.count);
-      }
+      await tick();
     };
-    void tick();
+    void run();
     const id = window.setInterval(tick, 60_000);
+    const onSession = () => {
+      void tick();
+    };
+    window.addEventListener("agent-session-changed", onSession);
     return () => {
       cancelled = true;
       window.clearInterval(id);
+      window.removeEventListener("agent-session-changed", onSession);
     };
-  }, []);
+  }, [isAdminArea, tick]);
+
+  if (isAdminArea) {
+    return null;
+  }
 
   if (!show) {
     return null;

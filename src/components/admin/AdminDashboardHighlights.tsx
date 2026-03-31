@@ -1,17 +1,7 @@
 import Link from "next/link";
 import type { AnalyticsHighlights } from "@/lib/admin-analytics-queries";
+import { formatDateTimeShanghai } from "@/lib/date-format";
 import { rulePath, skillPath } from "@/lib/slug-url";
-
-function formatDate(d: Date) {
-  try {
-    return new Date(d).toLocaleString("zh-CN", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
-  } catch {
-    return String(d);
-  }
-}
 
 export function AdminDashboardHighlights({ data }: { data: AnalyticsHighlights }) {
   return (
@@ -102,7 +92,7 @@ export function AdminDashboardHighlights({ data }: { data: AnalyticsHighlights }
                   {a.name}
                 </Link>
                 <span className="font-[family-name:var(--font-pixel-body)] text-[10px] text-[var(--pixel-muted)]">
-                  Lv.{a.level} · {formatDate(a.registeredAt)}
+                  Lv.{a.level} · {formatDateTimeShanghai(a.registeredAt)}
                 </span>
               </div>
             ))

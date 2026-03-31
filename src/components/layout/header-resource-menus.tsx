@@ -11,11 +11,19 @@ import { cn } from "@/lib/utils";
 export function HeaderResourceMenus({ mobile }: { mobile?: boolean }) {
   const pathname = usePathname();
 
+  const onInstallPath = pathname === "/install" || (pathname?.startsWith("/install/") ?? false);
+  const onScenarioPath =
+    !onInstallPath &&
+    (pathname === "/scenarios" || (pathname?.startsWith("/scenarios/") ?? false));
   const onRulePath =
-    pathname === "/rules" ||
-    (pathname?.startsWith("/rules/") ?? false) ||
-    (pathname?.startsWith("/categories/rules/") ?? false);
+    !onScenarioPath &&
+    !onInstallPath &&
+    (pathname === "/rules" ||
+      (pathname?.startsWith("/rules/") ?? false) ||
+      (pathname?.startsWith("/categories/rules/") ?? false));
   const onSkillPath =
+    !onScenarioPath &&
+    !onInstallPath &&
     !onRulePath &&
     (pathname === "/skills" ||
       (pathname?.startsWith("/skills/") ?? false) ||
@@ -47,6 +55,26 @@ export function HeaderResourceMenus({ mobile }: { mobile?: boolean }) {
         title="Rule 列表（分类筛选在列表页）"
       >
         Rule
+      </Link>
+      <Link
+        href="/scenarios"
+        className={cn(
+          "transition-colors hover:text-[var(--pixel-fg)]",
+          onScenarioPath ? "text-[var(--pixel-fg)]" : "text-[var(--pixel-muted)]",
+        )}
+        title="场景方案列表"
+      >
+        场景方案
+      </Link>
+      <Link
+        href="/install"
+        className={cn(
+          "transition-colors hover:text-[var(--pixel-fg)]",
+          onInstallPath ? "text-[var(--pixel-fg)]" : "text-[var(--pixel-muted)]",
+        )}
+        title="项目接入入口"
+      >
+        项目接入
       </Link>
     </div>
   );

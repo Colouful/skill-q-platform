@@ -30,6 +30,7 @@ model Agent {
   sessions       AgentSession[]
   uploadedSkills Skill[]    @relation("SkillAuthor")
   uploadedRules  Rule[]     @relation("RuleAuthor")
+  uploadedRoles  RoleTemplate[] @relation("RoleAuthor")
   authoredReviews Review[]  @relation("ReviewAuthor")
   downloadLogs    DownloadLog[]
   hubNotifications HubNotification[]
@@ -118,8 +119,12 @@ model Skill {
   downloadPolicy    String    @default("public") @db.VarChar(20)
   moderationStatus  String    @default("published") @db.VarChar(20)
   moderationNote    String?   @db.Text
+  supportedProfiles Json?
   versions          Version[]
   reviews           Review[]
+  roleLinks         RoleSkillLink[]
+  scenarioLinks     ScenarioPackageSkill[]
+  domainLinks       SkillDomainLink[]
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
@@ -151,8 +156,12 @@ model Rule {
   downloadPolicy   String    @default("public") @db.VarChar(20)
   moderationStatus String    @default("published") @db.VarChar(20)
   moderationNote   String?   @db.Text
+  supportedProfiles Json?
   versions         RuleVersion[]
   reviews          Review[]
+  roleLinks        RoleRuleLink[]
+  scenarioLinks    ScenarioPackageRule[]
+  domainLinks      RuleDomainLink[]
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
@@ -299,4 +308,224 @@ model AdminSession {
   @@index([sessionId])
   @@index([adminId])
   @@map("admin_sessions")
+}
+
+model RoleTemplate {
+  id                String                 @id @default(uuid()) @db.VarChar(36)
+  name              String                 @db.VarChar(255)
+  slug              String                 @unique @db.VarChar(120)
+  description       String                 @db.Text
+  longDescription   String?                @db.Text
+  author            String                 @db.VarChar(100)
+  authorAgentId     String?                @db.VarChar(191)
+  authorAgent       Agent?                 @relation("RoleAuthor", fields: [authorAgentId], references: [id], onDelete: SetNull)
+  publishStatus     String                 @default("draft") @db.VarChar(20)
+  roleStatus        String                 @default("draft") @db.VarChar(20)
+  tags              Json?
+  supportedProfiles Json?
+  triggers          Json?
+  preferredSkills   Json?
+  reads             Json?
+  writes            Json?
+  handoffTo         Json?
+  rolePositioning   String?                @db.Text
+  workingPrinciples Json?
+  requiredSteps     Json?
+  executionContract String?                @db.Text
+  outputStandard    String?                @db.Text
+  prohibitedActions Json?
+  handoffNotes      String?                @db.Text
+  versions          RoleVersion[]
+  skillLinks        RoleSkillLink[]
+  ruleLinks         RoleRuleLink[]
+  scenarioLinks     ScenarioPackageRole[]
+  entryForScenarios ScenarioPackage[]      @relation("ScenarioEntryRole")
+  domainLinks       RoleDomainLink[]
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([slug])
+  @@index([publishStatus])
+  @@index([authorAgentId])
+  @@map("role_templates")
+}
+
+model RoleVersion {
+  id          String       @id @default(uuid()) @db.VarChar(36)
+  roleId       String       @db.VarChar(36)
+  role         RoleTemplate @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  version      String       @db.VarChar(20)
+  changelog    String?      @db.Text
+  files        Json
+  downloadUrl  String?      @db.VarChar(500)
+  isLatest     Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+
+  @@unique([roleId, version])
+  @@index([roleId])
+  @@map("role_versions")
+}
+
+model RoleSkillLink {
+  id        String       @id @default(uuid()) @db.VarChar(36)
+  roleId     String       @db.VarChar(36)
+  role       RoleTemplate @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  skillId    String       @db.VarChar(36)
+  skill      Skill        @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  sortOrder  Int          @default(0)
+
+  @@unique([roleId, skillId])
+  @@index([roleId])
+  @@index([skillId])
+  @@map("role_skill_links")
+}
+
+model RoleRuleLink {
+  id        String       @id @default(uuid()) @db.VarChar(36)
+  roleId     String       @db.VarChar(36)
+  role       RoleTemplate @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  ruleId     String       @db.VarChar(36)
+  rule       Rule         @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  sortOrder  Int          @default(0)
+
+  @@unique([roleId, ruleId])
+  @@index([roleId])
+  @@index([ruleId])
+  @@map("role_rule_links")
+}
+
+model ScenarioPackage {
+  id                String                 @id @default(uuid()) @db.VarChar(36)
+  name              String                 @db.VarChar(255)
+  slug              String                 @unique @db.VarChar(120)
+  description       String                 @db.Text
+  longDescription   String?                @db.Text
+  publishStatus     String                 @default("draft") @db.VarChar(20)
+  supportedProfiles Json?
+  recommendedIdes   Json?
+  entryRoleId       String?                @db.VarChar(36)
+  entryRole         RoleTemplate?          @relation("ScenarioEntryRole", fields: [entryRoleId], references: [id], onDelete: SetNull)
+  tags              Json?
+  isFeatured        Boolean                @default(false)
+  roles             ScenarioPackageRole[]
+  skills            ScenarioPackageSkill[]
+  rules             ScenarioPackageRule[]
+  domainLinks       ScenarioDomainLink[]
+  createdAt         DateTime               @default(now())
+  updatedAt         DateTime               @updatedAt
+
+  @@index([slug])
+  @@index([publishStatus])
+  @@index([entryRoleId])
+  @@map("scenario_packages")
+}
+
+model ScenarioPackageRole {
+  id                 String          @id @default(uuid()) @db.VarChar(36)
+  scenarioPackageId  String          @db.VarChar(36)
+  scenarioPackage    ScenarioPackage @relation(fields: [scenarioPackageId], references: [id], onDelete: Cascade)
+  roleId             String          @db.VarChar(36)
+  role               RoleTemplate    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  sortOrder          Int             @default(0)
+  isOptional         Boolean         @default(false)
+
+  @@unique([scenarioPackageId, roleId])
+  @@index([scenarioPackageId])
+  @@index([roleId])
+  @@map("scenario_package_roles")
+}
+
+model ScenarioPackageSkill {
+  id                 String          @id @default(uuid()) @db.VarChar(36)
+  scenarioPackageId  String          @db.VarChar(36)
+  scenarioPackage    ScenarioPackage @relation(fields: [scenarioPackageId], references: [id], onDelete: Cascade)
+  skillId            String          @db.VarChar(36)
+  skill              Skill           @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  sortOrder          Int             @default(0)
+
+  @@unique([scenarioPackageId, skillId])
+  @@index([scenarioPackageId])
+  @@index([skillId])
+  @@map("scenario_package_skills")
+}
+
+model ScenarioPackageRule {
+  id                 String          @id @default(uuid()) @db.VarChar(36)
+  scenarioPackageId  String          @db.VarChar(36)
+  scenarioPackage    ScenarioPackage @relation(fields: [scenarioPackageId], references: [id], onDelete: Cascade)
+  ruleId             String          @db.VarChar(36)
+  rule               Rule            @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  sortOrder          Int             @default(0)
+
+  @@unique([scenarioPackageId, ruleId])
+  @@index([scenarioPackageId])
+  @@index([ruleId])
+  @@map("scenario_package_rules")
+}
+
+model CapabilityDomain {
+  id            String               @id @default(uuid()) @db.VarChar(36)
+  name          String               @unique @db.VarChar(100)
+  slug          String               @unique @db.VarChar(100)
+  description   String?              @db.Text
+  sortOrder     Int                  @default(0)
+  roleLinks     RoleDomainLink[]
+  skillLinks    SkillDomainLink[]
+  ruleLinks     RuleDomainLink[]
+  scenarioLinks ScenarioDomainLink[]
+
+  @@index([sortOrder])
+  @@map("capability_domains")
+}
+
+model RoleDomainLink {
+  id        String           @id @default(uuid()) @db.VarChar(36)
+  roleId     String           @db.VarChar(36)
+  role       RoleTemplate     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  domainId   String           @db.VarChar(36)
+  domain     CapabilityDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, domainId])
+  @@index([roleId])
+  @@index([domainId])
+  @@map("role_domain_links")
+}
+
+model SkillDomainLink {
+  id        String           @id @default(uuid()) @db.VarChar(36)
+  skillId    String           @db.VarChar(36)
+  skill      Skill            @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  domainId   String           @db.VarChar(36)
+  domain     CapabilityDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, domainId])
+  @@index([skillId])
+  @@index([domainId])
+  @@map("skill_domain_links")
+}
+
+model RuleDomainLink {
+  id        String           @id @default(uuid()) @db.VarChar(36)
+  ruleId     String           @db.VarChar(36)
+  rule       Rule             @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  domainId   String           @db.VarChar(36)
+  domain     CapabilityDomain @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([ruleId, domainId])
+  @@index([ruleId])
+  @@index([domainId])
+  @@map("rule_domain_links")
+}
+
+model ScenarioDomainLink {
+  id                 String             @id @default(uuid()) @db.VarChar(36)
+  scenarioPackageId  String             @db.VarChar(36)
+  scenarioPackage    ScenarioPackage    @relation(fields: [scenarioPackageId], references: [id], onDelete: Cascade)
+  domainId           String             @db.VarChar(36)
+  domain             CapabilityDomain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([scenarioPackageId, domainId])
+  @@index([scenarioPackageId])
+  @@index([domainId])
+  @@map("scenario_domain_links")
 }

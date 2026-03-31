@@ -1,6 +1,9 @@
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@/generated/prisma";
 
+type HubPrismaClient = PrismaClient &
+  Pick<PrismaClient, "agent" | "skill" | "rule" | "roleTemplate" | "scenarioPackage">;
+
 function databaseUrlFromEnv(): string {
   const direct = process.env.DATABASE_URL?.trim();
   if (direct) return direct;
@@ -48,26 +51,28 @@ function poolConfigFromDatabaseUrl(): {
 }
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: HubPrismaClient | undefined;
 };
 
 function createClient() {
   const adapter = new PrismaMariaDb(poolConfigFromDatabaseUrl());
-  return new PrismaClient({ adapter });
+  return new PrismaClient({ adapter }) as HubPrismaClient;
 }
 
-function isUsableClient(c: PrismaClient | undefined): c is PrismaClient {
+function isUsableClient(c: HubPrismaClient | undefined): c is HubPrismaClient {
   return (
     c !== undefined &&
-    typeof (c as PrismaClient).skill?.findMany === "function" &&
-    typeof (c as PrismaClient).agent?.findFirst === "function"
+    typeof c.skill?.findMany === "function" &&
+    typeof c.agent?.findFirst === "function" &&
+    typeof c.roleTemplate?.findMany === "function" &&
+    typeof c.scenarioPackage?.findMany === "function"
   );
 }
 
 /**
  * 单例：开发环境下 HMR 可能留下旧 global，导致缺少新版 schema 的 delegate（如 `skill` 为 undefined）。
  */
-function getPrismaSingleton(): PrismaClient {
+function getPrismaSingleton(): HubPrismaClient {
   if (isUsableClient(globalForPrisma.prisma)) {
     return globalForPrisma.prisma;
   }
@@ -81,4 +86,4 @@ function getPrismaSingleton(): PrismaClient {
   return client;
 }
 
-export const prisma = getPrismaSingleton();
+export const prisma: HubPrismaClient = getPrismaSingleton();
