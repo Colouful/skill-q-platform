@@ -79,6 +79,9 @@
 
 /* 虾球Hub 像素主题（与 shadcn 变量并存） */
 :root {
+  --font-pixel-heading: "Courier New", "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  --font-pixel-body: "Courier New", "Lucida Console", Menlo, Monaco, Consolas, monospace;
+  --font-ink: "Bradley Hand", "Segoe Print", "Comic Sans MS", "KaiTi", cursive;
   --pixel-bg: #f7f3e8;
   --pixel-fg: #0f380f;
   --pixel-border: #2c3e50;

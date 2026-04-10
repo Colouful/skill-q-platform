@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build --webpack",
     "build:pre": "sh scripts/build-env.sh pre",
     "build:prod": "sh scripts/build-env.sh prod",
     "start": "next start",
@@ -16,12 +16,13 @@
     "db:migrate": "npx prisma migrate dev",
     "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
+    "prisma:generate": "npx prisma generate",
     "db:seed:agents": "npx tsx prisma/seed-agents.ts",
     "db:verify:seed-agents": "npx tsx prisma/verify-seed-agents.ts",
     "db:repair-agent-auth": "tsx scripts/repair-agent-auth-schema.ts",
     "import:skills-local": "tsx scripts/import-local-skills.ts",
     "import:rules-local": "tsx scripts/import-local-rules.ts",
-    "postinstall": "npx prisma generate"
+    "postinstall": "node scripts/prisma-generate-if-needed.cjs --postinstall"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

@@ -35,5 +35,5 @@ if [ -z "${DATABASE_URL:-}" ] && [ -n "${DB_HOST:-}" ]; then
 fi
 
 cd "$ROOT"
-npx prisma generate
-exec next build
+node "$ROOT/scripts/prisma-generate-if-needed.cjs" --build
+exec next build --webpack

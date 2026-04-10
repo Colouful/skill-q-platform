@@ -1,29 +1,9 @@
 import type { Metadata } from "next";
-import { Caveat, Press_Start_2P, VT323 } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Providers } from "@/components/providers";
-
-const fontHeading = Press_Start_2P({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-pixel-heading",
-});
-
-const fontBody = VT323({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-pixel-body",
-});
-
-/** 素描主题 `ink`：拉丁字母手写笔迹感，中文仍走衬线回退 */
-const fontInk = Caveat({
-  subsets: ["latin"],
-  variable: "--font-ink",
-  weight: ["400", "700"],
-});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -102,7 +82,6 @@ export default function RootLayout({
       lang="zh-CN"
       data-theme="pixel"
       suppressHydrationWarning
-      className={`${fontHeading.variable} ${fontBody.variable} ${fontInk.variable}`}
     >
       <head>
         {process.env.NODE_ENV !== "production" ? (

@@ -31,6 +31,9 @@ RUN（与 package.json 中脚本一致，无 widget）
 【Prisma】postinstall / prisma generate 报 binaries.prisma.sh 下载失败
   含义：pnpm i 会跑 postinstall → prisma generate，需从 https://binaries.prisma.sh 拉引擎（如 debian-openssl-3.0.x）。
   常见原因：构建机不能直连公网、防火墙、未配代理。
+  当前仓库已内置一层兜底：
+  · 若在 CI / Docker 构建环境检测到仓库已包含 src/generated/prisma，则 postinstall 与 build-env.sh 会跳过 prisma generate；
+  · 本地开发机默认仍会执行 prisma generate，或可手动运行 npm run prisma:generate。
   处理方向（择一）：
   1) 构建 RUN 最前面 export PRISMA_ENGINES_MIRROR=内网镜像根 URL（与 binaries.prisma.sh 目录结构一致，由运维提供），再 pnpm i；
   2) 放行对 binaries.prisma.sh 的 HTTPS 出站，或配置 HTTP(S)_PROXY；

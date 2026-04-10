@@ -6,7 +6,7 @@
 - **配置**：`src/themes/*.theme.ts`，在 `src/themes/index.ts` 注册并加入 `THEME_ORDER`（决定切换器顺序）。
 - **应用**：客户端 `applyHubThemeToDocument` 写入 `<html data-theme="…">` 与行内 CSS 变量；切换前会清理 `ALL_THEME_INLINE_CSS_KEYS`，避免跨主题残留。
 - **持久化**：`localStorage` 键 `preferred-theme`；**多标签**通过 `storage` 事件同步（见 `ThemeProvider`）。
-- **字体**：像素风使用 `layout.tsx` 内 Press Start 2P / VT323；其余主题可通过 `fontOverride` 覆盖 `--font-pixel-heading` / `--font-pixel-body`。素描 `ink` 额外使用 `--font-ink`（Caveat）。
+- **字体**：默认字体栈在 `src/app/globals.css` 中通过 `--font-pixel-heading` / `--font-pixel-body` / `--font-ink` 定义，不依赖在线拉取 Google Fonts；其余主题可通过 `fontOverride` 覆盖 `--font-pixel-heading` / `--font-pixel-body`。素描 `ink` 额外使用 `--font-ink`。
 
 ## 新增或修改主题
 
