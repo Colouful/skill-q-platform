@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const { existsSync } = require("node:fs");
+const { existsSync, readFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 const { spawnSync } = require("node:child_process");
 
@@ -21,6 +21,19 @@ function hasBundledPrismaClient() {
   return generatedMarkers.every((file) => existsSync(resolve(generatedDir, file)));
 }
 
+function isContainerRuntime() {
+  if (existsSync("/.dockerenv") || existsSync("/run/.containerenv")) {
+    return true;
+  }
+
+  try {
+    const cgroup = readFileSync("/proc/1/cgroup", "utf8");
+    return /(docker|containerd|kubepods|podman)/i.test(cgroup);
+  } catch {
+    return false;
+  }
+}
+
 function log(message) {
   process.stdout.write(`[prisma-generate] ${message}\n`);
 }
@@ -35,7 +48,7 @@ if (explicitSkip) {
 }
 
 const runningInCi = truthyEnv(process.env.CI);
-const runningInDocker = existsSync("/.dockerenv");
+const runningInDocker = isContainerRuntime();
 const bundledClientReady = hasBundledPrismaClient();
 
 if (bundledClientReady && (runningInCi || runningInDocker)) {

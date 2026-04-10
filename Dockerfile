@@ -11,6 +11,8 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json ./
+COPY scripts/prisma-generate-if-needed.cjs ./scripts/prisma-generate-if-needed.cjs
+COPY src/generated/prisma ./src/generated/prisma
 RUN npm ci
 
 FROM base AS builder
