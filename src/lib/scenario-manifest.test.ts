@@ -17,10 +17,10 @@ describe("scenario-manifest", () => {
     expect(manifest.ides).toEqual(["cursor", "claude", "trae"]);
   });
 
-  it("falls back to default ide when all presets are unsupported", () => {
+  it("uses explicit profile when building scenario manifests", () => {
     const manifest = buildScenarioManifest({
       scenarioSlug: "prd-to-delivery",
-      supportedProfiles: ["Vue"],
+      profile: "Vue",
       recommendedIdes: ["Codex"],
       entryRoleSlug: "task-orchestrator",
       roles: ["task-orchestrator"],

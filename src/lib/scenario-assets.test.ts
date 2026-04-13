@@ -69,4 +69,42 @@ describe("resolveScenarioAssets", () => {
     expect(result.ruleSlugs).toEqual(["scenario-rule"]);
     expect(result.entryRoleSlug).toBeNull();
   });
+
+  it("filters profile-scoped assets before resolving manifest content", () => {
+    const vueSkill = { slug: "create-view", name: "Create View", supportedProfiles: ["vue"] };
+    const reactSkill = { slug: "create-api-react", name: "Create API", supportedProfiles: ["react"] };
+    const sharedSkill = { slug: "using-superpowers", name: "Using Superpowers" };
+    const vueRule = {
+      slug: "vue-project-overview",
+      name: "Vue 项目概述",
+      supportedProfiles: ["vue"],
+    };
+    const reactRule = {
+      slug: "react-project-overview",
+      name: "React 项目概述",
+      supportedProfiles: ["react"],
+    };
+    const role = {
+      slug: "task-orchestrator",
+      name: "任务主代理",
+      supportedProfiles: ["react", "vue"],
+      skillLinks: [{ skill: reactSkill }, { skill: vueSkill }],
+      ruleLinks: [{ rule: reactRule }, { rule: vueRule }],
+    };
+
+    const result = resolveScenarioAssets(
+      {
+        entryRole: role,
+        roles: [{ role }],
+        skills: [{ skill: sharedSkill }],
+        rules: [],
+      },
+      { profile: "vue" },
+    );
+
+    expect(result.roleSlugs).toEqual(["task-orchestrator"]);
+    expect(result.skillSlugs).toEqual(["create-view", "using-superpowers"]);
+    expect(result.ruleSlugs).toEqual(["vue-project-overview"]);
+    expect(result.entryRoleSlug).toBe("task-orchestrator");
+  });
 });

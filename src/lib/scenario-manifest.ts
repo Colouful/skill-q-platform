@@ -12,7 +12,7 @@ export type ScenarioManifest = {
 
 const SUPPORTED_MANIFEST_IDES = new Set(["cursor", "claude", "opencode", "trae"]);
 
-function normalizeManifestProfile(profile?: string | null) {
+export function normalizeManifestProfile(profile?: string | null) {
   const cleaned = (profile ?? "").trim().toLowerCase();
   return cleaned || "default";
 }
@@ -47,6 +47,7 @@ export function buildInstallManifest(input: {
 
 export function buildScenarioManifest(input: {
   scenarioSlug: string;
+  profile?: string | null;
   supportedProfiles?: unknown;
   recommendedIdes?: unknown;
   entryRoleSlug?: string | null;
@@ -54,11 +55,11 @@ export function buildScenarioManifest(input: {
   skills: string[];
   rules: string[];
 }): ScenarioManifest {
-  const profiles = stringArrayFromJson(input.supportedProfiles);
   const ides = stringArrayFromJson(input.recommendedIdes);
+  const supportedProfiles = stringArrayFromJson(input.supportedProfiles);
 
   return buildInstallManifest({
-    profile: profiles[0] ?? "default",
+    profile: input.profile ?? supportedProfiles[0] ?? "default",
     ides,
     scenarioPackages: [input.scenarioSlug],
     roles: input.roles,

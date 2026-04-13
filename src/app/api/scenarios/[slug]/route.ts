@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
-import { buildScenarioManifest } from "@/lib/scenario-manifest";
+import { buildScenarioManifest, normalizeManifestProfile } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
-import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus } from "@/lib/catalog";
+import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
+import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
@@ -9,7 +10,7 @@ import { toApiResponse } from "@/lib/api-errors";
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
@@ -69,15 +70,20 @@ export async function GET(
       return jsonErr("场景方案不存在", 404);
     }
 
-    const resolved = resolveScenarioAssets(scenario);
+    const searchParams = new URL(req.url).searchParams;
+    const requestedProfile = searchParams.get("profile");
+    const scenarioProfiles = stringArrayFromJson(scenario.supportedProfiles);
+    const effectiveProfile = normalizeManifestProfile(requestedProfile || scenarioProfiles[0] || "default");
+
+    const resolved = resolveScenarioAssets(scenario, { profile: effectiveProfile });
     const manifest = buildScenarioManifest({
       scenarioSlug: scenario.slug,
-      supportedProfiles: scenario.supportedProfiles,
+      profile: effectiveProfile,
       recommendedIdes: scenario.recommendedIdes,
       entryRoleSlug: resolved.entryRoleSlug,
       roles: resolved.roleSlugs,
-      skills: resolved.skillSlugs,
-      rules: resolved.ruleSlugs,
+      skills: toManifestSkillIds(resolved.resolvedSkills),
+      rules: toManifestRuleIds(resolved.resolvedRules),
     });
 
     return jsonOk({

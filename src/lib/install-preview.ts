@@ -1,6 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { buildInstallManifest, buildScenarioManifest, type ScenarioManifest } from "@/lib/scenario-manifest";
+import {
+  buildInstallManifest,
+  buildScenarioManifest,
+  normalizeManifestProfile,
+  type ScenarioManifest,
+} from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
+import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
 import { CATALOG_PUBLISH_STATUS, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { buildAiSpecInitCommand, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
@@ -143,8 +149,16 @@ export async function buildInstallPreview(
     if (!foundRuleSlugs.has(slug)) warnings.push(`Rule 不存在或未发布：${slug}`);
   });
 
+  const scenarioProfiles = scenarios.flatMap((scenario) => stringArrayFromJson(scenario.supportedProfiles));
+  const directRoleProfiles = directRoles.flatMap((role) => stringArrayFromJson(role.supportedProfiles));
+  const effectiveProfile = normalizeManifestProfile(
+    input.profile?.trim() || scenarioProfiles[0] || directRoleProfiles[0] || "default",
+  );
+
   const scenarioAvailableRoleSlugSet = new Set(
-    scenarios.flatMap((scenario) => resolveScenarioAssets(scenario).availableRoleSlugs),
+    scenarios.flatMap((scenario) =>
+      resolveScenarioAssets(scenario, { profile: effectiveProfile }).availableRoleSlugs,
+    ),
   );
   const explicitScenarioRoleSlugs = useExplicitRoles
     ? roleSlugs.filter((slug) => scenarioAvailableRoleSlugSet.has(slug))
@@ -152,33 +166,34 @@ export async function buildInstallPreview(
   const explicitExternalRoleSlugs = roleSlugs.filter((slug) => !scenarioAvailableRoleSlugSet.has(slug));
   const resolvedScenarioSelections = scenarios.map((scenario) =>
     resolveScenarioAssets(scenario, {
+      profile: effectiveProfile,
       selectedRoleSlugs: useExplicitRoles ? explicitScenarioRoleSlugs : undefined,
     }),
   );
 
   const scenarioRoleSlugs = resolvedScenarioSelections.flatMap((item) => item.roleSlugs);
-  const scenarioSkillDefaults = resolvedScenarioSelections.flatMap((item) => item.skillSlugs);
-  const scenarioRuleDefaults = resolvedScenarioSelections.flatMap((item) => item.ruleSlugs);
   const combinedRoleSlugs = [
     ...scenarioRoleSlugs,
     ...directRoles
       .map((item) => item.slug)
       .filter((slug) => explicitExternalRoleSlugs.includes(slug)),
   ];
-  const combinedSkillSlugs = useExplicitSkills ? skillSlugs : scenarioSkillDefaults;
-  const combinedRuleSlugs = useExplicitRules ? ruleSlugs : scenarioRuleDefaults;
+  const combinedSkillAssets = useExplicitSkills
+    ? directSkills
+    : [...resolvedScenarioSelections.flatMap((item) => item.resolvedSkills), ...directSkills];
+  const combinedRuleAssets = useExplicitRules
+    ? directRules
+    : [...resolvedScenarioSelections.flatMap((item) => item.resolvedRules), ...directRules];
 
-  const scenarioProfiles = scenarios.flatMap((scenario) => stringArrayFromJson(scenario.supportedProfiles));
   const scenarioIdes = scenarios.flatMap((scenario) => stringArrayFromJson(scenario.recommendedIdes));
-  const directRoleProfiles = directRoles.flatMap((role) => stringArrayFromJson(role.supportedProfiles));
 
   const manifest = buildInstallManifest({
-    profile: input.profile?.trim() || scenarioProfiles[0] || directRoleProfiles[0] || "default",
+    profile: effectiveProfile,
     ides: requestedIdes.length > 0 ? requestedIdes : scenarioIdes,
     scenarioPackages: scenarios.map((item) => item.slug),
     roles: combinedRoleSlugs,
-    skills: [...combinedSkillSlugs, ...directSkills.map((item) => item.slug)],
-    rules: [...combinedRuleSlugs, ...directRules.map((item) => item.slug)],
+    skills: toManifestSkillIds(combinedSkillAssets),
+    rules: toManifestRuleIds(combinedRuleAssets),
     entryRole:
       resolvedScenarioSelections.find((item) => item.entryRoleSlug)?.entryRoleSlug ??
       combinedRoleSlugs[0] ??
@@ -192,21 +207,20 @@ export async function buildInstallPreview(
   let remoteManifestUrl: string | null = null;
   if (scenarios.length === 1) {
     const baseScenario = scenarios[0]!;
-    const baseResolved = resolveScenarioAssets(baseScenario);
+    const baseResolved = resolveScenarioAssets(baseScenario, { profile: manifest.profile });
     const baseManifest = buildScenarioManifest({
       scenarioSlug: baseScenario.slug,
-      supportedProfiles: baseScenario.supportedProfiles,
+      profile: manifest.profile,
       recommendedIdes: baseScenario.recommendedIdes,
       entryRoleSlug: baseResolved.entryRoleSlug,
       roles: baseResolved.roleSlugs,
-      skills: baseResolved.skillSlugs,
-      rules: baseResolved.ruleSlugs,
+      skills: toManifestSkillIds(baseResolved.resolvedSkills),
+      rules: toManifestRuleIds(baseResolved.resolvedRules),
     });
 
-    const sameAsBase =
-      JSON.stringify(baseManifest) === JSON.stringify(manifest);
+    const sameAsBase = JSON.stringify(baseManifest) === JSON.stringify(manifest);
     if (sameAsBase) {
-      remoteManifestUrl = `${siteOrigin}/api/manifests/scenarios/${encodeURIComponent(baseScenario.slug)}`;
+      remoteManifestUrl = `${siteOrigin}/api/manifests/scenarios/${encodeURIComponent(baseScenario.slug)}?profile=${encodeURIComponent(manifest.profile)}`;
     }
   }
 

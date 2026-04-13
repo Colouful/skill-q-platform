@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { buildScenarioManifest } from "@/lib/scenario-manifest";
+import { buildScenarioManifest, normalizeManifestProfile } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
+import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
 import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { prisma } from "@/lib/prisma";
@@ -76,20 +77,21 @@ export default async function ScenarioDetailPage({
     notFound();
   }
 
-  const resolved = resolveScenarioAssets(scenario);
+  const profiles = stringArrayFromJson(scenario.supportedProfiles);
+  const effectiveProfile = normalizeManifestProfile(profiles[0] || "default");
+  const resolved = resolveScenarioAssets(scenario, { profile: effectiveProfile });
   const manifest = buildScenarioManifest({
     scenarioSlug: scenario.slug,
-    supportedProfiles: scenario.supportedProfiles,
+    profile: effectiveProfile,
     recommendedIdes: scenario.recommendedIdes,
     entryRoleSlug: resolved.entryRoleSlug,
     roles: resolved.roleSlugs,
-    skills: resolved.skillSlugs,
-    rules: resolved.ruleSlugs,
+    skills: toManifestSkillIds(resolved.resolvedSkills),
+    rules: toManifestRuleIds(resolved.resolvedRules),
   });
 
-  const profiles = stringArrayFromJson(scenario.supportedProfiles);
   const ides = stringArrayFromJson(scenario.recommendedIdes);
-  const manifestUrl = `${siteOrigin()}/api/manifests/scenarios/${encodeURIComponent(scenario.slug)}`;
+  const manifestUrl = `${siteOrigin()}/api/manifests/scenarios/${encodeURIComponent(scenario.slug)}?profile=${encodeURIComponent(manifest.profile)}`;
   const localManifestFilename = `${scenario.slug}.manifest.json`;
   const initCommand = buildAiSpecInitCommand({
     profile: manifest.profile,

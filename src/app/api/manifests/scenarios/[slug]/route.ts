@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { buildScenarioManifest } from "@/lib/scenario-manifest";
+import { buildScenarioManifest, normalizeManifestProfile } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
-import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus } from "@/lib/catalog";
+import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
+import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
@@ -66,15 +67,20 @@ export async function GET(
     return NextResponse.json({ message: "scenario not found" }, { status: 404 });
   }
 
-  const resolved = resolveScenarioAssets(scenario);
+  const searchParams = new URL(req.url).searchParams;
+  const requestedProfile = searchParams.get("profile");
+  const scenarioProfiles = stringArrayFromJson(scenario.supportedProfiles);
+  const effectiveProfile = normalizeManifestProfile(requestedProfile || scenarioProfiles[0] || "default");
+
+  const resolved = resolveScenarioAssets(scenario, { profile: effectiveProfile });
   const manifest = buildScenarioManifest({
     scenarioSlug: scenario.slug,
-    supportedProfiles: scenario.supportedProfiles,
+    profile: effectiveProfile,
     recommendedIdes: scenario.recommendedIdes,
     entryRoleSlug: resolved.entryRoleSlug,
     roles: resolved.roleSlugs,
-    skills: resolved.skillSlugs,
-    rules: resolved.ruleSlugs,
+    skills: toManifestSkillIds(resolved.resolvedSkills),
+    rules: toManifestRuleIds(resolved.resolvedRules),
   });
 
   return NextResponse.json(manifest, {

@@ -4,6 +4,8 @@ import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { requireAdminJson } from "@/lib/admin-api-route";
 import { normalizeCatalogSlug } from "@/lib/catalog-slug";
+import { normalizeSupportedProfilesList } from "@/lib/profile-options";
+import { validateScenarioProfileSelection } from "@/lib/scenario-profile-validation";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +61,14 @@ export async function POST(req: Request) {
       return jsonErr(parsed.error.issues.map((i) => i.message).join("; "), 400);
     }
     const b = parsed.data;
+    const supportedProfiles = normalizeSupportedProfilesList(b.supportedProfiles);
+    if (supportedProfiles.invalid.length > 0) {
+      return jsonErr(`存在不支持的 Profile：${supportedProfiles.invalid.join("、")}`, 400);
+    }
+    if (supportedProfiles.profiles.length === 0) {
+      return jsonErr("场景 supportedProfiles 不能为空，请至少选择一个 profile。", 400);
+    }
+
     const slug = normalizeCatalogSlug(b.slug || b.name, "scenario");
     const roleEntries =
       b.roles.length > 0
@@ -66,6 +76,17 @@ export async function POST(req: Request) {
         : b.roleIds.map((id) => ({ id, isOptional: false }));
     const skillIds = b.skills.length > 0 ? b.skills : b.skillIds;
     const ruleIds = b.rules.length > 0 ? b.rules : b.ruleIds;
+
+    const profileValidationError = await validateScenarioProfileSelection({
+      supportedProfiles: supportedProfiles.profiles,
+      entryRoleId: b.entryRoleId || null,
+      roleIds: roleEntries.map((role) => role.id),
+      skillIds,
+      ruleIds,
+    });
+    if (profileValidationError) {
+      return jsonErr(profileValidationError, 400);
+    }
 
     try {
       const scenario = await prisma.$transaction(async (tx) => {
@@ -77,7 +98,7 @@ export async function POST(req: Request) {
             longDescription: b.longDescription?.trim() || null,
             publishStatus: b.publishStatus,
             tags: b.tags,
-            supportedProfiles: b.supportedProfiles,
+            supportedProfiles: supportedProfiles.profiles,
             recommendedIdes: b.recommendedIdes,
             entryRoleId: b.entryRoleId || null,
             isFeatured: b.isFeatured,
