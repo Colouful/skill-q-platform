@@ -4,6 +4,8 @@ import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { requireAdminJson } from "@/lib/admin-api-route";
 import { normalizeCatalogSlug } from "@/lib/catalog-slug";
+import { normalizeRegistryLikeId } from "@/lib/hub-registry-contract";
+import { assertUniqueRegistryFields } from "@/lib/registry-id-validation";
 import { buildRoleVersionFiles } from "@/lib/role-version";
 import { ROLE_STATUS } from "@/lib/catalog";
 
@@ -12,6 +14,8 @@ export const dynamic = "force-dynamic";
 const bodySchema = z.object({
   name: z.string().min(1).max(255),
   slug: z.string().optional().default(""),
+  registryId: z.string().min(1).max(255).nullable().optional(),
+  manifestId: z.string().min(1).max(255).nullable().optional(),
   author: z.string().min(1).max(100),
   description: z.string().min(1),
   longDescription: z.string().optional().nullable(),
@@ -68,6 +72,33 @@ export async function POST(req: Request) {
     }
     const b = parsed.data;
     const slug = normalizeCatalogSlug(b.slug || b.name, "role");
+    const registryId =
+      b.registryId === undefined
+        ? null
+        : b.registryId === null
+          ? null
+          : normalizeRegistryLikeId(b.registryId);
+    if (b.registryId !== undefined && b.registryId !== null && !registryId) {
+      return jsonErr("registryId 仅支持小写字母、数字、点、下划线和中划线", 400);
+    }
+    const manifestId =
+      b.manifestId === undefined
+        ? null
+        : b.manifestId === null
+          ? null
+          : normalizeRegistryLikeId(b.manifestId);
+    if (b.manifestId !== undefined && b.manifestId !== null && !manifestId) {
+      return jsonErr("manifestId 仅支持小写字母、数字、点、下划线和中划线", 400);
+    }
+
+    const duplicateIssues = await assertUniqueRegistryFields({
+      resourceType: "role",
+      registryId: registryId ?? slug,
+      manifestId: manifestId ?? registryId ?? slug,
+    });
+    if (duplicateIssues.length > 0) {
+      return jsonErr(duplicateIssues.join("；"), 409);
+    }
 
     try {
       const role = await prisma.$transaction(async (tx) => {
@@ -96,6 +127,8 @@ export async function POST(req: Request) {
           data: {
             name: b.name.trim(),
             slug,
+            registryId: registryId ?? null,
+            manifestId: manifestId ?? null,
             author: b.author.trim(),
             description: b.description.trim(),
             longDescription: b.longDescription?.trim() || null,

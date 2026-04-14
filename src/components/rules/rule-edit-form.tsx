@@ -36,6 +36,8 @@ export function RuleEditForm({
   const [pending, setPending] = useState(false);
   const [name, setName] = useState(rule.name);
   const [slug, setSlug] = useState(rule.slug);
+  const [registryId, setRegistryId] = useState(rule.registryId ?? "");
+  const [manifestId, setManifestId] = useState(rule.manifestId ?? "");
   const [description, setDescription] = useState(rule.description);
   const [author, setAuthor] = useState(rule.author);
   const [categorySlug, setCategorySlug] = useState(rule.category.slug);
@@ -64,6 +66,8 @@ export function RuleEditForm({
       body: JSON.stringify({
         name,
         slug,
+        registryId: registryId.trim() || null,
+        manifestId: manifestId.trim() || null,
         description,
         author,
         categorySlug,
@@ -111,6 +115,29 @@ export function RuleEditForm({
           onChange={(e) => setSlug(sanitizeCatalogSlug(e.target.value))}
           placeholder="rule-stock-analysis"
         />
+        <p className="text-xs text-[var(--pixel-muted)]">Hub 资源标识与页面路由标识。</p>
+      </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">registryId</Label>
+        <PixelInput
+          value={registryId}
+          onChange={(e) => setRegistryId(e.target.value.toLowerCase())}
+          placeholder="coding-standard"
+        />
+        <p className="text-xs text-[var(--pixel-muted)]">
+          CLI registry / 导出 registry 的稳定标识；允许留空以兼容历史资源。
+        </p>
+      </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">manifestId</Label>
+        <PixelInput
+          value={manifestId}
+          onChange={(e) => setManifestId(e.target.value.toLowerCase())}
+          placeholder="coding-standard"
+        />
+        <p className="text-xs text-[var(--pixel-muted)]">
+          manifest 对外下发的安装标识；通常与 registryId 一致。
+        </p>
       </div>
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">简介</Label>

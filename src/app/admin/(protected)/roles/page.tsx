@@ -4,7 +4,12 @@ import { stringArrayFromJson } from "@/lib/catalog";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminRolesPage() {
+export default async function AdminRolesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ edit?: string }>;
+}) {
+  const sp = await searchParams;
   const [items, skills, rules, domains] = await Promise.all([
     prisma.roleTemplate.findMany({
       include: {
@@ -43,6 +48,8 @@ export default async function AdminRolesPage() {
           id: item.id,
           name: item.name,
           slug: item.slug,
+          registryId: item.registryId,
+          manifestId: item.manifestId,
           author: item.author,
           description: item.description,
           longDescription: item.longDescription,
@@ -67,6 +74,7 @@ export default async function AdminRolesPage() {
           domainIds: item.domainLinks.map((link) => link.domainId),
           updatedAt: item.updatedAt.toISOString(),
         }))}
+        initialEditSlug={sp.edit?.trim() || null}
         skills={skills}
         rules={rules}
         domains={domains}

@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { catalogPublishStatusLabel, stringArrayFromJson } from "@/lib/catalog";
-import { AI_SPEC_PACKAGE_SPEC, buildAiSpecInitCommand, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
+import {
+  AI_SPEC_PACKAGE_SPEC,
+  buildAiSpecFirstInstallCommand,
+  buildAiSpecSyncCommand,
+} from "@/lib/ai-spec-cli";
 import { formatDateTimeShanghai } from "@/lib/date-format";
 
 export const dynamic = "force-dynamic";
@@ -43,12 +47,14 @@ export default async function AdminInstallPresetsPage() {
             const profiles = stringArrayFromJson(item.supportedProfiles);
             const profile = profiles[0] ?? "default";
             const ides = stringArrayFromJson(item.recommendedIdes);
-            const manifestUrl = `${origin}/api/manifests/scenarios/${encodeURIComponent(item.slug)}`;
+            const manifestUrl = `${origin}/api/manifests/scenarios/${encodeURIComponent(item.slug)}?profile=${encodeURIComponent(profile)}`;
             const installUrl = `/install?scenario=${encodeURIComponent(item.slug)}`;
-            const localManifestFilename = `${item.slug}.manifest.json`;
-            const initCommand = buildAiSpecInitCommand({ profile, ides });
+            const firstInstallCommand = buildAiSpecFirstInstallCommand({
+              profile,
+              ides,
+              manifestRef: manifestUrl,
+            });
             const syncCommand = buildAiSpecSyncCommand({ manifestRef: manifestUrl });
-            const localSyncCommand = buildAiSpecSyncCommand({ manifestRef: `./${localManifestFilename}` });
 
             return (
               <section
@@ -94,21 +100,15 @@ export default async function AdminInstallPresetsPage() {
                     </pre>
                   </div>
                   <div>
-                    <p className="mb-2 text-sm text-[var(--pixel-fg)]">10.1 初始化安装</p>
+                    <p className="mb-2 text-sm text-[var(--pixel-fg)]">10.1 首次接入（初始化 + 首次同步）</p>
                     <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                      {initCommand}
+                      {firstInstallCommand}
                     </pre>
                   </div>
                   <div>
-                    <p className="mb-2 text-sm text-[var(--pixel-fg)]">10.2 增量同步</p>
+                    <p className="mb-2 text-sm text-[var(--pixel-fg)]">10.2 后续增量同步</p>
                     <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
                       {syncCommand}
-                    </pre>
-                  </div>
-                  <div>
-                    <p className="mb-2 text-sm text-[var(--pixel-fg)]">10.3 本地 manifest 同步</p>
-                    <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                      {localSyncCommand}
                     </pre>
                   </div>
                 </div>

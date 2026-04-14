@@ -5,6 +5,7 @@ import path from "node:path";
 import process from "node:process";
 import { sanitizeCatalogSlug } from "../src/lib/catalog-slug";
 import { takeHeadingAndFirstParagraph } from "../src/lib/first-paragraph";
+import { resolveRuleImportPreset, type RuleImportPreset } from "../src/lib/hub-registry-contract";
 import { metaToRuleHints, parseSkillMd } from "../src/lib/skill-md-parse";
 
 type CliOptions = {
@@ -31,19 +32,14 @@ type RulePackage = {
   relativePath: string;
   name: string;
   slug: string;
+  registryId: string;
+  manifestId: string;
   description: string;
   longDescription: string;
   author: string;
   categorySlug: string;
   tags: string[];
   files: FileEntry[];
-};
-
-type RulePreset = {
-  name: string;
-  slug: string;
-  tags: string[];
-  categorySlug?: string;
 };
 
 const DEFAULT_API = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
@@ -63,112 +59,6 @@ const SKIP_DIR_NAMES = new Set([
   "dist",
   "node_modules",
 ]);
-
-const RULE_PRESETS: Record<string, RulePreset> = {
-  "common/02-编码规范.md": {
-    name: "编码规范",
-    slug: "coding-guidelines",
-    tags: ["TypeScript", "JavaScript", "命名规范", "代码实现"],
-  },
-  "common/05-API规范.md": {
-    name: "API规范",
-    slug: "api-guidelines",
-    tags: ["API", "接口规范", "前后端协作", "代码实现"],
-  },
-  "common/08-通用约束.md": {
-    name: "通用约束",
-    slug: "general-constraints",
-    tags: ["通用约束", "工程规范", "ai-spec", "协作"],
-  },
-  "common/10-文档规范.md": {
-    name: "文档规范",
-    slug: "documentation-guidelines",
-    tags: ["文档规范", "技术写作", "协作", "ai-spec"],
-  },
-  "common/11-测试规范.md": {
-    name: "测试规范",
-    slug: "testing-guidelines",
-    tags: ["测试", "Vitest", "质量保障", "代码实现"],
-  },
-  "common/12-Superpowers执行规范.md": {
-    name: "Superpowers执行规范",
-    slug: "superpowers-execution-guidelines",
-    tags: ["Superpowers", "任务执行", "工作流", "ai-spec"],
-    categorySlug: "workflow-templates",
-  },
-  "common/13-代码格式化与检查.md": {
-    name: "代码格式化与检查",
-    slug: "code-formatting-and-checks",
-    tags: ["ESLint", "Prettier", "代码检查", "工程规范"],
-  },
-  "common/14-审计汇报规范.md": {
-    name: "审计汇报规范",
-    slug: "audit-reporting-guidelines",
-    tags: ["审计汇报", "质量保障", "工作流", "ai-spec"],
-  },
-  "profiles/react/01-项目概述.md": {
-    name: "React项目概述",
-    slug: "react-project-overview",
-    tags: ["React", "项目概述", "项目初始化", "ai-spec"],
-  },
-  "profiles/react/03-项目结构.md": {
-    name: "React项目结构",
-    slug: "react-project-structure",
-    tags: ["React", "项目结构", "工程规范", "ai-spec"],
-  },
-  "profiles/react/04-组件规范.md": {
-    name: "React组件规范",
-    slug: "react-component-guidelines",
-    tags: ["React", "组件开发", "Hooks", "代码实现"],
-  },
-  "profiles/react/06-路由规范.md": {
-    name: "React路由规范",
-    slug: "react-routing-guidelines",
-    tags: ["React", "路由", "页面开发", "代码实现"],
-    categorySlug: "routing-rules",
-  },
-  "profiles/react/07-状态管理.md": {
-    name: "React状态管理规范",
-    slug: "react-state-management",
-    tags: ["React", "状态管理", "Redux", "Zustand"],
-  },
-  "profiles/react/09-样式规范.md": {
-    name: "React样式规范",
-    slug: "react-style-guidelines",
-    tags: ["React", "CSS", "样式规范", "主题变量"],
-  },
-  "profiles/vue/01-项目概述.md": {
-    name: "Vue项目概述",
-    slug: "vue-project-overview",
-    tags: ["Vue", "项目概述", "项目初始化", "ai-spec"],
-  },
-  "profiles/vue/03-项目结构.md": {
-    name: "Vue项目结构",
-    slug: "vue-project-structure",
-    tags: ["Vue", "项目结构", "工程规范", "ai-spec"],
-  },
-  "profiles/vue/04-组件规范.md": {
-    name: "Vue组件规范",
-    slug: "vue-component-guidelines",
-    tags: ["Vue", "组件开发", "SFC", "代码实现"],
-  },
-  "profiles/vue/06-路由规范.md": {
-    name: "Vue路由规范",
-    slug: "vue-routing-guidelines",
-    tags: ["Vue", "路由", "页面开发", "代码实现"],
-    categorySlug: "routing-rules",
-  },
-  "profiles/vue/07-状态管理.md": {
-    name: "Vue状态管理规范",
-    slug: "vue-state-management",
-    tags: ["Vue", "状态管理", "Pinia", "代码实现"],
-  },
-  "profiles/vue/09-样式规范.md": {
-    name: "Vue样式规范",
-    slug: "vue-style-guidelines",
-    tags: ["Vue", "CSS", "样式规范", "主题变量"],
-  },
-};
 
 function printHelp(): void {
   console.log(`
@@ -428,7 +318,7 @@ function inferTags(relativePath: string, name: string, description: string): str
   return dedupeTags(tags).slice(0, 4);
 }
 
-function inferCategory(relativePath: string, opts: CliOptions, preset?: RulePreset): string {
+function inferCategory(relativePath: string, opts: CliOptions, preset?: RuleImportPreset | null): string {
   if (opts.category?.trim()) return opts.category.trim();
   if (preset?.categorySlug) return preset.categorySlug;
   if (relativePath.includes("路由规范")) return "routing-rules";
@@ -447,11 +337,11 @@ async function buildRulePackage(
   const hints = metaToRuleHints(parsed.meta);
   const relativePath =
     normalizeRelativePath(path.relative(sourceRoot, filePath)) || path.basename(filePath);
-  const preset = RULE_PRESETS[relativePath];
+  const preset = resolveRuleImportPreset(relativePath);
   const prefix = frameworkPrefix(relativePath);
   const heading = findFirstHeading(parsed.body);
   const fallbackName = fallbackNameFromRelativePath(relativePath);
-  const rawName = preset?.name || hints.name?.trim() || heading || fallbackName;
+  const rawName = hints.name?.trim() || heading || fallbackName;
   const name =
     prefix && !rawName.startsWith(prefix) && relativePath.startsWith("profiles/")
       ? `${prefix}${rawName}`
@@ -465,8 +355,10 @@ async function buildRulePackage(
     process.env.HUB_ACTOR?.trim() ||
     process.env.USER?.trim() ||
     "local-import";
-  const tags = dedupeTags(preset?.tags || inferTags(relativePath, name, description));
-  const slug = preset?.slug || stableFallbackSlug(relativePath);
+  const tags = dedupeTags(preset?.tags ?? inferTags(relativePath, name, description));
+  const slug = preset?.slug ?? stableFallbackSlug(relativePath);
+  const registryId = preset?.registryId ?? slug;
+  const manifestId = registryId;
   const categorySlug = inferCategory(relativePath, opts, preset);
 
   return {
@@ -474,6 +366,8 @@ async function buildRulePackage(
     relativePath,
     name,
     slug,
+    registryId,
+    manifestId,
     description,
     longDescription,
     author,
@@ -530,6 +424,8 @@ async function postRule(pkg: RulePackage, opts: CliOptions): Promise<{ slug?: st
   const payload = {
     name: pkg.name,
     slug: pkg.slug,
+    registryId: pkg.registryId,
+    manifestId: pkg.manifestId,
     description: pkg.description,
     author: pkg.author,
     categorySlug: pkg.categorySlug,

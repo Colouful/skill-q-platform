@@ -6,10 +6,10 @@ import {
   type ScenarioManifest,
 } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
-import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
+import { toManifestRoleId, toManifestRoleIds, toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
 import { CATALOG_PUBLISH_STATUS, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
-import { buildAiSpecInitCommand, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
+import { buildAiSpecFirstInstallCommand, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
 
 export type InstallPreviewInput = {
   profile?: string;
@@ -28,9 +28,8 @@ export type InstallPreviewResult = {
   warnings: string[];
   remoteManifestUrl: string | null;
   commands: {
-    init: string;
-    syncRemote: string;
-    syncLocal: string;
+    firstInstall: string;
+    syncIncremental: string;
   };
 };
 
@@ -171,12 +170,9 @@ export async function buildInstallPreview(
     }),
   );
 
-  const scenarioRoleSlugs = resolvedScenarioSelections.flatMap((item) => item.roleSlugs);
-  const combinedRoleSlugs = [
-    ...scenarioRoleSlugs,
-    ...directRoles
-      .map((item) => item.slug)
-      .filter((slug) => explicitExternalRoleSlugs.includes(slug)),
+  const combinedRoleAssets = [
+    ...resolvedScenarioSelections.flatMap((item) => item.roles),
+    ...directRoles.filter((item) => explicitExternalRoleSlugs.includes(item.slug)),
   ];
   const combinedSkillAssets = useExplicitSkills
     ? directSkills
@@ -191,12 +187,19 @@ export async function buildInstallPreview(
     profile: effectiveProfile,
     ides: requestedIdes.length > 0 ? requestedIdes : scenarioIdes,
     scenarioPackages: scenarios.map((item) => item.slug),
-    roles: combinedRoleSlugs,
+    roles: toManifestRoleIds(combinedRoleAssets),
     skills: toManifestSkillIds(combinedSkillAssets),
     rules: toManifestRuleIds(combinedRuleAssets),
     entryRole:
-      resolvedScenarioSelections.find((item) => item.entryRoleSlug)?.entryRoleSlug ??
-      combinedRoleSlugs[0] ??
+      (() => {
+        const entryRoleSlug = resolvedScenarioSelections.find((item) => item.entryRoleSlug)?.entryRoleSlug;
+        if (entryRoleSlug) {
+          const entryRole =
+            combinedRoleAssets.find((role) => role.slug === entryRoleSlug) ?? { slug: entryRoleSlug };
+          return toManifestRoleId(entryRole);
+        }
+        return combinedRoleAssets[0] ? toManifestRoleId(combinedRoleAssets[0]) : null;
+      })() ??
       null,
   });
 
@@ -212,8 +215,12 @@ export async function buildInstallPreview(
       scenarioSlug: baseScenario.slug,
       profile: manifest.profile,
       recommendedIdes: baseScenario.recommendedIdes,
-      entryRoleSlug: baseResolved.entryRoleSlug,
-      roles: baseResolved.roleSlugs,
+      entryRoleSlug: baseResolved.entryRoleSlug
+        ? toManifestRoleId(baseResolved.roles.find((role) => role.slug === baseResolved.entryRoleSlug) ?? {
+            slug: baseResolved.entryRoleSlug,
+          })
+        : null,
+      roles: toManifestRoleIds(baseResolved.roles),
       skills: toManifestSkillIds(baseResolved.resolvedSkills),
       rules: toManifestRuleIds(baseResolved.resolvedRules),
     });
@@ -225,20 +232,18 @@ export async function buildInstallPreview(
   }
 
   const manifestRef = remoteManifestUrl ?? "./manifest.json";
-  const localManifestFilename =
-    scenarios.length === 1 ? `${scenarios[0]!.slug}.manifest.json` : "ai-spec.manifest.json";
 
   return {
     manifest,
     warnings,
     remoteManifestUrl,
     commands: {
-      init: buildAiSpecInitCommand({
+      firstInstall: buildAiSpecFirstInstallCommand({
         profile: manifest.profile,
         ides: manifest.ides,
+        manifestRef,
       }),
-      syncRemote: buildAiSpecSyncCommand({ manifestRef }),
-      syncLocal: buildAiSpecSyncCommand({ manifestRef: `./${localManifestFilename}` }),
+      syncIncremental: buildAiSpecSyncCommand({ manifestRef }),
     },
   };
 }

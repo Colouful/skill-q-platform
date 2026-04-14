@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { MarkdownArticle } from "@/components/markdown/markdown-article";
 import { buildScenarioManifest, normalizeManifestProfile } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
 import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
@@ -8,7 +9,12 @@ import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus, stringArrayFromJson }
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { prisma } from "@/lib/prisma";
 import { rolePath, rulePath, scenarioPath, skillPath } from "@/lib/slug-url";
-import { AI_SPEC_PACKAGE_SPEC, buildAiSpecInitCommand, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
+import { stripLeadingFrontmatter } from "@/lib/markdown-frontmatter";
+import {
+  AI_SPEC_PACKAGE_SPEC,
+  buildAiSpecFirstInstallCommand,
+  buildAiSpecSyncCommand,
+} from "@/lib/ai-spec-cli";
 
 export const dynamic = "force-dynamic";
 
@@ -78,27 +84,28 @@ export default async function ScenarioDetailPage({
   }
 
   const profiles = stringArrayFromJson(scenario.supportedProfiles);
-  const effectiveProfile = normalizeManifestProfile(profiles[0] || "default");
-  const resolved = resolveScenarioAssets(scenario, { profile: effectiveProfile });
+  const manifestProfile = normalizeManifestProfile(profiles[0] || "default");
+  const resolved = resolveScenarioAssets(scenario);
+  const manifestResolved = resolveScenarioAssets(scenario, { profile: manifestProfile });
   const manifest = buildScenarioManifest({
     scenarioSlug: scenario.slug,
-    profile: effectiveProfile,
+    profile: manifestProfile,
     recommendedIdes: scenario.recommendedIdes,
-    entryRoleSlug: resolved.entryRoleSlug,
-    roles: resolved.roleSlugs,
-    skills: toManifestSkillIds(resolved.resolvedSkills),
-    rules: toManifestRuleIds(resolved.resolvedRules),
+    entryRoleSlug: manifestResolved.entryRoleSlug,
+    roles: manifestResolved.roleSlugs,
+    skills: toManifestSkillIds(manifestResolved.resolvedSkills),
+    rules: toManifestRuleIds(manifestResolved.resolvedRules),
   });
 
   const ides = stringArrayFromJson(scenario.recommendedIdes);
+  const longDescriptionMarkdown = stripLeadingFrontmatter(scenario.longDescription);
   const manifestUrl = `${siteOrigin()}/api/manifests/scenarios/${encodeURIComponent(scenario.slug)}?profile=${encodeURIComponent(manifest.profile)}`;
-  const localManifestFilename = `${scenario.slug}.manifest.json`;
-  const initCommand = buildAiSpecInitCommand({
+  const firstInstallCommand = buildAiSpecFirstInstallCommand({
     profile: manifest.profile,
     ides: manifest.ides,
+    manifestRef: manifestUrl,
   });
   const syncCommand = buildAiSpecSyncCommand({ manifestRef: manifestUrl });
-  const localSyncCommand = buildAiSpecSyncCommand({ manifestRef: `./${localManifestFilename}` });
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl space-y-8 pb-8">
@@ -119,7 +126,7 @@ export default async function ScenarioDetailPage({
             {scenario.name}
           </h1>
           <p className="max-w-3xl font-[family-name:var(--font-pixel-body)] text-base text-[var(--pixel-muted)]">
-            {scenario.longDescription || scenario.description}
+            {scenario.description}
           </p>
         </div>
 
@@ -141,6 +148,28 @@ export default async function ScenarioDetailPage({
           ))}
         </div>
       </div>
+
+      <section className="border-2 border-[var(--pixel-border)] bg-[#fffef8] px-4 py-3">
+        <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+          左侧展示的是场景全量结构；右侧 Manifest 预览是按 {manifest.profile} profile 生成的安装清单。
+        </p>
+      </section>
+
+      {longDescriptionMarkdown ? (
+        <section className="border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 shadow-[4px_4px_0_0_var(--pixel-border)]">
+          <details>
+            <summary className="cursor-pointer list-none font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
+              查看完整模板说明
+            </summary>
+            <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+              已隐藏 frontmatter，以下内容按 Markdown 结构展示。
+            </p>
+            <div className="mt-4 border-t-2 border-[var(--pixel-border)] pt-4">
+              <MarkdownArticle content={longDescriptionMarkdown} />
+            </div>
+          </details>
+        </section>
+      ) : null}
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_1.1fr_0.9fr]">
         <section className="space-y-6">
@@ -181,8 +210,11 @@ export default async function ScenarioDetailPage({
 
           <section className="space-y-3">
             <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
-              汇总 Skill
+              场景全量 Skill
             </h2>
+            <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+              这里展示专家链与场景补充项聚合后的全部 Skill，不按 profile 裁剪。
+            </p>
             <div className="space-y-3">
               {resolved.resolvedSkills.length === 0 ? (
                 <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
@@ -213,8 +245,11 @@ export default async function ScenarioDetailPage({
         <section className="space-y-6">
           <section className="space-y-3">
             <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
-              汇总 Rule
+              场景全量 Rule
             </h2>
+            <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+              这里展示专家链与场景补充项聚合后的全部 Rule，不按 profile 裁剪。
+            </p>
             <div className="space-y-3">
               {resolved.resolvedRules.length === 0 ? (
                 <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
@@ -243,7 +278,7 @@ export default async function ScenarioDetailPage({
 
           <section className="border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 shadow-[4px_4px_0_0_var(--pixel-border)]">
             <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
-              方案摘要
+              场景结构摘要
             </h2>
             <dl className="mt-4 space-y-3 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
               <div className="flex items-center justify-between gap-4">
@@ -255,11 +290,11 @@ export default async function ScenarioDetailPage({
                 <dd>{scenario.roles.length}</dd>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <dt>Skill 数</dt>
+                <dt>Skill 数（全量）</dt>
                 <dd>{resolved.resolvedSkills.length}</dd>
               </div>
               <div className="flex items-center justify-between gap-4">
-                <dt>Rule 数</dt>
+                <dt>Rule 数（全量）</dt>
                 <dd>{resolved.resolvedRules.length}</dd>
               </div>
             </dl>
@@ -269,8 +304,11 @@ export default async function ScenarioDetailPage({
         <aside className="space-y-4">
           <section className="border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 shadow-[4px_4px_0_0_var(--pixel-border)]">
             <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
-              Manifest 预览
+              安装 Manifest 预览
             </h2>
+            <p className="mt-2 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+              当前安装清单按 {manifest.profile} profile 生成，并会把同类资源归一化成安装用 ID。
+            </p>
             <pre className="mt-4 overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
               {JSON.stringify(manifest, null, 2)}
             </pre>
@@ -288,26 +326,18 @@ export default async function ScenarioDetailPage({
             <div className="mt-4 space-y-3">
               <div className="space-y-2">
                 <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                  10.1 初始化安装
+                  10.1 首次接入（初始化 + 首次同步）
                 </p>
                 <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                  {initCommand}
+                  {firstInstallCommand}
                 </pre>
               </div>
               <div className="space-y-2">
                 <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                  10.2 增量同步
+                  10.2 后续增量同步
                 </p>
                 <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
                   {syncCommand}
-                </pre>
-              </div>
-              <div className="space-y-2">
-                <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                  10.3 本地 manifest 同步
-                </p>
-                <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                  {localSyncCommand}
                 </pre>
               </div>
               <div className="flex flex-wrap gap-3">
@@ -318,10 +348,10 @@ export default async function ScenarioDetailPage({
                   打开项目接入
                 </Link>
                 <Link
-                  href={`/api/manifests/scenarios/${encodeURIComponent(scenario.slug)}`}
+                  href={`/api/manifests/scenarios/${encodeURIComponent(scenario.slug)}?profile=${encodeURIComponent(manifest.profile)}`}
                   className="inline-flex items-center justify-center border-2 border-[var(--pixel-border)] bg-[#fffef8] px-3 py-2 font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-fg)]"
                 >
-                  下载 {localManifestFilename}
+                  打开 Manifest
                 </Link>
               </div>
             </div>

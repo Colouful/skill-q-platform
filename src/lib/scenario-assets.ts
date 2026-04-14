@@ -45,6 +45,18 @@ function normalizeScenarioProfile(profile?: string | null): string {
   return cleaned || "default";
 }
 
+function matchesProfileToken(candidate: string, profile: string): boolean {
+  const normalizedCandidate = candidate.trim().toLowerCase();
+  if (!normalizedCandidate) return false;
+  if (normalizedCandidate === profile) return true;
+  if (normalizedCandidate === "common" || normalizedCandidate === "shared" || normalizedCandidate === "all") {
+    return true;
+  }
+  if (normalizedCandidate === `${profile}.common`) return true;
+  if (normalizedCandidate === `${profile}.shared`) return true;
+  return false;
+}
+
 function matchesProfile(item: { supportedProfiles?: unknown } | null | undefined, profile: string): boolean {
   if (!item) return false;
   if (!profile || profile === "default") return true;
@@ -53,7 +65,7 @@ function matchesProfile(item: { supportedProfiles?: unknown } | null | undefined
     .map((value) => value.trim().toLowerCase())
     .filter(Boolean);
 
-  return supportedProfiles.length === 0 || supportedProfiles.includes(profile);
+  return supportedProfiles.length === 0 || supportedProfiles.some((candidate) => matchesProfileToken(candidate, profile));
 }
 
 export function resolveScenarioAssets<

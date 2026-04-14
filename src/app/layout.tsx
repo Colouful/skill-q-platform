@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -7,28 +6,6 @@ import { Providers } from "@/components/providers";
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-const devServiceWorkerCleanupScript = `
-(() => {
-  if (typeof window === "undefined") return;
-  if (!("serviceWorker" in navigator)) return;
-  navigator.serviceWorker
-    .getRegistrations()
-    .then((registrations) => Promise.allSettled(registrations.map((registration) => registration.unregister())))
-    .catch(() => {});
-  if (!("caches" in window)) return;
-  caches
-    .keys()
-    .then((keys) =>
-      Promise.allSettled(
-        keys
-          .filter((key) => key.startsWith("xiaqiu-hub-pwa-"))
-          .map((key) => caches.delete(key)),
-      ),
-    )
-    .catch(() => {});
-})();
-`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -83,13 +60,7 @@ export default function RootLayout({
       data-theme="pixel"
       suppressHydrationWarning
     >
-      <head>
-        {process.env.NODE_ENV !== "production" ? (
-          <Script id="dev-service-worker-cleanup" strategy="beforeInteractive">
-            {devServiceWorkerCleanupScript}
-          </Script>
-        ) : null}
-      </head>
+      <head />
       <body suppressHydrationWarning className="min-h-0 overflow-hidden antialiased">
         <Providers>
           <a

@@ -5,7 +5,9 @@ import { getAdminFromRequest } from "@/lib/admin-auth";
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { ASCII_URL_SLUG } from "@/lib/catalog-slug";
+import { normalizeRegistryLikeId } from "@/lib/hub-registry-contract";
 import { normalizeSupportedProfilesList } from "@/lib/profile-options";
+import { assertUniqueRegistryFields } from "@/lib/registry-id-validation";
 import { assertSkillRuleWriteAccess } from "@/lib/skill-rule-write-access";
 import { isPublishedModeration } from "@/lib/moderation";
 import { z } from "zod";
@@ -17,6 +19,8 @@ const downloadPolicyEnum = z.enum(["public", "login", "author"]);
 const patchBody = z.object({
   name: z.string().min(1).max(255).optional(),
   slug: z.string().min(1).optional(),
+  registryId: z.string().min(1).max(255).nullable().optional(),
+  manifestId: z.string().min(1).max(255).nullable().optional(),
   description: z.string().min(1).optional(),
   longDescription: z.string().nullable().optional(),
   author: z.string().min(1).max(100).optional(),
@@ -102,6 +106,28 @@ export async function POST(req: Request, ctx: { params: Promise<{ slug: string }
       data.supportedProfiles = supportedProfiles.profiles;
     }
     if (b.name !== undefined) data.name = b.name.trim();
+    if (b.registryId !== undefined) {
+      if (b.registryId === null) {
+        data.registryId = null;
+      } else {
+        const nextRegistryId = normalizeRegistryLikeId(b.registryId);
+        if (!nextRegistryId) {
+          return jsonErr("registryId 仅支持小写字母、数字、点、下划线和中划线", 400);
+        }
+        data.registryId = nextRegistryId;
+      }
+    }
+    if (b.manifestId !== undefined) {
+      if (b.manifestId === null) {
+        data.manifestId = null;
+      } else {
+        const nextManifestId = normalizeRegistryLikeId(b.manifestId);
+        if (!nextManifestId) {
+          return jsonErr("manifestId 仅支持小写字母、数字、点、下划线和中划线", 400);
+        }
+        data.manifestId = nextManifestId;
+      }
+    }
     if (b.slug !== undefined) {
       const nextSlug = b.slug.trim().toLowerCase();
       if (!nextSlug) {
@@ -137,6 +163,26 @@ export async function POST(req: Request, ctx: { params: Promise<{ slug: string }
         return jsonErr("分类不存在", 400);
       }
       data.category = { connect: { id: cat.id } };
+    }
+
+    const duplicateIssues = await assertUniqueRegistryFields({
+      resourceType: "rule",
+      registryId:
+        b.registryId === undefined
+          ? existing.registryId
+          : b.registryId === null
+            ? null
+            : normalizeRegistryLikeId(b.registryId),
+      manifestId:
+        b.manifestId === undefined
+          ? existing.manifestId
+          : b.manifestId === null
+            ? null
+            : normalizeRegistryLikeId(b.manifestId),
+      excludeId: existing.id,
+    });
+    if (duplicateIssues.length > 0) {
+      return jsonErr(duplicateIssues.join("；"), 409);
     }
 
     const rule = await prisma.rule.update({

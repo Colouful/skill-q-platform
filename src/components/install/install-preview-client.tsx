@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { fetchApi } from "@/lib/client-api";
 import { AdminOptionChecklist } from "@/components/admin/AdminOptionChecklist";
-import { AI_SPEC_PACKAGE_SPEC, buildAiSpecSyncCommand } from "@/lib/ai-spec-cli";
+import { AI_SPEC_PACKAGE_SPEC } from "@/lib/ai-spec-cli";
 
 type InstallOption = {
   slug: string;
@@ -44,9 +44,8 @@ type PreviewResponse = {
   warnings: string[];
   remoteManifestUrl: string | null;
   commands: {
-    init: string;
-    syncRemote: string;
-    syncLocal: string;
+    firstInstall: string;
+    syncIncremental: string;
   };
 };
 
@@ -317,9 +316,6 @@ export function InstallPreviewClient({
   const roleOptions = selectedScenario.roles.map((item) => ({ id: item.slug, label: item.name, caption: item.slug }));
   const skillOptions = selectedScenario.skills.map((item) => ({ id: item.slug, label: item.name, caption: item.slug }));
   const ruleOptions = selectedScenario.rules.map((item) => ({ id: item.slug, label: item.name, caption: item.slug }));
-  const localManifestFilename = `${selectedScenario.slug}.manifest.json`;
-  const localSyncCommand = buildAiSpecSyncCommand({ manifestRef: `./${localManifestFilename}` });
-
   return (
     <div className="grid gap-6 xl:grid-cols-[1.3fr_0.9fr]">
       <section className="space-y-6">
@@ -374,6 +370,9 @@ export function InstallPreviewClient({
                   <p className="mt-auto font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
                     专家 {scenario.roles.length} · 汇总 Skill {scenario.skills.length} · 汇总 Rule {scenario.rules.length}
                   </p>
+                  <p className="font-[family-name:var(--font-pixel-body)] text-[11px] text-[var(--pixel-muted)]">
+                    场景统计为全量资源数，安装 manifest 会按 profile 归一化后收敛。
+                  </p>
                 </div>
               </div>
             ))}
@@ -386,6 +385,9 @@ export function InstallPreviewClient({
           </h2>
           <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
             Skill / Rule 默认会随当前勾选的专家自动聚合；如果你手动勾选了 Skill / Rule，后续导出会优先使用你的手工选择。
+          </p>
+          <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+            这里展示的场景统计是全量结构视图；右侧 Manifest 预览会按当前 profile 收敛成安装清单。
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             <label className="space-y-2">
@@ -455,7 +457,7 @@ export function InstallPreviewClient({
         <section className="border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 shadow-[4px_4px_0_0_var(--pixel-border)]">
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-[family-name:var(--font-pixel-heading)] text-sm text-[var(--pixel-fg)]">
-              3. Manifest 预览
+              3. 安装 Manifest 预览
             </h2>
             <Button
               type="button"
@@ -470,6 +472,9 @@ export function InstallPreviewClient({
           <pre className="mt-4 overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
             {JSON.stringify(preview?.manifest ?? {}, null, 2)}
           </pre>
+          <p className="mt-3 font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+            Manifest 使用安装态 canonical ID，同类 Vue / React 规则会在这里收敛为统一安装标识。
+          </p>
           {preview?.warnings && preview.warnings.length > 0 ? (
             <div className="mt-3 space-y-2 border-2 border-[var(--pixel-border)] bg-[var(--pixel-yellow)]/15 p-3">
               <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
@@ -496,26 +501,18 @@ export function InstallPreviewClient({
           <div className="mt-4 space-y-3">
             <div className="space-y-2">
               <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                10.1 初始化安装
+                10.1 首次接入（初始化 + 首次同步）
               </p>
               <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                {preview?.commands.init ?? ""}
+                {preview?.commands.firstInstall ?? ""}
               </pre>
             </div>
             <div className="space-y-2">
               <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                10.2 增量同步
+                10.2 后续增量同步
               </p>
               <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                {preview?.commands.syncRemote ?? ""}
-              </pre>
-            </div>
-            <div className="space-y-2">
-              <p className="font-[family-name:var(--font-pixel-heading)] text-xs text-[var(--pixel-fg)]">
-                10.3 本地 manifest 同步
-              </p>
-              <pre className="overflow-x-auto border-2 border-[var(--pixel-border)] bg-[#f7f0e0] p-3 font-mono text-xs text-[var(--pixel-fg)]">
-                {preview?.commands.syncLocal || localSyncCommand}
+                {preview?.commands.syncIncremental ?? ""}
               </pre>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -532,7 +529,7 @@ export function InstallPreviewClient({
                 className="border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]"
                 onClick={() => void downloadManifest()}
               >
-                下载 {localManifestFilename}
+                下载 Manifest（可选）
               </Button>
             </div>
           </div>

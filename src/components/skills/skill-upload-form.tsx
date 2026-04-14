@@ -36,6 +36,8 @@ export function SkillUploadForm({
   const [pending, setPending] = useState(false);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+  const [registryId, setRegistryId] = useState("");
+  const [manifestId, setManifestId] = useState("");
   const [description, setDescription] = useState("");
   const [author, setAuthor] = useState("");
   const [categorySlug, setCategorySlug] = useState(categories[0]?.slug ?? "");
@@ -74,6 +76,8 @@ export function SkillUploadForm({
       body: JSON.stringify({
         name,
         slug: slug.trim() || undefined,
+        registryId: registryId.trim() || undefined,
+        manifestId: manifestId.trim() || undefined,
         description,
         author,
         categorySlug,
@@ -163,6 +167,29 @@ export function SkillUploadForm({
           onChange={(e) => setSlug(sanitizeCatalogSlug(e.target.value))}
           placeholder="留空则创建时自动生成"
         />
+        <p className="text-xs text-[var(--pixel-muted)]">Hub 资源标识与页面路由标识。</p>
+      </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">registryId（可选）</Label>
+        <PixelInput
+          value={registryId}
+          onChange={(e) => setRegistryId(sanitizeCatalogSlug(e.target.value))}
+          placeholder="留空则默认使用 slug"
+        />
+        <p className="text-xs text-[var(--pixel-muted)]">
+          CLI registry / 导出 registry 的稳定标识。
+        </p>
+      </div>
+      <div className="space-y-2">
+        <Label className="font-[family-name:var(--font-pixel-body)]">manifestId（可选）</Label>
+        <PixelInput
+          value={manifestId}
+          onChange={(e) => setManifestId(sanitizeCatalogSlug(e.target.value))}
+          placeholder="留空则默认使用 registryId"
+        />
+        <p className="text-xs text-[var(--pixel-muted)]">
+          manifest 对外下发的安装标识；通常与 registryId 一致。
+        </p>
       </div>
       <div className="space-y-2">
         <Label className="font-[family-name:var(--font-pixel-body)]">简介</Label>

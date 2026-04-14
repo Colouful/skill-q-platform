@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PixelInput, pixelSelectClassName } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { moderationStatusLabel } from "@/lib/moderation";
+import { getHubProfileLabel } from "@/lib/profile-options";
 
 type CategoryOption = {
   id: string;
@@ -16,10 +17,16 @@ type ResourceRow = {
   id: string;
   name: string;
   slug: string;
+  registryId: string | null;
+  manifestId: string | null;
   categoryId: string;
   categoryName: string;
   tags: string[];
+  supportedProfiles: string[];
   moderationStatus: string;
+  hasRegistryId: boolean;
+  hasManifestId: boolean;
+  isCanonicalReady: boolean;
 };
 
 type BrowseResponse = {
@@ -46,6 +53,7 @@ export function AdminResourceManagementClient({
   const [qInput, setQInput] = useState("");
   const [q, setQ] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [registryStatus, setRegistryStatus] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -57,9 +65,12 @@ export function AdminResourceManagementClient({
     });
     if (q.trim()) params.set("q", q.trim());
     if (categoryId) params.set("categoryId", categoryId);
+    if (registryStatus) params.set("registryStatus", registryStatus);
 
     void (async () => {
-      const res = await fetchApi<BrowseResponse>(`/api/admin/resources/browse?${params.toString()}`);
+      const res = await fetchApi<BrowseResponse>(
+        `/api/admin/resources/browse?${params.toString()}`,
+      );
       if (cancelled) return;
       if (res.code !== 0 || !res.data) {
         setItems([]);
@@ -75,18 +86,25 @@ export function AdminResourceManagementClient({
     return () => {
       cancelled = true;
     };
-  }, [categoryId, page, pageSize, q, resourceType]);
+  }, [categoryId, page, pageSize, q, registryStatus, resourceType]);
 
   const title = resourceType === "skill" ? "Skill 管理" : "Rule 管理";
   const createLabel = resourceType === "skill" ? "新增 Skill" : "新增 Rule";
   const emptyLabel = resourceType === "skill" ? "暂无 Skill" : "暂无 Rule";
   const previewPath = (slug: string) =>
-    resourceType === "skill" ? `/skills/${encodeURIComponent(slug)}` : `/rules/${encodeURIComponent(slug)}`;
+    resourceType === "skill"
+      ? `/skills/${encodeURIComponent(slug)}`
+      : `/rules/${encodeURIComponent(slug)}`;
   const editPath = (slug: string) =>
     resourceType === "skill"
       ? `/admin/skills/${encodeURIComponent(slug)}/edit`
       : `/admin/rules/${encodeURIComponent(slug)}/edit`;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  function formatProfiles(profiles: string[]) {
+    if (profiles.length === 0) return getHubProfileLabel("common");
+    return profiles.map((profile) => getHubProfileLabel(profile)).join(" / ");
+  }
 
   function submitSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -112,7 +130,10 @@ export function AdminResourceManagementClient({
         </Link>
       </div>
 
-      <form onSubmit={submitSearch} className="grid gap-3 border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 md:grid-cols-[1fr_220px_auto]">
+      <form
+        onSubmit={submitSearch}
+        className="grid gap-3 border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 md:grid-cols-[1fr_220px_220px_auto]"
+      >
         <PixelInput
           value={qInput}
           onChange={(e) => setQInput(e.target.value)}
@@ -133,11 +154,20 @@ export function AdminResourceManagementClient({
             </option>
           ))}
         </select>
-        <Button
-          type="submit"
-          variant="outline"
-          className="border-2 border-[var(--pixel-border)]"
+        <select
+          value={registryStatus}
+          onChange={(e) => {
+            setRegistryStatus(e.target.value);
+            setPage(1);
+          }}
+          className={pixelSelectClassName}
         >
+          <option value="">全部协议状态</option>
+          <option value="missing-registry">缺 registryId</option>
+          <option value="missing-manifest">缺 manifestId</option>
+          <option value="mismatch">协议字段不一致</option>
+        </select>
+        <Button type="submit" variant="outline" className="border-2 border-[var(--pixel-border)]">
           搜索
         </Button>
       </form>
@@ -148,7 +178,10 @@ export function AdminResourceManagementClient({
             <tr className="border-b-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/20">
               <th className="p-2">名称</th>
               <th className="p-2">标识（Slug）</th>
+              <th className="p-2">registryId</th>
+              <th className="p-2">manifestId</th>
               <th className="p-2">分类</th>
+              <th className="w-32 min-w-32 p-2">Profile</th>
               <th className="p-2">标签</th>
               <th className="w-28 min-w-28 p-2">审核状态</th>
               <th className="w-32 min-w-32 p-2">操作</th>
@@ -157,13 +190,13 @@ export function AdminResourceManagementClient({
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={6} className="p-4 text-[var(--pixel-muted)]">
+                <td colSpan={9} className="p-4 text-[var(--pixel-muted)]">
                   载入中…
                 </td>
               </tr>
             ) : items.length === 0 ? (
               <tr>
-                <td colSpan={6} className="p-4 text-[var(--pixel-muted)]">
+                <td colSpan={9} className="p-4 text-[var(--pixel-muted)]">
                   {emptyLabel}
                 </td>
               </tr>
@@ -172,7 +205,16 @@ export function AdminResourceManagementClient({
                 <tr key={item.id} className="border-b border-[var(--pixel-border)]/60">
                   <td className="p-2 text-[var(--pixel-fg)]">{item.name}</td>
                   <td className="p-2 text-[var(--pixel-muted)]">{item.slug}</td>
+                  <td className="p-2 text-[var(--pixel-muted)]">
+                    {item.registryId || <span className="text-[var(--pixel-accent)]">未设置</span>}
+                  </td>
+                  <td className="p-2 text-[var(--pixel-muted)]">
+                    {item.manifestId || <span className="text-[var(--pixel-accent)]">未设置</span>}
+                  </td>
                   <td className="p-2">{item.categoryName}</td>
+                  <td className="w-32 min-w-32 p-2 text-[var(--pixel-muted)] whitespace-nowrap">
+                    {formatProfiles(item.supportedProfiles)}
+                  </td>
                   <td className="p-2 text-[var(--pixel-muted)]">
                     {item.tags.length > 0 ? item.tags.join(" / ") : "无"}
                   </td>

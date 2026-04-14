@@ -9,6 +9,8 @@ import {
   getHubProfileLabel,
   readStoredSupportedProfiles,
 } from "@/lib/profile-options";
+import { normalizeRegistryLikeId } from "@/lib/hub-registry-contract";
+import { toRoleProtocolId } from "@/lib/role-registry-id";
 import { isRuleManifestPath, isRulePrimaryMarkdownPath } from "@/lib/rule-manifest-path";
 import { buildInstallManifest, type ScenarioManifest } from "@/lib/scenario-manifest";
 import { metaToRuleHints, metaToSkillHints, parseSkillMd } from "@/lib/skill-md-parse";
@@ -23,6 +25,7 @@ type ExportAssetReport = {
   hubSlug: string;
   hubName: string;
   registryId: string;
+  version?: string;
   mode: "common" | "profiled";
   profiles: string[];
   source?: string;
@@ -32,6 +35,7 @@ type ExportAssetReport = {
 type ExportRoleReport = {
   hubSlug: string;
   registryId: string;
+  version?: string;
   source: string;
   skills: string[];
   rules: string[];
@@ -65,10 +69,20 @@ export type BrAiSpecExportBundle = {
   files: ExportFileEntry[];
 };
 
+export type BrAiSpecRegistrySnapshot = {
+  profiles: Record<string, unknown>;
+  skills: Record<string, unknown>;
+  rules: Record<string, unknown>;
+  roles: Record<string, unknown>;
+  flows: Record<string, unknown>;
+  scenario_packages?: Record<string, unknown>;
+};
+
 type VersionLike = {
   files: unknown;
   isLatest: boolean;
   createdAt: Date;
+  version?: string | null;
 };
 
 type SlotOwner = {
@@ -80,6 +94,7 @@ type AssetFilesPlan = {
   mainContent: string;
   extraFiles: SkillFileEntry[];
   hasManifestFile: boolean;
+  versionLabel: string | null;
 };
 
 const COMMON_SLOT = "common";
@@ -362,6 +377,7 @@ function buildSkillFilesPlan(input: {
     mainContent,
     extraFiles: files.filter((item) => item !== manifestFile),
     hasManifestFile: !!manifestFile,
+    versionLabel: version?.version?.trim() || null,
   };
 }
 
@@ -403,6 +419,7 @@ function buildRuleFilesPlan(input: {
     mainContent,
     extraFiles: files.filter((item) => item !== manifestFile),
     hasManifestFile: !!manifestFile,
+    versionLabel: version?.version?.trim() || null,
   };
 }
 
@@ -811,13 +828,16 @@ export async function buildBrAiSpecExportBundle(
       versions: skill.versions,
       warnings,
     });
-    const registryId = inferSkillRegistryId({
-      hubSlug: skill.slug,
-      hubName: skill.name,
-      manifestContent: filesPlan.mainContent,
-      profiles,
-      knownProfiles,
-    });
+    const registryId =
+      normalizeRegistryLikeId(skill.manifestId) ??
+      normalizeRegistryLikeId(skill.registryId) ??
+      inferSkillRegistryId({
+        hubSlug: skill.slug,
+        hubName: skill.name,
+        manifestContent: filesPlan.mainContent,
+        profiles,
+        knownProfiles,
+      });
     if (!filesPlan.hasManifestFile) {
       filesPlan.mainContent = buildSkillManifestMarkdown({
         registryId,
@@ -884,6 +904,7 @@ export async function buildBrAiSpecExportBundle(
       hubSlug: skill.slug,
       hubName: skill.name,
       registryId,
+      ...(filesPlan.versionLabel ? { version: filesPlan.versionLabel } : {}),
       mode: profiles.length > 0 ? "profiled" : "common",
       profiles,
       ...(registryEntry.source ? { source: registryEntry.source } : {}),
@@ -914,13 +935,16 @@ export async function buildBrAiSpecExportBundle(
       versions: rule.versions,
       warnings,
     });
-    const registryId = inferRuleRegistryId({
-      hubSlug: rule.slug,
-      hubName: rule.name,
-      manifestContent: filesPlan.mainContent,
-      profiles,
-      knownProfiles,
-    });
+    const registryId =
+      normalizeRegistryLikeId(rule.manifestId) ??
+      normalizeRegistryLikeId(rule.registryId) ??
+      inferRuleRegistryId({
+        hubSlug: rule.slug,
+        hubName: rule.name,
+        manifestContent: filesPlan.mainContent,
+        profiles,
+        knownProfiles,
+      });
     const registryEntry =
       ruleRegistryEntries.get(registryId) ??
       {
@@ -979,6 +1003,7 @@ export async function buildBrAiSpecExportBundle(
       hubSlug: rule.slug,
       hubName: rule.name,
       registryId,
+      ...(filesPlan.versionLabel ? { version: filesPlan.versionLabel } : {}),
       mode: profiles.length > 0 ? "profiled" : "common",
       profiles,
       ...(registryEntry.source ? { source: registryEntry.source } : {}),
@@ -988,9 +1013,12 @@ export async function buildBrAiSpecExportBundle(
 
   const roleSkillIds = new Map<string, string[]>();
   const roleRuleIds = new Map<string, string[]>();
+  const roleProtocolIdByHubSlug = new Map<string, string>();
   const roleReports: ExportRoleReport[] = [];
   const rolesRegistry: Record<string, Record<string, unknown>> = {};
   for (const role of roles) {
+    const roleProtocolId = toRoleProtocolId(role);
+    const latestRoleVersion = pickLatestVersion(role.versions);
     const exportedSkillIds = uniqueList(
       role.skillLinks
         .map((link) => skillRegistryIdByHubSlug.get(link.skill.slug) ?? null)
@@ -1001,14 +1029,15 @@ export async function buildBrAiSpecExportBundle(
         .map((link) => ruleRegistryIdByHubSlug.get(link.rule.slug) ?? null)
         .filter((item): item is string => !!item),
     );
-    roleSkillIds.set(role.slug, exportedSkillIds);
-    roleRuleIds.set(role.slug, exportedRuleIds);
+    roleSkillIds.set(roleProtocolId, exportedSkillIds);
+    roleRuleIds.set(roleProtocolId, exportedRuleIds);
+    roleProtocolIdByHubSlug.set(role.slug, roleProtocolId);
 
     const supportedProfiles = uniqueSorted(stringArrayFromJson(role.supportedProfiles));
     supportedProfiles.forEach((profile) => usedProfiles.add(profile));
-    const roleSource = `.agents/roles/common/${role.slug}.md`;
+    const roleSource = `.agents/roles/common/${roleProtocolId}.md`;
     const roleMarkdown = renderRoleMarkdown({
-      slug: role.slug,
+      slug: roleProtocolId,
       name: role.name,
       status: role.roleStatus || "draft",
       description: role.description,
@@ -1032,7 +1061,7 @@ export async function buildBrAiSpecExportBundle(
     });
     setTextFile(filesMap, roleSource, roleMarkdown);
 
-    rolesRegistry[role.slug] = {
+    rolesRegistry[roleProtocolId] = {
       name: role.name,
       status: role.roleStatus || "draft",
       ...(supportedProfiles.length > 0 ? { profiles: supportedProfiles } : {}),
@@ -1045,7 +1074,8 @@ export async function buildBrAiSpecExportBundle(
     };
     roleReports.push({
       hubSlug: role.slug,
-      registryId: role.slug,
+      registryId: roleProtocolId,
+      ...(latestRoleVersion?.version?.trim() ? { version: latestRoleVersion.version.trim() } : {}),
       source: roleSource,
       skills: exportedSkillIds,
       rules: exportedRuleIds,
@@ -1055,10 +1085,14 @@ export async function buildBrAiSpecExportBundle(
   const scenariosRegistry: Record<string, Record<string, unknown>> = {};
   const scenarioReports: ExportScenarioReport[] = [];
   for (const scenario of scenarios) {
-    const scenarioRoleIds = uniqueList([
-      ...scenario.roles.map((link) => link.role.slug),
-      ...(scenario.entryRole?.slug ? [scenario.entryRole.slug] : []),
-    ].filter((slug) => rolesRegistry[slug]));
+    const scenarioRoleIds = uniqueList(
+      [
+        ...scenario.roles.map((link) => roleProtocolIdByHubSlug.get(link.role.slug) ?? null),
+        ...(scenario.entryRole?.slug
+          ? [roleProtocolIdByHubSlug.get(scenario.entryRole.slug) ?? null]
+          : []),
+      ].filter((roleId): roleId is string => Boolean(roleId && rolesRegistry[roleId])),
+    );
     const derivedSkillIds = uniqueList(
       scenarioRoleIds.flatMap((slug) => roleSkillIds.get(slug) ?? []),
     );
@@ -1102,14 +1136,19 @@ export async function buildBrAiSpecExportBundle(
   }
 
   const requestedRoleIds = uniqueList(
-    requestedRoleSlugs.filter((slug) => rolesRegistry[slug]),
+    requestedRoleSlugs
+      .map((slug) => roleProtocolIdByHubSlug.get(slug) ?? null)
+      .filter((roleId): roleId is string => Boolean(roleId && rolesRegistry[roleId])),
   );
   const scenarioRoleIdsForManifest = uniqueList(
     scenarios.flatMap((scenario) => {
-      const entryRole = scenario.entryRole?.slug ? [scenario.entryRole.slug] : [];
-      return [...scenario.roles.map((link) => link.role.slug), ...entryRole].filter(
-        (slug) => rolesRegistry[slug],
-      );
+      const entryRole = scenario.entryRole?.slug
+        ? [roleProtocolIdByHubSlug.get(scenario.entryRole.slug) ?? null]
+        : [];
+      return [
+        ...scenario.roles.map((link) => roleProtocolIdByHubSlug.get(link.role.slug) ?? null),
+        ...entryRole,
+      ].filter((roleId): roleId is string => Boolean(roleId && rolesRegistry[roleId]));
     }),
   );
   const manifestRoleIds = uniqueList([...requestedRoleIds, ...scenarioRoleIdsForManifest]);
@@ -1159,8 +1198,15 @@ export async function buildBrAiSpecExportBundle(
       ...roleDerivedRuleIdsForManifest,
     ]),
     entryRole:
-      scenarios.find((item) => item.entryRole?.slug && rolesRegistry[item.entryRole.slug])
-        ?.entryRole?.slug ??
+      (() => {
+        const scenarioWithEntryRole = scenarios.find(
+          (item) => item.entryRole?.slug && roleProtocolIdByHubSlug.get(item.entryRole.slug),
+        );
+        if (scenarioWithEntryRole?.entryRole?.slug) {
+          return roleProtocolIdByHubSlug.get(scenarioWithEntryRole.entryRole.slug) ?? null;
+        }
+        return null;
+      })() ??
       manifestRoleIds[0] ??
       null,
   });
@@ -1290,5 +1336,32 @@ export async function buildBrAiSpecExportZip(
   return {
     ...bundle,
     bytes,
+  };
+}
+
+export function extractRegistrySnapshot(bundle: BrAiSpecExportBundle): BrAiSpecRegistrySnapshot {
+  const fileMap = new Map(bundle.files.map((file) => [file.path, file.content]));
+  const readJson = (filePath: string): Record<string, unknown> => {
+    const raw = fileMap.get(filePath);
+    if (!raw) {
+      return {};
+    }
+    return JSON.parse(raw) as Record<string, unknown>;
+  };
+
+  const profiles = readJson(".agents/registry/profiles.json");
+  const skills = readJson(".agents/registry/skills.json");
+  const rules = readJson(".agents/registry/rules.json");
+  const roles = readJson(".agents/registry/roles.json");
+  const flows = readJson(".agents/registry/flows.json");
+  const scenarioPackages = readJson(".agents/registry/scenario-packages.json");
+
+  return {
+    profiles,
+    skills,
+    rules,
+    roles,
+    flows,
+    ...(Object.keys(scenarioPackages).length > 0 ? { scenario_packages: scenarioPackages } : {}),
   };
 }

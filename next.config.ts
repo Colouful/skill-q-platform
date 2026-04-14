@@ -47,6 +47,10 @@ const nextConfig: NextConfig = {
   },
   /** Docker 部署：生成 .next/standalone，配合根目录 Dockerfile */
   output: "standalone",
+  /** 将 Next 自己需要的 .next/types 校验隔离到专用 tsconfig，避免日常 `tsc` 被生成产物噪音干扰 */
+  typescript: {
+    tsconfigPath: "./tsconfig.next.json",
+  },
   /**
    * 开发环境允许通过局域网 IP 访问 dev server，避免 HMR / 字体等 dev 资源被 403 拦截。
    * Next 官方支持通过 allowedDevOrigins 配置附加来源。

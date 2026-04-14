@@ -7,6 +7,7 @@ import { SkillCard } from "@/components/skill/skill-card";
 import { ScenarioCard } from "@/components/scenarios/scenario-card";
 import Link from "next/link";
 import { AI_SPEC_PACKAGE_SPEC } from "@/lib/ai-spec-cli";
+import { resolveScenarioAssets } from "@/lib/scenario-assets";
 
 export const dynamic = "force-dynamic";
 
@@ -28,14 +29,70 @@ export default async function HomePage() {
       where: { publishStatus: CATALOG_PUBLISH_STATUS.PUBLISHED, isFeatured: true },
       take: 3,
       include: {
-        entryRole: { select: { name: true } },
-        roles: { select: { id: true } },
-        skills: { select: { id: true } },
-        rules: { select: { id: true } },
+        entryRole: {
+          include: {
+            skillLinks: {
+              where: { skill: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+              orderBy: { sortOrder: "asc" },
+              include: { skill: true },
+            },
+            ruleLinks: {
+              where: { rule: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+              orderBy: { sortOrder: "asc" },
+              include: { rule: true },
+            },
+          },
+        },
+        roles: {
+          where: { role: { publishStatus: CATALOG_PUBLISH_STATUS.PUBLISHED } },
+          orderBy: { sortOrder: "asc" },
+          include: {
+            role: {
+              include: {
+                skillLinks: {
+                  where: { skill: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+                  orderBy: { sortOrder: "asc" },
+                  include: { skill: true },
+                },
+                ruleLinks: {
+                  where: { rule: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+                  orderBy: { sortOrder: "asc" },
+                  include: { rule: true },
+                },
+              },
+            },
+          },
+        },
+        skills: {
+          where: { skill: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+          orderBy: { sortOrder: "asc" },
+          include: { skill: true },
+        },
+        rules: {
+          where: { rule: { moderationStatus: MODERATION_STATUS.PUBLISHED } },
+          orderBy: { sortOrder: "asc" },
+          include: { rule: true },
+        },
       },
       orderBy: [{ isFeatured: "desc" }, { updatedAt: "desc" }],
     }),
   ]);
+  const featuredScenarioCards = featuredScenarios.map((scenario) => {
+    const resolved = resolveScenarioAssets(scenario);
+    return {
+      id: scenario.id,
+      slug: scenario.slug,
+      name: scenario.name,
+      description: scenario.description,
+      isFeatured: scenario.isFeatured,
+      supportedProfiles: scenario.supportedProfiles,
+      recommendedIdes: scenario.recommendedIdes,
+      entryRole: scenario.entryRole ? { name: scenario.entryRole.name } : null,
+      roleCount: scenario.roles.length,
+      skillCount: resolved.resolvedSkills.length,
+      ruleCount: resolved.resolvedRules.length,
+    };
+  });
 
   return (
     <div className="mx-auto w-full max-w-screen-2xl space-y-10 pb-8">
@@ -108,7 +165,7 @@ export default async function HomePage() {
           </p>
         ) : (
           <div className="grid gap-4 lg:grid-cols-3">
-            {featuredScenarios.map((scenario) => (
+            {featuredScenarioCards.map((scenario) => (
               <div key={scenario.id} className="min-w-0">
                 <ScenarioCard scenario={scenario} />
               </div>

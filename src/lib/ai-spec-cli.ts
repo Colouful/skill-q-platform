@@ -1,4 +1,4 @@
-const DEFAULT_AI_SPEC_PACKAGE_NAME = "@ex/ai-spec-test";
+const DEFAULT_AI_SPEC_PACKAGE_NAME = "@ex/ai-spec-auto";
 const DEFAULT_AI_SPEC_PACKAGE_VERSION = "latest";
 const SUPPORTED_IDE_PRESETS = ["cursor", "claude", "opencode", "trae"];
 
@@ -49,4 +49,20 @@ export function buildAiSpecSyncCommand(input: { manifestRef: string }): string {
     `npx ${AI_SPEC_PACKAGE_SPEC} sync .`,
     `--manifest ${quoteArg(input.manifestRef)}`,
   ]);
+}
+
+export function buildAiSpecFirstInstallCommand(input: {
+  profile: string;
+  manifestRef: string;
+  ides?: string[];
+}): string {
+  return [
+    buildAiSpecInitCommand({
+      profile: input.profile,
+      ides: input.ides,
+    }),
+    buildAiSpecSyncCommand({
+      manifestRef: input.manifestRef,
+    }),
+  ].join("\n\n");
 }

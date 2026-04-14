@@ -2,6 +2,7 @@ import "dotenv/config";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { resolveSkillImportPreset } from "../src/lib/hub-registry-contract";
 import { metaToSkillHints, parseSkillMd } from "../src/lib/skill-md-parse";
 
 type CliOptions = {
@@ -25,6 +26,10 @@ type FileEntry = {
 
 type SkillPackage = {
   root: string;
+  relativePath: string;
+  slug: string;
+  registryId: string;
+  manifestId: string;
   name: string;
   description: string;
   longDescription: string;
@@ -329,6 +334,7 @@ async function buildSkillPackage(root: string, explicitAuthor?: string): Promise
   const parsed = parseSkillMd(skillMdContent);
   const hints = metaToSkillHints(parsed.meta);
   const files = await collectFiles(root);
+  const relativePath = path.relative(path.resolve(root, "..", "..", ".."), root);
 
   if (files.length === 0) {
     throw new Error(`目录为空，无法导入: ${root}`);
@@ -345,9 +351,31 @@ async function buildSkillPackage(root: string, explicitAuthor?: string): Promise
     process.env.HUB_ACTOR?.trim() ||
     process.env.USER?.trim() ||
     "local-import";
+  const normalizedRelativePath = root.split(path.sep).join("/");
+  const preset = resolveSkillImportPreset(normalizedRelativePath);
+  const fallbackSlug = root
+    .split(path.sep)
+    .join("/")
+    .replace(/^.*?\.agents\/skills\//, "")
+    .replace(/^.*?skills\//, "")
+    .replace(/\/SKILL\.md$/i, "")
+    .replace(/\/+/g, "-")
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
 
+  const registryId = (
+    preset?.registryId ||
+    (preset?.slug ?? (fallbackSlug || fallbackName))
+  ).toLowerCase();
+  const manifestId = registryId;
   return {
     root,
+    relativePath,
+    slug: preset?.slug || fallbackSlug || fallbackName.toLowerCase(),
+    registryId,
+    manifestId,
     name: hints.name?.trim() || fallbackName,
     description: hints.description?.trim() || toSummaryDescription(parsed.body, fallbackDescription),
     longDescription: parsed.body.trim(),
@@ -424,6 +452,9 @@ async function postSkill(pkg: SkillPackage, opts: CliOptions): Promise<{ slug?: 
   const url = new URL("/api/skills", opts.api);
   const payload = {
     name: pkg.name,
+    slug: pkg.slug,
+    registryId: pkg.registryId,
+    manifestId: pkg.manifestId,
     description: pkg.description,
     author: pkg.author,
     categorySlug: opts.category,
@@ -475,7 +506,7 @@ async function main() {
   decorateDuplicateNames(packages, sourceRoot);
 
   for (const pkg of packages) {
-    console.log(`[ready] ${pkg.name} | ${pkg.files.length} files | ${pkg.root}`);
+    console.log(`[ready] ${pkg.name} -> ${pkg.slug} | ${pkg.files.length} files | ${pkg.root}`);
   }
 
   if (packages.length === 0) {

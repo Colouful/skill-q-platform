@@ -107,4 +107,63 @@ describe("resolveScenarioAssets", () => {
     expect(result.ruleSlugs).toEqual(["vue-project-overview"]);
     expect(result.entryRoleSlug).toBe("task-orchestrator");
   });
+
+  it("treats common profile assets as shared across hub profiles", () => {
+    const reactCommonSkill = {
+      slug: "react-shared-plan",
+      name: "React Shared Plan",
+      supportedProfiles: ["React.Common"],
+    };
+    const commonSkill = {
+      slug: "delivery-checklist",
+      name: "Delivery Checklist",
+      supportedProfiles: ["common"],
+    };
+    const reactCommonRule = {
+      slug: "react-shared-rule",
+      name: "React Shared Rule",
+      supportedProfiles: ["react.common"],
+    };
+    const commonRule = {
+      slug: "generic-review-rule",
+      name: "Generic Review Rule",
+      supportedProfiles: ["common"],
+    };
+    const reactCommonRole = {
+      slug: "task-orchestrator",
+      name: "任务主代理",
+      supportedProfiles: ["React.Common"],
+      skillLinks: [{ skill: reactCommonSkill }],
+      ruleLinks: [{ rule: reactCommonRule }],
+    };
+    const commonRole = {
+      slug: "code-guardian",
+      name: "规范守护者",
+      supportedProfiles: ["common"],
+      skillLinks: [{ skill: commonSkill }],
+      ruleLinks: [{ rule: commonRule }],
+    };
+    const vueOnlyRole = {
+      slug: "vue-specialist",
+      name: "Vue 专家",
+      supportedProfiles: ["vue"],
+      skillLinks: [],
+      ruleLinks: [],
+    };
+
+    const result = resolveScenarioAssets(
+      {
+        entryRole: reactCommonRole,
+        roles: [{ role: reactCommonRole }, { role: commonRole }, { role: vueOnlyRole }],
+        skills: [],
+        rules: [],
+      },
+      { profile: "react" },
+    );
+
+    expect(result.roleSlugs).toEqual(["task-orchestrator", "code-guardian"]);
+    expect(result.skillSlugs).toEqual(["react-shared-plan", "delivery-checklist"]);
+    expect(result.ruleSlugs).toEqual(["react-shared-rule", "generic-review-rule"]);
+    expect(result.entryRoleSlug).toBe("task-orchestrator");
+  });
 });

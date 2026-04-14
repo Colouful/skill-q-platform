@@ -31,6 +31,7 @@ export function AdminShell({
     { href: "/admin/agents", label: "用户管理" },
     { href: "/admin/config", label: "系统配置" },
     { href: "/admin/categories", label: "分类管理" },
+    { href: "/admin/registry-overview", label: "注册表总览" },
     { href: "/admin/skills/manage", label: "Skill 管理" },
     { href: "/admin/rules/manage", label: "Rule 管理" },
     { href: "/admin/skills", label: "待审 Skill" },

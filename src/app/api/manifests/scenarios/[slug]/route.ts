@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { buildScenarioManifest, normalizeManifestProfile } from "@/lib/scenario-manifest";
 import { resolveScenarioAssets } from "@/lib/scenario-assets";
-import { toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
+import { toManifestRoleId, toManifestRoleIds, toManifestRuleIds, toManifestSkillIds } from "@/lib/manifest-registry-id";
 import { CATALOG_PUBLISH_STATUS, isPublishedCatalogStatus, stringArrayFromJson } from "@/lib/catalog";
 import { MODERATION_STATUS } from "@/lib/moderation";
 
@@ -68,17 +68,20 @@ export async function GET(
   }
 
   const searchParams = new URL(req.url).searchParams;
-  const requestedProfile = searchParams.get("profile");
-  const scenarioProfiles = stringArrayFromJson(scenario.supportedProfiles);
-  const effectiveProfile = normalizeManifestProfile(requestedProfile || scenarioProfiles[0] || "default");
+  const requestedProfile = searchParams.get("profile")?.trim();
+  const effectiveProfile = requestedProfile ? normalizeManifestProfile(requestedProfile) : "default";
 
-  const resolved = resolveScenarioAssets(scenario, { profile: effectiveProfile });
+  const resolved = requestedProfile
+    ? resolveScenarioAssets(scenario, { profile: effectiveProfile })
+    : resolveScenarioAssets(scenario);
   const manifest = buildScenarioManifest({
     scenarioSlug: scenario.slug,
     profile: effectiveProfile,
     recommendedIdes: scenario.recommendedIdes,
-    entryRoleSlug: resolved.entryRoleSlug,
-    roles: resolved.roleSlugs,
+    entryRoleSlug: resolved.entryRoleSlug
+      ? toManifestRoleId(resolved.roles.find((role) => role.slug === resolved.entryRoleSlug) ?? { slug: resolved.entryRoleSlug })
+      : null,
+    roles: toManifestRoleIds(resolved.roles),
     skills: toManifestSkillIds(resolved.resolvedSkills),
     rules: toManifestRuleIds(resolved.resolvedRules),
   });

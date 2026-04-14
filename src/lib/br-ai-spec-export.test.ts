@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  extractRegistrySnapshot,
   inferAssetProfiles,
   inferRuleRegistryId,
   inferSkillRegistryId,
@@ -92,5 +93,54 @@ description: 项目结构规范
     expect(content).toContain("## 必做步骤");
     expect(content).toContain("1. 读取任务");
     expect(content).toContain("## 交接说明");
+  });
+
+  it("可从导出 bundle 中提取 registry snapshot", () => {
+    const snapshot = extractRegistrySnapshot({
+      manifest: {
+        profile: "vue",
+        ides: ["cursor"],
+        scenario_packages: ["prd-to-delivery"],
+        roles: ["task-orchestrator"],
+        skills: ["create-proposal"],
+        rules: ["api-standard"],
+        entry_role: "task-orchestrator",
+      },
+      warnings: [],
+      report: {
+        generatedAt: "2026-04-13T00:00:00.000Z",
+        manifest: {
+          profile: "vue",
+          ides: ["cursor"],
+          scenario_packages: ["prd-to-delivery"],
+          roles: ["task-orchestrator"],
+          skills: ["create-proposal"],
+          rules: ["api-standard"],
+          entry_role: "task-orchestrator",
+        },
+        warnings: [],
+        assets: {
+          roles: [],
+          skills: [],
+          rules: [],
+          scenarios: [],
+        },
+      },
+      files: [
+        { path: ".agents/registry/profiles.json", content: JSON.stringify({ version: 1, profiles: { vue: {} } }) },
+        { path: ".agents/registry/skills.json", content: JSON.stringify({ version: 1, skills: { "create-proposal": {} } }) },
+        { path: ".agents/registry/rules.json", content: JSON.stringify({ version: 1, rules: { "api-standard": {} } }) },
+        { path: ".agents/registry/roles.json", content: JSON.stringify({ version: 1, roles: { "task-orchestrator": {} } }) },
+        { path: ".agents/registry/flows.json", content: JSON.stringify({ version: 1, flows: { "prd-to-delivery": {} } }) },
+        { path: ".agents/registry/scenario-packages.json", content: JSON.stringify({ version: 1, scenario_packages: { "prd-to-delivery": {} } }) },
+      ],
+    });
+
+    expect(snapshot.profiles).toMatchObject({ version: 1 });
+    expect(snapshot.skills).toMatchObject({ version: 1 });
+    expect(snapshot.rules).toMatchObject({ version: 1 });
+    expect(snapshot.roles).toMatchObject({ version: 1 });
+    expect(snapshot.flows).toMatchObject({ version: 1 });
+    expect(snapshot.scenario_packages).toMatchObject({ version: 1 });
   });
 });

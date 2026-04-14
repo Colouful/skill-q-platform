@@ -103,6 +103,8 @@ model Skill {
   id                String    @id @default(uuid())
   name              String    @db.VarChar(255)
   slug              String    @unique @db.VarChar(255)
+  registryId        String?   @db.VarChar(255)
+  manifestId        String?   @db.VarChar(255)
   description       String    @db.Text
   longDescription   String?   @db.Text
   author            String    @db.VarChar(100)
@@ -131,6 +133,8 @@ model Skill {
   @@map("skills")
   @@index([categoryId])
   @@index([slug])
+  @@index([registryId])
+  @@index([manifestId])
   @@index([downloads])
   @@index([rating])
   @@index([moderationStatus])
@@ -140,6 +144,8 @@ model Rule {
   id               String        @id @default(uuid())
   name             String        @db.VarChar(255)
   slug             String        @unique @db.VarChar(255)
+  registryId       String?       @db.VarChar(255)
+  manifestId       String?       @db.VarChar(255)
   description      String        @db.Text
   longDescription  String?       @db.Text
   author           String        @db.VarChar(100)
@@ -168,6 +174,8 @@ model Rule {
   @@map("rules")
   @@index([categoryId])
   @@index([slug])
+  @@index([registryId])
+  @@index([manifestId])
   @@index([author])
   @@index([downloads])
   @@index([rating])
@@ -314,6 +322,8 @@ model RoleTemplate {
   id                String                 @id @default(uuid()) @db.VarChar(36)
   name              String                 @db.VarChar(255)
   slug              String                 @unique @db.VarChar(120)
+  registryId        String?                @db.VarChar(255)
+  manifestId        String?                @db.VarChar(255)
   description       String                 @db.Text
   longDescription   String?                @db.Text
   author            String                 @db.VarChar(100)
@@ -345,6 +355,8 @@ model RoleTemplate {
   updatedAt         DateTime               @updatedAt
 
   @@index([slug])
+  @@index([registryId])
+  @@index([manifestId])
   @@index([publishStatus])
   @@index([authorAgentId])
   @@map("role_templates")

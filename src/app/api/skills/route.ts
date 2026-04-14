@@ -9,7 +9,9 @@ import { applyExperienceDelta, XP_UPLOAD_RESOURCE } from "@/lib/agent-experience
 import { rateLimitForAgentLevel } from "@/lib/agent-levels";
 import { assertHubAuthForDeclaredAuthor } from "@/lib/hub-auth";
 import { ASCII_URL_SLUG } from "@/lib/catalog-slug";
+import { normalizeRegistryLikeId } from "@/lib/hub-registry-contract";
 import { normalizeSupportedProfilesList } from "@/lib/profile-options";
+import { assertUniqueRegistryFields } from "@/lib/registry-id-validation";
 import { slugFromName } from "@/lib/skill-slug";
 import { MODERATION_STATUS } from "@/lib/moderation";
 import { getDefaultDownloadPolicy, getResourceUploadRequiresModeration } from "@/lib/system-config";
@@ -30,6 +32,8 @@ const downloadPolicyEnum = z.enum(["public", "login", "author"]);
 const postBody = z.object({
   name: z.string().min(1).max(255),
   slug: z.string().min(1).max(255).optional(),
+  registryId: z.string().min(1).max(255).optional(),
+  manifestId: z.string().min(1).max(255).optional(),
   description: z.string().min(1),
   author: z.string().min(1).max(100),
   categorySlug: z.string().min(1),
@@ -134,6 +138,14 @@ export async function POST(req: Request) {
     if (requestedSlug && !ASCII_URL_SLUG.test(requestedSlug)) {
       return jsonErr("Slug 仅支持小写字母、数字、点、下划线和短横线", 400);
     }
+    const requestedRegistryId = b.registryId === undefined ? null : normalizeRegistryLikeId(b.registryId);
+    if (b.registryId !== undefined && !requestedRegistryId) {
+      return jsonErr("registryId 仅支持小写字母、数字、点、下划线和短横线", 400);
+    }
+    const requestedManifestId = b.manifestId === undefined ? null : normalizeRegistryLikeId(b.manifestId);
+    if (b.manifestId !== undefined && !requestedManifestId) {
+      return jsonErr("manifestId 仅支持小写字母、数字、点、下划线和短横线", 400);
+    }
 
     let slug = requestedSlug || slugFromName(b.name);
     const exists = await prisma.skill.findUnique({ where: { slug } });
@@ -142,6 +154,16 @@ export async function POST(req: Request) {
         return jsonErr("Slug 已存在", 409);
       }
       slug = `${slug}-${crypto.randomUUID().slice(0, 8)}`;
+    }
+    const registryId = requestedRegistryId ?? slug;
+    const manifestId = requestedManifestId ?? registryId;
+    const duplicateIssues = await assertUniqueRegistryFields({
+      resourceType: "skill",
+      registryId,
+      manifestId,
+    });
+    if (duplicateIssues.length > 0) {
+      return jsonErr(duplicateIssues.join("；"), 409);
     }
 
     const tagsJson: Prisma.InputJsonValue = b.tags && b.tags.length > 0 ? b.tags : [];
@@ -160,6 +182,8 @@ export async function POST(req: Request) {
         data: {
           name: b.name.trim(),
           slug,
+          registryId,
+          manifestId,
           description: b.description,
           longDescription: b.longDescription?.trim() || null,
           author: b.author.trim(),

@@ -14,9 +14,9 @@ type ScenarioCardItem = {
   supportedProfiles: unknown;
   recommendedIdes: unknown;
   entryRole: { name: string } | null;
-  roles: { id: string }[];
-  skills: { id: string }[];
-  rules: { id: string }[];
+  roleCount: number;
+  skillCount: number;
+  ruleCount: number;
 };
 
 export function ScenarioCard({ scenario }: { scenario: ScenarioCardItem }) {
@@ -56,9 +56,14 @@ export function ScenarioCard({ scenario }: { scenario: ScenarioCardItem }) {
       <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
         入口专家：{scenario.entryRole?.name ?? "未设置"}
       </p>
-      <p className="mt-auto font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
-        专家 {scenario.roles.length} · Skill {scenario.skills.length} · Rule {scenario.rules.length}
-      </p>
+      <div className="mt-auto space-y-1">
+        <p className="font-[family-name:var(--font-pixel-body)] text-xs text-[var(--pixel-muted)]">
+          专家 {scenario.roleCount} · Skill {scenario.skillCount} · Rule {scenario.ruleCount}
+        </p>
+        <p className="font-[family-name:var(--font-pixel-body)] text-[11px] text-[var(--pixel-muted)]">
+          全量统计，安装 Manifest 会按 profile 收敛。
+        </p>
+      </div>
     </Link>
   );
 }

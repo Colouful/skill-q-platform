@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { AdminOptionChecklist } from "@/components/admin/AdminOptionChecklist";
+import { AdminRolePromptTemplateDialog } from "@/components/admin/AdminRolePromptTemplateDialog";
 import { AdminSortableList, type AdminSortableListItem } from "@/components/admin/AdminSortableList";
 import { catalogPublishStatusLabel, ROLE_STATUS, roleStatusLabel } from "@/lib/catalog";
 import { RoleImportDropzone, type RoleImportPayload } from "@/components/admin/RoleImportDropzone";
@@ -30,6 +31,8 @@ type RoleRow = {
   id: string;
   name: string;
   slug: string;
+  registryId: string | null;
+  manifestId: string | null;
   author: string;
   description: string;
   longDescription: string | null;
@@ -70,6 +73,8 @@ type RoleMutationPayload = {
     id: string;
     name: string;
     slug: string;
+    registryId?: string | null;
+    manifestId?: string | null;
     author: string;
     description: string;
     longDescription: string | null;
@@ -184,11 +189,13 @@ const fixedTextareaClassName = "h-32 resize-none overflow-y-auto field-sizing-fi
 
 export function AdminRolesClient({
   initialItems,
+  initialEditSlug,
   skills,
   rules,
   domains,
 }: {
   initialItems: RoleRow[];
+  initialEditSlug?: string | null;
   skills: Option[];
   rules: Option[];
   domains: Option[];
@@ -200,6 +207,8 @@ export function AdminRolesClient({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+  const [registryId, setRegistryId] = useState("");
+  const [manifestId, setManifestId] = useState("");
   const [author, setAuthor] = useState("Hub Admin");
   const [description, setDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
@@ -234,10 +243,15 @@ export function AdminRolesClient({
   const [importIssues, setImportIssues] = useState<string[]>([]);
   const [importUnmatchedDomains, setImportUnmatchedDomains] = useState<string[]>([]);
   const [importIgnoredMetaKeys, setImportIgnoredMetaKeys] = useState<string[]>([]);
+  const [autoEditConsumed, setAutoEditConsumed] = useState(false);
 
   useEffect(() => {
     setItems(initialItems);
   }, [initialItems]);
+
+  useEffect(() => {
+    setAutoEditConsumed(false);
+  }, [initialEditSlug]);
 
   useEffect(() => {
     if (!versionsOpen || !activeRole) return;
@@ -262,6 +276,8 @@ export function AdminRolesClient({
     setEditingId(null);
     setName("");
     setSlug("");
+    setRegistryId("");
+    setManifestId("");
     setAuthor("Hub Admin");
     setDescription("");
     setLongDescription("");
@@ -378,6 +394,8 @@ export function AdminRolesClient({
     setEditingId(item.id);
     setName(item.name);
     setSlug(item.slug);
+    setRegistryId(item.registryId ?? "");
+    setManifestId(item.manifestId ?? "");
     setAuthor(item.author);
     setDescription(item.description);
     setLongDescription(item.longDescription ?? "");
@@ -405,6 +423,14 @@ export function AdminRolesClient({
     setImportIgnoredMetaKeys([]);
     setOpen(true);
   }
+
+  useEffect(() => {
+    if (!initialEditSlug || open || autoEditConsumed) return;
+    const target = items.find((item) => item.slug === initialEditSlug);
+    if (!target) return;
+    setAutoEditConsumed(true);
+    openEdit(target);
+  }, [initialEditSlug, items, open, autoEditConsumed]);
 
   function hasMeaningfulFormValue() {
     return !!(
@@ -468,6 +494,8 @@ export function AdminRolesClient({
       ...(editingId ? { id: editingId } : {}),
       name,
       slug,
+      registryId: registryId.trim() || null,
+      manifestId: manifestId.trim() || null,
       author,
       description,
       longDescription,
@@ -506,6 +534,8 @@ export function AdminRolesClient({
       id: saved?.id ?? editingId ?? crypto.randomUUID(),
       name: saved?.name ?? name.trim(),
       slug: saved?.slug ?? slugifyDraft(slug || name),
+      registryId: saved?.registryId ?? payload.registryId ?? null,
+      manifestId: saved?.manifestId ?? payload.manifestId ?? null,
       author: saved?.author ?? author.trim(),
       description: saved?.description ?? description,
       longDescription: saved?.longDescription ?? (longDescription || null),
@@ -608,13 +638,16 @@ export function AdminRolesClient({
         <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
           维护专家基础信息，以及与 Skill / Rule / 能力域的关联。
         </p>
-        <Button
-          type="button"
-          onClick={openCreate}
-          className="border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]"
-        >
-          新建专家
-        </Button>
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <Button
+            type="button"
+            onClick={openCreate}
+            className="border-4 border-[var(--pixel-border)] bg-[var(--pixel-yellow)] font-[family-name:var(--font-pixel-body)] text-[var(--pixel-fg)]"
+          >
+            新建专家
+          </Button>
+          <AdminRolePromptTemplateDialog skills={skills} rules={rules} domains={domains} />
+        </div>
       </div>
 
       <Table>
@@ -622,6 +655,9 @@ export function AdminRolesClient({
           <TableRow>
             <TableHead>名称</TableHead>
             <TableHead>标识</TableHead>
+            <TableHead>registryId</TableHead>
+            <TableHead>manifestId</TableHead>
+            <TableHead>Profile</TableHead>
             <TableHead>作者</TableHead>
             <TableHead>状态</TableHead>
             <TableHead>Skill</TableHead>
@@ -635,6 +671,9 @@ export function AdminRolesClient({
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.slug}</TableCell>
+              <TableCell>{item.registryId || "未设置"}</TableCell>
+              <TableCell>{item.manifestId || "未设置"}</TableCell>
+              <TableCell>{item.supportedProfiles.length > 0 ? item.supportedProfiles.join(" / ") : "common"}</TableCell>
               <TableCell>{item.author}</TableCell>
               <TableCell>{catalogPublishStatusLabel(item.publishStatus)}</TableCell>
               <TableCell>{item.skillIds.length}</TableCell>
@@ -750,6 +789,28 @@ export function AdminRolesClient({
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">唯一标识（Slug）</label>
                       <PixelInput value={slug} onChange={(e) => setSlug(slugifyDraft(e.target.value))} required />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm text-[var(--pixel-fg)]">registryId</label>
+                      <PixelInput
+                        value={registryId}
+                        onChange={(e) => setRegistryId(slugifyDraft(e.target.value))}
+                        placeholder="task-orchestrator"
+                      />
+                      <p className="text-xs text-[var(--pixel-muted)]">
+                        CLI registry / 导出 registry 的稳定标识；允许留空以兼容历史资源。
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm text-[var(--pixel-fg)]">manifestId</label>
+                      <PixelInput
+                        value={manifestId}
+                        onChange={(e) => setManifestId(slugifyDraft(e.target.value))}
+                        placeholder="task-orchestrator"
+                      />
+                      <p className="text-xs text-[var(--pixel-muted)]">
+                        manifest 对外安装标识；通常与 registryId 一致。
+                      </p>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">作者</label>
@@ -937,6 +998,8 @@ export function AdminRolesClient({
                       <p>作者：{author || "未填写"}</p>
                       <p>Hub 发布状态：{catalogPublishStatusLabel(publishStatus)}</p>
                       <p>专家状态：{roleStatusLabel(roleStatus)}</p>
+                      <p>registryId：{registryId || "未设置"}</p>
+                      <p>manifestId：{manifestId || "未设置"}</p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">简介</p>
