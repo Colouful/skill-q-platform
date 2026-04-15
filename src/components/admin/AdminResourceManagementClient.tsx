@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { PixelInput, pixelSelectClassName } from "@/components/pixel";
+import { PixelInput, PixelSelect } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { moderationStatusLabel } from "@/lib/moderation";
 import { getHubProfileLabel } from "@/lib/profile-options";
@@ -93,8 +93,8 @@ export function AdminResourceManagementClient({
   const emptyLabel = resourceType === "skill" ? "暂无 Skill" : "暂无 Rule";
   const previewPath = (slug: string) =>
     resourceType === "skill"
-      ? `/skills/${encodeURIComponent(slug)}`
-      : `/rules/${encodeURIComponent(slug)}`;
+      ? `/admin/skills/${encodeURIComponent(slug)}/preview`
+      : `/admin/rules/${encodeURIComponent(slug)}/preview`;
   const editPath = (slug: string) =>
     resourceType === "skill"
       ? `/admin/skills/${encodeURIComponent(slug)}/edit`
@@ -135,17 +135,18 @@ export function AdminResourceManagementClient({
         className="grid gap-3 border-4 border-[var(--pixel-border)] bg-[#fffef8] p-4 md:grid-cols-[1fr_220px_220px_auto]"
       >
         <PixelInput
+          clearable
           value={qInput}
           onChange={(e) => setQInput(e.target.value)}
           placeholder="搜索名称或标识（Slug）"
         />
-        <select
+        <PixelSelect
+          clearable
           value={categoryId}
           onChange={(e) => {
             setCategoryId(e.target.value);
             setPage(1);
           }}
-          className={pixelSelectClassName}
         >
           <option value="">全部分类</option>
           {categories.map((category) => (
@@ -153,20 +154,20 @@ export function AdminResourceManagementClient({
               {category.name}
             </option>
           ))}
-        </select>
-        <select
+        </PixelSelect>
+        <PixelSelect
+          clearable
           value={registryStatus}
           onChange={(e) => {
             setRegistryStatus(e.target.value);
             setPage(1);
           }}
-          className={pixelSelectClassName}
         >
           <option value="">全部协议状态</option>
           <option value="missing-registry">缺 registryId</option>
           <option value="missing-manifest">缺 manifestId</option>
           <option value="mismatch">协议字段不一致</option>
-        </select>
+        </PixelSelect>
         <Button type="submit" variant="outline" className="border-2 border-[var(--pixel-border)]">
           搜索
         </Button>

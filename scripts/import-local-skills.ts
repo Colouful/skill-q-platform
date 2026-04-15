@@ -4,6 +4,7 @@ import path from "node:path";
 import process from "node:process";
 import { resolveSkillImportPreset } from "../src/lib/hub-registry-contract";
 import { metaToSkillHints, parseSkillMd } from "../src/lib/skill-md-parse";
+import { MAX_SKILL_INITIAL_FILES } from "../src/lib/skill-upload-contract";
 
 type CliOptions = {
   source: string;
@@ -40,7 +41,6 @@ type SkillPackage = {
 const DEFAULT_API = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3000";
 const DEFAULT_CATEGORY = "dev-tools";
 const DEFAULT_DELAY_MS = 2200;
-const MAX_INITIAL_FILES = 200;
 
 const NOISE_FILE_NAMES = new Set([".DS_Store", "Thumbs.db"]);
 const SKIP_DIR_NAMES = new Set([
@@ -103,6 +103,7 @@ function printHelp(): void {
   --only <关键字>           仅导入名称或路径中包含关键字的 Skill，可重复传
   --dry-run                 只扫描并打印，不发请求
   --delay-ms <毫秒>         每次创建后的等待，默认 ${DEFAULT_DELAY_MS}ms，用于避开 30/min 限流
+  初始文件数上限            与服务端保持一致：${MAX_SKILL_INITIAL_FILES}
 
 认证相关:
   --bearer <API_KEY>        站点开启“上传需登录”时使用 Agent API Key
@@ -339,8 +340,8 @@ async function buildSkillPackage(root: string, explicitAuthor?: string): Promise
   if (files.length === 0) {
     throw new Error(`目录为空，无法导入: ${root}`);
   }
-  if (files.length > MAX_INITIAL_FILES) {
-    throw new Error(`文件数量超过接口限制 ${MAX_INITIAL_FILES}: ${root}`);
+  if (files.length > MAX_SKILL_INITIAL_FILES) {
+    throw new Error(`文件数量超过接口限制 ${MAX_SKILL_INITIAL_FILES}: ${root}`);
   }
 
   const fallbackName = path.basename(root);

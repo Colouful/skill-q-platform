@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { getAdminFromSessionCookie } from "@/lib/admin-auth";
 import { canViewUnpublishedResource } from "@/lib/moderation";
 import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { SkillJsonLd } from "@/components/seo/skill-json-ld";
@@ -34,7 +35,11 @@ export async function generateMetadata({
     return { title: "Skill" };
   }
   const agent = await getOptionalAuthAgentFromCookies();
-  if (!canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, agent?.id ?? null)) {
+  const admin = await getAdminFromSessionCookie();
+  const canView =
+    Boolean(admin) ||
+    canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, agent?.id ?? null);
+  if (!canView) {
     return { title: "Skill" };
   }
   const desc = skill.description.slice(0, 160);
@@ -81,7 +86,11 @@ export default async function SkillDetailPage({
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || `${proto}://${host}`;
 
   const viewer = await getOptionalAuthAgentFromCookies();
-  if (!canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, viewer?.id ?? null)) {
+  const admin = await getAdminFromSessionCookie();
+  const canView =
+    Boolean(admin) ||
+    canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, viewer?.id ?? null);
+  if (!canView) {
     notFound();
   }
 

@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { fetchApi } from "@/lib/client-api";
-import { PixelInput, pixelSelectClassName } from "@/components/pixel";
+import { PixelInput, PixelSelect } from "@/components/pixel";
 
 type CategoryRow = { id: string; name: string; slug: string };
 
@@ -161,12 +161,18 @@ export function AdminBulkResourceCategoryDialog({
         <div className="flex flex-wrap items-end gap-2">
           <div className="min-w-[140px] flex-1">
             <Label className="text-xs">关键词（名称 / Slug）</Label>
-            <PixelInput value={qInput} onChange={(e) => setQInput(e.target.value)} placeholder="可选" />
+            <PixelInput
+              clearable
+              value={qInput}
+              onChange={(e) => setQInput(e.target.value)}
+              placeholder="可选"
+            />
           </div>
           <div className="min-w-[140px]">
             <Label className="text-xs">按分类筛选</Label>
-            <select
-              className={pixelSelectClassName + " mt-1 w-full"}
+            <PixelSelect
+              clearable
+              className="mt-1 w-full"
               value={filterCat}
               onChange={(e) => {
                 setFilterCat(e.target.value);
@@ -179,7 +185,7 @@ export function AdminBulkResourceCategoryDialog({
                   {c.name}
                 </option>
               ))}
-            </select>
+            </PixelSelect>
           </div>
           <Button
             type="button"
@@ -195,10 +201,22 @@ export function AdminBulkResourceCategoryDialog({
         </div>
         <div className="flex flex-wrap items-center gap-2 text-sm">
           <span>已选 {selected.size} 条</span>
-          <Button type="button" size="sm" variant="outline" className="h-7 border px-2 text-xs" onClick={selectPageAll}>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="h-7 border px-2 text-xs"
+            onClick={selectPageAll}
+          >
             全选当页
           </Button>
-          <Button type="button" size="sm" variant="outline" className="h-7 border px-2 text-xs" onClick={clearSelection}>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            className="h-7 border px-2 text-xs"
+            onClick={clearSelection}
+          >
             清空选择
           </Button>
         </div>
@@ -221,7 +239,11 @@ export function AdminBulkResourceCategoryDialog({
                 {rows.map((r) => (
                   <tr key={r.id} className="border-b border-[var(--pixel-border)]/40">
                     <td className="p-1">
-                      <input type="checkbox" checked={selected.has(r.id)} onChange={() => toggle(r.id)} />
+                      <input
+                        type="checkbox"
+                        checked={selected.has(r.id)}
+                        onChange={() => toggle(r.id)}
+                      />
                     </td>
                     <td className="p-1">{r.name}</td>
                     <td className="p-1 text-[var(--pixel-muted)]">{r.slug}</td>
@@ -257,8 +279,9 @@ export function AdminBulkResourceCategoryDialog({
         </div>
         <div>
           <Label>目标分类</Label>
-          <select
-            className={pixelSelectClassName + " mt-1 w-full"}
+          <PixelSelect
+            clearable
+            className="mt-1 w-full"
             value={targetId}
             onChange={(e) => setTargetId(e.target.value)}
           >
@@ -268,10 +291,15 @@ export function AdminBulkResourceCategoryDialog({
                 {c.name}（{c.slug}）
               </option>
             ))}
-          </select>
+          </PixelSelect>
         </div>
         <DialogFooter>
-          <Button type="button" disabled={submitting} className="border-2" onClick={() => void apply()}>
+          <Button
+            type="button"
+            disabled={submitting}
+            className="border-2"
+            onClick={() => void apply()}
+          >
             {submitting ? "提交中…" : "批量更新分类"}
           </Button>
         </DialogFooter>

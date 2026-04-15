@@ -2,17 +2,15 @@ import Link from "next/link";
 import { skillPath } from "@/lib/slug-url";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { getAdminFromSessionCookie } from "@/lib/admin-auth";
 import { SkillVersionDownloadButton } from "@/components/skills/skill-version-download-button";
 import { SkillVersionZipButton } from "@/components/skills/skill-version-zip-button";
 import { SkillVersionFileExplorer } from "@/components/skills/skill-version-file-explorer";
+import { parseVersionFilesJson } from "@/lib/skill-file-entries";
+import { canViewUnpublishedResource } from "@/lib/moderation";
 
 export const dynamic = "force-dynamic";
-
-function isFileEntry(x: unknown): x is { name: string; path: string; content?: string } {
-  if (!x || typeof x !== "object") return false;
-  const o = x as Record<string, unknown>;
-  return typeof o.name === "string" && typeof o.path === "string";
-}
 
 /** 8.2 版本详情 */
 export default async function SkillVersionDetailPage({
@@ -29,6 +27,15 @@ export default async function SkillVersionDetailPage({
   });
   if (!skill) notFound();
 
+  const viewer = await getOptionalAuthAgentFromCookies();
+  const admin = await getAdminFromSessionCookie();
+  const canView =
+    Boolean(admin) ||
+    canViewUnpublishedResource(skill.moderationStatus, skill.authorAgentId, viewer?.id ?? null);
+  if (!canView) {
+    notFound();
+  }
+
   const row = await prisma.version.findUnique({
     where: {
       skillId_version: { skillId: skill.id, version: versionLabel },
@@ -36,10 +43,7 @@ export default async function SkillVersionDetailPage({
   });
   if (!row) notFound();
 
-  const rawFiles = row.files;
-  const fileEntries = Array.isArray(rawFiles)
-    ? rawFiles.filter(isFileEntry)
-    : [];
+  const fileEntries = parseVersionFilesJson(row.files);
 
   return (
     <article className="mx-auto w-full max-w-4xl space-y-6 pb-8">

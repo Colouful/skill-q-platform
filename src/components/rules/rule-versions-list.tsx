@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { RuleVersion } from "@/generated/prisma";
+import { rulePath } from "@/lib/slug-url";
 import { RuleVersionDownloadButton } from "./rule-version-download-button";
 
 export function RuleVersionsList({
@@ -24,7 +26,12 @@ export function RuleVersionsList({
           className="flex flex-wrap items-center justify-between gap-3 border-2 border-[var(--rule-border)] bg-[#fffef8] px-3 py-2"
         >
           <div className="min-w-0">
-            <span className="font-medium text-[var(--pixel-fg)]">{v.version}</span>
+            <Link
+              href={rulePath(slug, `/versions/${encodeURIComponent(v.version)}`)}
+              className="font-medium text-[var(--pixel-fg)] underline decoration-[var(--rule-border)] decoration-2 underline-offset-2 hover:text-[var(--rule-accent)]"
+            >
+              {v.version}
+            </Link>
             {v.isLatest && (
               <span className="ml-2 border border-[var(--rule-border)] px-1 text-xs text-[var(--rule-accent)]">
                 latest

@@ -1,0 +1,47 @@
+{
+  "fetchedAt": "2026-04-15T07:30:24.528Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "auto-updater",
+  "displayName": "Auto-Updater Skill",
+  "owner": {
+    "name": "maximeprades",
+    "handle": "maximeprades"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/auto-updater",
+  "originalHomepage": "https://clawhub.ai/maximeprades/auto-updater",
+  "version": "1.0.0",
+  "summary": {
+    "en": "Automatically update Clawdbot and all installed skills once daily. Runs via cron, checks for updates, applies them, and messages the user with a summary of what changed.",
+    "zh": "每日自动更新 Clawdbot 及所有已安装技能。运行 cron 检查更新并应用，同时向用户发送变更摘要。"
+  },
+  "stats": {
+    "downloads": 73021,
+    "installs": 12506,
+    "stars": 282,
+    "score": 35657.26667361731
+  },
+  "remoteFiles": [
+    {
+      "path": "references/agent-guide.md",
+      "sha256": "006191441b38b44f839f0c78513c85cc40e6d8a37dae9cfeab242efc4a3acc4c",
+      "size": 3767
+    },
+    {
+      "path": "references/summary-examples.md",
+      "sha256": "9f0c386e2fee1fe5c723eef7fcb523f2294463b2456e2f615e38f2df41975d48",
+      "size": 2513
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "4142916e146caa90d41cd274bdea6263da1738d8ecc81777b7fc19c6bd8ef9f4",
+      "size": 3300
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "d9d38e5d386deb7aac7b491e623084aa8b8d70a07e0937c7fbb1c431b26c6650",
+      "size": 131
+    }
+  ]
+}

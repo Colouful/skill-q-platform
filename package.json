@@ -23,6 +23,7 @@
     "db:ensure-registry-manifest-columns": "tsx scripts/ensure-registry-manifest-columns.ts",
     "db:canonicalize-manifest-assets": "tsx scripts/canonicalize-manifest-assets.ts",
     "verify:manifest-contract": "tsx scripts/verify-manifest-contract.ts",
+    "fetch:skillhub-skills": "tsx scripts/fetch-skillhub-skills.ts",
     "import:skills-local": "tsx scripts/import-local-skills.ts",
     "import:rules-local": "tsx scripts/import-local-rules.ts",
     "postinstall": "node scripts/prisma-generate-if-needed.cjs --postinstall"

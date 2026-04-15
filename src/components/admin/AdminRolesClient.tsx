@@ -4,13 +4,29 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { PixelInput, PixelSelect, PixelTextarea } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { AdminOptionChecklist } from "@/components/admin/AdminOptionChecklist";
 import { AdminRolePromptTemplateDialog } from "@/components/admin/AdminRolePromptTemplateDialog";
-import { AdminSortableList, type AdminSortableListItem } from "@/components/admin/AdminSortableList";
+import {
+  AdminSortableList,
+  type AdminSortableListItem,
+} from "@/components/admin/AdminSortableList";
 import { catalogPublishStatusLabel, ROLE_STATUS, roleStatusLabel } from "@/lib/catalog";
 import { RoleImportDropzone, type RoleImportPayload } from "@/components/admin/RoleImportDropzone";
 import { formatDateTimeShanghai } from "@/lib/date-format";
@@ -314,7 +330,9 @@ export function AdminRolesClient({
 
   async function loadVersions(item: RoleRow) {
     setVersionsLoading(true);
-    const res = await fetchApi<RoleVersionRow[]>(`/api/roles/${encodeURIComponent(item.slug)}/versions`);
+    const res = await fetchApi<RoleVersionRow[]>(
+      `/api/roles/${encodeURIComponent(item.slug)}/versions`,
+    );
     setVersionsLoading(false);
     if (res.code !== 0 || !res.data) {
       toast.error(res.message || "读取版本失败");
@@ -327,11 +345,7 @@ export function AdminRolesClient({
     setVersions(normalized);
     setNextVersion(suggestNextPatchVersion(normalized.map((version) => version.version)));
     setVersionFilesText(
-      JSON.stringify(
-        buildRoleVersionDraftFiles(item, { skills, rules, domains }),
-        null,
-        2,
-      ),
+      JSON.stringify(buildRoleVersionDraftFiles(item, { skills, rules, domains }), null, 2),
     );
   }
 
@@ -620,7 +634,10 @@ export function AdminRolesClient({
   const previewWorkingPrinciples = splitLines(workingPrinciplesText);
   const previewRequiredSteps = splitLines(requiredStepsText);
   const previewProhibitedActions = splitLines(prohibitedActionsText);
-  const orderedSkillItems = useMemo(() => toSortableOptionItems(skillIds, skills), [skillIds, skills]);
+  const orderedSkillItems = useMemo(
+    () => toSortableOptionItems(skillIds, skills),
+    [skillIds, skills],
+  );
   const orderedRuleItems = useMemo(() => toSortableOptionItems(ruleIds, rules), [ruleIds, rules]);
 
   function upsertItem(nextItem: RoleRow) {
@@ -673,7 +690,9 @@ export function AdminRolesClient({
               <TableCell>{item.slug}</TableCell>
               <TableCell>{item.registryId || "未设置"}</TableCell>
               <TableCell>{item.manifestId || "未设置"}</TableCell>
-              <TableCell>{item.supportedProfiles.length > 0 ? item.supportedProfiles.join(" / ") : "common"}</TableCell>
+              <TableCell>
+                {item.supportedProfiles.length > 0 ? item.supportedProfiles.join(" / ") : "common"}
+              </TableCell>
               <TableCell>{item.author}</TableCell>
               <TableCell>{catalogPublishStatusLabel(item.publishStatus)}</TableCell>
               <TableCell>{item.skillIds.length}</TableCell>
@@ -738,11 +757,17 @@ export function AdminRolesClient({
               <div className="space-y-6">
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
-                    <p className="text-sm font-medium text-[var(--pixel-fg)]">从 Markdown / ZIP 导入</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">支持 br-ai-spec 专家模板文件，解析成功后只预填表单，不会直接创建专家。</p>
+                    <p className="text-sm font-medium text-[var(--pixel-fg)]">
+                      从 Markdown / ZIP 导入
+                    </p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      支持 br-ai-spec 专家模板文件，解析成功后只预填表单，不会直接创建专家。
+                    </p>
                   </div>
                   <RoleImportDropzone onParsed={applyRoleImport} />
-                  {importIssues.length > 0 || importUnmatchedDomains.length > 0 || importIgnoredMetaKeys.length > 0 ? (
+                  {importIssues.length > 0 ||
+                  importUnmatchedDomains.length > 0 ||
+                  importIgnoredMetaKeys.length > 0 ? (
                     <div className="space-y-2 rounded-sm border-2 border-dashed border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/10 p-3 text-xs text-[var(--pixel-fg)]">
                       {importIssues.length > 0 ? (
                         <div className="space-y-1">
@@ -771,12 +796,15 @@ export function AdminRolesClient({
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">基础信息</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">对齐专家 frontmatter 的基础身份字段。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      对齐专家 frontmatter 的基础身份字段。
+                    </p>
                   </div>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">名称</label>
                       <PixelInput
+                        clearable
                         value={name}
                         onChange={(e) => {
                           const next = e.target.value;
@@ -788,11 +816,17 @@ export function AdminRolesClient({
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">唯一标识（Slug）</label>
-                      <PixelInput value={slug} onChange={(e) => setSlug(slugifyDraft(e.target.value))} required />
+                      <PixelInput
+                        clearable
+                        value={slug}
+                        onChange={(e) => setSlug(slugifyDraft(e.target.value))}
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">registryId</label>
                       <PixelInput
+                        clearable
                         value={registryId}
                         onChange={(e) => setRegistryId(slugifyDraft(e.target.value))}
                         placeholder="task-orchestrator"
@@ -804,6 +838,7 @@ export function AdminRolesClient({
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">manifestId</label>
                       <PixelInput
+                        clearable
                         value={manifestId}
                         onChange={(e) => setManifestId(slugifyDraft(e.target.value))}
                         placeholder="task-orchestrator"
@@ -814,50 +849,74 @@ export function AdminRolesClient({
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">作者</label>
-                      <PixelInput value={author} onChange={(e) => setAuthor(e.target.value)} required />
+                      <PixelInput
+                        clearable
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)}
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">Hub 发布状态</label>
-                      <select
+                      <PixelSelect
+                        clearable
                         value={publishStatus}
                         onChange={(e) => setPublishStatus(e.target.value)}
-                        className={pixelSelectClassName}
                       >
                         <option value="draft">草稿</option>
                         <option value="published">已发布</option>
-                      </select>
+                      </PixelSelect>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">专家状态</label>
-                      <select
+                      <PixelSelect
+                        clearable
                         value={roleStatus}
                         onChange={(e) => setRoleStatus(e.target.value)}
-                        className={pixelSelectClassName}
                       >
                         <option value={ROLE_STATUS.DRAFT}>草稿</option>
                         <option value={ROLE_STATUS.ACTIVE}>启用中</option>
                         <option value={ROLE_STATUS.PLANNED}>规划中</option>
-                      </select>
+                      </PixelSelect>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm text-[var(--pixel-fg)]">适用 Profile（逗号分隔）</label>
-                      <PixelInput value={profilesText} onChange={(e) => setProfilesText(e.target.value)} />
+                      <label className="text-sm text-[var(--pixel-fg)]">
+                        适用 Profile（逗号分隔）
+                      </label>
+                      <PixelInput
+                        clearable
+                        value={profilesText}
+                        onChange={(e) => setProfilesText(e.target.value)}
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">简介</label>
-                    <PixelTextarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} required className={fixedTextareaClassName} />
+                    <PixelTextarea
+                      clearable
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      rows={3}
+                      required
+                      className={fixedTextareaClassName}
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">标签（逗号分隔）</label>
-                    <PixelInput value={tagsText} onChange={(e) => setTagsText(e.target.value)} />
+                    <PixelInput
+                      clearable
+                      value={tagsText}
+                      onChange={(e) => setTagsText(e.target.value)}
+                    />
                   </div>
                 </section>
 
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">执行元数据</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">对应 triggers / preferred_skills / reads / writes / handoff_to。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      对应 triggers / preferred_skills / reads / writes / handoff_to。
+                    </p>
                   </div>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <AdminOptionChecklist
@@ -890,24 +949,54 @@ export function AdminRolesClient({
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">触发场景（一行一项）</label>
-                      <PixelTextarea value={triggersText} onChange={(e) => setTriggersText(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={triggersText}
+                        onChange={(e) => setTriggersText(e.target.value)}
+                        rows={5}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">优先技能（一行一项）</label>
-                      <PixelTextarea value={preferredSkillsText} onChange={(e) => setPreferredSkillsText(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={preferredSkillsText}
+                        onChange={(e) => setPreferredSkillsText(e.target.value)}
+                        rows={5}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">读取内容（一行一项）</label>
-                      <PixelTextarea value={readsText} onChange={(e) => setReadsText(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={readsText}
+                        onChange={(e) => setReadsText(e.target.value)}
+                        rows={5}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">产出内容（一行一项）</label>
-                      <PixelTextarea value={writesText} onChange={(e) => setWritesText(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={writesText}
+                        onChange={(e) => setWritesText(e.target.value)}
+                        rows={5}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">交接对象（一行一项）</label>
-                    <PixelTextarea value={handoffToText} onChange={(e) => setHandoffToText(e.target.value)} rows={4} className={fixedTextareaClassName} />
+                    <PixelTextarea
+                      clearable
+                      value={handoffToText}
+                      onChange={(e) => setHandoffToText(e.target.value)}
+                      rows={4}
+                      className={fixedTextareaClassName}
+                    />
                   </div>
                 </section>
 
@@ -930,34 +1019,76 @@ export function AdminRolesClient({
 
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">角色定位</label>
-                    <PixelTextarea value={rolePositioning} onChange={(e) => setRolePositioning(e.target.value)} rows={4} className={fixedTextareaClassName} />
+                    <PixelTextarea
+                      clearable
+                      value={rolePositioning}
+                      onChange={(e) => setRolePositioning(e.target.value)}
+                      rows={4}
+                      className={fixedTextareaClassName}
+                    />
                   </div>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">工作原则（一行一条）</label>
-                      <PixelTextarea value={workingPrinciplesText} onChange={(e) => setWorkingPrinciplesText(e.target.value)} rows={6} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={workingPrinciplesText}
+                        onChange={(e) => setWorkingPrinciplesText(e.target.value)}
+                        rows={6}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">必做步骤（一行一步）</label>
-                      <PixelTextarea value={requiredStepsText} onChange={(e) => setRequiredStepsText(e.target.value)} rows={6} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={requiredStepsText}
+                        onChange={(e) => setRequiredStepsText(e.target.value)}
+                        rows={6}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">执行契约</label>
-                    <PixelTextarea value={executionContract} onChange={(e) => setExecutionContract(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                    <PixelTextarea
+                      clearable
+                      value={executionContract}
+                      onChange={(e) => setExecutionContract(e.target.value)}
+                      rows={5}
+                      className={fixedTextareaClassName}
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">输出标准</label>
-                    <PixelTextarea value={outputStandard} onChange={(e) => setOutputStandard(e.target.value)} rows={5} className={fixedTextareaClassName} />
+                    <PixelTextarea
+                      clearable
+                      value={outputStandard}
+                      onChange={(e) => setOutputStandard(e.target.value)}
+                      rows={5}
+                      className={fixedTextareaClassName}
+                    />
                   </div>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">禁止事项（一行一条）</label>
-                      <PixelTextarea value={prohibitedActionsText} onChange={(e) => setProhibitedActionsText(e.target.value)} rows={6} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={prohibitedActionsText}
+                        onChange={(e) => setProhibitedActionsText(e.target.value)}
+                        rows={6}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">交接说明</label>
-                      <PixelTextarea value={handoffNotes} onChange={(e) => setHandoffNotes(e.target.value)} rows={6} className={fixedTextareaClassName} />
+                      <PixelTextarea
+                        clearable
+                        value={handoffNotes}
+                        onChange={(e) => setHandoffNotes(e.target.value)}
+                        rows={6}
+                        className={fixedTextareaClassName}
+                      />
                     </div>
                   </div>
                 </section>
@@ -987,7 +1118,9 @@ export function AdminRolesClient({
                 <section className="sticky top-0 space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">结构预览</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">用于快速检查当前专家结构是否接近 br-ai-spec 专家模板。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      用于快速检查当前专家结构是否接近 br-ai-spec 专家模板。
+                    </p>
                   </div>
                   <div className="space-y-3 border-2 border-[var(--pixel-border)] bg-[#fffef8] p-3">
                     <div>
@@ -1016,19 +1149,27 @@ export function AdminRolesClient({
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">触发场景</p>
-                      <p className="text-[var(--pixel-muted)]">{previewTriggers.join(" / ") || "未填写"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {previewTriggers.join(" / ") || "未填写"}
+                      </p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">优先技能</p>
-                      <p className="text-[var(--pixel-muted)]">{previewPreferredSkills.join(" / ") || "未填写"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {previewPreferredSkills.join(" / ") || "未填写"}
+                      </p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">读取/产出</p>
-                      <p className="text-[var(--pixel-muted)]">读取 {previewReads.length} 项，产出 {previewWrites.length} 项</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        读取 {previewReads.length} 项，产出 {previewWrites.length} 项
+                      </p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">交接对象</p>
-                      <p className="text-[var(--pixel-muted)]">{previewHandoffTo.join(" / ") || "未填写"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {previewHandoffTo.join(" / ") || "未填写"}
+                      </p>
                     </div>
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">正文结构</p>
@@ -1045,7 +1186,8 @@ export function AdminRolesClient({
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">Profile / 标签</p>
                       <p className="text-[var(--pixel-muted)]">
-                        {previewProfiles.join(" / ") || "无 Profile"} ｜ {previewTags.join(" / ") || "无标签"}
+                        {previewProfiles.join(" / ") || "无 Profile"} ｜{" "}
+                        {previewTags.join(" / ") || "无标签"}
                       </p>
                     </div>
                   </div>
@@ -1134,7 +1276,11 @@ export function AdminRolesClient({
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-sm text-[var(--pixel-fg)]">版本号</label>
-                  <PixelInput value={nextVersion} onChange={(e) => setNextVersion(e.target.value.trim())} />
+                  <PixelInput
+                    clearable
+                    value={nextVersion}
+                    onChange={(e) => setNextVersion(e.target.value.trim())}
+                  />
                 </div>
                 <label className="flex items-center gap-2 pt-8 text-sm text-[var(--pixel-fg)]">
                   <input
@@ -1149,6 +1295,7 @@ export function AdminRolesClient({
               <div className="space-y-2">
                 <label className="text-sm text-[var(--pixel-fg)]">变更说明</label>
                 <PixelTextarea
+                  clearable
                   value={versionChangelog}
                   onChange={(e) => setVersionChangelog(e.target.value)}
                   rows={3}
@@ -1176,6 +1323,7 @@ export function AdminRolesClient({
                   </Button>
                 </div>
                 <PixelTextarea
+                  clearable
                   value={versionFilesText}
                   onChange={(e) => setVersionFilesText(e.target.value)}
                   rows={14}

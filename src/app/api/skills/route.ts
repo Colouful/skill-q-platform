@@ -17,33 +17,9 @@ import { MODERATION_STATUS } from "@/lib/moderation";
 import { getDefaultDownloadPolicy, getResourceUploadRequiresModeration } from "@/lib/system-config";
 import { enforceUploadLoginPolicy } from "@/lib/upload-login-policy";
 import { PRISMA_TX_LARGE_WRITE } from "@/lib/prisma-transaction-options";
-import { z } from "zod";
+import { skillCreateBodySchema } from "@/lib/skill-upload-contract";
 
 export const dynamic = "force-dynamic";
-
-const fileEntry = z.object({
-  name: z.string().min(1),
-  path: z.string().min(1),
-  content: z.string().optional(),
-});
-
-const downloadPolicyEnum = z.enum(["public", "login", "author"]);
-
-const postBody = z.object({
-  name: z.string().min(1).max(255),
-  slug: z.string().min(1).max(255).optional(),
-  registryId: z.string().min(1).max(255).optional(),
-  manifestId: z.string().min(1).max(255).optional(),
-  description: z.string().min(1),
-  author: z.string().min(1).max(100),
-  categorySlug: z.string().min(1),
-  longDescription: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-  supportedProfiles: z.array(z.string()).optional(),
-  downloadPolicy: downloadPolicyEnum.optional(),
-  /** 来自 ZIP 解析后的初始文件清单，写入 1.0.0 版本 */
-  initialFiles: z.array(fileEntry).max(200).optional(),
-});
 
 export async function GET(req: Request) {
   try {
@@ -113,7 +89,7 @@ export async function POST(req: Request) {
     }
 
     const raw = await req.json();
-    const parsed = postBody.safeParse(raw);
+    const parsed = skillCreateBodySchema.safeParse(raw);
     if (!parsed.success) {
       return jsonErr(parsed.error.issues.map((i) => i.message).join("; "), 400);
     }

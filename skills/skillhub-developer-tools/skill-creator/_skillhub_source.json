@@ -1,0 +1,67 @@
+{
+  "fetchedAt": "2026-04-15T07:30:25.607Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "skill-creator",
+  "displayName": "Skill Creator",
+  "owner": {
+    "name": "chindden",
+    "handle": "chindden"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/skill-creator",
+  "originalHomepage": "https://clawhub.ai/chindden/skill-creator",
+  "version": "0.1.0",
+  "summary": {
+    "en": "Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.",
+    "zh": "创建有效技能指南。当用户希望创建新技能（或更新现有技能）以利用专业知识、工作流程或工具集成扩展 Claude 的能力时，应使用此技能。"
+  },
+  "stats": {
+    "downloads": 75075,
+    "installs": 14692,
+    "stars": 152,
+    "score": 35409.76323984715
+  },
+  "remoteFiles": [
+    {
+      "path": "LICENSE.txt",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "size": 11357
+    },
+    {
+      "path": "references/output-patterns.md",
+      "sha256": "d6027800b9d8c26589edba85b42901a41ac36d753b4e9cebc7f4cbb03cdcf0a4",
+      "size": 1813
+    },
+    {
+      "path": "references/workflows.md",
+      "sha256": "ef4846877d5dab47511a01a6cf31476ad64f5bc5945635459295794575338980",
+      "size": 818
+    },
+    {
+      "path": "scripts/init_skill.py",
+      "sha256": "0bba250b94caa4cb2b28b15dad26fdcf371aeda4c9797b8120e55c2e33e0c73c",
+      "size": 10863
+    },
+    {
+      "path": "scripts/package_skill.py",
+      "sha256": "b31fbcb3e362d5c5308e99255ff8e83cde3a513e0636953964a648494ca10931",
+      "size": 3288
+    },
+    {
+      "path": "scripts/quick_validate.py",
+      "sha256": "381ab2d3d1fd5ec32371016413063eff99d0d48c415747085c61517e967dbb87",
+      "size": 3523
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "b2e3d83f60425c2d0b9d4162efb8f9aa322b45843497340f2289f42be422801c",
+      "size": 17837
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "e42619674aa33a7b19420e199794a6ea28a10df672a9c67106ac03cbab1a4aa4",
+      "size": 132
+    }
+  ]
+}

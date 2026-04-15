@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { PixelInput, pixelSelectClassName } from "@/components/pixel";
+import { PixelInput, PixelSelect } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { Label } from "@/components/ui/label";
 
@@ -42,7 +42,9 @@ export function AdminAgentsClient() {
       filter,
     });
     if (qApplied.trim()) params.set("q", qApplied.trim());
-    const res = await fetchApi<{ items: Row[]; total: number }>(`/api/admin/agents?${params.toString()}`);
+    const res = await fetchApi<{ items: Row[]; total: number }>(
+      `/api/admin/agents?${params.toString()}`,
+    );
     setLoading(false);
     if (res.code !== 0 || !res.data) {
       toast.error(res.message || "加载失败");
@@ -68,12 +70,18 @@ export function AdminAgentsClient() {
       <div className="flex flex-wrap items-end gap-2">
         <div className="min-w-[180px] flex-1">
           <Label className="text-xs">关键词（名称 / Slug）</Label>
-          <PixelInput value={qInput} onChange={(e) => setQInput(e.target.value)} placeholder="可选" />
+          <PixelInput
+            clearable
+            value={qInput}
+            onChange={(e) => setQInput(e.target.value)}
+            placeholder="可选"
+          />
         </div>
         <div>
           <Label className="text-xs">状态</Label>
-          <select
-            className={pixelSelectClassName + " mt-1 block"}
+          <PixelSelect
+            clearable
+            className="mt-1 block"
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value as "all" | "active" | "inactive");
@@ -83,7 +91,7 @@ export function AdminAgentsClient() {
             <option value="all">全部</option>
             <option value="active">正常</option>
             <option value="inactive">已封禁</option>
-          </select>
+          </PixelSelect>
         </div>
         <Button type="button" variant="outline" className="border-2" onClick={applySearch}>
           搜索
@@ -91,7 +99,9 @@ export function AdminAgentsClient() {
       </div>
 
       {loading ? (
-        <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">加载中…</p>
+        <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
+          加载中…
+        </p>
       ) : (
         <>
           <div className="overflow-x-auto border-4 border-[var(--pixel-border)]">
@@ -132,7 +142,13 @@ export function AdminAgentsClient() {
             </table>
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <Button type="button" size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
               上一页
             </Button>
             <span>

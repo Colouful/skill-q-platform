@@ -1,0 +1,37 @@
+{
+  "fetchedAt": "2026-04-15T07:32:26.457Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "codeconductor",
+  "displayName": "CodeConductor.ai",
+  "owner": {
+    "name": "larsonreever",
+    "handle": "larsonreever"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/codeconductor",
+  "originalHomepage": "https://clawhub.ai/larsonreever/codeconductor",
+  "version": "1.0.1",
+  "summary": {
+    "en": "AI-powered platform for rapid full-stack app development, autonomous agents, workflow automation, and scalable product creation with low-code and AI integrat...",
+    "zh": "AI驱动平台，提供快速全栈开发、智能体、工作流自动化及低代码AI集成的可扩展产品创建。"
+  },
+  "stats": {
+    "downloads": 126784,
+    "installs": 109841,
+    "stars": 0,
+    "score": 57470.78501944643
+  },
+  "remoteFiles": [
+    {
+      "path": "skills.md",
+      "sha256": "7ec4b369d311e1d5cb8d5f9d5c7a3a600c53fb5de3ff87b57cab76851d9a7bb0",
+      "size": 2231
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "f5123a8b0adfeaab5a4f6b70d4fd965bfcf21511279db713f73abe196ca6da79",
+      "size": 132
+    }
+  ]
+}

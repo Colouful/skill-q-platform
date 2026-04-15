@@ -49,14 +49,16 @@ export function AdminShell({
       return (
         pathname === "/admin/skills/manage" ||
         pathname === "/admin/skills/new" ||
-        pathname.startsWith("/admin/skills/") && pathname.endsWith("/edit")
+        pathname.startsWith("/admin/skills/") &&
+          (pathname.endsWith("/edit") || pathname.endsWith("/preview"))
       );
     }
     if (href === "/admin/rules/manage") {
       return (
         pathname === "/admin/rules/manage" ||
         pathname === "/admin/rules/new" ||
-        pathname.startsWith("/admin/rules/") && pathname.endsWith("/edit")
+        pathname.startsWith("/admin/rules/") &&
+          (pathname.endsWith("/edit") || pathname.endsWith("/preview"))
       );
     }
     return pathname.startsWith(href);

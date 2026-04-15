@@ -4,12 +4,28 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { PixelInput, PixelSelect, PixelTextarea } from "@/components/pixel";
 import { fetchApi } from "@/lib/client-api";
 import { AdminOptionChecklist } from "@/components/admin/AdminOptionChecklist";
-import { AdminSortableList, type AdminSortableListItem } from "@/components/admin/AdminSortableList";
+import {
+  AdminSortableList,
+  type AdminSortableListItem,
+} from "@/components/admin/AdminSortableList";
 import { catalogPublishStatusLabel } from "@/lib/catalog";
 import { formatDateTimeShanghai } from "@/lib/date-format";
 
@@ -202,7 +218,10 @@ export function AdminScenariosClient({
       }),
     [roleItems, roles],
   );
-  const orderedSkillItems = useMemo(() => toSortableOptionItems(skillIds, skills), [skillIds, skills]);
+  const orderedSkillItems = useMemo(
+    () => toSortableOptionItems(skillIds, skills),
+    [skillIds, skills],
+  );
   const orderedRuleItems = useMemo(() => toSortableOptionItems(ruleIds, rules), [ruleIds, rules]);
   const selectedRoleDetails = useMemo(
     () =>
@@ -264,16 +283,12 @@ export function AdminScenariosClient({
   );
   const directSkillNames = useMemo(
     () =>
-      skillIds
-        .map((id) => skills.find((item) => item.id === id)?.name)
-        .filter(Boolean) as string[],
+      skillIds.map((id) => skills.find((item) => item.id === id)?.name).filter(Boolean) as string[],
     [skillIds, skills],
   );
   const directRuleNames = useMemo(
     () =>
-      ruleIds
-        .map((id) => rules.find((item) => item.id === id)?.name)
-        .filter(Boolean) as string[],
+      ruleIds.map((id) => rules.find((item) => item.id === id)?.name).filter(Boolean) as string[],
     [ruleIds, rules],
   );
 
@@ -429,7 +444,8 @@ export function AdminScenariosClient({
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <p className="font-[family-name:var(--font-pixel-body)] text-sm text-[var(--pixel-muted)]">
-          维护场景方案与入口专家、专家链；Skill / Rule 默认会从专家自动聚合，这里只补充少量场景专属资产。
+          维护场景方案与入口专家、专家链；Skill / Rule
+          默认会从专家自动聚合，这里只补充少量场景专属资产。
         </p>
         <Button
           type="button"
@@ -460,7 +476,9 @@ export function AdminScenariosClient({
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.slug}</TableCell>
               <TableCell>{catalogPublishStatusLabel(item.publishStatus)}</TableCell>
-              <TableCell>{roles.find((role) => role.id === item.entryRoleId)?.name ?? "未设置"}</TableCell>
+              <TableCell>
+                {roles.find((role) => role.id === item.entryRoleId)?.name ?? "未设置"}
+              </TableCell>
               <TableCell>{item.roleItems.length}</TableCell>
               <TableCell>{item.skillIds.length}</TableCell>
               <TableCell>{item.ruleIds.length}</TableCell>
@@ -515,12 +533,15 @@ export function AdminScenariosClient({
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">基础信息</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">定义场景名称、入口专家和发布状态。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      定义场景名称、入口专家和发布状态。
+                    </p>
                   </div>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">名称</label>
                       <PixelInput
+                        clearable
                         value={name}
                         onChange={(e) => {
                           const next = e.target.value;
@@ -532,25 +553,30 @@ export function AdminScenariosClient({
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">唯一标识（Slug）</label>
-                      <PixelInput value={slug} onChange={(e) => setSlug(slugifyDraft(e.target.value))} required />
+                      <PixelInput
+                        clearable
+                        value={slug}
+                        onChange={(e) => setSlug(slugifyDraft(e.target.value))}
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">发布状态</label>
-                      <select
+                      <PixelSelect
+                        clearable
                         value={publishStatus}
                         onChange={(e) => setPublishStatus(e.target.value)}
-                        className={pixelSelectClassName}
                       >
                         <option value="draft">草稿</option>
                         <option value="published">已发布</option>
-                      </select>
+                      </PixelSelect>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">入口专家</label>
-                      <select
+                      <PixelSelect
+                        clearable
                         value={entryRoleId}
                         onChange={(e) => setEntryRoleId(e.target.value)}
-                        className={pixelSelectClassName}
                       >
                         <option value="">未设置</option>
                         {roles.map((role) => (
@@ -558,13 +584,14 @@ export function AdminScenariosClient({
                             {role.name}
                           </option>
                         ))}
-                      </select>
+                      </PixelSelect>
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">简介</label>
                     <PixelTextarea
+                      clearable
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={3}
@@ -575,6 +602,7 @@ export function AdminScenariosClient({
                   <div className="space-y-2">
                     <label className="text-sm text-[var(--pixel-fg)]">详细说明</label>
                     <PixelTextarea
+                      clearable
                       value={longDescription}
                       onChange={(e) => setLongDescription(e.target.value)}
                       rows={6}
@@ -584,16 +612,30 @@ export function AdminScenariosClient({
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="text-sm text-[var(--pixel-fg)]">适用 Profile（逗号分隔）</label>
-                      <PixelInput value={profilesText} onChange={(e) => setProfilesText(e.target.value)} />
+                      <label className="text-sm text-[var(--pixel-fg)]">
+                        适用 Profile（逗号分隔）
+                      </label>
+                      <PixelInput
+                        clearable
+                        value={profilesText}
+                        onChange={(e) => setProfilesText(e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">推荐 IDE（逗号分隔）</label>
-                      <PixelInput value={idesText} onChange={(e) => setIdesText(e.target.value)} />
+                      <PixelInput
+                        clearable
+                        value={idesText}
+                        onChange={(e) => setIdesText(e.target.value)}
+                      />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm text-[var(--pixel-fg)]">标签（逗号分隔）</label>
-                      <PixelInput value={tagsText} onChange={(e) => setTagsText(e.target.value)} />
+                      <PixelInput
+                        clearable
+                        value={tagsText}
+                        onChange={(e) => setTagsText(e.target.value)}
+                      />
                     </div>
                     <label className="flex items-center gap-2 pt-8 text-sm text-[var(--pixel-fg)]">
                       <input
@@ -610,7 +652,9 @@ export function AdminScenariosClient({
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">场景结构</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">主配置是专家链，Skill / Rule 默认会从专家自动聚合。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      主配置是专家链，Skill / Rule 默认会从专家自动聚合。
+                    </p>
                   </div>
                   <div className="grid gap-4 lg:grid-cols-2">
                     <AdminOptionChecklist
@@ -655,7 +699,9 @@ export function AdminScenariosClient({
                 <section className="space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">顺序与补充项</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">用于调优执行顺序，以及补少量场景专属资产。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      用于调优执行顺序，以及补少量场景专属资产。
+                    </p>
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm text-[var(--pixel-fg)]">专家链顺序 / 可选项</p>
@@ -663,7 +709,9 @@ export function AdminScenariosClient({
                       items={orderedRoleItems}
                       emptyText="未选择专家"
                       onChange={(nextItems) =>
-                        setRoleItems(nextItems.map((item) => ({ id: item.id, isOptional: item.isOptional })))
+                        setRoleItems(
+                          nextItems.map((item) => ({ id: item.id, isOptional: item.isOptional })),
+                        )
                       }
                       renderActions={(item) => (
                         <label className="inline-flex items-center gap-2 text-xs text-[var(--pixel-fg)]">
@@ -713,7 +761,9 @@ export function AdminScenariosClient({
                 <section className="sticky top-0 space-y-4 rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-4">
                   <div className="space-y-1">
                     <p className="text-sm font-medium text-[var(--pixel-fg)]">结构预览</p>
-                    <p className="text-xs text-[var(--pixel-muted)]">保存前先检查场景结构、入口专家以及从专家自动汇总出的安装资产。</p>
+                    <p className="text-xs text-[var(--pixel-muted)]">
+                      保存前先检查场景结构、入口专家以及从专家自动汇总出的安装资产。
+                    </p>
                   </div>
 
                   <div className="space-y-3 border-2 border-[var(--pixel-border)] bg-[#fffef8] p-3">
@@ -736,18 +786,23 @@ export function AdminScenariosClient({
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">Profile / IDE</p>
                       <p className="text-[var(--pixel-muted)]">
-                        {previewProfiles.join(" / ") || "未填写 Profile"} | {previewIdes.join(" / ") || "未填写 IDE"}
+                        {previewProfiles.join(" / ") || "未填写 Profile"} |{" "}
+                        {previewIdes.join(" / ") || "未填写 IDE"}
                       </p>
                     </div>
 
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">标签</p>
-                      <p className="text-[var(--pixel-muted)]">{previewTags.join(" / ") || "未填写"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {previewTags.join(" / ") || "未填写"}
+                      </p>
                     </div>
 
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">能力域</p>
-                      <p className="text-[var(--pixel-muted)]">{selectedDomainNames.join(" / ") || "未选择"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {selectedDomainNames.join(" / ") || "未选择"}
+                      </p>
                     </div>
 
                     <div className="space-y-1 text-xs">
@@ -770,17 +825,23 @@ export function AdminScenariosClient({
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">Skill 汇总</p>
                       <p className="text-[var(--pixel-muted)]">
-                        自动聚合 {aggregatedRoleSkillIds.length} 个，补充 {skillIds.length} 个，共 {resolvedSkillIds.length} 个
+                        自动聚合 {aggregatedRoleSkillIds.length} 个，补充 {skillIds.length} 个，共{" "}
+                        {resolvedSkillIds.length} 个
                       </p>
-                      <p className="text-[var(--pixel-muted)]">{aggregatedSkillNames.join(" / ") || "暂无 Skill"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {aggregatedSkillNames.join(" / ") || "暂无 Skill"}
+                      </p>
                     </div>
 
                     <div className="space-y-1 text-xs">
                       <p className="text-[var(--pixel-fg)]">Rule 汇总</p>
                       <p className="text-[var(--pixel-muted)]">
-                        自动聚合 {aggregatedRoleRuleIds.length} 个，补充 {ruleIds.length} 个，共 {resolvedRuleIds.length} 个
+                        自动聚合 {aggregatedRoleRuleIds.length} 个，补充 {ruleIds.length} 个，共{" "}
+                        {resolvedRuleIds.length} 个
                       </p>
-                      <p className="text-[var(--pixel-muted)]">{aggregatedRuleNames.join(" / ") || "暂无 Rule"}</p>
+                      <p className="text-[var(--pixel-muted)]">
+                        {aggregatedRuleNames.join(" / ") || "暂无 Rule"}
+                      </p>
                     </div>
 
                     <div className="space-y-1 text-xs">

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getOptionalAuthAgentFromCookies } from "@/lib/agent-auth";
+import { getAdminFromSessionCookie } from "@/lib/admin-auth";
 import { canViewUnpublishedResource } from "@/lib/moderation";
 import { canEditSkillOrRule } from "@/lib/skill-rule-write-access";
 import { RuleJsonLd } from "@/components/seo/rule-json-ld";
@@ -35,7 +36,11 @@ export async function generateMetadata({
     return { title: "Rule" };
   }
   const agent = await getOptionalAuthAgentFromCookies();
-  if (!canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, agent?.id ?? null)) {
+  const admin = await getAdminFromSessionCookie();
+  const canView =
+    Boolean(admin) ||
+    canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, agent?.id ?? null);
+  if (!canView) {
     return { title: "Rule" };
   }
   const desc = rule.description.slice(0, 160);
@@ -72,7 +77,11 @@ export default async function RuleDetailPage({
   if (!rule) notFound();
 
   const viewer = await getOptionalAuthAgentFromCookies();
-  if (!canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, viewer?.id ?? null)) {
+  const admin = await getAdminFromSessionCookie();
+  const canView =
+    Boolean(admin) ||
+    canViewUnpublishedResource(rule.moderationStatus, rule.authorAgentId, viewer?.id ?? null);
+  if (!canView) {
     notFound();
   }
 

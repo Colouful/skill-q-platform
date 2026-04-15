@@ -1,0 +1,37 @@
+{
+  "fetchedAt": "2026-04-15T07:32:26.470Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "moltspeak",
+  "displayName": "Molt Speak",
+  "owner": {
+    "name": "swahilipapi",
+    "handle": "swahilipapi"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/moltspeak",
+  "originalHomepage": "https://clawhub.ai/swahilipapi/moltspeak",
+  "version": "0.1.0",
+  "summary": {
+    "en": "Efficient, secure agent-to-agent communication protocol. 40-60% token reduction, built-in privacy, Ed25519 signatures.",
+    "zh": "高效、安全的代理间通信协议，40-60%令牌削减，内置隐私，Ed25519签名"
+  },
+  "stats": {
+    "downloads": 56790,
+    "installs": 50288,
+    "stars": 2,
+    "score": 25760.85872551064
+  },
+  "remoteFiles": [
+    {
+      "path": "skills.md",
+      "sha256": "9f65e678fdcc3a637f0dccfcb5ce7a15b74b7ee37200a2d399746982f4686dac",
+      "size": 1301
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "93b94df65a9cd3234d9545635e27cc7822176f4bb2e54501d1e1131031bb2347",
+      "size": 128
+    }
+  ]
+}

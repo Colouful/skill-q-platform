@@ -44,6 +44,7 @@ export default function AdminLoginPage() {
             type="text"
             autoComplete="username"
             required
+            clearable
             value={email}
             onChange={(ev) => setEmail(ev.target.value)}
           />
@@ -54,6 +55,7 @@ export default function AdminLoginPage() {
             type="password"
             autoComplete="current-password"
             required
+            clearable
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />

@@ -48,6 +48,7 @@ export function AdminOptionChecklist({
         {searchEnabled ? (
           <div className="w-full max-w-[15rem]">
             <PixelInput
+              clearable
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={searchPlaceholder}
@@ -59,11 +60,15 @@ export function AdminOptionChecklist({
       {options.length === 0 ? (
         <p className="text-xs text-[var(--pixel-muted)]">暂无可选项</p>
       ) : filteredOptions.length === 0 ? (
-        <div className={`space-y-2 overflow-y-auto rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-2 ${minHeightClassName} ${maxHeightClassName}`}>
+        <div
+          className={`space-y-2 overflow-y-auto rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-2 ${minHeightClassName} ${maxHeightClassName}`}
+        >
           <p className="px-2 py-1 text-xs text-[var(--pixel-muted)]">无匹配结果</p>
         </div>
       ) : (
-        <div className={`space-y-2 overflow-y-auto rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-2 ${minHeightClassName} ${maxHeightClassName}`}>
+        <div
+          className={`space-y-2 overflow-y-auto rounded-sm border-2 border-[var(--pixel-border)] bg-[#fffef8] p-2 ${minHeightClassName} ${maxHeightClassName}`}
+        >
           {filteredOptions.map((option) => (
             <label
               key={option.id}

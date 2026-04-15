@@ -1,0 +1,42 @@
+{
+  "fetchedAt": "2026-04-15T07:29:40.838Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "agent-browser",
+  "displayName": "Agent Browser",
+  "owner": {
+    "name": "thesethrose",
+    "handle": "thesethrose"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/agent-browser",
+  "originalHomepage": "https://clawhub.ai/thesethrose/agent-browser",
+  "version": "0.2.0",
+  "summary": {
+    "en": "A fast Rust-based headless browser automation CLI with Node.js fallback that enables AI agents to navigate, click, type, and snapshot pages via structured commands.",
+    "zh": "基于Rust的快速无头浏览器自动化CLI，支持Node.js回退，允许AI代理通过结构化命令执行页面导航、点击、输入和快照操作。"
+  },
+  "stats": {
+    "downloads": 208661,
+    "installs": 27988,
+    "stars": 597,
+    "score": 100000
+  },
+  "remoteFiles": [
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "6aa2ff6c195842f5013eed3ca2d563ec9fef63bb4fb9b2f0038e13bccc0a65ce",
+      "size": 1626
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "04afeeb53a8b6ab953974311ec7ed60e0d66c532341ca21933625320f28b01c6",
+      "size": 10224
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "f68418184f93ba77d56e16e2056ce873560b1eeeff14e5129126d9bbd9fd0d28",
+      "size": 132
+    }
+  ]
+}

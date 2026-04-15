@@ -1,0 +1,37 @@
+{
+  "fetchedAt": "2026-04-15T07:30:24.057Z",
+  "sourceSite": "skillhub.cn",
+  "sourceApi": "https://api.skillhub.cn",
+  "category": "developer-tools",
+  "slug": "mcporter",
+  "displayName": "Mcporter",
+  "owner": {
+    "name": "steipete",
+    "handle": "steipete"
+  },
+  "skillhubPage": "https://skillhub.cn/skills/mcporter",
+  "originalHomepage": "https://clawhub.ai/steipete/mcporter",
+  "version": "1.0.0",
+  "summary": {
+    "en": "Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly (HTTP or stdio), including ad-hoc servers, config edits, and CLI/type generation.",
+    "zh": "使用 mcporter CLI 直接列出、配置、认证及调用 MCP 服务器/工具（支持 HTTP 或 stdio），涵盖临时服务器、配置编辑及 CLI/类型生成功能。"
+  },
+  "stats": {
+    "downloads": 58285,
+    "installs": 6237,
+    "stars": 140,
+    "score": 27690.013281777676
+  },
+  "remoteFiles": [
+    {
+      "path": "SKILL.md",
+      "sha256": "475253164a0cca240679819497abd35bcd708162ab0f399990468d94d55a6d15",
+      "size": 1480
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "72acbc034c6a2727bd4309e9be79c3c41f2def8bf125e7f3477137fe67f34162",
+      "size": 127
+    }
+  ]
+}

@@ -4,6 +4,7 @@ export { PixelButton, pixelButtonVariants } from "./pixel-button";
 export { PixelFont } from "./pixel-font";
 export { PixelIcon } from "./pixel-icon";
 export { PixelInput } from "./pixel-input";
+export { PixelSelect } from "./pixel-select";
 export { PixelTextarea } from "./pixel-textarea";
 export { PixelTable, PixelTableHead, PixelTableRow } from "./pixel-table";
 export {

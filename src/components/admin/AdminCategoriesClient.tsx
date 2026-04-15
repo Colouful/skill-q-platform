@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { fetchApi } from "@/lib/client-api";
-import { PixelInput, PixelTextarea, pixelSelectClassName } from "@/components/pixel";
+import { PixelInput, PixelSelect, PixelTextarea } from "@/components/pixel";
 import { cn } from "@/lib/utils";
 import { AdminBulkResourceCategoryDialog } from "@/components/admin/AdminBulkResourceCategoryDialog";
 
@@ -147,7 +147,9 @@ export function AdminCategoriesClient() {
     setDeleteOpen(true);
   }
 
-  async function confirmDelete(mode: "rejectIfNotEmpty" | "migrateFirst" | "cascadeDeleteResources") {
+  async function confirmDelete(
+    mode: "rejectIfNotEmpty" | "migrateFirst" | "cascadeDeleteResources",
+  ) {
     if (!deleteTarget) return;
     if (mode === "migrateFirst" && !migrateToId) {
       toast.error("请选择目标分类");
@@ -309,16 +311,28 @@ export function AdminCategoriesClient() {
         >
           新建分类
         </Button>
-        <Button type="button" variant="outline" className="border-2" onClick={() => setMergeOpen(true)}>
+        <Button
+          type="button"
+          variant="outline"
+          className="border-2"
+          onClick={() => setMergeOpen(true)}
+        >
           合并分类…
         </Button>
-        <Button type="button" variant="outline" className="border-2" onClick={() => setBulkOpen(true)}>
+        <Button
+          type="button"
+          variant="outline"
+          className="border-2"
+          onClick={() => setBulkOpen(true)}
+        >
           批量改资源分类…
         </Button>
       </div>
 
       {loading ? (
-        <p className="font-[family-name:var(--font-pixel-body)] text-[var(--pixel-muted)]">加载中…</p>
+        <p className="font-[family-name:var(--font-pixel-body)] text-[var(--pixel-muted)]">
+          加载中…
+        </p>
       ) : (
         <div className="overflow-x-auto border-4 border-[var(--pixel-border)]">
           <table className="w-full border-collapse text-left font-[family-name:var(--font-pixel-body)] text-sm">
@@ -361,7 +375,12 @@ export function AdminCategoriesClient() {
                   <td className="p-2 text-[var(--pixel-muted)]">{row.slug}</td>
                   <td className="p-2">{countFor(row)}</td>
                   <td className="flex flex-wrap gap-1 p-2">
-                    <Button size="sm" variant="outline" className="h-7 border px-2 text-xs" onClick={() => openEdit(row)}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-7 border px-2 text-xs"
+                      onClick={() => openEdit(row)}
+                    >
                       编辑
                     </Button>
                     <Button
@@ -400,19 +419,34 @@ export function AdminCategoriesClient() {
           <form onSubmit={saveForm} className="space-y-3">
             <div>
               <Label>名称</Label>
-              <PixelInput required value={name} onChange={(e) => setName(e.target.value)} />
+              <PixelInput
+                clearable
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div>
               <Label>Slug</Label>
-              <PixelInput required value={slug} onChange={(e) => setSlug(e.target.value)} />
+              <PixelInput
+                clearable
+                required
+                value={slug}
+                onChange={(e) => setSlug(e.target.value)}
+              />
             </div>
             <div>
               <Label>描述</Label>
-              <PixelTextarea rows={3} value={description} onChange={(e) => setDescription(e.target.value)} />
+              <PixelTextarea
+                clearable
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
             </div>
             <div>
               <Label>图标（emoji 或短文本）</Label>
-              <PixelInput value={icon} onChange={(e) => setIcon(e.target.value)} />
+              <PixelInput clearable value={icon} onChange={(e) => setIcon(e.target.value)} />
             </div>
             <DialogFooter>
               <Button type="submit" disabled={busy === "form"} className="border-2">
@@ -435,15 +469,19 @@ export function AdminCategoriesClient() {
                 {tab === "skill" ? "Skill" : "Rule"}。
               </p>
               {countFor(deleteTarget) === 0 ? (
-                <Button className="w-full border-2" onClick={() => void confirmDelete("rejectIfNotEmpty")}>
+                <Button
+                  className="w-full border-2"
+                  onClick={() => void confirmDelete("rejectIfNotEmpty")}
+                >
                   确认删除空分类
                 </Button>
               ) : (
                 <>
                   <div>
                     <Label>将资源迁移到</Label>
-                    <select
-                      className={pixelSelectClassName + " mt-1 w-full"}
+                    <PixelSelect
+                      clearable
+                      className="mt-1 w-full"
                       value={migrateToId}
                       onChange={(e) => setMigrateToId(e.target.value)}
                     >
@@ -455,9 +493,12 @@ export function AdminCategoriesClient() {
                             {r.name} ({r.slug})
                           </option>
                         ))}
-                    </select>
+                    </PixelSelect>
                   </div>
-                  <Button className="w-full border-2" onClick={() => void confirmDelete("migrateFirst")}>
+                  <Button
+                    className="w-full border-2"
+                    onClick={() => void confirmDelete("migrateFirst")}
+                  >
                     迁移并删除分类
                   </Button>
                   <Button
@@ -496,8 +537,9 @@ export function AdminCategoriesClient() {
           </div>
           <div>
             <Label>合并到</Label>
-            <select
-              className={pixelSelectClassName + " mt-1 w-full"}
+            <PixelSelect
+              clearable
+              className="mt-1 w-full"
               value={mergeTargetId}
               onChange={(e) => setMergeTargetId(e.target.value)}
             >
@@ -507,7 +549,7 @@ export function AdminCategoriesClient() {
                   {r.name}
                 </option>
               ))}
-            </select>
+            </PixelSelect>
           </div>
           <DialogFooter>
             <Button type="button" disabled={busy === "merge"} onClick={() => void runMerge()}>
@@ -535,11 +577,10 @@ export function AdminCategoriesClient() {
           </DialogHeader>
           {migrateFrom && (
             <div className="space-y-3">
-              <p className="text-sm">
-                从「{migrateFrom.name}」迁移到：
-              </p>
-              <select
-                className={pixelSelectClassName + " w-full"}
+              <p className="text-sm">从「{migrateFrom.name}」迁移到：</p>
+              <PixelSelect
+                clearable
+                className="w-full"
                 value={migrateTo}
                 onChange={(e) => setMigrateTo(e.target.value)}
               >
@@ -551,9 +592,13 @@ export function AdminCategoriesClient() {
                       {r.name}
                     </option>
                   ))}
-              </select>
+              </PixelSelect>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={keepSource} onChange={(e) => setKeepSource(e.target.checked)} />
+                <input
+                  type="checkbox"
+                  checked={keepSource}
+                  onChange={(e) => setKeepSource(e.target.checked)}
+                />
                 保留空分类（不删源分类）
               </label>
               <Button type="button" onClick={() => void runMigrate()}>
