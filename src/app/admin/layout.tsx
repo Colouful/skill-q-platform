@@ -1,6 +1,6 @@
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mx-auto w-full max-w-7xl px-3 py-8 sm:px-4">
+    <div className="mx-auto w-full max-w-8xl px-3 py-8 sm:px-4">
       {children}
     </div>
   );

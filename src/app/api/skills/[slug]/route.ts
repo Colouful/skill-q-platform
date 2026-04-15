@@ -5,6 +5,7 @@ import { getAdminFromRequest } from "@/lib/admin-auth";
 import { jsonErr, jsonOk } from "@/lib/api-response";
 import { toApiResponse } from "@/lib/api-errors";
 import { ASCII_URL_SLUG } from "@/lib/catalog-slug";
+import { isHubAdmin } from "@/lib/hub-auth";
 import { normalizeRegistryLikeId } from "@/lib/hub-registry-contract";
 import { normalizeSupportedProfilesList } from "@/lib/profile-options";
 import { assertUniqueRegistryFields } from "@/lib/registry-id-validation";
@@ -74,7 +75,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ slug: string }
       return jsonErr("Skill 不存在", 404);
     }
 
-    const admin = await getAdminFromRequest(req);
+    const admin = isHubAdmin(req) ? { id: "hub-admin-secret" } : await getAdminFromRequest(req);
     if (!admin) {
       await assertSkillRuleWriteAccess(req, {
         authorAgentId: existing.authorAgentId,
@@ -164,24 +165,30 @@ export async function POST(req: Request, ctx: { params: Promise<{ slug: string }
       data.category = { connect: { id: cat.id } };
     }
 
-    const duplicateIssues = await assertUniqueRegistryFields({
-      resourceType: "skill",
-      registryId:
-        b.registryId === undefined
-          ? existing.registryId
-          : b.registryId === null
-            ? null
-            : normalizeRegistryLikeId(b.registryId),
-      manifestId:
-        b.manifestId === undefined
-          ? existing.manifestId
-          : b.manifestId === null
-            ? null
-            : normalizeRegistryLikeId(b.manifestId),
-      excludeId: existing.id,
-    });
-    if (duplicateIssues.length > 0) {
-      return jsonErr(duplicateIssues.join("；"), 409);
+    const nextRegistryId =
+      b.registryId === undefined
+        ? existing.registryId
+        : b.registryId === null
+          ? null
+          : normalizeRegistryLikeId(b.registryId);
+    const nextManifestId =
+      b.manifestId === undefined
+        ? existing.manifestId
+        : b.manifestId === null
+          ? null
+          : normalizeRegistryLikeId(b.manifestId);
+    const registryFieldsChanged =
+      nextRegistryId !== existing.registryId || nextManifestId !== existing.manifestId;
+    if (registryFieldsChanged) {
+      const duplicateIssues = await assertUniqueRegistryFields({
+        resourceType: "skill",
+        registryId: nextRegistryId,
+        manifestId: nextManifestId,
+        excludeId: existing.id,
+      });
+      if (duplicateIssues.length > 0) {
+        return jsonErr(duplicateIssues.join("；"), 409);
+      }
     }
 
     const skill = await prisma.skill.update({

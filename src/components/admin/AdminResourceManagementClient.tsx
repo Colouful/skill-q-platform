@@ -176,14 +176,14 @@ export function AdminResourceManagementClient({
         <table className="w-full border-collapse text-left font-[family-name:var(--font-pixel-body)] text-sm">
           <thead>
             <tr className="border-b-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/20">
-              <th className="p-2">名称</th>
+              <th className="w-48 min-w-48 p-2">名称</th>
               <th className="p-2">标识（Slug）</th>
               <th className="p-2">registryId</th>
               <th className="p-2">manifestId</th>
-              <th className="p-2">分类</th>
-              <th className="w-32 min-w-32 p-2">Profile</th>
+              <th className="w-32 min-w-32 p-2">分类</th>
+              <th className="w-28 min-w-28 p-2">Profile</th>
               <th className="p-2">标签</th>
-              <th className="w-28 min-w-28 p-2">审核状态</th>
+              <th className="w-24 min-w-24 p-2">审核状态</th>
               <th className="w-32 min-w-32 p-2">操作</th>
             </tr>
           </thead>
@@ -203,7 +203,7 @@ export function AdminResourceManagementClient({
             ) : (
               items.map((item) => (
                 <tr key={item.id} className="border-b border-[var(--pixel-border)]/60">
-                  <td className="p-2 text-[var(--pixel-fg)]">{item.name}</td>
+                  <td className="w-48 min-w-48 p-2 text-[var(--pixel-fg)]">{item.name}</td>
                   <td className="p-2 text-[var(--pixel-muted)]">{item.slug}</td>
                   <td className="p-2 text-[var(--pixel-muted)]">
                     {item.registryId || <span className="text-[var(--pixel-accent)]">未设置</span>}
@@ -211,14 +211,14 @@ export function AdminResourceManagementClient({
                   <td className="p-2 text-[var(--pixel-muted)]">
                     {item.manifestId || <span className="text-[var(--pixel-accent)]">未设置</span>}
                   </td>
-                  <td className="p-2">{item.categoryName}</td>
-                  <td className="w-32 min-w-32 p-2 text-[var(--pixel-muted)] whitespace-nowrap">
+                  <td className="w-32 min-w-32 p-2">{item.categoryName}</td>
+                  <td className="w-28 min-w-28 p-2 text-[var(--pixel-muted)] whitespace-nowrap">
                     {formatProfiles(item.supportedProfiles)}
                   </td>
                   <td className="p-2 text-[var(--pixel-muted)]">
                     {item.tags.length > 0 ? item.tags.join(" / ") : "无"}
                   </td>
-                  <td className="w-28 min-w-28 p-2 whitespace-nowrap">
+                  <td className="w-24 min-w-24 p-2 whitespace-nowrap">
                     {moderationStatusLabel(item.moderationStatus)}
                   </td>
                   <td className="w-32 min-w-32 p-2">
