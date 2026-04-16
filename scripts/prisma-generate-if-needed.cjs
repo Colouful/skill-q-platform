@@ -2,6 +2,7 @@
 
 const { existsSync, readFileSync } = require("node:fs");
 const { resolve } = require("node:path");
+const { hostname } = require("node:os");
 const { spawnSync } = require("node:child_process");
 
 const repoRoot = resolve(__dirname, "..");
@@ -28,10 +29,19 @@ function isContainerRuntime() {
 
   try {
     const cgroup = readFileSync("/proc/1/cgroup", "utf8");
-    return /(docker|containerd|kubepods|podman)/i.test(cgroup);
+    if (/(docker|containerd|kubepods|podman)/i.test(cgroup)) {
+      return true;
+    }
   } catch {
-    return false;
+    // ignore and continue probing other container signals
   }
+
+  // BuildKit RUN sandboxes default to the hostname `buildkitsandbox`.
+  if (hostname() === "buildkitsandbox") {
+    return true;
+  }
+
+  return false;
 }
 
 function log(message) {
