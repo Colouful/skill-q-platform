@@ -17,6 +17,7 @@ type ResourceRow = {
   id: string;
   name: string;
   slug: string;
+  author: string;
   registryId: string | null;
   manifestId: string | null;
   categoryId: string;
@@ -179,6 +180,7 @@ export function AdminResourceManagementClient({
             <tr className="border-b-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/20">
               <th className="w-48 min-w-48 p-2">名称</th>
               <th className="p-2">标识（Slug）</th>
+              <th className="w-32 min-w-32 p-2">作者</th>
               <th className="p-2">registryId</th>
               <th className="p-2">manifestId</th>
               <th className="w-32 min-w-32 p-2">分类</th>
@@ -191,13 +193,13 @@ export function AdminResourceManagementClient({
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={9} className="p-4 text-[var(--pixel-muted)]">
+                <td colSpan={10} className="p-4 text-[var(--pixel-muted)]">
                   载入中…
                 </td>
               </tr>
             ) : items.length === 0 ? (
               <tr>
-                <td colSpan={9} className="p-4 text-[var(--pixel-muted)]">
+                <td colSpan={10} className="p-4 text-[var(--pixel-muted)]">
                   {emptyLabel}
                 </td>
               </tr>
@@ -206,6 +208,7 @@ export function AdminResourceManagementClient({
                 <tr key={item.id} className="border-b border-[var(--pixel-border)]/60">
                   <td className="w-48 min-w-48 p-2 text-[var(--pixel-fg)]">{item.name}</td>
                   <td className="p-2 text-[var(--pixel-muted)]">{item.slug}</td>
+                  <td className="w-32 min-w-32 p-2 text-[var(--pixel-muted)]">{item.author}</td>
                   <td className="p-2 text-[var(--pixel-muted)]">
                     {item.registryId || <span className="text-[var(--pixel-accent)]">未设置</span>}
                   </td>

@@ -10,6 +10,7 @@ type Row = {
   id: string;
   name: string;
   slug: string;
+  author: string;
   category: { name: string };
 };
 
@@ -59,6 +60,7 @@ export function AdminResourceTable({ type, items }: { type: "skill" | "rule"; it
           <tr className="border-b-2 border-[var(--pixel-border)] bg-[var(--pixel-cyan)]/20">
             <th className="p-2">名称</th>
             <th className="p-2">Slug</th>
+            <th className="p-2">作者</th>
             <th className="p-2">分类</th>
             <th className="p-2">操作</th>
           </tr>
@@ -68,6 +70,7 @@ export function AdminResourceTable({ type, items }: { type: "skill" | "rule"; it
             <tr key={r.id} className="border-b border-[var(--pixel-border)]/60">
               <td className="p-2 text-[var(--pixel-fg)]">{r.name}</td>
               <td className="p-2 text-[var(--pixel-muted)]">{r.slug}</td>
+              <td className="p-2 text-[var(--pixel-muted)]">{r.author}</td>
               <td className="p-2">{r.category.name}</td>
               <td className="flex flex-wrap gap-2 p-2">
                 <Button

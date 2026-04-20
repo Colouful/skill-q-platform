@@ -48,6 +48,7 @@ export async function GET(req: Request) {
       id: string;
       name: string;
       slug: string;
+      author: string;
       registryId: string | null;
       manifestId: string | null;
       categoryId: string;
@@ -62,6 +63,7 @@ export async function GET(req: Request) {
         id: r.id,
         name: r.name,
         slug: r.slug,
+        author: r.author,
         registryId: r.registryId,
         manifestId: r.manifestId,
         categoryId: r.categoryId,
@@ -105,6 +107,7 @@ export async function GET(req: Request) {
         id: true,
         name: true,
         slug: true,
+        author: true,
         registryId: true,
         manifestId: true,
         categoryId: true,
@@ -160,6 +163,7 @@ export async function GET(req: Request) {
       id: true,
       name: true,
       slug: true,
+      author: true,
       registryId: true,
       manifestId: true,
       categoryId: true,
