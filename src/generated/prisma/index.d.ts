@@ -15,144 +15,184 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model Agent
- * 
+ *
  */
 export type Agent = $Result.DefaultSelection<Prisma.$AgentPayload>
 /**
  * Model ApiKey
- * 
+ *
  */
 export type ApiKey = $Result.DefaultSelection<Prisma.$ApiKeyPayload>
 /**
  * Model AgentSession
- * 
+ *
  */
 export type AgentSession = $Result.DefaultSelection<Prisma.$AgentSessionPayload>
 /**
  * Model Category
- * 
+ *
  */
 export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
 /**
  * Model Skill
- * 
+ *
  */
 export type Skill = $Result.DefaultSelection<Prisma.$SkillPayload>
 /**
  * Model Rule
- * 
+ *
  */
 export type Rule = $Result.DefaultSelection<Prisma.$RulePayload>
 /**
  * Model Version
- * 
+ *
  */
 export type Version = $Result.DefaultSelection<Prisma.$VersionPayload>
 /**
  * Model RuleVersion
- * 
+ *
  */
 export type RuleVersion = $Result.DefaultSelection<Prisma.$RuleVersionPayload>
 /**
  * Model Review
- * 
+ *
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
 /**
  * Model DownloadLog
- * 
+ *
  */
 export type DownloadLog = $Result.DefaultSelection<Prisma.$DownloadLogPayload>
 /**
  * Model CategoryAuditLog
- * 
+ *
  */
 export type CategoryAuditLog = $Result.DefaultSelection<Prisma.$CategoryAuditLogPayload>
 /**
  * Model SystemConfig
- * 
+ *
  */
 export type SystemConfig = $Result.DefaultSelection<Prisma.$SystemConfigPayload>
 /**
  * Model HubNotification
- * 
+ *
  */
 export type HubNotification = $Result.DefaultSelection<Prisma.$HubNotificationPayload>
 /**
  * Model Admin
- * 
+ *
  */
 export type Admin = $Result.DefaultSelection<Prisma.$AdminPayload>
 /**
  * Model AdminSession
- * 
+ *
  */
 export type AdminSession = $Result.DefaultSelection<Prisma.$AdminSessionPayload>
 /**
  * Model RoleTemplate
- * 
+ *
  */
 export type RoleTemplate = $Result.DefaultSelection<Prisma.$RoleTemplatePayload>
 /**
  * Model RoleVersion
- * 
+ *
  */
 export type RoleVersion = $Result.DefaultSelection<Prisma.$RoleVersionPayload>
 /**
  * Model RoleSkillLink
- * 
+ *
  */
 export type RoleSkillLink = $Result.DefaultSelection<Prisma.$RoleSkillLinkPayload>
 /**
  * Model RoleRuleLink
- * 
+ *
  */
 export type RoleRuleLink = $Result.DefaultSelection<Prisma.$RoleRuleLinkPayload>
 /**
  * Model ScenarioPackage
- * 
+ *
  */
 export type ScenarioPackage = $Result.DefaultSelection<Prisma.$ScenarioPackagePayload>
 /**
  * Model ScenarioPackageRole
- * 
+ *
  */
 export type ScenarioPackageRole = $Result.DefaultSelection<Prisma.$ScenarioPackageRolePayload>
 /**
  * Model ScenarioPackageSkill
- * 
+ *
  */
 export type ScenarioPackageSkill = $Result.DefaultSelection<Prisma.$ScenarioPackageSkillPayload>
 /**
  * Model ScenarioPackageRule
- * 
+ *
  */
 export type ScenarioPackageRule = $Result.DefaultSelection<Prisma.$ScenarioPackageRulePayload>
 /**
  * Model CapabilityDomain
- * 
+ *
  */
 export type CapabilityDomain = $Result.DefaultSelection<Prisma.$CapabilityDomainPayload>
 /**
  * Model RoleDomainLink
- * 
+ *
  */
 export type RoleDomainLink = $Result.DefaultSelection<Prisma.$RoleDomainLinkPayload>
 /**
  * Model SkillDomainLink
- * 
+ *
  */
 export type SkillDomainLink = $Result.DefaultSelection<Prisma.$SkillDomainLinkPayload>
 /**
  * Model RuleDomainLink
- * 
+ *
  */
 export type RuleDomainLink = $Result.DefaultSelection<Prisma.$RuleDomainLinkPayload>
 /**
  * Model ScenarioDomainLink
- * 
+ *
  */
 export type ScenarioDomainLink = $Result.DefaultSelection<Prisma.$ScenarioDomainLinkPayload>
+/**
+ * Model HubAsset
+ *
+ */
+export type HubAsset = $Result.DefaultSelection<Prisma.$HubAssetPayload>
+/**
+ * Model HubAssetVersion
+ *
+ */
+export type HubAssetVersion = $Result.DefaultSelection<Prisma.$HubAssetVersionPayload>
+/**
+ * Model HubManifest
+ *
+ */
+export type HubManifest = $Result.DefaultSelection<Prisma.$HubManifestPayload>
+/**
+ * Model HubManifestVersion
+ *
+ */
+export type HubManifestVersion = $Result.DefaultSelection<Prisma.$HubManifestVersionPayload>
+/**
+ * Model HubManifestAsset
+ *
+ */
+export type HubManifestAsset = $Result.DefaultSelection<Prisma.$HubManifestAssetPayload>
+/**
+ * Model HubAssetAuditLog
+ *
+ */
+export type HubAssetAuditLog = $Result.DefaultSelection<Prisma.$HubAssetAuditLogPayload>
+/**
+ * Model HubInstallRecord
+ *
+ */
+export type HubInstallRecord = $Result.DefaultSelection<Prisma.$HubInstallRecordPayload>
+/**
+ * Model HubRuntimeReport
+ *
+ */
+export type HubRuntimeReport = $Result.DefaultSelection<Prisma.$HubRuntimeReportPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -264,7 +304,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -554,6 +594,86 @@ export class PrismaClient<
     * ```
     */
   get scenarioDomainLink(): Prisma.ScenarioDomainLinkDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubAsset`: Exposes CRUD operations for the **HubAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubAssets
+    * const hubAssets = await prisma.hubAsset.findMany()
+    * ```
+    */
+  get hubAsset(): Prisma.HubAssetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubAssetVersion`: Exposes CRUD operations for the **HubAssetVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubAssetVersions
+    * const hubAssetVersions = await prisma.hubAssetVersion.findMany()
+    * ```
+    */
+  get hubAssetVersion(): Prisma.HubAssetVersionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubManifest`: Exposes CRUD operations for the **HubManifest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubManifests
+    * const hubManifests = await prisma.hubManifest.findMany()
+    * ```
+    */
+  get hubManifest(): Prisma.HubManifestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubManifestVersion`: Exposes CRUD operations for the **HubManifestVersion** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubManifestVersions
+    * const hubManifestVersions = await prisma.hubManifestVersion.findMany()
+    * ```
+    */
+  get hubManifestVersion(): Prisma.HubManifestVersionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubManifestAsset`: Exposes CRUD operations for the **HubManifestAsset** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubManifestAssets
+    * const hubManifestAssets = await prisma.hubManifestAsset.findMany()
+    * ```
+    */
+  get hubManifestAsset(): Prisma.HubManifestAssetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubAssetAuditLog`: Exposes CRUD operations for the **HubAssetAuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubAssetAuditLogs
+    * const hubAssetAuditLogs = await prisma.hubAssetAuditLog.findMany()
+    * ```
+    */
+  get hubAssetAuditLog(): Prisma.HubAssetAuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubInstallRecord`: Exposes CRUD operations for the **HubInstallRecord** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubInstallRecords
+    * const hubInstallRecords = await prisma.hubInstallRecord.findMany()
+    * ```
+    */
+  get hubInstallRecord(): Prisma.HubInstallRecordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubRuntimeReport`: Exposes CRUD operations for the **HubRuntimeReport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubRuntimeReports
+    * const hubRuntimeReports = await prisma.hubRuntimeReport.findMany()
+    * ```
+    */
+  get hubRuntimeReport(): Prisma.HubRuntimeReportDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1015,7 +1135,15 @@ export namespace Prisma {
     RoleDomainLink: 'RoleDomainLink',
     SkillDomainLink: 'SkillDomainLink',
     RuleDomainLink: 'RuleDomainLink',
-    ScenarioDomainLink: 'ScenarioDomainLink'
+    ScenarioDomainLink: 'ScenarioDomainLink',
+    HubAsset: 'HubAsset',
+    HubAssetVersion: 'HubAssetVersion',
+    HubManifest: 'HubManifest',
+    HubManifestVersion: 'HubManifestVersion',
+    HubManifestAsset: 'HubManifestAsset',
+    HubAssetAuditLog: 'HubAssetAuditLog',
+    HubInstallRecord: 'HubInstallRecord',
+    HubRuntimeReport: 'HubRuntimeReport'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1031,7 +1159,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "agent" | "apiKey" | "agentSession" | "category" | "skill" | "rule" | "version" | "ruleVersion" | "review" | "downloadLog" | "categoryAuditLog" | "systemConfig" | "hubNotification" | "admin" | "adminSession" | "roleTemplate" | "roleVersion" | "roleSkillLink" | "roleRuleLink" | "scenarioPackage" | "scenarioPackageRole" | "scenarioPackageSkill" | "scenarioPackageRule" | "capabilityDomain" | "roleDomainLink" | "skillDomainLink" | "ruleDomainLink" | "scenarioDomainLink"
+      modelProps: "agent" | "apiKey" | "agentSession" | "category" | "skill" | "rule" | "version" | "ruleVersion" | "review" | "downloadLog" | "categoryAuditLog" | "systemConfig" | "hubNotification" | "admin" | "adminSession" | "roleTemplate" | "roleVersion" | "roleSkillLink" | "roleRuleLink" | "scenarioPackage" | "scenarioPackageRole" | "scenarioPackageSkill" | "scenarioPackageRule" | "capabilityDomain" | "roleDomainLink" | "skillDomainLink" | "ruleDomainLink" | "scenarioDomainLink" | "hubAsset" | "hubAssetVersion" | "hubManifest" | "hubManifestVersion" | "hubManifestAsset" | "hubAssetAuditLog" | "hubInstallRecord" | "hubRuntimeReport"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2883,6 +3011,534 @@ export namespace Prisma {
           }
         }
       }
+      HubAsset: {
+        payload: Prisma.$HubAssetPayload<ExtArgs>
+        fields: Prisma.HubAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.HubAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          findMany: {
+            args: Prisma.HubAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>[]
+          }
+          create: {
+            args: Prisma.HubAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          createMany: {
+            args: Prisma.HubAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          update: {
+            args: Prisma.HubAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.HubAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubAsset>
+          }
+          groupBy: {
+            args: Prisma.HubAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubAssetVersion: {
+        payload: Prisma.$HubAssetVersionPayload<ExtArgs>
+        fields: Prisma.HubAssetVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubAssetVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubAssetVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.HubAssetVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubAssetVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          findMany: {
+            args: Prisma.HubAssetVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>[]
+          }
+          create: {
+            args: Prisma.HubAssetVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          createMany: {
+            args: Prisma.HubAssetVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubAssetVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          update: {
+            args: Prisma.HubAssetVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubAssetVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubAssetVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubAssetVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.HubAssetVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubAssetVersion>
+          }
+          groupBy: {
+            args: Prisma.HubAssetVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubAssetVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetVersionCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubManifest: {
+        payload: Prisma.$HubManifestPayload<ExtArgs>
+        fields: Prisma.HubManifestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubManifestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubManifestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          findFirst: {
+            args: Prisma.HubManifestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubManifestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          findMany: {
+            args: Prisma.HubManifestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>[]
+          }
+          create: {
+            args: Prisma.HubManifestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          createMany: {
+            args: Prisma.HubManifestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubManifestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          update: {
+            args: Prisma.HubManifestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubManifestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubManifestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubManifestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestPayload>
+          }
+          aggregate: {
+            args: Prisma.HubManifestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubManifest>
+          }
+          groupBy: {
+            args: Prisma.HubManifestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubManifestCountArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubManifestVersion: {
+        payload: Prisma.$HubManifestVersionPayload<ExtArgs>
+        fields: Prisma.HubManifestVersionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubManifestVersionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubManifestVersionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          findFirst: {
+            args: Prisma.HubManifestVersionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubManifestVersionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          findMany: {
+            args: Prisma.HubManifestVersionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>[]
+          }
+          create: {
+            args: Prisma.HubManifestVersionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          createMany: {
+            args: Prisma.HubManifestVersionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubManifestVersionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          update: {
+            args: Prisma.HubManifestVersionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubManifestVersionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubManifestVersionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubManifestVersionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestVersionPayload>
+          }
+          aggregate: {
+            args: Prisma.HubManifestVersionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubManifestVersion>
+          }
+          groupBy: {
+            args: Prisma.HubManifestVersionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestVersionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubManifestVersionCountArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestVersionCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubManifestAsset: {
+        payload: Prisma.$HubManifestAssetPayload<ExtArgs>
+        fields: Prisma.HubManifestAssetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubManifestAssetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubManifestAssetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          findFirst: {
+            args: Prisma.HubManifestAssetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubManifestAssetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          findMany: {
+            args: Prisma.HubManifestAssetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>[]
+          }
+          create: {
+            args: Prisma.HubManifestAssetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          createMany: {
+            args: Prisma.HubManifestAssetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubManifestAssetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          update: {
+            args: Prisma.HubManifestAssetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubManifestAssetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubManifestAssetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubManifestAssetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubManifestAssetPayload>
+          }
+          aggregate: {
+            args: Prisma.HubManifestAssetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubManifestAsset>
+          }
+          groupBy: {
+            args: Prisma.HubManifestAssetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestAssetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubManifestAssetCountArgs<ExtArgs>
+            result: $Utils.Optional<HubManifestAssetCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubAssetAuditLog: {
+        payload: Prisma.$HubAssetAuditLogPayload<ExtArgs>
+        fields: Prisma.HubAssetAuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubAssetAuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubAssetAuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.HubAssetAuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubAssetAuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.HubAssetAuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.HubAssetAuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.HubAssetAuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubAssetAuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          update: {
+            args: Prisma.HubAssetAuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubAssetAuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubAssetAuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubAssetAuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAssetAuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.HubAssetAuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubAssetAuditLog>
+          }
+          groupBy: {
+            args: Prisma.HubAssetAuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetAuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubAssetAuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<HubAssetAuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubInstallRecord: {
+        payload: Prisma.$HubInstallRecordPayload<ExtArgs>
+        fields: Prisma.HubInstallRecordFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubInstallRecordFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubInstallRecordFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          findFirst: {
+            args: Prisma.HubInstallRecordFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubInstallRecordFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          findMany: {
+            args: Prisma.HubInstallRecordFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>[]
+          }
+          create: {
+            args: Prisma.HubInstallRecordCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          createMany: {
+            args: Prisma.HubInstallRecordCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubInstallRecordDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          update: {
+            args: Prisma.HubInstallRecordUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubInstallRecordDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubInstallRecordUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubInstallRecordUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubInstallRecordPayload>
+          }
+          aggregate: {
+            args: Prisma.HubInstallRecordAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubInstallRecord>
+          }
+          groupBy: {
+            args: Prisma.HubInstallRecordGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubInstallRecordGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubInstallRecordCountArgs<ExtArgs>
+            result: $Utils.Optional<HubInstallRecordCountAggregateOutputType> | number
+          }
+        }
+      }
+      HubRuntimeReport: {
+        payload: Prisma.$HubRuntimeReportPayload<ExtArgs>
+        fields: Prisma.HubRuntimeReportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubRuntimeReportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubRuntimeReportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          findFirst: {
+            args: Prisma.HubRuntimeReportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubRuntimeReportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          findMany: {
+            args: Prisma.HubRuntimeReportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>[]
+          }
+          create: {
+            args: Prisma.HubRuntimeReportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          createMany: {
+            args: Prisma.HubRuntimeReportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubRuntimeReportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          update: {
+            args: Prisma.HubRuntimeReportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubRuntimeReportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubRuntimeReportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubRuntimeReportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubRuntimeReportPayload>
+          }
+          aggregate: {
+            args: Prisma.HubRuntimeReportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubRuntimeReport>
+          }
+          groupBy: {
+            args: Prisma.HubRuntimeReportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubRuntimeReportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubRuntimeReportCountArgs<ExtArgs>
+            result: $Utils.Optional<HubRuntimeReportCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2920,7 +3576,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     * 
+     *
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -2928,14 +3584,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     * 
+     *
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     * 
+     *
      * ```
      * Read more in our [docs](https://pris.ly/d/logging).
      */
@@ -2960,7 +3616,7 @@ export namespace Prisma {
     accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
-     * 
+     *
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -2976,7 +3632,7 @@ export namespace Prisma {
     /**
      * SQL commenter plugins that add metadata to SQL queries as comments.
      * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
-     * 
+     *
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -3019,6 +3675,14 @@ export namespace Prisma {
     skillDomainLink?: SkillDomainLinkOmit
     ruleDomainLink?: RuleDomainLinkOmit
     scenarioDomainLink?: ScenarioDomainLinkOmit
+    hubAsset?: HubAssetOmit
+    hubAssetVersion?: HubAssetVersionOmit
+    hubManifest?: HubManifestOmit
+    hubManifestVersion?: HubManifestVersionOmit
+    hubManifestAsset?: HubManifestAssetOmit
+    hubAssetAuditLog?: HubAssetAuditLogOmit
+    hubInstallRecord?: HubInstallRecordOmit
+    hubRuntimeReport?: HubRuntimeReportOmit
   }
 
   /* Types for Logging */
@@ -3617,6 +4281,77 @@ export namespace Prisma {
 
 
   /**
+   * Count Type HubAssetCountOutputType
+   */
+
+  export type HubAssetCountOutputType = {
+    versions: number
+  }
+
+  export type HubAssetCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | HubAssetCountOutputTypeCountVersionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * HubAssetCountOutputType without action
+   */
+  export type HubAssetCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetCountOutputType
+     */
+    select?: HubAssetCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * HubAssetCountOutputType without action
+   */
+  export type HubAssetCountOutputTypeCountVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubAssetVersionWhereInput
+  }
+
+
+  /**
+   * Count Type HubManifestCountOutputType
+   */
+
+  export type HubManifestCountOutputType = {
+    versions: number
+    assets: number
+  }
+
+  export type HubManifestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | HubManifestCountOutputTypeCountVersionsArgs
+    assets?: boolean | HubManifestCountOutputTypeCountAssetsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * HubManifestCountOutputType without action
+   */
+  export type HubManifestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestCountOutputType
+     */
+    select?: HubManifestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * HubManifestCountOutputType without action
+   */
+  export type HubManifestCountOutputTypeCountVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubManifestVersionWhereInput
+  }
+
+  /**
+   * HubManifestCountOutputType without action
+   */
+  export type HubManifestCountOutputTypeCountAssetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubManifestAssetWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -3784,55 +4519,55 @@ export namespace Prisma {
     where?: AgentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Agents to fetch.
      */
     orderBy?: AgentOrderByWithRelationInput | AgentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AgentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Agents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Agents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Agents
     **/
     _count?: true | AgentCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: AgentAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: AgentSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AgentMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AgentMaxAggregateInputType
@@ -4071,13 +4806,13 @@ export namespace Prisma {
      * @example
      * // Get all Agents
      * const agents = await prisma.agent.findMany()
-     * 
+     *
      * // Get first 10 Agents
      * const agents = await prisma.agent.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const agentWithIdOnly = await prisma.agent.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AgentFindManyArgs>(args?: SelectSubset<T, AgentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -4091,7 +4826,7 @@ export namespace Prisma {
      *     // ... data to create a Agent
      *   }
      * })
-     * 
+     *
      */
     create<T extends AgentCreateArgs>(args: SelectSubset<T, AgentCreateArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4105,7 +4840,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AgentCreateManyArgs>(args?: SelectSubset<T, AgentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4119,7 +4854,7 @@ export namespace Prisma {
      *     // ... filter to delete one Agent
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AgentDeleteArgs>(args: SelectSubset<T, AgentDeleteArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4136,7 +4871,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AgentUpdateArgs>(args: SelectSubset<T, AgentUpdateArgs<ExtArgs>>): Prisma__AgentClient<$Result.GetResult<Prisma.$AgentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -4150,7 +4885,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AgentDeleteManyArgs>(args?: SelectSubset<T, AgentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4169,7 +4904,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AgentUpdateManyArgs>(args: SelectSubset<T, AgentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -4258,7 +4993,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AgentGroupByArgs,
@@ -4386,7 +5121,7 @@ export namespace Prisma {
     readonly registeredAt: FieldRef<"Agent", 'DateTime'>
     readonly metadata: FieldRef<"Agent", 'Json'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -4455,31 +5190,31 @@ export namespace Prisma {
     where?: AgentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Agents to fetch.
      */
     orderBy?: AgentOrderByWithRelationInput | AgentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Agents.
      */
     cursor?: AgentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Agents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Agents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Agents.
      */
     distinct?: AgentScalarFieldEnum | AgentScalarFieldEnum[]
@@ -4507,31 +5242,31 @@ export namespace Prisma {
     where?: AgentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Agents to fetch.
      */
     orderBy?: AgentOrderByWithRelationInput | AgentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Agents.
      */
     cursor?: AgentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Agents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Agents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Agents.
      */
     distinct?: AgentScalarFieldEnum | AgentScalarFieldEnum[]
@@ -4559,31 +5294,31 @@ export namespace Prisma {
     where?: AgentWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Agents to fetch.
      */
     orderBy?: AgentOrderByWithRelationInput | AgentOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Agents.
      */
     cursor?: AgentWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Agents from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Agents.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Agents.
      */
     distinct?: AgentScalarFieldEnum | AgentScalarFieldEnum[]
@@ -5073,55 +5808,55 @@ export namespace Prisma {
     where?: ApiKeyWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ApiKeys to fetch.
      */
     orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ApiKeyWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ApiKeys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ApiKeys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ApiKeys
     **/
     _count?: true | ApiKeyCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ApiKeyAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ApiKeySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ApiKeyMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ApiKeyMaxAggregateInputType
@@ -5330,13 +6065,13 @@ export namespace Prisma {
      * @example
      * // Get all ApiKeys
      * const apiKeys = await prisma.apiKey.findMany()
-     * 
+     *
      * // Get first 10 ApiKeys
      * const apiKeys = await prisma.apiKey.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const apiKeyWithIdOnly = await prisma.apiKey.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ApiKeyFindManyArgs>(args?: SelectSubset<T, ApiKeyFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5350,7 +6085,7 @@ export namespace Prisma {
      *     // ... data to create a ApiKey
      *   }
      * })
-     * 
+     *
      */
     create<T extends ApiKeyCreateArgs>(args: SelectSubset<T, ApiKeyCreateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5364,7 +6099,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ApiKeyCreateManyArgs>(args?: SelectSubset<T, ApiKeyCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5378,7 +6113,7 @@ export namespace Prisma {
      *     // ... filter to delete one ApiKey
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ApiKeyDeleteArgs>(args: SelectSubset<T, ApiKeyDeleteArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5395,7 +6130,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ApiKeyUpdateArgs>(args: SelectSubset<T, ApiKeyUpdateArgs<ExtArgs>>): Prisma__ApiKeyClient<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5409,7 +6144,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ApiKeyDeleteManyArgs>(args?: SelectSubset<T, ApiKeyDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5428,7 +6163,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ApiKeyUpdateManyArgs>(args: SelectSubset<T, ApiKeyUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5517,7 +6252,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ApiKeyGroupByArgs,
@@ -5636,7 +6371,7 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"ApiKey", 'DateTime'>
     readonly isRevoked: FieldRef<"ApiKey", 'Boolean'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -5705,31 +6440,31 @@ export namespace Prisma {
     where?: ApiKeyWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ApiKeys to fetch.
      */
     orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ApiKeys.
      */
     cursor?: ApiKeyWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ApiKeys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ApiKeys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ApiKeys.
      */
     distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
@@ -5757,31 +6492,31 @@ export namespace Prisma {
     where?: ApiKeyWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ApiKeys to fetch.
      */
     orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ApiKeys.
      */
     cursor?: ApiKeyWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ApiKeys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ApiKeys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ApiKeys.
      */
     distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
@@ -5809,31 +6544,31 @@ export namespace Prisma {
     where?: ApiKeyWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ApiKeys to fetch.
      */
     orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ApiKeys.
      */
     cursor?: ApiKeyWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ApiKeys from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ApiKeys.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ApiKeys.
      */
     distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
@@ -6111,43 +6846,43 @@ export namespace Prisma {
     where?: AgentSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AgentSessions to fetch.
      */
     orderBy?: AgentSessionOrderByWithRelationInput | AgentSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AgentSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AgentSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AgentSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned AgentSessions
     **/
     _count?: true | AgentSessionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AgentSessionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AgentSessionMaxAggregateInputType
@@ -6330,13 +7065,13 @@ export namespace Prisma {
      * @example
      * // Get all AgentSessions
      * const agentSessions = await prisma.agentSession.findMany()
-     * 
+     *
      * // Get first 10 AgentSessions
      * const agentSessions = await prisma.agentSession.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const agentSessionWithIdOnly = await prisma.agentSession.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AgentSessionFindManyArgs>(args?: SelectSubset<T, AgentSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AgentSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -6350,7 +7085,7 @@ export namespace Prisma {
      *     // ... data to create a AgentSession
      *   }
      * })
-     * 
+     *
      */
     create<T extends AgentSessionCreateArgs>(args: SelectSubset<T, AgentSessionCreateArgs<ExtArgs>>): Prisma__AgentSessionClient<$Result.GetResult<Prisma.$AgentSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6364,7 +7099,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AgentSessionCreateManyArgs>(args?: SelectSubset<T, AgentSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6378,7 +7113,7 @@ export namespace Prisma {
      *     // ... filter to delete one AgentSession
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AgentSessionDeleteArgs>(args: SelectSubset<T, AgentSessionDeleteArgs<ExtArgs>>): Prisma__AgentSessionClient<$Result.GetResult<Prisma.$AgentSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6395,7 +7130,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AgentSessionUpdateArgs>(args: SelectSubset<T, AgentSessionUpdateArgs<ExtArgs>>): Prisma__AgentSessionClient<$Result.GetResult<Prisma.$AgentSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6409,7 +7144,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AgentSessionDeleteManyArgs>(args?: SelectSubset<T, AgentSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6428,7 +7163,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AgentSessionUpdateManyArgs>(args: SelectSubset<T, AgentSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6517,7 +7252,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AgentSessionGroupByArgs,
@@ -6631,7 +7366,7 @@ export namespace Prisma {
     readonly expiresAt: FieldRef<"AgentSession", 'DateTime'>
     readonly createdAt: FieldRef<"AgentSession", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -6700,31 +7435,31 @@ export namespace Prisma {
     where?: AgentSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AgentSessions to fetch.
      */
     orderBy?: AgentSessionOrderByWithRelationInput | AgentSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for AgentSessions.
      */
     cursor?: AgentSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AgentSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AgentSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AgentSessions.
      */
     distinct?: AgentSessionScalarFieldEnum | AgentSessionScalarFieldEnum[]
@@ -6752,31 +7487,31 @@ export namespace Prisma {
     where?: AgentSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AgentSessions to fetch.
      */
     orderBy?: AgentSessionOrderByWithRelationInput | AgentSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for AgentSessions.
      */
     cursor?: AgentSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AgentSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AgentSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AgentSessions.
      */
     distinct?: AgentSessionScalarFieldEnum | AgentSessionScalarFieldEnum[]
@@ -6804,31 +7539,31 @@ export namespace Prisma {
     where?: AgentSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AgentSessions to fetch.
      */
     orderBy?: AgentSessionOrderByWithRelationInput | AgentSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing AgentSessions.
      */
     cursor?: AgentSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AgentSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AgentSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AgentSessions.
      */
     distinct?: AgentSessionScalarFieldEnum | AgentSessionScalarFieldEnum[]
@@ -7106,55 +7841,55 @@ export namespace Prisma {
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
     orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Categories
     **/
     _count?: true | CategoryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: CategoryAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: CategorySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: CategoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: CategoryMaxAggregateInputType
@@ -7347,13 +8082,13 @@ export namespace Prisma {
      * @example
      * // Get all Categories
      * const categories = await prisma.category.findMany()
-     * 
+     *
      * // Get first 10 Categories
      * const categories = await prisma.category.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const categoryWithIdOnly = await prisma.category.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends CategoryFindManyArgs>(args?: SelectSubset<T, CategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7367,7 +8102,7 @@ export namespace Prisma {
      *     // ... data to create a Category
      *   }
      * })
-     * 
+     *
      */
     create<T extends CategoryCreateArgs>(args: SelectSubset<T, CategoryCreateArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7381,7 +8116,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends CategoryCreateManyArgs>(args?: SelectSubset<T, CategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7395,7 +8130,7 @@ export namespace Prisma {
      *     // ... filter to delete one Category
      *   }
      * })
-     * 
+     *
      */
     delete<T extends CategoryDeleteArgs>(args: SelectSubset<T, CategoryDeleteArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7412,7 +8147,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends CategoryUpdateArgs>(args: SelectSubset<T, CategoryUpdateArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7426,7 +8161,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends CategoryDeleteManyArgs>(args?: SelectSubset<T, CategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7445,7 +8180,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends CategoryUpdateManyArgs>(args: SelectSubset<T, CategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7534,7 +8269,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends CategoryGroupByArgs,
@@ -7649,7 +8384,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Category", 'DateTime'>
     readonly updatedAt: FieldRef<"Category", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -7718,31 +8453,31 @@ export namespace Prisma {
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
     orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Categories.
      */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Categories.
      */
     distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
@@ -7770,31 +8505,31 @@ export namespace Prisma {
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
     orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Categories.
      */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Categories.
      */
     distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
@@ -7822,31 +8557,31 @@ export namespace Prisma {
     where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Categories to fetch.
      */
     orderBy?: CategoryOrderByWithRelationInput | CategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Categories.
      */
     cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Categories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Categories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Categories.
      */
     distinct?: CategoryScalarFieldEnum | CategoryScalarFieldEnum[]
@@ -8250,55 +8985,55 @@ export namespace Prisma {
     where?: SkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Skills to fetch.
      */
     orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Skills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Skills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Skills
     **/
     _count?: true | SkillCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: SkillAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: SkillSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SkillMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SkillMaxAggregateInputType
@@ -8558,13 +9293,13 @@ export namespace Prisma {
      * @example
      * // Get all Skills
      * const skills = await prisma.skill.findMany()
-     * 
+     *
      * // Get first 10 Skills
      * const skills = await prisma.skill.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const skillWithIdOnly = await prisma.skill.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SkillFindManyArgs>(args?: SelectSubset<T, SkillFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -8578,7 +9313,7 @@ export namespace Prisma {
      *     // ... data to create a Skill
      *   }
      * })
-     * 
+     *
      */
     create<T extends SkillCreateArgs>(args: SelectSubset<T, SkillCreateArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8592,7 +9327,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SkillCreateManyArgs>(args?: SelectSubset<T, SkillCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8606,7 +9341,7 @@ export namespace Prisma {
      *     // ... filter to delete one Skill
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SkillDeleteArgs>(args: SelectSubset<T, SkillDeleteArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8623,7 +9358,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SkillUpdateArgs>(args: SelectSubset<T, SkillUpdateArgs<ExtArgs>>): Prisma__SkillClient<$Result.GetResult<Prisma.$SkillPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8637,7 +9372,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SkillDeleteManyArgs>(args?: SelectSubset<T, SkillDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8656,7 +9391,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SkillUpdateManyArgs>(args: SelectSubset<T, SkillUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8745,7 +9480,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SkillGroupByArgs,
@@ -8878,7 +9613,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Skill", 'DateTime'>
     readonly updatedAt: FieldRef<"Skill", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -8947,31 +9682,31 @@ export namespace Prisma {
     where?: SkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Skills to fetch.
      */
     orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Skills.
      */
     cursor?: SkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Skills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Skills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Skills.
      */
     distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
@@ -8999,31 +9734,31 @@ export namespace Prisma {
     where?: SkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Skills to fetch.
      */
     orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Skills.
      */
     cursor?: SkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Skills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Skills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Skills.
      */
     distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
@@ -9051,31 +9786,31 @@ export namespace Prisma {
     where?: SkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Skills to fetch.
      */
     orderBy?: SkillOrderByWithRelationInput | SkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Skills.
      */
     cursor?: SkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Skills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Skills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Skills.
      */
     distinct?: SkillScalarFieldEnum | SkillScalarFieldEnum[]
@@ -9570,55 +10305,55 @@ export namespace Prisma {
     where?: RuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Rules to fetch.
      */
     orderBy?: RuleOrderByWithRelationInput | RuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Rules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Rules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Rules
     **/
     _count?: true | RuleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: RuleAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: RuleSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RuleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RuleMaxAggregateInputType
@@ -9878,13 +10613,13 @@ export namespace Prisma {
      * @example
      * // Get all Rules
      * const rules = await prisma.rule.findMany()
-     * 
+     *
      * // Get first 10 Rules
      * const rules = await prisma.rule.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const ruleWithIdOnly = await prisma.rule.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RuleFindManyArgs>(args?: SelectSubset<T, RuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9898,7 +10633,7 @@ export namespace Prisma {
      *     // ... data to create a Rule
      *   }
      * })
-     * 
+     *
      */
     create<T extends RuleCreateArgs>(args: SelectSubset<T, RuleCreateArgs<ExtArgs>>): Prisma__RuleClient<$Result.GetResult<Prisma.$RulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9912,7 +10647,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RuleCreateManyArgs>(args?: SelectSubset<T, RuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9926,7 +10661,7 @@ export namespace Prisma {
      *     // ... filter to delete one Rule
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RuleDeleteArgs>(args: SelectSubset<T, RuleDeleteArgs<ExtArgs>>): Prisma__RuleClient<$Result.GetResult<Prisma.$RulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9943,7 +10678,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RuleUpdateArgs>(args: SelectSubset<T, RuleUpdateArgs<ExtArgs>>): Prisma__RuleClient<$Result.GetResult<Prisma.$RulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9957,7 +10692,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RuleDeleteManyArgs>(args?: SelectSubset<T, RuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9976,7 +10711,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RuleUpdateManyArgs>(args: SelectSubset<T, RuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10065,7 +10800,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RuleGroupByArgs,
@@ -10198,7 +10933,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Rule", 'DateTime'>
     readonly updatedAt: FieldRef<"Rule", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -10267,31 +11002,31 @@ export namespace Prisma {
     where?: RuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Rules to fetch.
      */
     orderBy?: RuleOrderByWithRelationInput | RuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Rules.
      */
     cursor?: RuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Rules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Rules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Rules.
      */
     distinct?: RuleScalarFieldEnum | RuleScalarFieldEnum[]
@@ -10319,31 +11054,31 @@ export namespace Prisma {
     where?: RuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Rules to fetch.
      */
     orderBy?: RuleOrderByWithRelationInput | RuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Rules.
      */
     cursor?: RuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Rules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Rules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Rules.
      */
     distinct?: RuleScalarFieldEnum | RuleScalarFieldEnum[]
@@ -10371,31 +11106,31 @@ export namespace Prisma {
     where?: RuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Rules to fetch.
      */
     orderBy?: RuleOrderByWithRelationInput | RuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Rules.
      */
     cursor?: RuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Rules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Rules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Rules.
      */
     distinct?: RuleScalarFieldEnum | RuleScalarFieldEnum[]
@@ -10808,55 +11543,55 @@ export namespace Prisma {
     where?: VersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Versions to fetch.
      */
     orderBy?: VersionOrderByWithRelationInput | VersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: VersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Versions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Versions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Versions
     **/
     _count?: true | VersionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: VersionAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: VersionSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: VersionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: VersionMaxAggregateInputType
@@ -11044,13 +11779,13 @@ export namespace Prisma {
      * @example
      * // Get all Versions
      * const versions = await prisma.version.findMany()
-     * 
+     *
      * // Get first 10 Versions
      * const versions = await prisma.version.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const versionWithIdOnly = await prisma.version.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends VersionFindManyArgs>(args?: SelectSubset<T, VersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -11064,7 +11799,7 @@ export namespace Prisma {
      *     // ... data to create a Version
      *   }
      * })
-     * 
+     *
      */
     create<T extends VersionCreateArgs>(args: SelectSubset<T, VersionCreateArgs<ExtArgs>>): Prisma__VersionClient<$Result.GetResult<Prisma.$VersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11078,7 +11813,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends VersionCreateManyArgs>(args?: SelectSubset<T, VersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11092,7 +11827,7 @@ export namespace Prisma {
      *     // ... filter to delete one Version
      *   }
      * })
-     * 
+     *
      */
     delete<T extends VersionDeleteArgs>(args: SelectSubset<T, VersionDeleteArgs<ExtArgs>>): Prisma__VersionClient<$Result.GetResult<Prisma.$VersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11109,7 +11844,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends VersionUpdateArgs>(args: SelectSubset<T, VersionUpdateArgs<ExtArgs>>): Prisma__VersionClient<$Result.GetResult<Prisma.$VersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11123,7 +11858,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends VersionDeleteManyArgs>(args?: SelectSubset<T, VersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11142,7 +11877,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends VersionUpdateManyArgs>(args: SelectSubset<T, VersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11231,7 +11966,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends VersionGroupByArgs,
@@ -11345,7 +12080,7 @@ export namespace Prisma {
     readonly downloads: FieldRef<"Version", 'Int'>
     readonly createdAt: FieldRef<"Version", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -11414,31 +12149,31 @@ export namespace Prisma {
     where?: VersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Versions to fetch.
      */
     orderBy?: VersionOrderByWithRelationInput | VersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Versions.
      */
     cursor?: VersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Versions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Versions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Versions.
      */
     distinct?: VersionScalarFieldEnum | VersionScalarFieldEnum[]
@@ -11466,31 +12201,31 @@ export namespace Prisma {
     where?: VersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Versions to fetch.
      */
     orderBy?: VersionOrderByWithRelationInput | VersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Versions.
      */
     cursor?: VersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Versions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Versions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Versions.
      */
     distinct?: VersionScalarFieldEnum | VersionScalarFieldEnum[]
@@ -11518,31 +12253,31 @@ export namespace Prisma {
     where?: VersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Versions to fetch.
      */
     orderBy?: VersionOrderByWithRelationInput | VersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Versions.
      */
     cursor?: VersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Versions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Versions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Versions.
      */
     distinct?: VersionScalarFieldEnum | VersionScalarFieldEnum[]
@@ -11816,55 +12551,55 @@ export namespace Prisma {
     where?: RuleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleVersions to fetch.
      */
     orderBy?: RuleVersionOrderByWithRelationInput | RuleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RuleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RuleVersions
     **/
     _count?: true | RuleVersionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: RuleVersionAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: RuleVersionSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RuleVersionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RuleVersionMaxAggregateInputType
@@ -12052,13 +12787,13 @@ export namespace Prisma {
      * @example
      * // Get all RuleVersions
      * const ruleVersions = await prisma.ruleVersion.findMany()
-     * 
+     *
      * // Get first 10 RuleVersions
      * const ruleVersions = await prisma.ruleVersion.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const ruleVersionWithIdOnly = await prisma.ruleVersion.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RuleVersionFindManyArgs>(args?: SelectSubset<T, RuleVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RuleVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12072,7 +12807,7 @@ export namespace Prisma {
      *     // ... data to create a RuleVersion
      *   }
      * })
-     * 
+     *
      */
     create<T extends RuleVersionCreateArgs>(args: SelectSubset<T, RuleVersionCreateArgs<ExtArgs>>): Prisma__RuleVersionClient<$Result.GetResult<Prisma.$RuleVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12086,7 +12821,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RuleVersionCreateManyArgs>(args?: SelectSubset<T, RuleVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12100,7 +12835,7 @@ export namespace Prisma {
      *     // ... filter to delete one RuleVersion
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RuleVersionDeleteArgs>(args: SelectSubset<T, RuleVersionDeleteArgs<ExtArgs>>): Prisma__RuleVersionClient<$Result.GetResult<Prisma.$RuleVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12117,7 +12852,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RuleVersionUpdateArgs>(args: SelectSubset<T, RuleVersionUpdateArgs<ExtArgs>>): Prisma__RuleVersionClient<$Result.GetResult<Prisma.$RuleVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12131,7 +12866,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RuleVersionDeleteManyArgs>(args?: SelectSubset<T, RuleVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12150,7 +12885,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RuleVersionUpdateManyArgs>(args: SelectSubset<T, RuleVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12239,7 +12974,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RuleVersionGroupByArgs,
@@ -12353,7 +13088,7 @@ export namespace Prisma {
     readonly downloads: FieldRef<"RuleVersion", 'Int'>
     readonly createdAt: FieldRef<"RuleVersion", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -12422,31 +13157,31 @@ export namespace Prisma {
     where?: RuleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleVersions to fetch.
      */
     orderBy?: RuleVersionOrderByWithRelationInput | RuleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RuleVersions.
      */
     cursor?: RuleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleVersions.
      */
     distinct?: RuleVersionScalarFieldEnum | RuleVersionScalarFieldEnum[]
@@ -12474,31 +13209,31 @@ export namespace Prisma {
     where?: RuleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleVersions to fetch.
      */
     orderBy?: RuleVersionOrderByWithRelationInput | RuleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RuleVersions.
      */
     cursor?: RuleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleVersions.
      */
     distinct?: RuleVersionScalarFieldEnum | RuleVersionScalarFieldEnum[]
@@ -12526,31 +13261,31 @@ export namespace Prisma {
     where?: RuleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleVersions to fetch.
      */
     orderBy?: RuleVersionOrderByWithRelationInput | RuleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RuleVersions.
      */
     cursor?: RuleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleVersions.
      */
     distinct?: RuleVersionScalarFieldEnum | RuleVersionScalarFieldEnum[]
@@ -12850,55 +13585,55 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Reviews
     **/
     _count?: true | ReviewCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ReviewAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ReviewSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ReviewMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ReviewMaxAggregateInputType
@@ -13104,13 +13839,13 @@ export namespace Prisma {
      * @example
      * // Get all Reviews
      * const reviews = await prisma.review.findMany()
-     * 
+     *
      * // Get first 10 Reviews
      * const reviews = await prisma.review.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const reviewWithIdOnly = await prisma.review.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ReviewFindManyArgs>(args?: SelectSubset<T, ReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -13124,7 +13859,7 @@ export namespace Prisma {
      *     // ... data to create a Review
      *   }
      * })
-     * 
+     *
      */
     create<T extends ReviewCreateArgs>(args: SelectSubset<T, ReviewCreateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13138,7 +13873,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ReviewCreateManyArgs>(args?: SelectSubset<T, ReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13152,7 +13887,7 @@ export namespace Prisma {
      *     // ... filter to delete one Review
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ReviewDeleteArgs>(args: SelectSubset<T, ReviewDeleteArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13169,7 +13904,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ReviewUpdateArgs>(args: SelectSubset<T, ReviewUpdateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13183,7 +13918,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ReviewDeleteManyArgs>(args?: SelectSubset<T, ReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13202,7 +13937,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ReviewUpdateManyArgs>(args: SelectSubset<T, ReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13291,7 +14026,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ReviewGroupByArgs,
@@ -13410,7 +14145,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Review", 'DateTime'>
     readonly updatedAt: FieldRef<"Review", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -13479,31 +14214,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -13531,31 +14266,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -13583,31 +14318,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -13912,43 +14647,43 @@ export namespace Prisma {
     where?: DownloadLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of DownloadLogs to fetch.
      */
     orderBy?: DownloadLogOrderByWithRelationInput | DownloadLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: DownloadLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` DownloadLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` DownloadLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned DownloadLogs
     **/
     _count?: true | DownloadLogCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: DownloadLogMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: DownloadLogMaxAggregateInputType
@@ -14124,13 +14859,13 @@ export namespace Prisma {
      * @example
      * // Get all DownloadLogs
      * const downloadLogs = await prisma.downloadLog.findMany()
-     * 
+     *
      * // Get first 10 DownloadLogs
      * const downloadLogs = await prisma.downloadLog.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const downloadLogWithIdOnly = await prisma.downloadLog.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends DownloadLogFindManyArgs>(args?: SelectSubset<T, DownloadLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DownloadLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -14144,7 +14879,7 @@ export namespace Prisma {
      *     // ... data to create a DownloadLog
      *   }
      * })
-     * 
+     *
      */
     create<T extends DownloadLogCreateArgs>(args: SelectSubset<T, DownloadLogCreateArgs<ExtArgs>>): Prisma__DownloadLogClient<$Result.GetResult<Prisma.$DownloadLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14158,7 +14893,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends DownloadLogCreateManyArgs>(args?: SelectSubset<T, DownloadLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14172,7 +14907,7 @@ export namespace Prisma {
      *     // ... filter to delete one DownloadLog
      *   }
      * })
-     * 
+     *
      */
     delete<T extends DownloadLogDeleteArgs>(args: SelectSubset<T, DownloadLogDeleteArgs<ExtArgs>>): Prisma__DownloadLogClient<$Result.GetResult<Prisma.$DownloadLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14189,7 +14924,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends DownloadLogUpdateArgs>(args: SelectSubset<T, DownloadLogUpdateArgs<ExtArgs>>): Prisma__DownloadLogClient<$Result.GetResult<Prisma.$DownloadLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14203,7 +14938,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends DownloadLogDeleteManyArgs>(args?: SelectSubset<T, DownloadLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14222,7 +14957,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends DownloadLogUpdateManyArgs>(args: SelectSubset<T, DownloadLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14311,7 +15046,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends DownloadLogGroupByArgs,
@@ -14423,7 +15158,7 @@ export namespace Prisma {
     readonly userAgent: FieldRef<"DownloadLog", 'String'>
     readonly createdAt: FieldRef<"DownloadLog", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -14492,31 +15227,31 @@ export namespace Prisma {
     where?: DownloadLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of DownloadLogs to fetch.
      */
     orderBy?: DownloadLogOrderByWithRelationInput | DownloadLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for DownloadLogs.
      */
     cursor?: DownloadLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` DownloadLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` DownloadLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of DownloadLogs.
      */
     distinct?: DownloadLogScalarFieldEnum | DownloadLogScalarFieldEnum[]
@@ -14544,31 +15279,31 @@ export namespace Prisma {
     where?: DownloadLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of DownloadLogs to fetch.
      */
     orderBy?: DownloadLogOrderByWithRelationInput | DownloadLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for DownloadLogs.
      */
     cursor?: DownloadLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` DownloadLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` DownloadLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of DownloadLogs.
      */
     distinct?: DownloadLogScalarFieldEnum | DownloadLogScalarFieldEnum[]
@@ -14596,31 +15331,31 @@ export namespace Prisma {
     where?: DownloadLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of DownloadLogs to fetch.
      */
     orderBy?: DownloadLogOrderByWithRelationInput | DownloadLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing DownloadLogs.
      */
     cursor?: DownloadLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` DownloadLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` DownloadLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of DownloadLogs.
      */
     distinct?: DownloadLogScalarFieldEnum | DownloadLogScalarFieldEnum[]
@@ -14877,43 +15612,43 @@ export namespace Prisma {
     where?: CategoryAuditLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CategoryAuditLogs to fetch.
      */
     orderBy?: CategoryAuditLogOrderByWithRelationInput | CategoryAuditLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: CategoryAuditLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CategoryAuditLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CategoryAuditLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned CategoryAuditLogs
     **/
     _count?: true | CategoryAuditLogCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: CategoryAuditLogMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: CategoryAuditLogMaxAggregateInputType
@@ -15079,13 +15814,13 @@ export namespace Prisma {
      * @example
      * // Get all CategoryAuditLogs
      * const categoryAuditLogs = await prisma.categoryAuditLog.findMany()
-     * 
+     *
      * // Get first 10 CategoryAuditLogs
      * const categoryAuditLogs = await prisma.categoryAuditLog.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const categoryAuditLogWithIdOnly = await prisma.categoryAuditLog.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends CategoryAuditLogFindManyArgs>(args?: SelectSubset<T, CategoryAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CategoryAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -15099,7 +15834,7 @@ export namespace Prisma {
      *     // ... data to create a CategoryAuditLog
      *   }
      * })
-     * 
+     *
      */
     create<T extends CategoryAuditLogCreateArgs>(args: SelectSubset<T, CategoryAuditLogCreateArgs<ExtArgs>>): Prisma__CategoryAuditLogClient<$Result.GetResult<Prisma.$CategoryAuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15113,7 +15848,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends CategoryAuditLogCreateManyArgs>(args?: SelectSubset<T, CategoryAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15127,7 +15862,7 @@ export namespace Prisma {
      *     // ... filter to delete one CategoryAuditLog
      *   }
      * })
-     * 
+     *
      */
     delete<T extends CategoryAuditLogDeleteArgs>(args: SelectSubset<T, CategoryAuditLogDeleteArgs<ExtArgs>>): Prisma__CategoryAuditLogClient<$Result.GetResult<Prisma.$CategoryAuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15144,7 +15879,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends CategoryAuditLogUpdateArgs>(args: SelectSubset<T, CategoryAuditLogUpdateArgs<ExtArgs>>): Prisma__CategoryAuditLogClient<$Result.GetResult<Prisma.$CategoryAuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15158,7 +15893,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends CategoryAuditLogDeleteManyArgs>(args?: SelectSubset<T, CategoryAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15177,7 +15912,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends CategoryAuditLogUpdateManyArgs>(args: SelectSubset<T, CategoryAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15266,7 +16001,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends CategoryAuditLogGroupByArgs,
@@ -15376,7 +16111,7 @@ export namespace Prisma {
     readonly details: FieldRef<"CategoryAuditLog", 'Json'>
     readonly createdAt: FieldRef<"CategoryAuditLog", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -15433,31 +16168,31 @@ export namespace Prisma {
     where?: CategoryAuditLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CategoryAuditLogs to fetch.
      */
     orderBy?: CategoryAuditLogOrderByWithRelationInput | CategoryAuditLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for CategoryAuditLogs.
      */
     cursor?: CategoryAuditLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CategoryAuditLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CategoryAuditLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CategoryAuditLogs.
      */
     distinct?: CategoryAuditLogScalarFieldEnum | CategoryAuditLogScalarFieldEnum[]
@@ -15481,31 +16216,31 @@ export namespace Prisma {
     where?: CategoryAuditLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CategoryAuditLogs to fetch.
      */
     orderBy?: CategoryAuditLogOrderByWithRelationInput | CategoryAuditLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for CategoryAuditLogs.
      */
     cursor?: CategoryAuditLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CategoryAuditLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CategoryAuditLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CategoryAuditLogs.
      */
     distinct?: CategoryAuditLogScalarFieldEnum | CategoryAuditLogScalarFieldEnum[]
@@ -15529,31 +16264,31 @@ export namespace Prisma {
     where?: CategoryAuditLogWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CategoryAuditLogs to fetch.
      */
     orderBy?: CategoryAuditLogOrderByWithRelationInput | CategoryAuditLogOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing CategoryAuditLogs.
      */
     cursor?: CategoryAuditLogWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CategoryAuditLogs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CategoryAuditLogs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CategoryAuditLogs.
      */
     distinct?: CategoryAuditLogScalarFieldEnum | CategoryAuditLogScalarFieldEnum[]
@@ -15757,43 +16492,43 @@ export namespace Prisma {
     where?: SystemConfigWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SystemConfigs to fetch.
      */
     orderBy?: SystemConfigOrderByWithRelationInput | SystemConfigOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SystemConfigWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SystemConfigs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SystemConfigs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned SystemConfigs
     **/
     _count?: true | SystemConfigCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SystemConfigMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SystemConfigMaxAggregateInputType
@@ -15947,13 +16682,13 @@ export namespace Prisma {
      * @example
      * // Get all SystemConfigs
      * const systemConfigs = await prisma.systemConfig.findMany()
-     * 
+     *
      * // Get first 10 SystemConfigs
      * const systemConfigs = await prisma.systemConfig.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `configKey`
      * const systemConfigWithConfigKeyOnly = await prisma.systemConfig.findMany({ select: { configKey: true } })
-     * 
+     *
      */
     findMany<T extends SystemConfigFindManyArgs>(args?: SelectSubset<T, SystemConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SystemConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -15967,7 +16702,7 @@ export namespace Prisma {
      *     // ... data to create a SystemConfig
      *   }
      * })
-     * 
+     *
      */
     create<T extends SystemConfigCreateArgs>(args: SelectSubset<T, SystemConfigCreateArgs<ExtArgs>>): Prisma__SystemConfigClient<$Result.GetResult<Prisma.$SystemConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15981,7 +16716,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SystemConfigCreateManyArgs>(args?: SelectSubset<T, SystemConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15995,7 +16730,7 @@ export namespace Prisma {
      *     // ... filter to delete one SystemConfig
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SystemConfigDeleteArgs>(args: SelectSubset<T, SystemConfigDeleteArgs<ExtArgs>>): Prisma__SystemConfigClient<$Result.GetResult<Prisma.$SystemConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16012,7 +16747,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SystemConfigUpdateArgs>(args: SelectSubset<T, SystemConfigUpdateArgs<ExtArgs>>): Prisma__SystemConfigClient<$Result.GetResult<Prisma.$SystemConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16026,7 +16761,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SystemConfigDeleteManyArgs>(args?: SelectSubset<T, SystemConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16045,7 +16780,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SystemConfigUpdateManyArgs>(args: SelectSubset<T, SystemConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16134,7 +16869,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SystemConfigGroupByArgs,
@@ -16241,7 +16976,7 @@ export namespace Prisma {
     readonly configValue: FieldRef<"SystemConfig", 'String'>
     readonly updatedAt: FieldRef<"SystemConfig", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -16298,31 +17033,31 @@ export namespace Prisma {
     where?: SystemConfigWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SystemConfigs to fetch.
      */
     orderBy?: SystemConfigOrderByWithRelationInput | SystemConfigOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SystemConfigs.
      */
     cursor?: SystemConfigWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SystemConfigs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SystemConfigs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SystemConfigs.
      */
     distinct?: SystemConfigScalarFieldEnum | SystemConfigScalarFieldEnum[]
@@ -16346,31 +17081,31 @@ export namespace Prisma {
     where?: SystemConfigWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SystemConfigs to fetch.
      */
     orderBy?: SystemConfigOrderByWithRelationInput | SystemConfigOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SystemConfigs.
      */
     cursor?: SystemConfigWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SystemConfigs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SystemConfigs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SystemConfigs.
      */
     distinct?: SystemConfigScalarFieldEnum | SystemConfigScalarFieldEnum[]
@@ -16394,31 +17129,31 @@ export namespace Prisma {
     where?: SystemConfigWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SystemConfigs to fetch.
      */
     orderBy?: SystemConfigOrderByWithRelationInput | SystemConfigOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing SystemConfigs.
      */
     cursor?: SystemConfigWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SystemConfigs from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SystemConfigs.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SystemConfigs.
      */
     distinct?: SystemConfigScalarFieldEnum | SystemConfigScalarFieldEnum[]
@@ -16652,43 +17387,43 @@ export namespace Prisma {
     where?: HubNotificationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of HubNotifications to fetch.
      */
     orderBy?: HubNotificationOrderByWithRelationInput | HubNotificationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: HubNotificationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` HubNotifications from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` HubNotifications.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned HubNotifications
     **/
     _count?: true | HubNotificationCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: HubNotificationMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: HubNotificationMaxAggregateInputType
@@ -16868,13 +17603,13 @@ export namespace Prisma {
      * @example
      * // Get all HubNotifications
      * const hubNotifications = await prisma.hubNotification.findMany()
-     * 
+     *
      * // Get first 10 HubNotifications
      * const hubNotifications = await prisma.hubNotification.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const hubNotificationWithIdOnly = await prisma.hubNotification.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends HubNotificationFindManyArgs>(args?: SelectSubset<T, HubNotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -16888,7 +17623,7 @@ export namespace Prisma {
      *     // ... data to create a HubNotification
      *   }
      * })
-     * 
+     *
      */
     create<T extends HubNotificationCreateArgs>(args: SelectSubset<T, HubNotificationCreateArgs<ExtArgs>>): Prisma__HubNotificationClient<$Result.GetResult<Prisma.$HubNotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16902,7 +17637,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends HubNotificationCreateManyArgs>(args?: SelectSubset<T, HubNotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16916,7 +17651,7 @@ export namespace Prisma {
      *     // ... filter to delete one HubNotification
      *   }
      * })
-     * 
+     *
      */
     delete<T extends HubNotificationDeleteArgs>(args: SelectSubset<T, HubNotificationDeleteArgs<ExtArgs>>): Prisma__HubNotificationClient<$Result.GetResult<Prisma.$HubNotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16933,7 +17668,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends HubNotificationUpdateArgs>(args: SelectSubset<T, HubNotificationUpdateArgs<ExtArgs>>): Prisma__HubNotificationClient<$Result.GetResult<Prisma.$HubNotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -16947,7 +17682,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends HubNotificationDeleteManyArgs>(args?: SelectSubset<T, HubNotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -16966,7 +17701,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends HubNotificationUpdateManyArgs>(args: SelectSubset<T, HubNotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17055,7 +17790,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends HubNotificationGroupByArgs,
@@ -17168,7 +17903,7 @@ export namespace Prisma {
     readonly readAt: FieldRef<"HubNotification", 'DateTime'>
     readonly createdAt: FieldRef<"HubNotification", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -17237,31 +17972,31 @@ export namespace Prisma {
     where?: HubNotificationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of HubNotifications to fetch.
      */
     orderBy?: HubNotificationOrderByWithRelationInput | HubNotificationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for HubNotifications.
      */
     cursor?: HubNotificationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` HubNotifications from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` HubNotifications.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of HubNotifications.
      */
     distinct?: HubNotificationScalarFieldEnum | HubNotificationScalarFieldEnum[]
@@ -17289,31 +18024,31 @@ export namespace Prisma {
     where?: HubNotificationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of HubNotifications to fetch.
      */
     orderBy?: HubNotificationOrderByWithRelationInput | HubNotificationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for HubNotifications.
      */
     cursor?: HubNotificationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` HubNotifications from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` HubNotifications.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of HubNotifications.
      */
     distinct?: HubNotificationScalarFieldEnum | HubNotificationScalarFieldEnum[]
@@ -17341,31 +18076,31 @@ export namespace Prisma {
     where?: HubNotificationWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of HubNotifications to fetch.
      */
     orderBy?: HubNotificationOrderByWithRelationInput | HubNotificationOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing HubNotifications.
      */
     cursor?: HubNotificationWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` HubNotifications from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` HubNotifications.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of HubNotifications.
      */
     distinct?: HubNotificationScalarFieldEnum | HubNotificationScalarFieldEnum[]
@@ -17615,43 +18350,43 @@ export namespace Prisma {
     where?: AdminWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Admins to fetch.
      */
     orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AdminWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Admins from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Admins.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Admins
     **/
     _count?: true | AdminCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AdminMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AdminMaxAggregateInputType
@@ -17833,13 +18568,13 @@ export namespace Prisma {
      * @example
      * // Get all Admins
      * const admins = await prisma.admin.findMany()
-     * 
+     *
      * // Get first 10 Admins
      * const admins = await prisma.admin.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const adminWithIdOnly = await prisma.admin.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AdminFindManyArgs>(args?: SelectSubset<T, AdminFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -17853,7 +18588,7 @@ export namespace Prisma {
      *     // ... data to create a Admin
      *   }
      * })
-     * 
+     *
      */
     create<T extends AdminCreateArgs>(args: SelectSubset<T, AdminCreateArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17867,7 +18602,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AdminCreateManyArgs>(args?: SelectSubset<T, AdminCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17881,7 +18616,7 @@ export namespace Prisma {
      *     // ... filter to delete one Admin
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AdminDeleteArgs>(args: SelectSubset<T, AdminDeleteArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17898,7 +18633,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AdminUpdateArgs>(args: SelectSubset<T, AdminUpdateArgs<ExtArgs>>): Prisma__AdminClient<$Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -17912,7 +18647,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AdminDeleteManyArgs>(args?: SelectSubset<T, AdminDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -17931,7 +18666,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AdminUpdateManyArgs>(args: SelectSubset<T, AdminUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18020,7 +18755,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AdminGroupByArgs,
@@ -18133,7 +18868,7 @@ export namespace Prisma {
     readonly lastLoginAt: FieldRef<"Admin", 'DateTime'>
     readonly createdAt: FieldRef<"Admin", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -18202,31 +18937,31 @@ export namespace Prisma {
     where?: AdminWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Admins to fetch.
      */
     orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Admins.
      */
     cursor?: AdminWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Admins from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Admins.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Admins.
      */
     distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
@@ -18254,31 +18989,31 @@ export namespace Prisma {
     where?: AdminWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Admins to fetch.
      */
     orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Admins.
      */
     cursor?: AdminWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Admins from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Admins.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Admins.
      */
     distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
@@ -18306,31 +19041,31 @@ export namespace Prisma {
     where?: AdminWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Admins to fetch.
      */
     orderBy?: AdminOrderByWithRelationInput | AdminOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Admins.
      */
     cursor?: AdminWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Admins from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Admins.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Admins.
      */
     distinct?: AdminScalarFieldEnum | AdminScalarFieldEnum[]
@@ -18590,43 +19325,43 @@ export namespace Prisma {
     where?: AdminSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AdminSessions to fetch.
      */
     orderBy?: AdminSessionOrderByWithRelationInput | AdminSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AdminSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AdminSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AdminSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned AdminSessions
     **/
     _count?: true | AdminSessionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AdminSessionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AdminSessionMaxAggregateInputType
@@ -18794,13 +19529,13 @@ export namespace Prisma {
      * @example
      * // Get all AdminSessions
      * const adminSessions = await prisma.adminSession.findMany()
-     * 
+     *
      * // Get first 10 AdminSessions
      * const adminSessions = await prisma.adminSession.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const adminSessionWithIdOnly = await prisma.adminSession.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AdminSessionFindManyArgs>(args?: SelectSubset<T, AdminSessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -18814,7 +19549,7 @@ export namespace Prisma {
      *     // ... data to create a AdminSession
      *   }
      * })
-     * 
+     *
      */
     create<T extends AdminSessionCreateArgs>(args: SelectSubset<T, AdminSessionCreateArgs<ExtArgs>>): Prisma__AdminSessionClient<$Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18828,7 +19563,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AdminSessionCreateManyArgs>(args?: SelectSubset<T, AdminSessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18842,7 +19577,7 @@ export namespace Prisma {
      *     // ... filter to delete one AdminSession
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AdminSessionDeleteArgs>(args: SelectSubset<T, AdminSessionDeleteArgs<ExtArgs>>): Prisma__AdminSessionClient<$Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18859,7 +19594,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AdminSessionUpdateArgs>(args: SelectSubset<T, AdminSessionUpdateArgs<ExtArgs>>): Prisma__AdminSessionClient<$Result.GetResult<Prisma.$AdminSessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -18873,7 +19608,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AdminSessionDeleteManyArgs>(args?: SelectSubset<T, AdminSessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18892,7 +19627,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AdminSessionUpdateManyArgs>(args: SelectSubset<T, AdminSessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -18981,7 +19716,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AdminSessionGroupByArgs,
@@ -19091,7 +19826,7 @@ export namespace Prisma {
     readonly expiresAt: FieldRef<"AdminSession", 'DateTime'>
     readonly createdAt: FieldRef<"AdminSession", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -19160,31 +19895,31 @@ export namespace Prisma {
     where?: AdminSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AdminSessions to fetch.
      */
     orderBy?: AdminSessionOrderByWithRelationInput | AdminSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for AdminSessions.
      */
     cursor?: AdminSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AdminSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AdminSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AdminSessions.
      */
     distinct?: AdminSessionScalarFieldEnum | AdminSessionScalarFieldEnum[]
@@ -19212,31 +19947,31 @@ export namespace Prisma {
     where?: AdminSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AdminSessions to fetch.
      */
     orderBy?: AdminSessionOrderByWithRelationInput | AdminSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for AdminSessions.
      */
     cursor?: AdminSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AdminSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AdminSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AdminSessions.
      */
     distinct?: AdminSessionScalarFieldEnum | AdminSessionScalarFieldEnum[]
@@ -19264,31 +19999,31 @@ export namespace Prisma {
     where?: AdminSessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of AdminSessions to fetch.
      */
     orderBy?: AdminSessionOrderByWithRelationInput | AdminSessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing AdminSessions.
      */
     cursor?: AdminSessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` AdminSessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` AdminSessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of AdminSessions.
      */
     distinct?: AdminSessionScalarFieldEnum | AdminSessionScalarFieldEnum[]
@@ -19616,43 +20351,43 @@ export namespace Prisma {
     where?: RoleTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleTemplates to fetch.
      */
     orderBy?: RoleTemplateOrderByWithRelationInput | RoleTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RoleTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RoleTemplates
     **/
     _count?: true | RoleTemplateCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RoleTemplateMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RoleTemplateMaxAggregateInputType
@@ -19928,13 +20663,13 @@ export namespace Prisma {
      * @example
      * // Get all RoleTemplates
      * const roleTemplates = await prisma.roleTemplate.findMany()
-     * 
+     *
      * // Get first 10 RoleTemplates
      * const roleTemplates = await prisma.roleTemplate.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const roleTemplateWithIdOnly = await prisma.roleTemplate.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RoleTemplateFindManyArgs>(args?: SelectSubset<T, RoleTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -19948,7 +20683,7 @@ export namespace Prisma {
      *     // ... data to create a RoleTemplate
      *   }
      * })
-     * 
+     *
      */
     create<T extends RoleTemplateCreateArgs>(args: SelectSubset<T, RoleTemplateCreateArgs<ExtArgs>>): Prisma__RoleTemplateClient<$Result.GetResult<Prisma.$RoleTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -19962,7 +20697,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RoleTemplateCreateManyArgs>(args?: SelectSubset<T, RoleTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -19976,7 +20711,7 @@ export namespace Prisma {
      *     // ... filter to delete one RoleTemplate
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RoleTemplateDeleteArgs>(args: SelectSubset<T, RoleTemplateDeleteArgs<ExtArgs>>): Prisma__RoleTemplateClient<$Result.GetResult<Prisma.$RoleTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -19993,7 +20728,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RoleTemplateUpdateArgs>(args: SelectSubset<T, RoleTemplateUpdateArgs<ExtArgs>>): Prisma__RoleTemplateClient<$Result.GetResult<Prisma.$RoleTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -20007,7 +20742,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RoleTemplateDeleteManyArgs>(args?: SelectSubset<T, RoleTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -20026,7 +20761,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RoleTemplateUpdateManyArgs>(args: SelectSubset<T, RoleTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -20115,7 +20850,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RoleTemplateGroupByArgs,
@@ -20253,7 +20988,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"RoleTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"RoleTemplate", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -20322,31 +21057,31 @@ export namespace Prisma {
     where?: RoleTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleTemplates to fetch.
      */
     orderBy?: RoleTemplateOrderByWithRelationInput | RoleTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleTemplates.
      */
     cursor?: RoleTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleTemplates.
      */
     distinct?: RoleTemplateScalarFieldEnum | RoleTemplateScalarFieldEnum[]
@@ -20374,31 +21109,31 @@ export namespace Prisma {
     where?: RoleTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleTemplates to fetch.
      */
     orderBy?: RoleTemplateOrderByWithRelationInput | RoleTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleTemplates.
      */
     cursor?: RoleTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleTemplates.
      */
     distinct?: RoleTemplateScalarFieldEnum | RoleTemplateScalarFieldEnum[]
@@ -20426,31 +21161,31 @@ export namespace Prisma {
     where?: RoleTemplateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleTemplates to fetch.
      */
     orderBy?: RoleTemplateOrderByWithRelationInput | RoleTemplateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RoleTemplates.
      */
     cursor?: RoleTemplateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleTemplates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleTemplates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleTemplates.
      */
     distinct?: RoleTemplateScalarFieldEnum | RoleTemplateScalarFieldEnum[]
@@ -20863,43 +21598,43 @@ export namespace Prisma {
     where?: RoleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleVersions to fetch.
      */
     orderBy?: RoleVersionOrderByWithRelationInput | RoleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RoleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RoleVersions
     **/
     _count?: true | RoleVersionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RoleVersionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RoleVersionMaxAggregateInputType
@@ -21079,13 +21814,13 @@ export namespace Prisma {
      * @example
      * // Get all RoleVersions
      * const roleVersions = await prisma.roleVersion.findMany()
-     * 
+     *
      * // Get first 10 RoleVersions
      * const roleVersions = await prisma.roleVersion.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const roleVersionWithIdOnly = await prisma.roleVersion.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RoleVersionFindManyArgs>(args?: SelectSubset<T, RoleVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -21099,7 +21834,7 @@ export namespace Prisma {
      *     // ... data to create a RoleVersion
      *   }
      * })
-     * 
+     *
      */
     create<T extends RoleVersionCreateArgs>(args: SelectSubset<T, RoleVersionCreateArgs<ExtArgs>>): Prisma__RoleVersionClient<$Result.GetResult<Prisma.$RoleVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21113,7 +21848,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RoleVersionCreateManyArgs>(args?: SelectSubset<T, RoleVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21127,7 +21862,7 @@ export namespace Prisma {
      *     // ... filter to delete one RoleVersion
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RoleVersionDeleteArgs>(args: SelectSubset<T, RoleVersionDeleteArgs<ExtArgs>>): Prisma__RoleVersionClient<$Result.GetResult<Prisma.$RoleVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21144,7 +21879,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RoleVersionUpdateArgs>(args: SelectSubset<T, RoleVersionUpdateArgs<ExtArgs>>): Prisma__RoleVersionClient<$Result.GetResult<Prisma.$RoleVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -21158,7 +21893,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RoleVersionDeleteManyArgs>(args?: SelectSubset<T, RoleVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21177,7 +21912,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RoleVersionUpdateManyArgs>(args: SelectSubset<T, RoleVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -21266,7 +22001,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RoleVersionGroupByArgs,
@@ -21379,7 +22114,7 @@ export namespace Prisma {
     readonly isLatest: FieldRef<"RoleVersion", 'Boolean'>
     readonly createdAt: FieldRef<"RoleVersion", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -21448,31 +22183,31 @@ export namespace Prisma {
     where?: RoleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleVersions to fetch.
      */
     orderBy?: RoleVersionOrderByWithRelationInput | RoleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleVersions.
      */
     cursor?: RoleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleVersions.
      */
     distinct?: RoleVersionScalarFieldEnum | RoleVersionScalarFieldEnum[]
@@ -21500,31 +22235,31 @@ export namespace Prisma {
     where?: RoleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleVersions to fetch.
      */
     orderBy?: RoleVersionOrderByWithRelationInput | RoleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleVersions.
      */
     cursor?: RoleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleVersions.
      */
     distinct?: RoleVersionScalarFieldEnum | RoleVersionScalarFieldEnum[]
@@ -21552,31 +22287,31 @@ export namespace Prisma {
     where?: RoleVersionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleVersions to fetch.
      */
     orderBy?: RoleVersionOrderByWithRelationInput | RoleVersionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RoleVersions.
      */
     cursor?: RoleVersionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleVersions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleVersions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleVersions.
      */
     distinct?: RoleVersionScalarFieldEnum | RoleVersionScalarFieldEnum[]
@@ -21824,55 +22559,55 @@ export namespace Prisma {
     where?: RoleSkillLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleSkillLinks to fetch.
      */
     orderBy?: RoleSkillLinkOrderByWithRelationInput | RoleSkillLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RoleSkillLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleSkillLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleSkillLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RoleSkillLinks
     **/
     _count?: true | RoleSkillLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: RoleSkillLinkAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: RoleSkillLinkSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RoleSkillLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RoleSkillLinkMaxAggregateInputType
@@ -22043,13 +22778,13 @@ export namespace Prisma {
      * @example
      * // Get all RoleSkillLinks
      * const roleSkillLinks = await prisma.roleSkillLink.findMany()
-     * 
+     *
      * // Get first 10 RoleSkillLinks
      * const roleSkillLinks = await prisma.roleSkillLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const roleSkillLinkWithIdOnly = await prisma.roleSkillLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RoleSkillLinkFindManyArgs>(args?: SelectSubset<T, RoleSkillLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleSkillLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -22063,7 +22798,7 @@ export namespace Prisma {
      *     // ... data to create a RoleSkillLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends RoleSkillLinkCreateArgs>(args: SelectSubset<T, RoleSkillLinkCreateArgs<ExtArgs>>): Prisma__RoleSkillLinkClient<$Result.GetResult<Prisma.$RoleSkillLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22077,7 +22812,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RoleSkillLinkCreateManyArgs>(args?: SelectSubset<T, RoleSkillLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22091,7 +22826,7 @@ export namespace Prisma {
      *     // ... filter to delete one RoleSkillLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RoleSkillLinkDeleteArgs>(args: SelectSubset<T, RoleSkillLinkDeleteArgs<ExtArgs>>): Prisma__RoleSkillLinkClient<$Result.GetResult<Prisma.$RoleSkillLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22108,7 +22843,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RoleSkillLinkUpdateArgs>(args: SelectSubset<T, RoleSkillLinkUpdateArgs<ExtArgs>>): Prisma__RoleSkillLinkClient<$Result.GetResult<Prisma.$RoleSkillLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -22122,7 +22857,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RoleSkillLinkDeleteManyArgs>(args?: SelectSubset<T, RoleSkillLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22141,7 +22876,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RoleSkillLinkUpdateManyArgs>(args: SelectSubset<T, RoleSkillLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -22230,7 +22965,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RoleSkillLinkGroupByArgs,
@@ -22340,7 +23075,7 @@ export namespace Prisma {
     readonly skillId: FieldRef<"RoleSkillLink", 'String'>
     readonly sortOrder: FieldRef<"RoleSkillLink", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -22409,31 +23144,31 @@ export namespace Prisma {
     where?: RoleSkillLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleSkillLinks to fetch.
      */
     orderBy?: RoleSkillLinkOrderByWithRelationInput | RoleSkillLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleSkillLinks.
      */
     cursor?: RoleSkillLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleSkillLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleSkillLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleSkillLinks.
      */
     distinct?: RoleSkillLinkScalarFieldEnum | RoleSkillLinkScalarFieldEnum[]
@@ -22461,31 +23196,31 @@ export namespace Prisma {
     where?: RoleSkillLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleSkillLinks to fetch.
      */
     orderBy?: RoleSkillLinkOrderByWithRelationInput | RoleSkillLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleSkillLinks.
      */
     cursor?: RoleSkillLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleSkillLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleSkillLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleSkillLinks.
      */
     distinct?: RoleSkillLinkScalarFieldEnum | RoleSkillLinkScalarFieldEnum[]
@@ -22513,31 +23248,31 @@ export namespace Prisma {
     where?: RoleSkillLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleSkillLinks to fetch.
      */
     orderBy?: RoleSkillLinkOrderByWithRelationInput | RoleSkillLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RoleSkillLinks.
      */
     cursor?: RoleSkillLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleSkillLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleSkillLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleSkillLinks.
      */
     distinct?: RoleSkillLinkScalarFieldEnum | RoleSkillLinkScalarFieldEnum[]
@@ -22785,55 +23520,55 @@ export namespace Prisma {
     where?: RoleRuleLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleRuleLinks to fetch.
      */
     orderBy?: RoleRuleLinkOrderByWithRelationInput | RoleRuleLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RoleRuleLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleRuleLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleRuleLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RoleRuleLinks
     **/
     _count?: true | RoleRuleLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: RoleRuleLinkAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: RoleRuleLinkSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RoleRuleLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RoleRuleLinkMaxAggregateInputType
@@ -23004,13 +23739,13 @@ export namespace Prisma {
      * @example
      * // Get all RoleRuleLinks
      * const roleRuleLinks = await prisma.roleRuleLink.findMany()
-     * 
+     *
      * // Get first 10 RoleRuleLinks
      * const roleRuleLinks = await prisma.roleRuleLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const roleRuleLinkWithIdOnly = await prisma.roleRuleLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RoleRuleLinkFindManyArgs>(args?: SelectSubset<T, RoleRuleLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleRuleLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -23024,7 +23759,7 @@ export namespace Prisma {
      *     // ... data to create a RoleRuleLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends RoleRuleLinkCreateArgs>(args: SelectSubset<T, RoleRuleLinkCreateArgs<ExtArgs>>): Prisma__RoleRuleLinkClient<$Result.GetResult<Prisma.$RoleRuleLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23038,7 +23773,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RoleRuleLinkCreateManyArgs>(args?: SelectSubset<T, RoleRuleLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23052,7 +23787,7 @@ export namespace Prisma {
      *     // ... filter to delete one RoleRuleLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RoleRuleLinkDeleteArgs>(args: SelectSubset<T, RoleRuleLinkDeleteArgs<ExtArgs>>): Prisma__RoleRuleLinkClient<$Result.GetResult<Prisma.$RoleRuleLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23069,7 +23804,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RoleRuleLinkUpdateArgs>(args: SelectSubset<T, RoleRuleLinkUpdateArgs<ExtArgs>>): Prisma__RoleRuleLinkClient<$Result.GetResult<Prisma.$RoleRuleLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -23083,7 +23818,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RoleRuleLinkDeleteManyArgs>(args?: SelectSubset<T, RoleRuleLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23102,7 +23837,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RoleRuleLinkUpdateManyArgs>(args: SelectSubset<T, RoleRuleLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -23191,7 +23926,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RoleRuleLinkGroupByArgs,
@@ -23301,7 +24036,7 @@ export namespace Prisma {
     readonly ruleId: FieldRef<"RoleRuleLink", 'String'>
     readonly sortOrder: FieldRef<"RoleRuleLink", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -23370,31 +24105,31 @@ export namespace Prisma {
     where?: RoleRuleLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleRuleLinks to fetch.
      */
     orderBy?: RoleRuleLinkOrderByWithRelationInput | RoleRuleLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleRuleLinks.
      */
     cursor?: RoleRuleLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleRuleLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleRuleLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleRuleLinks.
      */
     distinct?: RoleRuleLinkScalarFieldEnum | RoleRuleLinkScalarFieldEnum[]
@@ -23422,31 +24157,31 @@ export namespace Prisma {
     where?: RoleRuleLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleRuleLinks to fetch.
      */
     orderBy?: RoleRuleLinkOrderByWithRelationInput | RoleRuleLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleRuleLinks.
      */
     cursor?: RoleRuleLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleRuleLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleRuleLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleRuleLinks.
      */
     distinct?: RoleRuleLinkScalarFieldEnum | RoleRuleLinkScalarFieldEnum[]
@@ -23474,31 +24209,31 @@ export namespace Prisma {
     where?: RoleRuleLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleRuleLinks to fetch.
      */
     orderBy?: RoleRuleLinkOrderByWithRelationInput | RoleRuleLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RoleRuleLinks.
      */
     cursor?: RoleRuleLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleRuleLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleRuleLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleRuleLinks.
      */
     distinct?: RoleRuleLinkScalarFieldEnum | RoleRuleLinkScalarFieldEnum[]
@@ -23770,43 +24505,43 @@ export namespace Prisma {
     where?: ScenarioPackageWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackages to fetch.
      */
     orderBy?: ScenarioPackageOrderByWithRelationInput | ScenarioPackageOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ScenarioPackageWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackages from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackages.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ScenarioPackages
     **/
     _count?: true | ScenarioPackageCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ScenarioPackageMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ScenarioPackageMaxAggregateInputType
@@ -24020,13 +24755,13 @@ export namespace Prisma {
      * @example
      * // Get all ScenarioPackages
      * const scenarioPackages = await prisma.scenarioPackage.findMany()
-     * 
+     *
      * // Get first 10 ScenarioPackages
      * const scenarioPackages = await prisma.scenarioPackage.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const scenarioPackageWithIdOnly = await prisma.scenarioPackage.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ScenarioPackageFindManyArgs>(args?: SelectSubset<T, ScenarioPackageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScenarioPackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -24040,7 +24775,7 @@ export namespace Prisma {
      *     // ... data to create a ScenarioPackage
      *   }
      * })
-     * 
+     *
      */
     create<T extends ScenarioPackageCreateArgs>(args: SelectSubset<T, ScenarioPackageCreateArgs<ExtArgs>>): Prisma__ScenarioPackageClient<$Result.GetResult<Prisma.$ScenarioPackagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24054,7 +24789,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ScenarioPackageCreateManyArgs>(args?: SelectSubset<T, ScenarioPackageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24068,7 +24803,7 @@ export namespace Prisma {
      *     // ... filter to delete one ScenarioPackage
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ScenarioPackageDeleteArgs>(args: SelectSubset<T, ScenarioPackageDeleteArgs<ExtArgs>>): Prisma__ScenarioPackageClient<$Result.GetResult<Prisma.$ScenarioPackagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24085,7 +24820,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ScenarioPackageUpdateArgs>(args: SelectSubset<T, ScenarioPackageUpdateArgs<ExtArgs>>): Prisma__ScenarioPackageClient<$Result.GetResult<Prisma.$ScenarioPackagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -24099,7 +24834,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ScenarioPackageDeleteManyArgs>(args?: SelectSubset<T, ScenarioPackageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24118,7 +24853,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ScenarioPackageUpdateManyArgs>(args: SelectSubset<T, ScenarioPackageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -24207,7 +24942,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ScenarioPackageGroupByArgs,
@@ -24329,7 +25064,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"ScenarioPackage", 'DateTime'>
     readonly updatedAt: FieldRef<"ScenarioPackage", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -24398,31 +25133,31 @@ export namespace Prisma {
     where?: ScenarioPackageWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackages to fetch.
      */
     orderBy?: ScenarioPackageOrderByWithRelationInput | ScenarioPackageOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackages.
      */
     cursor?: ScenarioPackageWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackages from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackages.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackages.
      */
     distinct?: ScenarioPackageScalarFieldEnum | ScenarioPackageScalarFieldEnum[]
@@ -24450,31 +25185,31 @@ export namespace Prisma {
     where?: ScenarioPackageWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackages to fetch.
      */
     orderBy?: ScenarioPackageOrderByWithRelationInput | ScenarioPackageOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackages.
      */
     cursor?: ScenarioPackageWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackages from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackages.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackages.
      */
     distinct?: ScenarioPackageScalarFieldEnum | ScenarioPackageScalarFieldEnum[]
@@ -24502,31 +25237,31 @@ export namespace Prisma {
     where?: ScenarioPackageWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackages to fetch.
      */
     orderBy?: ScenarioPackageOrderByWithRelationInput | ScenarioPackageOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ScenarioPackages.
      */
     cursor?: ScenarioPackageWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackages from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackages.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackages.
      */
     distinct?: ScenarioPackageScalarFieldEnum | ScenarioPackageScalarFieldEnum[]
@@ -24895,55 +25630,55 @@ export namespace Prisma {
     where?: ScenarioPackageRoleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRoles to fetch.
      */
     orderBy?: ScenarioPackageRoleOrderByWithRelationInput | ScenarioPackageRoleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ScenarioPackageRoleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRoles from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRoles.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ScenarioPackageRoles
     **/
     _count?: true | ScenarioPackageRoleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ScenarioPackageRoleAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ScenarioPackageRoleSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ScenarioPackageRoleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ScenarioPackageRoleMaxAggregateInputType
@@ -25118,13 +25853,13 @@ export namespace Prisma {
      * @example
      * // Get all ScenarioPackageRoles
      * const scenarioPackageRoles = await prisma.scenarioPackageRole.findMany()
-     * 
+     *
      * // Get first 10 ScenarioPackageRoles
      * const scenarioPackageRoles = await prisma.scenarioPackageRole.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const scenarioPackageRoleWithIdOnly = await prisma.scenarioPackageRole.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ScenarioPackageRoleFindManyArgs>(args?: SelectSubset<T, ScenarioPackageRoleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScenarioPackageRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -25138,7 +25873,7 @@ export namespace Prisma {
      *     // ... data to create a ScenarioPackageRole
      *   }
      * })
-     * 
+     *
      */
     create<T extends ScenarioPackageRoleCreateArgs>(args: SelectSubset<T, ScenarioPackageRoleCreateArgs<ExtArgs>>): Prisma__ScenarioPackageRoleClient<$Result.GetResult<Prisma.$ScenarioPackageRolePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25152,7 +25887,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ScenarioPackageRoleCreateManyArgs>(args?: SelectSubset<T, ScenarioPackageRoleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25166,7 +25901,7 @@ export namespace Prisma {
      *     // ... filter to delete one ScenarioPackageRole
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ScenarioPackageRoleDeleteArgs>(args: SelectSubset<T, ScenarioPackageRoleDeleteArgs<ExtArgs>>): Prisma__ScenarioPackageRoleClient<$Result.GetResult<Prisma.$ScenarioPackageRolePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25183,7 +25918,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ScenarioPackageRoleUpdateArgs>(args: SelectSubset<T, ScenarioPackageRoleUpdateArgs<ExtArgs>>): Prisma__ScenarioPackageRoleClient<$Result.GetResult<Prisma.$ScenarioPackageRolePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -25197,7 +25932,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ScenarioPackageRoleDeleteManyArgs>(args?: SelectSubset<T, ScenarioPackageRoleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25216,7 +25951,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ScenarioPackageRoleUpdateManyArgs>(args: SelectSubset<T, ScenarioPackageRoleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -25305,7 +26040,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ScenarioPackageRoleGroupByArgs,
@@ -25416,7 +26151,7 @@ export namespace Prisma {
     readonly sortOrder: FieldRef<"ScenarioPackageRole", 'Int'>
     readonly isOptional: FieldRef<"ScenarioPackageRole", 'Boolean'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -25485,31 +26220,31 @@ export namespace Prisma {
     where?: ScenarioPackageRoleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRoles to fetch.
      */
     orderBy?: ScenarioPackageRoleOrderByWithRelationInput | ScenarioPackageRoleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageRoles.
      */
     cursor?: ScenarioPackageRoleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRoles from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRoles.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRoles.
      */
     distinct?: ScenarioPackageRoleScalarFieldEnum | ScenarioPackageRoleScalarFieldEnum[]
@@ -25537,31 +26272,31 @@ export namespace Prisma {
     where?: ScenarioPackageRoleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRoles to fetch.
      */
     orderBy?: ScenarioPackageRoleOrderByWithRelationInput | ScenarioPackageRoleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageRoles.
      */
     cursor?: ScenarioPackageRoleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRoles from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRoles.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRoles.
      */
     distinct?: ScenarioPackageRoleScalarFieldEnum | ScenarioPackageRoleScalarFieldEnum[]
@@ -25589,31 +26324,31 @@ export namespace Prisma {
     where?: ScenarioPackageRoleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRoles to fetch.
      */
     orderBy?: ScenarioPackageRoleOrderByWithRelationInput | ScenarioPackageRoleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ScenarioPackageRoles.
      */
     cursor?: ScenarioPackageRoleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRoles from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRoles.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRoles.
      */
     distinct?: ScenarioPackageRoleScalarFieldEnum | ScenarioPackageRoleScalarFieldEnum[]
@@ -25861,55 +26596,55 @@ export namespace Prisma {
     where?: ScenarioPackageSkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageSkills to fetch.
      */
     orderBy?: ScenarioPackageSkillOrderByWithRelationInput | ScenarioPackageSkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ScenarioPackageSkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageSkills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageSkills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ScenarioPackageSkills
     **/
     _count?: true | ScenarioPackageSkillCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ScenarioPackageSkillAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ScenarioPackageSkillSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ScenarioPackageSkillMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ScenarioPackageSkillMaxAggregateInputType
@@ -26080,13 +26815,13 @@ export namespace Prisma {
      * @example
      * // Get all ScenarioPackageSkills
      * const scenarioPackageSkills = await prisma.scenarioPackageSkill.findMany()
-     * 
+     *
      * // Get first 10 ScenarioPackageSkills
      * const scenarioPackageSkills = await prisma.scenarioPackageSkill.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const scenarioPackageSkillWithIdOnly = await prisma.scenarioPackageSkill.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ScenarioPackageSkillFindManyArgs>(args?: SelectSubset<T, ScenarioPackageSkillFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScenarioPackageSkillPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -26100,7 +26835,7 @@ export namespace Prisma {
      *     // ... data to create a ScenarioPackageSkill
      *   }
      * })
-     * 
+     *
      */
     create<T extends ScenarioPackageSkillCreateArgs>(args: SelectSubset<T, ScenarioPackageSkillCreateArgs<ExtArgs>>): Prisma__ScenarioPackageSkillClient<$Result.GetResult<Prisma.$ScenarioPackageSkillPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26114,7 +26849,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ScenarioPackageSkillCreateManyArgs>(args?: SelectSubset<T, ScenarioPackageSkillCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26128,7 +26863,7 @@ export namespace Prisma {
      *     // ... filter to delete one ScenarioPackageSkill
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ScenarioPackageSkillDeleteArgs>(args: SelectSubset<T, ScenarioPackageSkillDeleteArgs<ExtArgs>>): Prisma__ScenarioPackageSkillClient<$Result.GetResult<Prisma.$ScenarioPackageSkillPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26145,7 +26880,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ScenarioPackageSkillUpdateArgs>(args: SelectSubset<T, ScenarioPackageSkillUpdateArgs<ExtArgs>>): Prisma__ScenarioPackageSkillClient<$Result.GetResult<Prisma.$ScenarioPackageSkillPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -26159,7 +26894,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ScenarioPackageSkillDeleteManyArgs>(args?: SelectSubset<T, ScenarioPackageSkillDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26178,7 +26913,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ScenarioPackageSkillUpdateManyArgs>(args: SelectSubset<T, ScenarioPackageSkillUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -26267,7 +27002,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ScenarioPackageSkillGroupByArgs,
@@ -26377,7 +27112,7 @@ export namespace Prisma {
     readonly skillId: FieldRef<"ScenarioPackageSkill", 'String'>
     readonly sortOrder: FieldRef<"ScenarioPackageSkill", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -26446,31 +27181,31 @@ export namespace Prisma {
     where?: ScenarioPackageSkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageSkills to fetch.
      */
     orderBy?: ScenarioPackageSkillOrderByWithRelationInput | ScenarioPackageSkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageSkills.
      */
     cursor?: ScenarioPackageSkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageSkills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageSkills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageSkills.
      */
     distinct?: ScenarioPackageSkillScalarFieldEnum | ScenarioPackageSkillScalarFieldEnum[]
@@ -26498,31 +27233,31 @@ export namespace Prisma {
     where?: ScenarioPackageSkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageSkills to fetch.
      */
     orderBy?: ScenarioPackageSkillOrderByWithRelationInput | ScenarioPackageSkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageSkills.
      */
     cursor?: ScenarioPackageSkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageSkills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageSkills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageSkills.
      */
     distinct?: ScenarioPackageSkillScalarFieldEnum | ScenarioPackageSkillScalarFieldEnum[]
@@ -26550,31 +27285,31 @@ export namespace Prisma {
     where?: ScenarioPackageSkillWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageSkills to fetch.
      */
     orderBy?: ScenarioPackageSkillOrderByWithRelationInput | ScenarioPackageSkillOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ScenarioPackageSkills.
      */
     cursor?: ScenarioPackageSkillWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageSkills from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageSkills.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageSkills.
      */
     distinct?: ScenarioPackageSkillScalarFieldEnum | ScenarioPackageSkillScalarFieldEnum[]
@@ -26822,55 +27557,55 @@ export namespace Prisma {
     where?: ScenarioPackageRuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRules to fetch.
      */
     orderBy?: ScenarioPackageRuleOrderByWithRelationInput | ScenarioPackageRuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ScenarioPackageRuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ScenarioPackageRules
     **/
     _count?: true | ScenarioPackageRuleCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ScenarioPackageRuleAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ScenarioPackageRuleSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ScenarioPackageRuleMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ScenarioPackageRuleMaxAggregateInputType
@@ -27041,13 +27776,13 @@ export namespace Prisma {
      * @example
      * // Get all ScenarioPackageRules
      * const scenarioPackageRules = await prisma.scenarioPackageRule.findMany()
-     * 
+     *
      * // Get first 10 ScenarioPackageRules
      * const scenarioPackageRules = await prisma.scenarioPackageRule.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const scenarioPackageRuleWithIdOnly = await prisma.scenarioPackageRule.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ScenarioPackageRuleFindManyArgs>(args?: SelectSubset<T, ScenarioPackageRuleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScenarioPackageRulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -27061,7 +27796,7 @@ export namespace Prisma {
      *     // ... data to create a ScenarioPackageRule
      *   }
      * })
-     * 
+     *
      */
     create<T extends ScenarioPackageRuleCreateArgs>(args: SelectSubset<T, ScenarioPackageRuleCreateArgs<ExtArgs>>): Prisma__ScenarioPackageRuleClient<$Result.GetResult<Prisma.$ScenarioPackageRulePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -27075,7 +27810,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ScenarioPackageRuleCreateManyArgs>(args?: SelectSubset<T, ScenarioPackageRuleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -27089,7 +27824,7 @@ export namespace Prisma {
      *     // ... filter to delete one ScenarioPackageRule
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ScenarioPackageRuleDeleteArgs>(args: SelectSubset<T, ScenarioPackageRuleDeleteArgs<ExtArgs>>): Prisma__ScenarioPackageRuleClient<$Result.GetResult<Prisma.$ScenarioPackageRulePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -27106,7 +27841,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ScenarioPackageRuleUpdateArgs>(args: SelectSubset<T, ScenarioPackageRuleUpdateArgs<ExtArgs>>): Prisma__ScenarioPackageRuleClient<$Result.GetResult<Prisma.$ScenarioPackageRulePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -27120,7 +27855,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ScenarioPackageRuleDeleteManyArgs>(args?: SelectSubset<T, ScenarioPackageRuleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -27139,7 +27874,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ScenarioPackageRuleUpdateManyArgs>(args: SelectSubset<T, ScenarioPackageRuleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -27228,7 +27963,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ScenarioPackageRuleGroupByArgs,
@@ -27338,7 +28073,7 @@ export namespace Prisma {
     readonly ruleId: FieldRef<"ScenarioPackageRule", 'String'>
     readonly sortOrder: FieldRef<"ScenarioPackageRule", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -27407,31 +28142,31 @@ export namespace Prisma {
     where?: ScenarioPackageRuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRules to fetch.
      */
     orderBy?: ScenarioPackageRuleOrderByWithRelationInput | ScenarioPackageRuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageRules.
      */
     cursor?: ScenarioPackageRuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRules.
      */
     distinct?: ScenarioPackageRuleScalarFieldEnum | ScenarioPackageRuleScalarFieldEnum[]
@@ -27459,31 +28194,31 @@ export namespace Prisma {
     where?: ScenarioPackageRuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRules to fetch.
      */
     orderBy?: ScenarioPackageRuleOrderByWithRelationInput | ScenarioPackageRuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioPackageRules.
      */
     cursor?: ScenarioPackageRuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRules.
      */
     distinct?: ScenarioPackageRuleScalarFieldEnum | ScenarioPackageRuleScalarFieldEnum[]
@@ -27511,31 +28246,31 @@ export namespace Prisma {
     where?: ScenarioPackageRuleWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioPackageRules to fetch.
      */
     orderBy?: ScenarioPackageRuleOrderByWithRelationInput | ScenarioPackageRuleOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ScenarioPackageRules.
      */
     cursor?: ScenarioPackageRuleWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioPackageRules from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioPackageRules.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioPackageRules.
      */
     distinct?: ScenarioPackageRuleScalarFieldEnum | ScenarioPackageRuleScalarFieldEnum[]
@@ -27789,55 +28524,55 @@ export namespace Prisma {
     where?: CapabilityDomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CapabilityDomains to fetch.
      */
     orderBy?: CapabilityDomainOrderByWithRelationInput | CapabilityDomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: CapabilityDomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CapabilityDomains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CapabilityDomains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned CapabilityDomains
     **/
     _count?: true | CapabilityDomainCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: CapabilityDomainAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: CapabilityDomainSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: CapabilityDomainMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: CapabilityDomainMaxAggregateInputType
@@ -28020,13 +28755,13 @@ export namespace Prisma {
      * @example
      * // Get all CapabilityDomains
      * const capabilityDomains = await prisma.capabilityDomain.findMany()
-     * 
+     *
      * // Get first 10 CapabilityDomains
      * const capabilityDomains = await prisma.capabilityDomain.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const capabilityDomainWithIdOnly = await prisma.capabilityDomain.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends CapabilityDomainFindManyArgs>(args?: SelectSubset<T, CapabilityDomainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CapabilityDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -28040,7 +28775,7 @@ export namespace Prisma {
      *     // ... data to create a CapabilityDomain
      *   }
      * })
-     * 
+     *
      */
     create<T extends CapabilityDomainCreateArgs>(args: SelectSubset<T, CapabilityDomainCreateArgs<ExtArgs>>): Prisma__CapabilityDomainClient<$Result.GetResult<Prisma.$CapabilityDomainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -28054,7 +28789,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends CapabilityDomainCreateManyArgs>(args?: SelectSubset<T, CapabilityDomainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -28068,7 +28803,7 @@ export namespace Prisma {
      *     // ... filter to delete one CapabilityDomain
      *   }
      * })
-     * 
+     *
      */
     delete<T extends CapabilityDomainDeleteArgs>(args: SelectSubset<T, CapabilityDomainDeleteArgs<ExtArgs>>): Prisma__CapabilityDomainClient<$Result.GetResult<Prisma.$CapabilityDomainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -28085,7 +28820,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends CapabilityDomainUpdateArgs>(args: SelectSubset<T, CapabilityDomainUpdateArgs<ExtArgs>>): Prisma__CapabilityDomainClient<$Result.GetResult<Prisma.$CapabilityDomainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -28099,7 +28834,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends CapabilityDomainDeleteManyArgs>(args?: SelectSubset<T, CapabilityDomainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -28118,7 +28853,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends CapabilityDomainUpdateManyArgs>(args: SelectSubset<T, CapabilityDomainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -28207,7 +28942,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends CapabilityDomainGroupByArgs,
@@ -28320,7 +29055,7 @@ export namespace Prisma {
     readonly description: FieldRef<"CapabilityDomain", 'String'>
     readonly sortOrder: FieldRef<"CapabilityDomain", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -28389,31 +29124,31 @@ export namespace Prisma {
     where?: CapabilityDomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CapabilityDomains to fetch.
      */
     orderBy?: CapabilityDomainOrderByWithRelationInput | CapabilityDomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for CapabilityDomains.
      */
     cursor?: CapabilityDomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CapabilityDomains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CapabilityDomains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CapabilityDomains.
      */
     distinct?: CapabilityDomainScalarFieldEnum | CapabilityDomainScalarFieldEnum[]
@@ -28441,31 +29176,31 @@ export namespace Prisma {
     where?: CapabilityDomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CapabilityDomains to fetch.
      */
     orderBy?: CapabilityDomainOrderByWithRelationInput | CapabilityDomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for CapabilityDomains.
      */
     cursor?: CapabilityDomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CapabilityDomains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CapabilityDomains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CapabilityDomains.
      */
     distinct?: CapabilityDomainScalarFieldEnum | CapabilityDomainScalarFieldEnum[]
@@ -28493,31 +29228,31 @@ export namespace Prisma {
     where?: CapabilityDomainWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of CapabilityDomains to fetch.
      */
     orderBy?: CapabilityDomainOrderByWithRelationInput | CapabilityDomainOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing CapabilityDomains.
      */
     cursor?: CapabilityDomainWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` CapabilityDomains from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` CapabilityDomains.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of CapabilityDomains.
      */
     distinct?: CapabilityDomainScalarFieldEnum | CapabilityDomainScalarFieldEnum[]
@@ -28837,43 +29572,43 @@ export namespace Prisma {
     where?: RoleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleDomainLinks to fetch.
      */
     orderBy?: RoleDomainLinkOrderByWithRelationInput | RoleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RoleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RoleDomainLinks
     **/
     _count?: true | RoleDomainLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RoleDomainLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RoleDomainLinkMaxAggregateInputType
@@ -29036,13 +29771,13 @@ export namespace Prisma {
      * @example
      * // Get all RoleDomainLinks
      * const roleDomainLinks = await prisma.roleDomainLink.findMany()
-     * 
+     *
      * // Get first 10 RoleDomainLinks
      * const roleDomainLinks = await prisma.roleDomainLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const roleDomainLinkWithIdOnly = await prisma.roleDomainLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RoleDomainLinkFindManyArgs>(args?: SelectSubset<T, RoleDomainLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoleDomainLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -29056,7 +29791,7 @@ export namespace Prisma {
      *     // ... data to create a RoleDomainLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends RoleDomainLinkCreateArgs>(args: SelectSubset<T, RoleDomainLinkCreateArgs<ExtArgs>>): Prisma__RoleDomainLinkClient<$Result.GetResult<Prisma.$RoleDomainLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -29070,7 +29805,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RoleDomainLinkCreateManyArgs>(args?: SelectSubset<T, RoleDomainLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -29084,7 +29819,7 @@ export namespace Prisma {
      *     // ... filter to delete one RoleDomainLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RoleDomainLinkDeleteArgs>(args: SelectSubset<T, RoleDomainLinkDeleteArgs<ExtArgs>>): Prisma__RoleDomainLinkClient<$Result.GetResult<Prisma.$RoleDomainLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -29101,7 +29836,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RoleDomainLinkUpdateArgs>(args: SelectSubset<T, RoleDomainLinkUpdateArgs<ExtArgs>>): Prisma__RoleDomainLinkClient<$Result.GetResult<Prisma.$RoleDomainLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -29115,7 +29850,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RoleDomainLinkDeleteManyArgs>(args?: SelectSubset<T, RoleDomainLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -29134,7 +29869,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RoleDomainLinkUpdateManyArgs>(args: SelectSubset<T, RoleDomainLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -29223,7 +29958,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RoleDomainLinkGroupByArgs,
@@ -29332,7 +30067,7 @@ export namespace Prisma {
     readonly roleId: FieldRef<"RoleDomainLink", 'String'>
     readonly domainId: FieldRef<"RoleDomainLink", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -29401,31 +30136,31 @@ export namespace Prisma {
     where?: RoleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleDomainLinks to fetch.
      */
     orderBy?: RoleDomainLinkOrderByWithRelationInput | RoleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleDomainLinks.
      */
     cursor?: RoleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleDomainLinks.
      */
     distinct?: RoleDomainLinkScalarFieldEnum | RoleDomainLinkScalarFieldEnum[]
@@ -29453,31 +30188,31 @@ export namespace Prisma {
     where?: RoleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleDomainLinks to fetch.
      */
     orderBy?: RoleDomainLinkOrderByWithRelationInput | RoleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RoleDomainLinks.
      */
     cursor?: RoleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleDomainLinks.
      */
     distinct?: RoleDomainLinkScalarFieldEnum | RoleDomainLinkScalarFieldEnum[]
@@ -29505,31 +30240,31 @@ export namespace Prisma {
     where?: RoleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RoleDomainLinks to fetch.
      */
     orderBy?: RoleDomainLinkOrderByWithRelationInput | RoleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RoleDomainLinks.
      */
     cursor?: RoleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RoleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RoleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RoleDomainLinks.
      */
     distinct?: RoleDomainLinkScalarFieldEnum | RoleDomainLinkScalarFieldEnum[]
@@ -29753,43 +30488,43 @@ export namespace Prisma {
     where?: SkillDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SkillDomainLinks to fetch.
      */
     orderBy?: SkillDomainLinkOrderByWithRelationInput | SkillDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SkillDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SkillDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SkillDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned SkillDomainLinks
     **/
     _count?: true | SkillDomainLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SkillDomainLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SkillDomainLinkMaxAggregateInputType
@@ -29952,13 +30687,13 @@ export namespace Prisma {
      * @example
      * // Get all SkillDomainLinks
      * const skillDomainLinks = await prisma.skillDomainLink.findMany()
-     * 
+     *
      * // Get first 10 SkillDomainLinks
      * const skillDomainLinks = await prisma.skillDomainLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const skillDomainLinkWithIdOnly = await prisma.skillDomainLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SkillDomainLinkFindManyArgs>(args?: SelectSubset<T, SkillDomainLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SkillDomainLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -29972,7 +30707,7 @@ export namespace Prisma {
      *     // ... data to create a SkillDomainLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends SkillDomainLinkCreateArgs>(args: SelectSubset<T, SkillDomainLinkCreateArgs<ExtArgs>>): Prisma__SkillDomainLinkClient<$Result.GetResult<Prisma.$SkillDomainLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -29986,7 +30721,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SkillDomainLinkCreateManyArgs>(args?: SelectSubset<T, SkillDomainLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -30000,7 +30735,7 @@ export namespace Prisma {
      *     // ... filter to delete one SkillDomainLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SkillDomainLinkDeleteArgs>(args: SelectSubset<T, SkillDomainLinkDeleteArgs<ExtArgs>>): Prisma__SkillDomainLinkClient<$Result.GetResult<Prisma.$SkillDomainLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -30017,7 +30752,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SkillDomainLinkUpdateArgs>(args: SelectSubset<T, SkillDomainLinkUpdateArgs<ExtArgs>>): Prisma__SkillDomainLinkClient<$Result.GetResult<Prisma.$SkillDomainLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -30031,7 +30766,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SkillDomainLinkDeleteManyArgs>(args?: SelectSubset<T, SkillDomainLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -30050,7 +30785,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SkillDomainLinkUpdateManyArgs>(args: SelectSubset<T, SkillDomainLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -30139,7 +30874,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SkillDomainLinkGroupByArgs,
@@ -30248,7 +30983,7 @@ export namespace Prisma {
     readonly skillId: FieldRef<"SkillDomainLink", 'String'>
     readonly domainId: FieldRef<"SkillDomainLink", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -30317,31 +31052,31 @@ export namespace Prisma {
     where?: SkillDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SkillDomainLinks to fetch.
      */
     orderBy?: SkillDomainLinkOrderByWithRelationInput | SkillDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SkillDomainLinks.
      */
     cursor?: SkillDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SkillDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SkillDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SkillDomainLinks.
      */
     distinct?: SkillDomainLinkScalarFieldEnum | SkillDomainLinkScalarFieldEnum[]
@@ -30369,31 +31104,31 @@ export namespace Prisma {
     where?: SkillDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SkillDomainLinks to fetch.
      */
     orderBy?: SkillDomainLinkOrderByWithRelationInput | SkillDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SkillDomainLinks.
      */
     cursor?: SkillDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SkillDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SkillDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SkillDomainLinks.
      */
     distinct?: SkillDomainLinkScalarFieldEnum | SkillDomainLinkScalarFieldEnum[]
@@ -30421,31 +31156,31 @@ export namespace Prisma {
     where?: SkillDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SkillDomainLinks to fetch.
      */
     orderBy?: SkillDomainLinkOrderByWithRelationInput | SkillDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing SkillDomainLinks.
      */
     cursor?: SkillDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SkillDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SkillDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SkillDomainLinks.
      */
     distinct?: SkillDomainLinkScalarFieldEnum | SkillDomainLinkScalarFieldEnum[]
@@ -30669,43 +31404,43 @@ export namespace Prisma {
     where?: RuleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleDomainLinks to fetch.
      */
     orderBy?: RuleDomainLinkOrderByWithRelationInput | RuleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: RuleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned RuleDomainLinks
     **/
     _count?: true | RuleDomainLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: RuleDomainLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: RuleDomainLinkMaxAggregateInputType
@@ -30868,13 +31603,13 @@ export namespace Prisma {
      * @example
      * // Get all RuleDomainLinks
      * const ruleDomainLinks = await prisma.ruleDomainLink.findMany()
-     * 
+     *
      * // Get first 10 RuleDomainLinks
      * const ruleDomainLinks = await prisma.ruleDomainLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const ruleDomainLinkWithIdOnly = await prisma.ruleDomainLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends RuleDomainLinkFindManyArgs>(args?: SelectSubset<T, RuleDomainLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RuleDomainLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -30888,7 +31623,7 @@ export namespace Prisma {
      *     // ... data to create a RuleDomainLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends RuleDomainLinkCreateArgs>(args: SelectSubset<T, RuleDomainLinkCreateArgs<ExtArgs>>): Prisma__RuleDomainLinkClient<$Result.GetResult<Prisma.$RuleDomainLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -30902,7 +31637,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends RuleDomainLinkCreateManyArgs>(args?: SelectSubset<T, RuleDomainLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -30916,7 +31651,7 @@ export namespace Prisma {
      *     // ... filter to delete one RuleDomainLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends RuleDomainLinkDeleteArgs>(args: SelectSubset<T, RuleDomainLinkDeleteArgs<ExtArgs>>): Prisma__RuleDomainLinkClient<$Result.GetResult<Prisma.$RuleDomainLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -30933,7 +31668,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends RuleDomainLinkUpdateArgs>(args: SelectSubset<T, RuleDomainLinkUpdateArgs<ExtArgs>>): Prisma__RuleDomainLinkClient<$Result.GetResult<Prisma.$RuleDomainLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -30947,7 +31682,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends RuleDomainLinkDeleteManyArgs>(args?: SelectSubset<T, RuleDomainLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -30966,7 +31701,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends RuleDomainLinkUpdateManyArgs>(args: SelectSubset<T, RuleDomainLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -31055,7 +31790,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends RuleDomainLinkGroupByArgs,
@@ -31164,7 +31899,7 @@ export namespace Prisma {
     readonly ruleId: FieldRef<"RuleDomainLink", 'String'>
     readonly domainId: FieldRef<"RuleDomainLink", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -31233,31 +31968,31 @@ export namespace Prisma {
     where?: RuleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleDomainLinks to fetch.
      */
     orderBy?: RuleDomainLinkOrderByWithRelationInput | RuleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RuleDomainLinks.
      */
     cursor?: RuleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleDomainLinks.
      */
     distinct?: RuleDomainLinkScalarFieldEnum | RuleDomainLinkScalarFieldEnum[]
@@ -31285,31 +32020,31 @@ export namespace Prisma {
     where?: RuleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleDomainLinks to fetch.
      */
     orderBy?: RuleDomainLinkOrderByWithRelationInput | RuleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for RuleDomainLinks.
      */
     cursor?: RuleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleDomainLinks.
      */
     distinct?: RuleDomainLinkScalarFieldEnum | RuleDomainLinkScalarFieldEnum[]
@@ -31337,31 +32072,31 @@ export namespace Prisma {
     where?: RuleDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of RuleDomainLinks to fetch.
      */
     orderBy?: RuleDomainLinkOrderByWithRelationInput | RuleDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing RuleDomainLinks.
      */
     cursor?: RuleDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` RuleDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` RuleDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of RuleDomainLinks.
      */
     distinct?: RuleDomainLinkScalarFieldEnum | RuleDomainLinkScalarFieldEnum[]
@@ -31585,43 +32320,43 @@ export namespace Prisma {
     where?: ScenarioDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioDomainLinks to fetch.
      */
     orderBy?: ScenarioDomainLinkOrderByWithRelationInput | ScenarioDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ScenarioDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned ScenarioDomainLinks
     **/
     _count?: true | ScenarioDomainLinkCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ScenarioDomainLinkMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ScenarioDomainLinkMaxAggregateInputType
@@ -31784,13 +32519,13 @@ export namespace Prisma {
      * @example
      * // Get all ScenarioDomainLinks
      * const scenarioDomainLinks = await prisma.scenarioDomainLink.findMany()
-     * 
+     *
      * // Get first 10 ScenarioDomainLinks
      * const scenarioDomainLinks = await prisma.scenarioDomainLink.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const scenarioDomainLinkWithIdOnly = await prisma.scenarioDomainLink.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ScenarioDomainLinkFindManyArgs>(args?: SelectSubset<T, ScenarioDomainLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ScenarioDomainLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -31804,7 +32539,7 @@ export namespace Prisma {
      *     // ... data to create a ScenarioDomainLink
      *   }
      * })
-     * 
+     *
      */
     create<T extends ScenarioDomainLinkCreateArgs>(args: SelectSubset<T, ScenarioDomainLinkCreateArgs<ExtArgs>>): Prisma__ScenarioDomainLinkClient<$Result.GetResult<Prisma.$ScenarioDomainLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -31818,7 +32553,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ScenarioDomainLinkCreateManyArgs>(args?: SelectSubset<T, ScenarioDomainLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -31832,7 +32567,7 @@ export namespace Prisma {
      *     // ... filter to delete one ScenarioDomainLink
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ScenarioDomainLinkDeleteArgs>(args: SelectSubset<T, ScenarioDomainLinkDeleteArgs<ExtArgs>>): Prisma__ScenarioDomainLinkClient<$Result.GetResult<Prisma.$ScenarioDomainLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -31849,7 +32584,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ScenarioDomainLinkUpdateArgs>(args: SelectSubset<T, ScenarioDomainLinkUpdateArgs<ExtArgs>>): Prisma__ScenarioDomainLinkClient<$Result.GetResult<Prisma.$ScenarioDomainLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -31863,7 +32598,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ScenarioDomainLinkDeleteManyArgs>(args?: SelectSubset<T, ScenarioDomainLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -31882,7 +32617,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ScenarioDomainLinkUpdateManyArgs>(args: SelectSubset<T, ScenarioDomainLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -31971,7 +32706,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ScenarioDomainLinkGroupByArgs,
@@ -32080,7 +32815,7 @@ export namespace Prisma {
     readonly scenarioPackageId: FieldRef<"ScenarioDomainLink", 'String'>
     readonly domainId: FieldRef<"ScenarioDomainLink", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -32149,31 +32884,31 @@ export namespace Prisma {
     where?: ScenarioDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioDomainLinks to fetch.
      */
     orderBy?: ScenarioDomainLinkOrderByWithRelationInput | ScenarioDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioDomainLinks.
      */
     cursor?: ScenarioDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioDomainLinks.
      */
     distinct?: ScenarioDomainLinkScalarFieldEnum | ScenarioDomainLinkScalarFieldEnum[]
@@ -32201,31 +32936,31 @@ export namespace Prisma {
     where?: ScenarioDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioDomainLinks to fetch.
      */
     orderBy?: ScenarioDomainLinkOrderByWithRelationInput | ScenarioDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for ScenarioDomainLinks.
      */
     cursor?: ScenarioDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioDomainLinks.
      */
     distinct?: ScenarioDomainLinkScalarFieldEnum | ScenarioDomainLinkScalarFieldEnum[]
@@ -32253,31 +32988,31 @@ export namespace Prisma {
     where?: ScenarioDomainLinkWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of ScenarioDomainLinks to fetch.
      */
     orderBy?: ScenarioDomainLinkOrderByWithRelationInput | ScenarioDomainLinkOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing ScenarioDomainLinks.
      */
     cursor?: ScenarioDomainLinkWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` ScenarioDomainLinks from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` ScenarioDomainLinks.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of ScenarioDomainLinks.
      */
     distinct?: ScenarioDomainLinkScalarFieldEnum | ScenarioDomainLinkScalarFieldEnum[]
@@ -32442,6 +33177,7965 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ScenarioDomainLinkInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubAsset
+   */
+
+  export type AggregateHubAsset = {
+    _count: HubAssetCountAggregateOutputType | null
+    _min: HubAssetMinAggregateOutputType | null
+    _max: HubAssetMaxAggregateOutputType | null
+  }
+
+  export type HubAssetMinAggregateOutputType = {
+    id: string | null
+    assetId: string | null
+    kind: string | null
+    name: string | null
+    displayName: string | null
+    description: string | null
+    ownerId: string | null
+    teamId: string | null
+    status: string | null
+    riskLevel: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HubAssetMaxAggregateOutputType = {
+    id: string | null
+    assetId: string | null
+    kind: string | null
+    name: string | null
+    displayName: string | null
+    description: string | null
+    ownerId: string | null
+    teamId: string | null
+    status: string | null
+    riskLevel: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HubAssetCountAggregateOutputType = {
+    id: number
+    assetId: number
+    kind: number
+    name: number
+    displayName: number
+    description: number
+    ownerId: number
+    teamId: number
+    status: number
+    riskLevel: number
+    tags: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type HubAssetMinAggregateInputType = {
+    id?: true
+    assetId?: true
+    kind?: true
+    name?: true
+    displayName?: true
+    description?: true
+    ownerId?: true
+    teamId?: true
+    status?: true
+    riskLevel?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HubAssetMaxAggregateInputType = {
+    id?: true
+    assetId?: true
+    kind?: true
+    name?: true
+    displayName?: true
+    description?: true
+    ownerId?: true
+    teamId?: true
+    status?: true
+    riskLevel?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HubAssetCountAggregateInputType = {
+    id?: true
+    assetId?: true
+    kind?: true
+    name?: true
+    displayName?: true
+    description?: true
+    ownerId?: true
+    teamId?: true
+    status?: true
+    riskLevel?: true
+    tags?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type HubAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAsset to aggregate.
+     */
+    where?: HubAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssets to fetch.
+     */
+    orderBy?: HubAssetOrderByWithRelationInput | HubAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubAssets
+    **/
+    _count?: true | HubAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubAssetMaxAggregateInputType
+  }
+
+  export type GetHubAssetAggregateType<T extends HubAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubAsset[P]>
+      : GetScalarType<T[P], AggregateHubAsset[P]>
+  }
+
+
+
+
+  export type HubAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubAssetWhereInput
+    orderBy?: HubAssetOrderByWithAggregationInput | HubAssetOrderByWithAggregationInput[]
+    by: HubAssetScalarFieldEnum[] | HubAssetScalarFieldEnum
+    having?: HubAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubAssetCountAggregateInputType | true
+    _min?: HubAssetMinAggregateInputType
+    _max?: HubAssetMaxAggregateInputType
+  }
+
+  export type HubAssetGroupByOutputType = {
+    id: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description: string | null
+    ownerId: string | null
+    teamId: string | null
+    status: string
+    riskLevel: string
+    tags: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: HubAssetCountAggregateOutputType | null
+    _min: HubAssetMinAggregateOutputType | null
+    _max: HubAssetMaxAggregateOutputType | null
+  }
+
+  type GetHubAssetGroupByPayload<T extends HubAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], HubAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    assetId?: boolean
+    kind?: boolean
+    name?: boolean
+    displayName?: boolean
+    description?: boolean
+    ownerId?: boolean
+    teamId?: boolean
+    status?: boolean
+    riskLevel?: boolean
+    tags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    versions?: boolean | HubAsset$versionsArgs<ExtArgs>
+    _count?: boolean | HubAssetCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hubAsset"]>
+
+
+
+  export type HubAssetSelectScalar = {
+    id?: boolean
+    assetId?: boolean
+    kind?: boolean
+    name?: boolean
+    displayName?: boolean
+    description?: boolean
+    ownerId?: boolean
+    teamId?: boolean
+    status?: boolean
+    riskLevel?: boolean
+    tags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type HubAssetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assetId" | "kind" | "name" | "displayName" | "description" | "ownerId" | "teamId" | "status" | "riskLevel" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["hubAsset"]>
+  export type HubAssetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | HubAsset$versionsArgs<ExtArgs>
+    _count?: boolean | HubAssetCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $HubAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubAsset"
+    objects: {
+      versions: Prisma.$HubAssetVersionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      assetId: string
+      kind: string
+      name: string
+      displayName: string
+      description: string | null
+      ownerId: string | null
+      teamId: string | null
+      status: string
+      riskLevel: string
+      tags: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["hubAsset"]>
+    composites: {}
+  }
+
+  type HubAssetGetPayload<S extends boolean | null | undefined | HubAssetDefaultArgs> = $Result.GetResult<Prisma.$HubAssetPayload, S>
+
+  type HubAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubAssetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubAssetCountAggregateInputType | true
+    }
+
+  export interface HubAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubAsset'], meta: { name: 'HubAsset' } }
+    /**
+     * Find zero or one HubAsset that matches the filter.
+     * @param {HubAssetFindUniqueArgs} args - Arguments to find a HubAsset
+     * @example
+     * // Get one HubAsset
+     * const hubAsset = await prisma.hubAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubAssetFindUniqueArgs>(args: SelectSubset<T, HubAssetFindUniqueArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubAsset that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubAssetFindUniqueOrThrowArgs} args - Arguments to find a HubAsset
+     * @example
+     * // Get one HubAsset
+     * const hubAsset = await prisma.hubAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, HubAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetFindFirstArgs} args - Arguments to find a HubAsset
+     * @example
+     * // Get one HubAsset
+     * const hubAsset = await prisma.hubAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubAssetFindFirstArgs>(args?: SelectSubset<T, HubAssetFindFirstArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetFindFirstOrThrowArgs} args - Arguments to find a HubAsset
+     * @example
+     * // Get one HubAsset
+     * const hubAsset = await prisma.hubAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, HubAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubAssets
+     * const hubAssets = await prisma.hubAsset.findMany()
+     *
+     * // Get first 10 HubAssets
+     * const hubAssets = await prisma.hubAsset.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubAssetWithIdOnly = await prisma.hubAsset.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubAssetFindManyArgs>(args?: SelectSubset<T, HubAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubAsset.
+     * @param {HubAssetCreateArgs} args - Arguments to create a HubAsset.
+     * @example
+     * // Create one HubAsset
+     * const HubAsset = await prisma.hubAsset.create({
+     *   data: {
+     *     // ... data to create a HubAsset
+     *   }
+     * })
+     *
+     */
+    create<T extends HubAssetCreateArgs>(args: SelectSubset<T, HubAssetCreateArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubAssets.
+     * @param {HubAssetCreateManyArgs} args - Arguments to create many HubAssets.
+     * @example
+     * // Create many HubAssets
+     * const hubAsset = await prisma.hubAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubAssetCreateManyArgs>(args?: SelectSubset<T, HubAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubAsset.
+     * @param {HubAssetDeleteArgs} args - Arguments to delete one HubAsset.
+     * @example
+     * // Delete one HubAsset
+     * const HubAsset = await prisma.hubAsset.delete({
+     *   where: {
+     *     // ... filter to delete one HubAsset
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubAssetDeleteArgs>(args: SelectSubset<T, HubAssetDeleteArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubAsset.
+     * @param {HubAssetUpdateArgs} args - Arguments to update one HubAsset.
+     * @example
+     * // Update one HubAsset
+     * const hubAsset = await prisma.hubAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubAssetUpdateArgs>(args: SelectSubset<T, HubAssetUpdateArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubAssets.
+     * @param {HubAssetDeleteManyArgs} args - Arguments to filter HubAssets to delete.
+     * @example
+     * // Delete a few HubAssets
+     * const { count } = await prisma.hubAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubAssetDeleteManyArgs>(args?: SelectSubset<T, HubAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubAssets
+     * const hubAsset = await prisma.hubAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubAssetUpdateManyArgs>(args: SelectSubset<T, HubAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubAsset.
+     * @param {HubAssetUpsertArgs} args - Arguments to update or create a HubAsset.
+     * @example
+     * // Update or create a HubAsset
+     * const hubAsset = await prisma.hubAsset.upsert({
+     *   create: {
+     *     // ... data to create a HubAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubAssetUpsertArgs>(args: SelectSubset<T, HubAssetUpsertArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetCountArgs} args - Arguments to filter HubAssets to count.
+     * @example
+     * // Count the number of HubAssets
+     * const count = await prisma.hubAsset.count({
+     *   where: {
+     *     // ... the filter for the HubAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubAssetCountArgs>(
+      args?: Subset<T, HubAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubAssetAggregateArgs>(args: Subset<T, HubAssetAggregateArgs>): Prisma.PrismaPromise<GetHubAssetAggregateType<T>>
+
+    /**
+     * Group by HubAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubAssetGroupByArgs['orderBy'] }
+        : { orderBy?: HubAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubAsset model
+   */
+  readonly fields: HubAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    versions<T extends HubAsset$versionsArgs<ExtArgs> = {}>(args?: Subset<T, HubAsset$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubAsset model
+   */
+  interface HubAssetFieldRefs {
+    readonly id: FieldRef<"HubAsset", 'String'>
+    readonly assetId: FieldRef<"HubAsset", 'String'>
+    readonly kind: FieldRef<"HubAsset", 'String'>
+    readonly name: FieldRef<"HubAsset", 'String'>
+    readonly displayName: FieldRef<"HubAsset", 'String'>
+    readonly description: FieldRef<"HubAsset", 'String'>
+    readonly ownerId: FieldRef<"HubAsset", 'String'>
+    readonly teamId: FieldRef<"HubAsset", 'String'>
+    readonly status: FieldRef<"HubAsset", 'String'>
+    readonly riskLevel: FieldRef<"HubAsset", 'String'>
+    readonly tags: FieldRef<"HubAsset", 'Json'>
+    readonly createdAt: FieldRef<"HubAsset", 'DateTime'>
+    readonly updatedAt: FieldRef<"HubAsset", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubAsset findUnique
+   */
+  export type HubAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAsset to fetch.
+     */
+    where: HubAssetWhereUniqueInput
+  }
+
+  /**
+   * HubAsset findUniqueOrThrow
+   */
+  export type HubAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAsset to fetch.
+     */
+    where: HubAssetWhereUniqueInput
+  }
+
+  /**
+   * HubAsset findFirst
+   */
+  export type HubAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAsset to fetch.
+     */
+    where?: HubAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssets to fetch.
+     */
+    orderBy?: HubAssetOrderByWithRelationInput | HubAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssets.
+     */
+    cursor?: HubAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssets.
+     */
+    distinct?: HubAssetScalarFieldEnum | HubAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubAsset findFirstOrThrow
+   */
+  export type HubAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAsset to fetch.
+     */
+    where?: HubAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssets to fetch.
+     */
+    orderBy?: HubAssetOrderByWithRelationInput | HubAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssets.
+     */
+    cursor?: HubAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssets.
+     */
+    distinct?: HubAssetScalarFieldEnum | HubAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubAsset findMany
+   */
+  export type HubAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssets to fetch.
+     */
+    where?: HubAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssets to fetch.
+     */
+    orderBy?: HubAssetOrderByWithRelationInput | HubAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubAssets.
+     */
+    cursor?: HubAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssets.
+     */
+    distinct?: HubAssetScalarFieldEnum | HubAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubAsset create
+   */
+  export type HubAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HubAsset.
+     */
+    data: XOR<HubAssetCreateInput, HubAssetUncheckedCreateInput>
+  }
+
+  /**
+   * HubAsset createMany
+   */
+  export type HubAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubAssets.
+     */
+    data: HubAssetCreateManyInput | HubAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubAsset update
+   */
+  export type HubAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HubAsset.
+     */
+    data: XOR<HubAssetUpdateInput, HubAssetUncheckedUpdateInput>
+    /**
+     * Choose, which HubAsset to update.
+     */
+    where: HubAssetWhereUniqueInput
+  }
+
+  /**
+   * HubAsset updateMany
+   */
+  export type HubAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubAssets.
+     */
+    data: XOR<HubAssetUpdateManyMutationInput, HubAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which HubAssets to update
+     */
+    where?: HubAssetWhereInput
+    /**
+     * Limit how many HubAssets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAsset upsert
+   */
+  export type HubAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HubAsset to update in case it exists.
+     */
+    where: HubAssetWhereUniqueInput
+    /**
+     * In case the HubAsset found by the `where` argument doesn't exist, create a new HubAsset with this data.
+     */
+    create: XOR<HubAssetCreateInput, HubAssetUncheckedCreateInput>
+    /**
+     * In case the HubAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubAssetUpdateInput, HubAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * HubAsset delete
+   */
+  export type HubAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+    /**
+     * Filter which HubAsset to delete.
+     */
+    where: HubAssetWhereUniqueInput
+  }
+
+  /**
+   * HubAsset deleteMany
+   */
+  export type HubAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAssets to delete
+     */
+    where?: HubAssetWhereInput
+    /**
+     * Limit how many HubAssets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAsset.versions
+   */
+  export type HubAsset$versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    where?: HubAssetVersionWhereInput
+    orderBy?: HubAssetVersionOrderByWithRelationInput | HubAssetVersionOrderByWithRelationInput[]
+    cursor?: HubAssetVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HubAssetVersionScalarFieldEnum | HubAssetVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubAsset without action
+   */
+  export type HubAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAsset
+     */
+    select?: HubAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAsset
+     */
+    omit?: HubAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubAssetVersion
+   */
+
+  export type AggregateHubAssetVersion = {
+    _count: HubAssetVersionCountAggregateOutputType | null
+    _min: HubAssetVersionMinAggregateOutputType | null
+    _max: HubAssetVersionMaxAggregateOutputType | null
+  }
+
+  export type HubAssetVersionMinAggregateOutputType = {
+    id: string | null
+    assetId: string | null
+    version: string | null
+    content: string | null
+    contentFormat: string | null
+    checksum: string | null
+    changelog: string | null
+    status: string | null
+    contentUrl: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    publishedAt: Date | null
+  }
+
+  export type HubAssetVersionMaxAggregateOutputType = {
+    id: string | null
+    assetId: string | null
+    version: string | null
+    content: string | null
+    contentFormat: string | null
+    checksum: string | null
+    changelog: string | null
+    status: string | null
+    contentUrl: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    publishedAt: Date | null
+  }
+
+  export type HubAssetVersionCountAggregateOutputType = {
+    id: number
+    assetId: number
+    version: number
+    content: number
+    contentFormat: number
+    checksum: number
+    changelog: number
+    status: number
+    contentUrl: number
+    createdBy: number
+    createdAt: number
+    publishedAt: number
+    _all: number
+  }
+
+
+  export type HubAssetVersionMinAggregateInputType = {
+    id?: true
+    assetId?: true
+    version?: true
+    content?: true
+    contentFormat?: true
+    checksum?: true
+    changelog?: true
+    status?: true
+    contentUrl?: true
+    createdBy?: true
+    createdAt?: true
+    publishedAt?: true
+  }
+
+  export type HubAssetVersionMaxAggregateInputType = {
+    id?: true
+    assetId?: true
+    version?: true
+    content?: true
+    contentFormat?: true
+    checksum?: true
+    changelog?: true
+    status?: true
+    contentUrl?: true
+    createdBy?: true
+    createdAt?: true
+    publishedAt?: true
+  }
+
+  export type HubAssetVersionCountAggregateInputType = {
+    id?: true
+    assetId?: true
+    version?: true
+    content?: true
+    contentFormat?: true
+    checksum?: true
+    changelog?: true
+    status?: true
+    contentUrl?: true
+    createdBy?: true
+    createdAt?: true
+    publishedAt?: true
+    _all?: true
+  }
+
+  export type HubAssetVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAssetVersion to aggregate.
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetVersions to fetch.
+     */
+    orderBy?: HubAssetVersionOrderByWithRelationInput | HubAssetVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubAssetVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubAssetVersions
+    **/
+    _count?: true | HubAssetVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubAssetVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubAssetVersionMaxAggregateInputType
+  }
+
+  export type GetHubAssetVersionAggregateType<T extends HubAssetVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubAssetVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubAssetVersion[P]>
+      : GetScalarType<T[P], AggregateHubAssetVersion[P]>
+  }
+
+
+
+
+  export type HubAssetVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubAssetVersionWhereInput
+    orderBy?: HubAssetVersionOrderByWithAggregationInput | HubAssetVersionOrderByWithAggregationInput[]
+    by: HubAssetVersionScalarFieldEnum[] | HubAssetVersionScalarFieldEnum
+    having?: HubAssetVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubAssetVersionCountAggregateInputType | true
+    _min?: HubAssetVersionMinAggregateInputType
+    _max?: HubAssetVersionMaxAggregateInputType
+  }
+
+  export type HubAssetVersionGroupByOutputType = {
+    id: string
+    assetId: string
+    version: string
+    content: string | null
+    contentFormat: string
+    checksum: string
+    changelog: string | null
+    status: string
+    contentUrl: string | null
+    createdBy: string | null
+    createdAt: Date
+    publishedAt: Date | null
+    _count: HubAssetVersionCountAggregateOutputType | null
+    _min: HubAssetVersionMinAggregateOutputType | null
+    _max: HubAssetVersionMaxAggregateOutputType | null
+  }
+
+  type GetHubAssetVersionGroupByPayload<T extends HubAssetVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubAssetVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubAssetVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubAssetVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], HubAssetVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubAssetVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    assetId?: boolean
+    version?: boolean
+    content?: boolean
+    contentFormat?: boolean
+    checksum?: boolean
+    changelog?: boolean
+    status?: boolean
+    contentUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    publishedAt?: boolean
+    asset?: boolean | HubAssetDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hubAssetVersion"]>
+
+
+
+  export type HubAssetVersionSelectScalar = {
+    id?: boolean
+    assetId?: boolean
+    version?: boolean
+    content?: boolean
+    contentFormat?: boolean
+    checksum?: boolean
+    changelog?: boolean
+    status?: boolean
+    contentUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    publishedAt?: boolean
+  }
+
+  export type HubAssetVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "assetId" | "version" | "content" | "contentFormat" | "checksum" | "changelog" | "status" | "contentUrl" | "createdBy" | "createdAt" | "publishedAt", ExtArgs["result"]["hubAssetVersion"]>
+  export type HubAssetVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    asset?: boolean | HubAssetDefaultArgs<ExtArgs>
+  }
+
+  export type $HubAssetVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubAssetVersion"
+    objects: {
+      asset: Prisma.$HubAssetPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      assetId: string
+      version: string
+      content: string | null
+      contentFormat: string
+      checksum: string
+      changelog: string | null
+      status: string
+      contentUrl: string | null
+      createdBy: string | null
+      createdAt: Date
+      publishedAt: Date | null
+    }, ExtArgs["result"]["hubAssetVersion"]>
+    composites: {}
+  }
+
+  type HubAssetVersionGetPayload<S extends boolean | null | undefined | HubAssetVersionDefaultArgs> = $Result.GetResult<Prisma.$HubAssetVersionPayload, S>
+
+  type HubAssetVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubAssetVersionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubAssetVersionCountAggregateInputType | true
+    }
+
+  export interface HubAssetVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubAssetVersion'], meta: { name: 'HubAssetVersion' } }
+    /**
+     * Find zero or one HubAssetVersion that matches the filter.
+     * @param {HubAssetVersionFindUniqueArgs} args - Arguments to find a HubAssetVersion
+     * @example
+     * // Get one HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubAssetVersionFindUniqueArgs>(args: SelectSubset<T, HubAssetVersionFindUniqueArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubAssetVersion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubAssetVersionFindUniqueOrThrowArgs} args - Arguments to find a HubAssetVersion
+     * @example
+     * // Get one HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubAssetVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, HubAssetVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAssetVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionFindFirstArgs} args - Arguments to find a HubAssetVersion
+     * @example
+     * // Get one HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubAssetVersionFindFirstArgs>(args?: SelectSubset<T, HubAssetVersionFindFirstArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAssetVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionFindFirstOrThrowArgs} args - Arguments to find a HubAssetVersion
+     * @example
+     * // Get one HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubAssetVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, HubAssetVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubAssetVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubAssetVersions
+     * const hubAssetVersions = await prisma.hubAssetVersion.findMany()
+     *
+     * // Get first 10 HubAssetVersions
+     * const hubAssetVersions = await prisma.hubAssetVersion.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubAssetVersionWithIdOnly = await prisma.hubAssetVersion.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubAssetVersionFindManyArgs>(args?: SelectSubset<T, HubAssetVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubAssetVersion.
+     * @param {HubAssetVersionCreateArgs} args - Arguments to create a HubAssetVersion.
+     * @example
+     * // Create one HubAssetVersion
+     * const HubAssetVersion = await prisma.hubAssetVersion.create({
+     *   data: {
+     *     // ... data to create a HubAssetVersion
+     *   }
+     * })
+     *
+     */
+    create<T extends HubAssetVersionCreateArgs>(args: SelectSubset<T, HubAssetVersionCreateArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubAssetVersions.
+     * @param {HubAssetVersionCreateManyArgs} args - Arguments to create many HubAssetVersions.
+     * @example
+     * // Create many HubAssetVersions
+     * const hubAssetVersion = await prisma.hubAssetVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubAssetVersionCreateManyArgs>(args?: SelectSubset<T, HubAssetVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubAssetVersion.
+     * @param {HubAssetVersionDeleteArgs} args - Arguments to delete one HubAssetVersion.
+     * @example
+     * // Delete one HubAssetVersion
+     * const HubAssetVersion = await prisma.hubAssetVersion.delete({
+     *   where: {
+     *     // ... filter to delete one HubAssetVersion
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubAssetVersionDeleteArgs>(args: SelectSubset<T, HubAssetVersionDeleteArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubAssetVersion.
+     * @param {HubAssetVersionUpdateArgs} args - Arguments to update one HubAssetVersion.
+     * @example
+     * // Update one HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubAssetVersionUpdateArgs>(args: SelectSubset<T, HubAssetVersionUpdateArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubAssetVersions.
+     * @param {HubAssetVersionDeleteManyArgs} args - Arguments to filter HubAssetVersions to delete.
+     * @example
+     * // Delete a few HubAssetVersions
+     * const { count } = await prisma.hubAssetVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubAssetVersionDeleteManyArgs>(args?: SelectSubset<T, HubAssetVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubAssetVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubAssetVersions
+     * const hubAssetVersion = await prisma.hubAssetVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubAssetVersionUpdateManyArgs>(args: SelectSubset<T, HubAssetVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubAssetVersion.
+     * @param {HubAssetVersionUpsertArgs} args - Arguments to update or create a HubAssetVersion.
+     * @example
+     * // Update or create a HubAssetVersion
+     * const hubAssetVersion = await prisma.hubAssetVersion.upsert({
+     *   create: {
+     *     // ... data to create a HubAssetVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubAssetVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubAssetVersionUpsertArgs>(args: SelectSubset<T, HubAssetVersionUpsertArgs<ExtArgs>>): Prisma__HubAssetVersionClient<$Result.GetResult<Prisma.$HubAssetVersionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubAssetVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionCountArgs} args - Arguments to filter HubAssetVersions to count.
+     * @example
+     * // Count the number of HubAssetVersions
+     * const count = await prisma.hubAssetVersion.count({
+     *   where: {
+     *     // ... the filter for the HubAssetVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubAssetVersionCountArgs>(
+      args?: Subset<T, HubAssetVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubAssetVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubAssetVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubAssetVersionAggregateArgs>(args: Subset<T, HubAssetVersionAggregateArgs>): Prisma.PrismaPromise<GetHubAssetVersionAggregateType<T>>
+
+    /**
+     * Group by HubAssetVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubAssetVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubAssetVersionGroupByArgs['orderBy'] }
+        : { orderBy?: HubAssetVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubAssetVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubAssetVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubAssetVersion model
+   */
+  readonly fields: HubAssetVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubAssetVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubAssetVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    asset<T extends HubAssetDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HubAssetDefaultArgs<ExtArgs>>): Prisma__HubAssetClient<$Result.GetResult<Prisma.$HubAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubAssetVersion model
+   */
+  interface HubAssetVersionFieldRefs {
+    readonly id: FieldRef<"HubAssetVersion", 'String'>
+    readonly assetId: FieldRef<"HubAssetVersion", 'String'>
+    readonly version: FieldRef<"HubAssetVersion", 'String'>
+    readonly content: FieldRef<"HubAssetVersion", 'String'>
+    readonly contentFormat: FieldRef<"HubAssetVersion", 'String'>
+    readonly checksum: FieldRef<"HubAssetVersion", 'String'>
+    readonly changelog: FieldRef<"HubAssetVersion", 'String'>
+    readonly status: FieldRef<"HubAssetVersion", 'String'>
+    readonly contentUrl: FieldRef<"HubAssetVersion", 'String'>
+    readonly createdBy: FieldRef<"HubAssetVersion", 'String'>
+    readonly createdAt: FieldRef<"HubAssetVersion", 'DateTime'>
+    readonly publishedAt: FieldRef<"HubAssetVersion", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubAssetVersion findUnique
+   */
+  export type HubAssetVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssetVersion to fetch.
+     */
+    where: HubAssetVersionWhereUniqueInput
+  }
+
+  /**
+   * HubAssetVersion findUniqueOrThrow
+   */
+  export type HubAssetVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssetVersion to fetch.
+     */
+    where: HubAssetVersionWhereUniqueInput
+  }
+
+  /**
+   * HubAssetVersion findFirst
+   */
+  export type HubAssetVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssetVersion to fetch.
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetVersions to fetch.
+     */
+    orderBy?: HubAssetVersionOrderByWithRelationInput | HubAssetVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssetVersions.
+     */
+    cursor?: HubAssetVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetVersions.
+     */
+    distinct?: HubAssetVersionScalarFieldEnum | HubAssetVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetVersion findFirstOrThrow
+   */
+  export type HubAssetVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssetVersion to fetch.
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetVersions to fetch.
+     */
+    orderBy?: HubAssetVersionOrderByWithRelationInput | HubAssetVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssetVersions.
+     */
+    cursor?: HubAssetVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetVersions.
+     */
+    distinct?: HubAssetVersionScalarFieldEnum | HubAssetVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetVersion findMany
+   */
+  export type HubAssetVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubAssetVersions to fetch.
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetVersions to fetch.
+     */
+    orderBy?: HubAssetVersionOrderByWithRelationInput | HubAssetVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubAssetVersions.
+     */
+    cursor?: HubAssetVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetVersions.
+     */
+    distinct?: HubAssetVersionScalarFieldEnum | HubAssetVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetVersion create
+   */
+  export type HubAssetVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HubAssetVersion.
+     */
+    data: XOR<HubAssetVersionCreateInput, HubAssetVersionUncheckedCreateInput>
+  }
+
+  /**
+   * HubAssetVersion createMany
+   */
+  export type HubAssetVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubAssetVersions.
+     */
+    data: HubAssetVersionCreateManyInput | HubAssetVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubAssetVersion update
+   */
+  export type HubAssetVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HubAssetVersion.
+     */
+    data: XOR<HubAssetVersionUpdateInput, HubAssetVersionUncheckedUpdateInput>
+    /**
+     * Choose, which HubAssetVersion to update.
+     */
+    where: HubAssetVersionWhereUniqueInput
+  }
+
+  /**
+   * HubAssetVersion updateMany
+   */
+  export type HubAssetVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubAssetVersions.
+     */
+    data: XOR<HubAssetVersionUpdateManyMutationInput, HubAssetVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which HubAssetVersions to update
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * Limit how many HubAssetVersions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAssetVersion upsert
+   */
+  export type HubAssetVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HubAssetVersion to update in case it exists.
+     */
+    where: HubAssetVersionWhereUniqueInput
+    /**
+     * In case the HubAssetVersion found by the `where` argument doesn't exist, create a new HubAssetVersion with this data.
+     */
+    create: XOR<HubAssetVersionCreateInput, HubAssetVersionUncheckedCreateInput>
+    /**
+     * In case the HubAssetVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubAssetVersionUpdateInput, HubAssetVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * HubAssetVersion delete
+   */
+  export type HubAssetVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+    /**
+     * Filter which HubAssetVersion to delete.
+     */
+    where: HubAssetVersionWhereUniqueInput
+  }
+
+  /**
+   * HubAssetVersion deleteMany
+   */
+  export type HubAssetVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAssetVersions to delete
+     */
+    where?: HubAssetVersionWhereInput
+    /**
+     * Limit how many HubAssetVersions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAssetVersion without action
+   */
+  export type HubAssetVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetVersion
+     */
+    select?: HubAssetVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetVersion
+     */
+    omit?: HubAssetVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubAssetVersionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubManifest
+   */
+
+  export type AggregateHubManifest = {
+    _count: HubManifestCountAggregateOutputType | null
+    _min: HubManifestMinAggregateOutputType | null
+    _max: HubManifestMaxAggregateOutputType | null
+  }
+
+  export type HubManifestMinAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    name: string | null
+    displayName: string | null
+    description: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HubManifestMaxAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    name: string | null
+    displayName: string | null
+    description: string | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type HubManifestCountAggregateOutputType = {
+    id: number
+    manifestId: number
+    name: number
+    displayName: number
+    description: number
+    status: number
+    techStacks: number
+    ides: number
+    scenarios: number
+    tags: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type HubManifestMinAggregateInputType = {
+    id?: true
+    manifestId?: true
+    name?: true
+    displayName?: true
+    description?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HubManifestMaxAggregateInputType = {
+    id?: true
+    manifestId?: true
+    name?: true
+    displayName?: true
+    description?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type HubManifestCountAggregateInputType = {
+    id?: true
+    manifestId?: true
+    name?: true
+    displayName?: true
+    description?: true
+    status?: true
+    techStacks?: true
+    ides?: true
+    scenarios?: true
+    tags?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type HubManifestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifest to aggregate.
+     */
+    where?: HubManifestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifests to fetch.
+     */
+    orderBy?: HubManifestOrderByWithRelationInput | HubManifestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubManifestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubManifests
+    **/
+    _count?: true | HubManifestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubManifestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubManifestMaxAggregateInputType
+  }
+
+  export type GetHubManifestAggregateType<T extends HubManifestAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubManifest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubManifest[P]>
+      : GetScalarType<T[P], AggregateHubManifest[P]>
+  }
+
+
+
+
+  export type HubManifestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubManifestWhereInput
+    orderBy?: HubManifestOrderByWithAggregationInput | HubManifestOrderByWithAggregationInput[]
+    by: HubManifestScalarFieldEnum[] | HubManifestScalarFieldEnum
+    having?: HubManifestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubManifestCountAggregateInputType | true
+    _min?: HubManifestMinAggregateInputType
+    _max?: HubManifestMaxAggregateInputType
+  }
+
+  export type HubManifestGroupByOutputType = {
+    id: string
+    manifestId: string
+    name: string
+    displayName: string
+    description: string | null
+    status: string
+    techStacks: JsonValue | null
+    ides: JsonValue | null
+    scenarios: JsonValue | null
+    tags: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: HubManifestCountAggregateOutputType | null
+    _min: HubManifestMinAggregateOutputType | null
+    _max: HubManifestMaxAggregateOutputType | null
+  }
+
+  type GetHubManifestGroupByPayload<T extends HubManifestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubManifestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubManifestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubManifestGroupByOutputType[P]>
+            : GetScalarType<T[P], HubManifestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubManifestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    manifestId?: boolean
+    name?: boolean
+    displayName?: boolean
+    description?: boolean
+    status?: boolean
+    techStacks?: boolean
+    ides?: boolean
+    scenarios?: boolean
+    tags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    versions?: boolean | HubManifest$versionsArgs<ExtArgs>
+    assets?: boolean | HubManifest$assetsArgs<ExtArgs>
+    _count?: boolean | HubManifestCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hubManifest"]>
+
+
+
+  export type HubManifestSelectScalar = {
+    id?: boolean
+    manifestId?: boolean
+    name?: boolean
+    displayName?: boolean
+    description?: boolean
+    status?: boolean
+    techStacks?: boolean
+    ides?: boolean
+    scenarios?: boolean
+    tags?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type HubManifestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "manifestId" | "name" | "displayName" | "description" | "status" | "techStacks" | "ides" | "scenarios" | "tags" | "createdAt" | "updatedAt", ExtArgs["result"]["hubManifest"]>
+  export type HubManifestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    versions?: boolean | HubManifest$versionsArgs<ExtArgs>
+    assets?: boolean | HubManifest$assetsArgs<ExtArgs>
+    _count?: boolean | HubManifestCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $HubManifestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubManifest"
+    objects: {
+      versions: Prisma.$HubManifestVersionPayload<ExtArgs>[]
+      assets: Prisma.$HubManifestAssetPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      manifestId: string
+      name: string
+      displayName: string
+      description: string | null
+      status: string
+      techStacks: Prisma.JsonValue | null
+      ides: Prisma.JsonValue | null
+      scenarios: Prisma.JsonValue | null
+      tags: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["hubManifest"]>
+    composites: {}
+  }
+
+  type HubManifestGetPayload<S extends boolean | null | undefined | HubManifestDefaultArgs> = $Result.GetResult<Prisma.$HubManifestPayload, S>
+
+  type HubManifestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubManifestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubManifestCountAggregateInputType | true
+    }
+
+  export interface HubManifestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubManifest'], meta: { name: 'HubManifest' } }
+    /**
+     * Find zero or one HubManifest that matches the filter.
+     * @param {HubManifestFindUniqueArgs} args - Arguments to find a HubManifest
+     * @example
+     * // Get one HubManifest
+     * const hubManifest = await prisma.hubManifest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubManifestFindUniqueArgs>(args: SelectSubset<T, HubManifestFindUniqueArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubManifest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubManifestFindUniqueOrThrowArgs} args - Arguments to find a HubManifest
+     * @example
+     * // Get one HubManifest
+     * const hubManifest = await prisma.hubManifest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubManifestFindUniqueOrThrowArgs>(args: SelectSubset<T, HubManifestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestFindFirstArgs} args - Arguments to find a HubManifest
+     * @example
+     * // Get one HubManifest
+     * const hubManifest = await prisma.hubManifest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubManifestFindFirstArgs>(args?: SelectSubset<T, HubManifestFindFirstArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestFindFirstOrThrowArgs} args - Arguments to find a HubManifest
+     * @example
+     * // Get one HubManifest
+     * const hubManifest = await prisma.hubManifest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubManifestFindFirstOrThrowArgs>(args?: SelectSubset<T, HubManifestFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubManifests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubManifests
+     * const hubManifests = await prisma.hubManifest.findMany()
+     *
+     * // Get first 10 HubManifests
+     * const hubManifests = await prisma.hubManifest.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubManifestWithIdOnly = await prisma.hubManifest.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubManifestFindManyArgs>(args?: SelectSubset<T, HubManifestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubManifest.
+     * @param {HubManifestCreateArgs} args - Arguments to create a HubManifest.
+     * @example
+     * // Create one HubManifest
+     * const HubManifest = await prisma.hubManifest.create({
+     *   data: {
+     *     // ... data to create a HubManifest
+     *   }
+     * })
+     *
+     */
+    create<T extends HubManifestCreateArgs>(args: SelectSubset<T, HubManifestCreateArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubManifests.
+     * @param {HubManifestCreateManyArgs} args - Arguments to create many HubManifests.
+     * @example
+     * // Create many HubManifests
+     * const hubManifest = await prisma.hubManifest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubManifestCreateManyArgs>(args?: SelectSubset<T, HubManifestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubManifest.
+     * @param {HubManifestDeleteArgs} args - Arguments to delete one HubManifest.
+     * @example
+     * // Delete one HubManifest
+     * const HubManifest = await prisma.hubManifest.delete({
+     *   where: {
+     *     // ... filter to delete one HubManifest
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubManifestDeleteArgs>(args: SelectSubset<T, HubManifestDeleteArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubManifest.
+     * @param {HubManifestUpdateArgs} args - Arguments to update one HubManifest.
+     * @example
+     * // Update one HubManifest
+     * const hubManifest = await prisma.hubManifest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubManifestUpdateArgs>(args: SelectSubset<T, HubManifestUpdateArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubManifests.
+     * @param {HubManifestDeleteManyArgs} args - Arguments to filter HubManifests to delete.
+     * @example
+     * // Delete a few HubManifests
+     * const { count } = await prisma.hubManifest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubManifestDeleteManyArgs>(args?: SelectSubset<T, HubManifestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubManifests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubManifests
+     * const hubManifest = await prisma.hubManifest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubManifestUpdateManyArgs>(args: SelectSubset<T, HubManifestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubManifest.
+     * @param {HubManifestUpsertArgs} args - Arguments to update or create a HubManifest.
+     * @example
+     * // Update or create a HubManifest
+     * const hubManifest = await prisma.hubManifest.upsert({
+     *   create: {
+     *     // ... data to create a HubManifest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubManifest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubManifestUpsertArgs>(args: SelectSubset<T, HubManifestUpsertArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubManifests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestCountArgs} args - Arguments to filter HubManifests to count.
+     * @example
+     * // Count the number of HubManifests
+     * const count = await prisma.hubManifest.count({
+     *   where: {
+     *     // ... the filter for the HubManifests we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubManifestCountArgs>(
+      args?: Subset<T, HubManifestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubManifestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubManifest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubManifestAggregateArgs>(args: Subset<T, HubManifestAggregateArgs>): Prisma.PrismaPromise<GetHubManifestAggregateType<T>>
+
+    /**
+     * Group by HubManifest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubManifestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubManifestGroupByArgs['orderBy'] }
+        : { orderBy?: HubManifestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubManifestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubManifestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubManifest model
+   */
+  readonly fields: HubManifestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubManifest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubManifestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    versions<T extends HubManifest$versionsArgs<ExtArgs> = {}>(args?: Subset<T, HubManifest$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    assets<T extends HubManifest$assetsArgs<ExtArgs> = {}>(args?: Subset<T, HubManifest$assetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubManifest model
+   */
+  interface HubManifestFieldRefs {
+    readonly id: FieldRef<"HubManifest", 'String'>
+    readonly manifestId: FieldRef<"HubManifest", 'String'>
+    readonly name: FieldRef<"HubManifest", 'String'>
+    readonly displayName: FieldRef<"HubManifest", 'String'>
+    readonly description: FieldRef<"HubManifest", 'String'>
+    readonly status: FieldRef<"HubManifest", 'String'>
+    readonly techStacks: FieldRef<"HubManifest", 'Json'>
+    readonly ides: FieldRef<"HubManifest", 'Json'>
+    readonly scenarios: FieldRef<"HubManifest", 'Json'>
+    readonly tags: FieldRef<"HubManifest", 'Json'>
+    readonly createdAt: FieldRef<"HubManifest", 'DateTime'>
+    readonly updatedAt: FieldRef<"HubManifest", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubManifest findUnique
+   */
+  export type HubManifestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifest to fetch.
+     */
+    where: HubManifestWhereUniqueInput
+  }
+
+  /**
+   * HubManifest findUniqueOrThrow
+   */
+  export type HubManifestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifest to fetch.
+     */
+    where: HubManifestWhereUniqueInput
+  }
+
+  /**
+   * HubManifest findFirst
+   */
+  export type HubManifestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifest to fetch.
+     */
+    where?: HubManifestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifests to fetch.
+     */
+    orderBy?: HubManifestOrderByWithRelationInput | HubManifestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifests.
+     */
+    cursor?: HubManifestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifests.
+     */
+    distinct?: HubManifestScalarFieldEnum | HubManifestScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifest findFirstOrThrow
+   */
+  export type HubManifestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifest to fetch.
+     */
+    where?: HubManifestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifests to fetch.
+     */
+    orderBy?: HubManifestOrderByWithRelationInput | HubManifestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifests.
+     */
+    cursor?: HubManifestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifests.
+     */
+    distinct?: HubManifestScalarFieldEnum | HubManifestScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifest findMany
+   */
+  export type HubManifestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifests to fetch.
+     */
+    where?: HubManifestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifests to fetch.
+     */
+    orderBy?: HubManifestOrderByWithRelationInput | HubManifestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubManifests.
+     */
+    cursor?: HubManifestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifests.
+     */
+    distinct?: HubManifestScalarFieldEnum | HubManifestScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifest create
+   */
+  export type HubManifestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HubManifest.
+     */
+    data: XOR<HubManifestCreateInput, HubManifestUncheckedCreateInput>
+  }
+
+  /**
+   * HubManifest createMany
+   */
+  export type HubManifestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubManifests.
+     */
+    data: HubManifestCreateManyInput | HubManifestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubManifest update
+   */
+  export type HubManifestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HubManifest.
+     */
+    data: XOR<HubManifestUpdateInput, HubManifestUncheckedUpdateInput>
+    /**
+     * Choose, which HubManifest to update.
+     */
+    where: HubManifestWhereUniqueInput
+  }
+
+  /**
+   * HubManifest updateMany
+   */
+  export type HubManifestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubManifests.
+     */
+    data: XOR<HubManifestUpdateManyMutationInput, HubManifestUncheckedUpdateManyInput>
+    /**
+     * Filter which HubManifests to update
+     */
+    where?: HubManifestWhereInput
+    /**
+     * Limit how many HubManifests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifest upsert
+   */
+  export type HubManifestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HubManifest to update in case it exists.
+     */
+    where: HubManifestWhereUniqueInput
+    /**
+     * In case the HubManifest found by the `where` argument doesn't exist, create a new HubManifest with this data.
+     */
+    create: XOR<HubManifestCreateInput, HubManifestUncheckedCreateInput>
+    /**
+     * In case the HubManifest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubManifestUpdateInput, HubManifestUncheckedUpdateInput>
+  }
+
+  /**
+   * HubManifest delete
+   */
+  export type HubManifestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+    /**
+     * Filter which HubManifest to delete.
+     */
+    where: HubManifestWhereUniqueInput
+  }
+
+  /**
+   * HubManifest deleteMany
+   */
+  export type HubManifestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifests to delete
+     */
+    where?: HubManifestWhereInput
+    /**
+     * Limit how many HubManifests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifest.versions
+   */
+  export type HubManifest$versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    where?: HubManifestVersionWhereInput
+    orderBy?: HubManifestVersionOrderByWithRelationInput | HubManifestVersionOrderByWithRelationInput[]
+    cursor?: HubManifestVersionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HubManifestVersionScalarFieldEnum | HubManifestVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifest.assets
+   */
+  export type HubManifest$assetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    where?: HubManifestAssetWhereInput
+    orderBy?: HubManifestAssetOrderByWithRelationInput | HubManifestAssetOrderByWithRelationInput[]
+    cursor?: HubManifestAssetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HubManifestAssetScalarFieldEnum | HubManifestAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifest without action
+   */
+  export type HubManifestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifest
+     */
+    select?: HubManifestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifest
+     */
+    omit?: HubManifestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubManifestVersion
+   */
+
+  export type AggregateHubManifestVersion = {
+    _count: HubManifestVersionCountAggregateOutputType | null
+    _min: HubManifestVersionMinAggregateOutputType | null
+    _max: HubManifestVersionMaxAggregateOutputType | null
+  }
+
+  export type HubManifestVersionMinAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    version: string | null
+    checksum: string | null
+    releaseNote: string | null
+    status: string | null
+    createdAt: Date | null
+    publishedAt: Date | null
+  }
+
+  export type HubManifestVersionMaxAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    version: string | null
+    checksum: string | null
+    releaseNote: string | null
+    status: string | null
+    createdAt: Date | null
+    publishedAt: Date | null
+  }
+
+  export type HubManifestVersionCountAggregateOutputType = {
+    id: number
+    manifestId: number
+    version: number
+    checksum: number
+    installPolicy: number
+    compatibility: number
+    exportSnapshot: number
+    releaseNote: number
+    status: number
+    createdAt: number
+    publishedAt: number
+    _all: number
+  }
+
+
+  export type HubManifestVersionMinAggregateInputType = {
+    id?: true
+    manifestId?: true
+    version?: true
+    checksum?: true
+    releaseNote?: true
+    status?: true
+    createdAt?: true
+    publishedAt?: true
+  }
+
+  export type HubManifestVersionMaxAggregateInputType = {
+    id?: true
+    manifestId?: true
+    version?: true
+    checksum?: true
+    releaseNote?: true
+    status?: true
+    createdAt?: true
+    publishedAt?: true
+  }
+
+  export type HubManifestVersionCountAggregateInputType = {
+    id?: true
+    manifestId?: true
+    version?: true
+    checksum?: true
+    installPolicy?: true
+    compatibility?: true
+    exportSnapshot?: true
+    releaseNote?: true
+    status?: true
+    createdAt?: true
+    publishedAt?: true
+    _all?: true
+  }
+
+  export type HubManifestVersionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifestVersion to aggregate.
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestVersions to fetch.
+     */
+    orderBy?: HubManifestVersionOrderByWithRelationInput | HubManifestVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubManifestVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubManifestVersions
+    **/
+    _count?: true | HubManifestVersionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubManifestVersionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubManifestVersionMaxAggregateInputType
+  }
+
+  export type GetHubManifestVersionAggregateType<T extends HubManifestVersionAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubManifestVersion]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubManifestVersion[P]>
+      : GetScalarType<T[P], AggregateHubManifestVersion[P]>
+  }
+
+
+
+
+  export type HubManifestVersionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubManifestVersionWhereInput
+    orderBy?: HubManifestVersionOrderByWithAggregationInput | HubManifestVersionOrderByWithAggregationInput[]
+    by: HubManifestVersionScalarFieldEnum[] | HubManifestVersionScalarFieldEnum
+    having?: HubManifestVersionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubManifestVersionCountAggregateInputType | true
+    _min?: HubManifestVersionMinAggregateInputType
+    _max?: HubManifestVersionMaxAggregateInputType
+  }
+
+  export type HubManifestVersionGroupByOutputType = {
+    id: string
+    manifestId: string
+    version: string
+    checksum: string
+    installPolicy: JsonValue
+    compatibility: JsonValue
+    exportSnapshot: JsonValue
+    releaseNote: string | null
+    status: string
+    createdAt: Date
+    publishedAt: Date | null
+    _count: HubManifestVersionCountAggregateOutputType | null
+    _min: HubManifestVersionMinAggregateOutputType | null
+    _max: HubManifestVersionMaxAggregateOutputType | null
+  }
+
+  type GetHubManifestVersionGroupByPayload<T extends HubManifestVersionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubManifestVersionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubManifestVersionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubManifestVersionGroupByOutputType[P]>
+            : GetScalarType<T[P], HubManifestVersionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubManifestVersionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    manifestId?: boolean
+    version?: boolean
+    checksum?: boolean
+    installPolicy?: boolean
+    compatibility?: boolean
+    exportSnapshot?: boolean
+    releaseNote?: boolean
+    status?: boolean
+    createdAt?: boolean
+    publishedAt?: boolean
+    manifest?: boolean | HubManifestDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hubManifestVersion"]>
+
+
+
+  export type HubManifestVersionSelectScalar = {
+    id?: boolean
+    manifestId?: boolean
+    version?: boolean
+    checksum?: boolean
+    installPolicy?: boolean
+    compatibility?: boolean
+    exportSnapshot?: boolean
+    releaseNote?: boolean
+    status?: boolean
+    createdAt?: boolean
+    publishedAt?: boolean
+  }
+
+  export type HubManifestVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "manifestId" | "version" | "checksum" | "installPolicy" | "compatibility" | "exportSnapshot" | "releaseNote" | "status" | "createdAt" | "publishedAt", ExtArgs["result"]["hubManifestVersion"]>
+  export type HubManifestVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manifest?: boolean | HubManifestDefaultArgs<ExtArgs>
+  }
+
+  export type $HubManifestVersionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubManifestVersion"
+    objects: {
+      manifest: Prisma.$HubManifestPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      manifestId: string
+      version: string
+      checksum: string
+      installPolicy: Prisma.JsonValue
+      compatibility: Prisma.JsonValue
+      exportSnapshot: Prisma.JsonValue
+      releaseNote: string | null
+      status: string
+      createdAt: Date
+      publishedAt: Date | null
+    }, ExtArgs["result"]["hubManifestVersion"]>
+    composites: {}
+  }
+
+  type HubManifestVersionGetPayload<S extends boolean | null | undefined | HubManifestVersionDefaultArgs> = $Result.GetResult<Prisma.$HubManifestVersionPayload, S>
+
+  type HubManifestVersionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubManifestVersionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubManifestVersionCountAggregateInputType | true
+    }
+
+  export interface HubManifestVersionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubManifestVersion'], meta: { name: 'HubManifestVersion' } }
+    /**
+     * Find zero or one HubManifestVersion that matches the filter.
+     * @param {HubManifestVersionFindUniqueArgs} args - Arguments to find a HubManifestVersion
+     * @example
+     * // Get one HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubManifestVersionFindUniqueArgs>(args: SelectSubset<T, HubManifestVersionFindUniqueArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubManifestVersion that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubManifestVersionFindUniqueOrThrowArgs} args - Arguments to find a HubManifestVersion
+     * @example
+     * // Get one HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubManifestVersionFindUniqueOrThrowArgs>(args: SelectSubset<T, HubManifestVersionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifestVersion that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionFindFirstArgs} args - Arguments to find a HubManifestVersion
+     * @example
+     * // Get one HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubManifestVersionFindFirstArgs>(args?: SelectSubset<T, HubManifestVersionFindFirstArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifestVersion that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionFindFirstOrThrowArgs} args - Arguments to find a HubManifestVersion
+     * @example
+     * // Get one HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubManifestVersionFindFirstOrThrowArgs>(args?: SelectSubset<T, HubManifestVersionFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubManifestVersions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubManifestVersions
+     * const hubManifestVersions = await prisma.hubManifestVersion.findMany()
+     *
+     * // Get first 10 HubManifestVersions
+     * const hubManifestVersions = await prisma.hubManifestVersion.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubManifestVersionWithIdOnly = await prisma.hubManifestVersion.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubManifestVersionFindManyArgs>(args?: SelectSubset<T, HubManifestVersionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubManifestVersion.
+     * @param {HubManifestVersionCreateArgs} args - Arguments to create a HubManifestVersion.
+     * @example
+     * // Create one HubManifestVersion
+     * const HubManifestVersion = await prisma.hubManifestVersion.create({
+     *   data: {
+     *     // ... data to create a HubManifestVersion
+     *   }
+     * })
+     *
+     */
+    create<T extends HubManifestVersionCreateArgs>(args: SelectSubset<T, HubManifestVersionCreateArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubManifestVersions.
+     * @param {HubManifestVersionCreateManyArgs} args - Arguments to create many HubManifestVersions.
+     * @example
+     * // Create many HubManifestVersions
+     * const hubManifestVersion = await prisma.hubManifestVersion.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubManifestVersionCreateManyArgs>(args?: SelectSubset<T, HubManifestVersionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubManifestVersion.
+     * @param {HubManifestVersionDeleteArgs} args - Arguments to delete one HubManifestVersion.
+     * @example
+     * // Delete one HubManifestVersion
+     * const HubManifestVersion = await prisma.hubManifestVersion.delete({
+     *   where: {
+     *     // ... filter to delete one HubManifestVersion
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubManifestVersionDeleteArgs>(args: SelectSubset<T, HubManifestVersionDeleteArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubManifestVersion.
+     * @param {HubManifestVersionUpdateArgs} args - Arguments to update one HubManifestVersion.
+     * @example
+     * // Update one HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubManifestVersionUpdateArgs>(args: SelectSubset<T, HubManifestVersionUpdateArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubManifestVersions.
+     * @param {HubManifestVersionDeleteManyArgs} args - Arguments to filter HubManifestVersions to delete.
+     * @example
+     * // Delete a few HubManifestVersions
+     * const { count } = await prisma.hubManifestVersion.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubManifestVersionDeleteManyArgs>(args?: SelectSubset<T, HubManifestVersionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubManifestVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubManifestVersions
+     * const hubManifestVersion = await prisma.hubManifestVersion.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubManifestVersionUpdateManyArgs>(args: SelectSubset<T, HubManifestVersionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubManifestVersion.
+     * @param {HubManifestVersionUpsertArgs} args - Arguments to update or create a HubManifestVersion.
+     * @example
+     * // Update or create a HubManifestVersion
+     * const hubManifestVersion = await prisma.hubManifestVersion.upsert({
+     *   create: {
+     *     // ... data to create a HubManifestVersion
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubManifestVersion we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubManifestVersionUpsertArgs>(args: SelectSubset<T, HubManifestVersionUpsertArgs<ExtArgs>>): Prisma__HubManifestVersionClient<$Result.GetResult<Prisma.$HubManifestVersionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubManifestVersions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionCountArgs} args - Arguments to filter HubManifestVersions to count.
+     * @example
+     * // Count the number of HubManifestVersions
+     * const count = await prisma.hubManifestVersion.count({
+     *   where: {
+     *     // ... the filter for the HubManifestVersions we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubManifestVersionCountArgs>(
+      args?: Subset<T, HubManifestVersionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubManifestVersionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubManifestVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubManifestVersionAggregateArgs>(args: Subset<T, HubManifestVersionAggregateArgs>): Prisma.PrismaPromise<GetHubManifestVersionAggregateType<T>>
+
+    /**
+     * Group by HubManifestVersion.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestVersionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubManifestVersionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubManifestVersionGroupByArgs['orderBy'] }
+        : { orderBy?: HubManifestVersionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubManifestVersionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubManifestVersionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubManifestVersion model
+   */
+  readonly fields: HubManifestVersionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubManifestVersion.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubManifestVersionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    manifest<T extends HubManifestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HubManifestDefaultArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubManifestVersion model
+   */
+  interface HubManifestVersionFieldRefs {
+    readonly id: FieldRef<"HubManifestVersion", 'String'>
+    readonly manifestId: FieldRef<"HubManifestVersion", 'String'>
+    readonly version: FieldRef<"HubManifestVersion", 'String'>
+    readonly checksum: FieldRef<"HubManifestVersion", 'String'>
+    readonly installPolicy: FieldRef<"HubManifestVersion", 'Json'>
+    readonly compatibility: FieldRef<"HubManifestVersion", 'Json'>
+    readonly exportSnapshot: FieldRef<"HubManifestVersion", 'Json'>
+    readonly releaseNote: FieldRef<"HubManifestVersion", 'String'>
+    readonly status: FieldRef<"HubManifestVersion", 'String'>
+    readonly createdAt: FieldRef<"HubManifestVersion", 'DateTime'>
+    readonly publishedAt: FieldRef<"HubManifestVersion", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubManifestVersion findUnique
+   */
+  export type HubManifestVersionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestVersion to fetch.
+     */
+    where: HubManifestVersionWhereUniqueInput
+  }
+
+  /**
+   * HubManifestVersion findUniqueOrThrow
+   */
+  export type HubManifestVersionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestVersion to fetch.
+     */
+    where: HubManifestVersionWhereUniqueInput
+  }
+
+  /**
+   * HubManifestVersion findFirst
+   */
+  export type HubManifestVersionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestVersion to fetch.
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestVersions to fetch.
+     */
+    orderBy?: HubManifestVersionOrderByWithRelationInput | HubManifestVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifestVersions.
+     */
+    cursor?: HubManifestVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestVersions.
+     */
+    distinct?: HubManifestVersionScalarFieldEnum | HubManifestVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestVersion findFirstOrThrow
+   */
+  export type HubManifestVersionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestVersion to fetch.
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestVersions to fetch.
+     */
+    orderBy?: HubManifestVersionOrderByWithRelationInput | HubManifestVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifestVersions.
+     */
+    cursor?: HubManifestVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestVersions.
+     */
+    distinct?: HubManifestVersionScalarFieldEnum | HubManifestVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestVersion findMany
+   */
+  export type HubManifestVersionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestVersions to fetch.
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestVersions to fetch.
+     */
+    orderBy?: HubManifestVersionOrderByWithRelationInput | HubManifestVersionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubManifestVersions.
+     */
+    cursor?: HubManifestVersionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestVersions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestVersions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestVersions.
+     */
+    distinct?: HubManifestVersionScalarFieldEnum | HubManifestVersionScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestVersion create
+   */
+  export type HubManifestVersionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HubManifestVersion.
+     */
+    data: XOR<HubManifestVersionCreateInput, HubManifestVersionUncheckedCreateInput>
+  }
+
+  /**
+   * HubManifestVersion createMany
+   */
+  export type HubManifestVersionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubManifestVersions.
+     */
+    data: HubManifestVersionCreateManyInput | HubManifestVersionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubManifestVersion update
+   */
+  export type HubManifestVersionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HubManifestVersion.
+     */
+    data: XOR<HubManifestVersionUpdateInput, HubManifestVersionUncheckedUpdateInput>
+    /**
+     * Choose, which HubManifestVersion to update.
+     */
+    where: HubManifestVersionWhereUniqueInput
+  }
+
+  /**
+   * HubManifestVersion updateMany
+   */
+  export type HubManifestVersionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubManifestVersions.
+     */
+    data: XOR<HubManifestVersionUpdateManyMutationInput, HubManifestVersionUncheckedUpdateManyInput>
+    /**
+     * Filter which HubManifestVersions to update
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * Limit how many HubManifestVersions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifestVersion upsert
+   */
+  export type HubManifestVersionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HubManifestVersion to update in case it exists.
+     */
+    where: HubManifestVersionWhereUniqueInput
+    /**
+     * In case the HubManifestVersion found by the `where` argument doesn't exist, create a new HubManifestVersion with this data.
+     */
+    create: XOR<HubManifestVersionCreateInput, HubManifestVersionUncheckedCreateInput>
+    /**
+     * In case the HubManifestVersion was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubManifestVersionUpdateInput, HubManifestVersionUncheckedUpdateInput>
+  }
+
+  /**
+   * HubManifestVersion delete
+   */
+  export type HubManifestVersionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+    /**
+     * Filter which HubManifestVersion to delete.
+     */
+    where: HubManifestVersionWhereUniqueInput
+  }
+
+  /**
+   * HubManifestVersion deleteMany
+   */
+  export type HubManifestVersionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifestVersions to delete
+     */
+    where?: HubManifestVersionWhereInput
+    /**
+     * Limit how many HubManifestVersions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifestVersion without action
+   */
+  export type HubManifestVersionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestVersion
+     */
+    select?: HubManifestVersionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestVersion
+     */
+    omit?: HubManifestVersionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestVersionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubManifestAsset
+   */
+
+  export type AggregateHubManifestAsset = {
+    _count: HubManifestAssetCountAggregateOutputType | null
+    _avg: HubManifestAssetAvgAggregateOutputType | null
+    _sum: HubManifestAssetSumAggregateOutputType | null
+    _min: HubManifestAssetMinAggregateOutputType | null
+    _max: HubManifestAssetMaxAggregateOutputType | null
+  }
+
+  export type HubManifestAssetAvgAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type HubManifestAssetSumAggregateOutputType = {
+    sortOrder: number | null
+  }
+
+  export type HubManifestAssetMinAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    kind: string | null
+    assetId: string | null
+    version: string | null
+    required: boolean | null
+    installPath: string | null
+    checksum: string | null
+    sortOrder: number | null
+    createdAt: Date | null
+  }
+
+  export type HubManifestAssetMaxAggregateOutputType = {
+    id: string | null
+    manifestId: string | null
+    kind: string | null
+    assetId: string | null
+    version: string | null
+    required: boolean | null
+    installPath: string | null
+    checksum: string | null
+    sortOrder: number | null
+    createdAt: Date | null
+  }
+
+  export type HubManifestAssetCountAggregateOutputType = {
+    id: number
+    manifestId: number
+    kind: number
+    assetId: number
+    version: number
+    required: number
+    installPath: number
+    checksum: number
+    sortOrder: number
+    config: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type HubManifestAssetAvgAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type HubManifestAssetSumAggregateInputType = {
+    sortOrder?: true
+  }
+
+  export type HubManifestAssetMinAggregateInputType = {
+    id?: true
+    manifestId?: true
+    kind?: true
+    assetId?: true
+    version?: true
+    required?: true
+    installPath?: true
+    checksum?: true
+    sortOrder?: true
+    createdAt?: true
+  }
+
+  export type HubManifestAssetMaxAggregateInputType = {
+    id?: true
+    manifestId?: true
+    kind?: true
+    assetId?: true
+    version?: true
+    required?: true
+    installPath?: true
+    checksum?: true
+    sortOrder?: true
+    createdAt?: true
+  }
+
+  export type HubManifestAssetCountAggregateInputType = {
+    id?: true
+    manifestId?: true
+    kind?: true
+    assetId?: true
+    version?: true
+    required?: true
+    installPath?: true
+    checksum?: true
+    sortOrder?: true
+    config?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type HubManifestAssetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifestAsset to aggregate.
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestAssets to fetch.
+     */
+    orderBy?: HubManifestAssetOrderByWithRelationInput | HubManifestAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubManifestAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubManifestAssets
+    **/
+    _count?: true | HubManifestAssetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: HubManifestAssetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: HubManifestAssetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubManifestAssetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubManifestAssetMaxAggregateInputType
+  }
+
+  export type GetHubManifestAssetAggregateType<T extends HubManifestAssetAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubManifestAsset]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubManifestAsset[P]>
+      : GetScalarType<T[P], AggregateHubManifestAsset[P]>
+  }
+
+
+
+
+  export type HubManifestAssetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubManifestAssetWhereInput
+    orderBy?: HubManifestAssetOrderByWithAggregationInput | HubManifestAssetOrderByWithAggregationInput[]
+    by: HubManifestAssetScalarFieldEnum[] | HubManifestAssetScalarFieldEnum
+    having?: HubManifestAssetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubManifestAssetCountAggregateInputType | true
+    _avg?: HubManifestAssetAvgAggregateInputType
+    _sum?: HubManifestAssetSumAggregateInputType
+    _min?: HubManifestAssetMinAggregateInputType
+    _max?: HubManifestAssetMaxAggregateInputType
+  }
+
+  export type HubManifestAssetGroupByOutputType = {
+    id: string
+    manifestId: string
+    kind: string
+    assetId: string
+    version: string
+    required: boolean
+    installPath: string | null
+    checksum: string
+    sortOrder: number
+    config: JsonValue | null
+    createdAt: Date
+    _count: HubManifestAssetCountAggregateOutputType | null
+    _avg: HubManifestAssetAvgAggregateOutputType | null
+    _sum: HubManifestAssetSumAggregateOutputType | null
+    _min: HubManifestAssetMinAggregateOutputType | null
+    _max: HubManifestAssetMaxAggregateOutputType | null
+  }
+
+  type GetHubManifestAssetGroupByPayload<T extends HubManifestAssetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubManifestAssetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubManifestAssetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubManifestAssetGroupByOutputType[P]>
+            : GetScalarType<T[P], HubManifestAssetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubManifestAssetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    manifestId?: boolean
+    kind?: boolean
+    assetId?: boolean
+    version?: boolean
+    required?: boolean
+    installPath?: boolean
+    checksum?: boolean
+    sortOrder?: boolean
+    config?: boolean
+    createdAt?: boolean
+    manifest?: boolean | HubManifestDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["hubManifestAsset"]>
+
+
+
+  export type HubManifestAssetSelectScalar = {
+    id?: boolean
+    manifestId?: boolean
+    kind?: boolean
+    assetId?: boolean
+    version?: boolean
+    required?: boolean
+    installPath?: boolean
+    checksum?: boolean
+    sortOrder?: boolean
+    config?: boolean
+    createdAt?: boolean
+  }
+
+  export type HubManifestAssetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "manifestId" | "kind" | "assetId" | "version" | "required" | "installPath" | "checksum" | "sortOrder" | "config" | "createdAt", ExtArgs["result"]["hubManifestAsset"]>
+  export type HubManifestAssetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    manifest?: boolean | HubManifestDefaultArgs<ExtArgs>
+  }
+
+  export type $HubManifestAssetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubManifestAsset"
+    objects: {
+      manifest: Prisma.$HubManifestPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      manifestId: string
+      kind: string
+      assetId: string
+      version: string
+      required: boolean
+      installPath: string | null
+      checksum: string
+      sortOrder: number
+      config: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["hubManifestAsset"]>
+    composites: {}
+  }
+
+  type HubManifestAssetGetPayload<S extends boolean | null | undefined | HubManifestAssetDefaultArgs> = $Result.GetResult<Prisma.$HubManifestAssetPayload, S>
+
+  type HubManifestAssetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubManifestAssetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubManifestAssetCountAggregateInputType | true
+    }
+
+  export interface HubManifestAssetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubManifestAsset'], meta: { name: 'HubManifestAsset' } }
+    /**
+     * Find zero or one HubManifestAsset that matches the filter.
+     * @param {HubManifestAssetFindUniqueArgs} args - Arguments to find a HubManifestAsset
+     * @example
+     * // Get one HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubManifestAssetFindUniqueArgs>(args: SelectSubset<T, HubManifestAssetFindUniqueArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubManifestAsset that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubManifestAssetFindUniqueOrThrowArgs} args - Arguments to find a HubManifestAsset
+     * @example
+     * // Get one HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubManifestAssetFindUniqueOrThrowArgs>(args: SelectSubset<T, HubManifestAssetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifestAsset that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetFindFirstArgs} args - Arguments to find a HubManifestAsset
+     * @example
+     * // Get one HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubManifestAssetFindFirstArgs>(args?: SelectSubset<T, HubManifestAssetFindFirstArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubManifestAsset that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetFindFirstOrThrowArgs} args - Arguments to find a HubManifestAsset
+     * @example
+     * // Get one HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubManifestAssetFindFirstOrThrowArgs>(args?: SelectSubset<T, HubManifestAssetFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubManifestAssets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubManifestAssets
+     * const hubManifestAssets = await prisma.hubManifestAsset.findMany()
+     *
+     * // Get first 10 HubManifestAssets
+     * const hubManifestAssets = await prisma.hubManifestAsset.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubManifestAssetWithIdOnly = await prisma.hubManifestAsset.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubManifestAssetFindManyArgs>(args?: SelectSubset<T, HubManifestAssetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubManifestAsset.
+     * @param {HubManifestAssetCreateArgs} args - Arguments to create a HubManifestAsset.
+     * @example
+     * // Create one HubManifestAsset
+     * const HubManifestAsset = await prisma.hubManifestAsset.create({
+     *   data: {
+     *     // ... data to create a HubManifestAsset
+     *   }
+     * })
+     *
+     */
+    create<T extends HubManifestAssetCreateArgs>(args: SelectSubset<T, HubManifestAssetCreateArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubManifestAssets.
+     * @param {HubManifestAssetCreateManyArgs} args - Arguments to create many HubManifestAssets.
+     * @example
+     * // Create many HubManifestAssets
+     * const hubManifestAsset = await prisma.hubManifestAsset.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubManifestAssetCreateManyArgs>(args?: SelectSubset<T, HubManifestAssetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubManifestAsset.
+     * @param {HubManifestAssetDeleteArgs} args - Arguments to delete one HubManifestAsset.
+     * @example
+     * // Delete one HubManifestAsset
+     * const HubManifestAsset = await prisma.hubManifestAsset.delete({
+     *   where: {
+     *     // ... filter to delete one HubManifestAsset
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubManifestAssetDeleteArgs>(args: SelectSubset<T, HubManifestAssetDeleteArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubManifestAsset.
+     * @param {HubManifestAssetUpdateArgs} args - Arguments to update one HubManifestAsset.
+     * @example
+     * // Update one HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubManifestAssetUpdateArgs>(args: SelectSubset<T, HubManifestAssetUpdateArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubManifestAssets.
+     * @param {HubManifestAssetDeleteManyArgs} args - Arguments to filter HubManifestAssets to delete.
+     * @example
+     * // Delete a few HubManifestAssets
+     * const { count } = await prisma.hubManifestAsset.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubManifestAssetDeleteManyArgs>(args?: SelectSubset<T, HubManifestAssetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubManifestAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubManifestAssets
+     * const hubManifestAsset = await prisma.hubManifestAsset.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubManifestAssetUpdateManyArgs>(args: SelectSubset<T, HubManifestAssetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubManifestAsset.
+     * @param {HubManifestAssetUpsertArgs} args - Arguments to update or create a HubManifestAsset.
+     * @example
+     * // Update or create a HubManifestAsset
+     * const hubManifestAsset = await prisma.hubManifestAsset.upsert({
+     *   create: {
+     *     // ... data to create a HubManifestAsset
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubManifestAsset we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubManifestAssetUpsertArgs>(args: SelectSubset<T, HubManifestAssetUpsertArgs<ExtArgs>>): Prisma__HubManifestAssetClient<$Result.GetResult<Prisma.$HubManifestAssetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubManifestAssets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetCountArgs} args - Arguments to filter HubManifestAssets to count.
+     * @example
+     * // Count the number of HubManifestAssets
+     * const count = await prisma.hubManifestAsset.count({
+     *   where: {
+     *     // ... the filter for the HubManifestAssets we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubManifestAssetCountArgs>(
+      args?: Subset<T, HubManifestAssetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubManifestAssetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubManifestAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubManifestAssetAggregateArgs>(args: Subset<T, HubManifestAssetAggregateArgs>): Prisma.PrismaPromise<GetHubManifestAssetAggregateType<T>>
+
+    /**
+     * Group by HubManifestAsset.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubManifestAssetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubManifestAssetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubManifestAssetGroupByArgs['orderBy'] }
+        : { orderBy?: HubManifestAssetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubManifestAssetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubManifestAssetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubManifestAsset model
+   */
+  readonly fields: HubManifestAssetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubManifestAsset.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubManifestAssetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    manifest<T extends HubManifestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HubManifestDefaultArgs<ExtArgs>>): Prisma__HubManifestClient<$Result.GetResult<Prisma.$HubManifestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubManifestAsset model
+   */
+  interface HubManifestAssetFieldRefs {
+    readonly id: FieldRef<"HubManifestAsset", 'String'>
+    readonly manifestId: FieldRef<"HubManifestAsset", 'String'>
+    readonly kind: FieldRef<"HubManifestAsset", 'String'>
+    readonly assetId: FieldRef<"HubManifestAsset", 'String'>
+    readonly version: FieldRef<"HubManifestAsset", 'String'>
+    readonly required: FieldRef<"HubManifestAsset", 'Boolean'>
+    readonly installPath: FieldRef<"HubManifestAsset", 'String'>
+    readonly checksum: FieldRef<"HubManifestAsset", 'String'>
+    readonly sortOrder: FieldRef<"HubManifestAsset", 'Int'>
+    readonly config: FieldRef<"HubManifestAsset", 'Json'>
+    readonly createdAt: FieldRef<"HubManifestAsset", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubManifestAsset findUnique
+   */
+  export type HubManifestAssetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestAsset to fetch.
+     */
+    where: HubManifestAssetWhereUniqueInput
+  }
+
+  /**
+   * HubManifestAsset findUniqueOrThrow
+   */
+  export type HubManifestAssetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestAsset to fetch.
+     */
+    where: HubManifestAssetWhereUniqueInput
+  }
+
+  /**
+   * HubManifestAsset findFirst
+   */
+  export type HubManifestAssetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestAsset to fetch.
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestAssets to fetch.
+     */
+    orderBy?: HubManifestAssetOrderByWithRelationInput | HubManifestAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifestAssets.
+     */
+    cursor?: HubManifestAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestAssets.
+     */
+    distinct?: HubManifestAssetScalarFieldEnum | HubManifestAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestAsset findFirstOrThrow
+   */
+  export type HubManifestAssetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestAsset to fetch.
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestAssets to fetch.
+     */
+    orderBy?: HubManifestAssetOrderByWithRelationInput | HubManifestAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubManifestAssets.
+     */
+    cursor?: HubManifestAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestAssets.
+     */
+    distinct?: HubManifestAssetScalarFieldEnum | HubManifestAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestAsset findMany
+   */
+  export type HubManifestAssetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter, which HubManifestAssets to fetch.
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubManifestAssets to fetch.
+     */
+    orderBy?: HubManifestAssetOrderByWithRelationInput | HubManifestAssetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubManifestAssets.
+     */
+    cursor?: HubManifestAssetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubManifestAssets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubManifestAssets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubManifestAssets.
+     */
+    distinct?: HubManifestAssetScalarFieldEnum | HubManifestAssetScalarFieldEnum[]
+  }
+
+  /**
+   * HubManifestAsset create
+   */
+  export type HubManifestAssetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HubManifestAsset.
+     */
+    data: XOR<HubManifestAssetCreateInput, HubManifestAssetUncheckedCreateInput>
+  }
+
+  /**
+   * HubManifestAsset createMany
+   */
+  export type HubManifestAssetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubManifestAssets.
+     */
+    data: HubManifestAssetCreateManyInput | HubManifestAssetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubManifestAsset update
+   */
+  export type HubManifestAssetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HubManifestAsset.
+     */
+    data: XOR<HubManifestAssetUpdateInput, HubManifestAssetUncheckedUpdateInput>
+    /**
+     * Choose, which HubManifestAsset to update.
+     */
+    where: HubManifestAssetWhereUniqueInput
+  }
+
+  /**
+   * HubManifestAsset updateMany
+   */
+  export type HubManifestAssetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubManifestAssets.
+     */
+    data: XOR<HubManifestAssetUpdateManyMutationInput, HubManifestAssetUncheckedUpdateManyInput>
+    /**
+     * Filter which HubManifestAssets to update
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * Limit how many HubManifestAssets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifestAsset upsert
+   */
+  export type HubManifestAssetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HubManifestAsset to update in case it exists.
+     */
+    where: HubManifestAssetWhereUniqueInput
+    /**
+     * In case the HubManifestAsset found by the `where` argument doesn't exist, create a new HubManifestAsset with this data.
+     */
+    create: XOR<HubManifestAssetCreateInput, HubManifestAssetUncheckedCreateInput>
+    /**
+     * In case the HubManifestAsset was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubManifestAssetUpdateInput, HubManifestAssetUncheckedUpdateInput>
+  }
+
+  /**
+   * HubManifestAsset delete
+   */
+  export type HubManifestAssetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+    /**
+     * Filter which HubManifestAsset to delete.
+     */
+    where: HubManifestAssetWhereUniqueInput
+  }
+
+  /**
+   * HubManifestAsset deleteMany
+   */
+  export type HubManifestAssetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubManifestAssets to delete
+     */
+    where?: HubManifestAssetWhereInput
+    /**
+     * Limit how many HubManifestAssets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubManifestAsset without action
+   */
+  export type HubManifestAssetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubManifestAsset
+     */
+    select?: HubManifestAssetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubManifestAsset
+     */
+    omit?: HubManifestAssetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HubManifestAssetInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubAssetAuditLog
+   */
+
+  export type AggregateHubAssetAuditLog = {
+    _count: HubAssetAuditLogCountAggregateOutputType | null
+    _min: HubAssetAuditLogMinAggregateOutputType | null
+    _max: HubAssetAuditLogMaxAggregateOutputType | null
+  }
+
+  export type HubAssetAuditLogMinAggregateOutputType = {
+    id: string | null
+    actorId: string | null
+    action: string | null
+    resourceType: string | null
+    resourceId: string | null
+    createdAt: Date | null
+  }
+
+  export type HubAssetAuditLogMaxAggregateOutputType = {
+    id: string | null
+    actorId: string | null
+    action: string | null
+    resourceType: string | null
+    resourceId: string | null
+    createdAt: Date | null
+  }
+
+  export type HubAssetAuditLogCountAggregateOutputType = {
+    id: number
+    actorId: number
+    action: number
+    resourceType: number
+    resourceId: number
+    details: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type HubAssetAuditLogMinAggregateInputType = {
+    id?: true
+    actorId?: true
+    action?: true
+    resourceType?: true
+    resourceId?: true
+    createdAt?: true
+  }
+
+  export type HubAssetAuditLogMaxAggregateInputType = {
+    id?: true
+    actorId?: true
+    action?: true
+    resourceType?: true
+    resourceId?: true
+    createdAt?: true
+  }
+
+  export type HubAssetAuditLogCountAggregateInputType = {
+    id?: true
+    actorId?: true
+    action?: true
+    resourceType?: true
+    resourceId?: true
+    details?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type HubAssetAuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAssetAuditLog to aggregate.
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetAuditLogs to fetch.
+     */
+    orderBy?: HubAssetAuditLogOrderByWithRelationInput | HubAssetAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubAssetAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubAssetAuditLogs
+    **/
+    _count?: true | HubAssetAuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubAssetAuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubAssetAuditLogMaxAggregateInputType
+  }
+
+  export type GetHubAssetAuditLogAggregateType<T extends HubAssetAuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubAssetAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubAssetAuditLog[P]>
+      : GetScalarType<T[P], AggregateHubAssetAuditLog[P]>
+  }
+
+
+
+
+  export type HubAssetAuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubAssetAuditLogWhereInput
+    orderBy?: HubAssetAuditLogOrderByWithAggregationInput | HubAssetAuditLogOrderByWithAggregationInput[]
+    by: HubAssetAuditLogScalarFieldEnum[] | HubAssetAuditLogScalarFieldEnum
+    having?: HubAssetAuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubAssetAuditLogCountAggregateInputType | true
+    _min?: HubAssetAuditLogMinAggregateInputType
+    _max?: HubAssetAuditLogMaxAggregateInputType
+  }
+
+  export type HubAssetAuditLogGroupByOutputType = {
+    id: string
+    actorId: string | null
+    action: string
+    resourceType: string
+    resourceId: string
+    details: JsonValue
+    createdAt: Date
+    _count: HubAssetAuditLogCountAggregateOutputType | null
+    _min: HubAssetAuditLogMinAggregateOutputType | null
+    _max: HubAssetAuditLogMaxAggregateOutputType | null
+  }
+
+  type GetHubAssetAuditLogGroupByPayload<T extends HubAssetAuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubAssetAuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubAssetAuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubAssetAuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], HubAssetAuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubAssetAuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceType?: boolean
+    resourceId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["hubAssetAuditLog"]>
+
+
+
+  export type HubAssetAuditLogSelectScalar = {
+    id?: boolean
+    actorId?: boolean
+    action?: boolean
+    resourceType?: boolean
+    resourceId?: boolean
+    details?: boolean
+    createdAt?: boolean
+  }
+
+  export type HubAssetAuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "actorId" | "action" | "resourceType" | "resourceId" | "details" | "createdAt", ExtArgs["result"]["hubAssetAuditLog"]>
+
+  export type $HubAssetAuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubAssetAuditLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      actorId: string | null
+      action: string
+      resourceType: string
+      resourceId: string
+      details: Prisma.JsonValue
+      createdAt: Date
+    }, ExtArgs["result"]["hubAssetAuditLog"]>
+    composites: {}
+  }
+
+  type HubAssetAuditLogGetPayload<S extends boolean | null | undefined | HubAssetAuditLogDefaultArgs> = $Result.GetResult<Prisma.$HubAssetAuditLogPayload, S>
+
+  type HubAssetAuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubAssetAuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubAssetAuditLogCountAggregateInputType | true
+    }
+
+  export interface HubAssetAuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubAssetAuditLog'], meta: { name: 'HubAssetAuditLog' } }
+    /**
+     * Find zero or one HubAssetAuditLog that matches the filter.
+     * @param {HubAssetAuditLogFindUniqueArgs} args - Arguments to find a HubAssetAuditLog
+     * @example
+     * // Get one HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubAssetAuditLogFindUniqueArgs>(args: SelectSubset<T, HubAssetAuditLogFindUniqueArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubAssetAuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubAssetAuditLogFindUniqueOrThrowArgs} args - Arguments to find a HubAssetAuditLog
+     * @example
+     * // Get one HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubAssetAuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, HubAssetAuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAssetAuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogFindFirstArgs} args - Arguments to find a HubAssetAuditLog
+     * @example
+     * // Get one HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubAssetAuditLogFindFirstArgs>(args?: SelectSubset<T, HubAssetAuditLogFindFirstArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAssetAuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogFindFirstOrThrowArgs} args - Arguments to find a HubAssetAuditLog
+     * @example
+     * // Get one HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubAssetAuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, HubAssetAuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubAssetAuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubAssetAuditLogs
+     * const hubAssetAuditLogs = await prisma.hubAssetAuditLog.findMany()
+     *
+     * // Get first 10 HubAssetAuditLogs
+     * const hubAssetAuditLogs = await prisma.hubAssetAuditLog.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubAssetAuditLogWithIdOnly = await prisma.hubAssetAuditLog.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubAssetAuditLogFindManyArgs>(args?: SelectSubset<T, HubAssetAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubAssetAuditLog.
+     * @param {HubAssetAuditLogCreateArgs} args - Arguments to create a HubAssetAuditLog.
+     * @example
+     * // Create one HubAssetAuditLog
+     * const HubAssetAuditLog = await prisma.hubAssetAuditLog.create({
+     *   data: {
+     *     // ... data to create a HubAssetAuditLog
+     *   }
+     * })
+     *
+     */
+    create<T extends HubAssetAuditLogCreateArgs>(args: SelectSubset<T, HubAssetAuditLogCreateArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubAssetAuditLogs.
+     * @param {HubAssetAuditLogCreateManyArgs} args - Arguments to create many HubAssetAuditLogs.
+     * @example
+     * // Create many HubAssetAuditLogs
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubAssetAuditLogCreateManyArgs>(args?: SelectSubset<T, HubAssetAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubAssetAuditLog.
+     * @param {HubAssetAuditLogDeleteArgs} args - Arguments to delete one HubAssetAuditLog.
+     * @example
+     * // Delete one HubAssetAuditLog
+     * const HubAssetAuditLog = await prisma.hubAssetAuditLog.delete({
+     *   where: {
+     *     // ... filter to delete one HubAssetAuditLog
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubAssetAuditLogDeleteArgs>(args: SelectSubset<T, HubAssetAuditLogDeleteArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubAssetAuditLog.
+     * @param {HubAssetAuditLogUpdateArgs} args - Arguments to update one HubAssetAuditLog.
+     * @example
+     * // Update one HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubAssetAuditLogUpdateArgs>(args: SelectSubset<T, HubAssetAuditLogUpdateArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubAssetAuditLogs.
+     * @param {HubAssetAuditLogDeleteManyArgs} args - Arguments to filter HubAssetAuditLogs to delete.
+     * @example
+     * // Delete a few HubAssetAuditLogs
+     * const { count } = await prisma.hubAssetAuditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubAssetAuditLogDeleteManyArgs>(args?: SelectSubset<T, HubAssetAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubAssetAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubAssetAuditLogs
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubAssetAuditLogUpdateManyArgs>(args: SelectSubset<T, HubAssetAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubAssetAuditLog.
+     * @param {HubAssetAuditLogUpsertArgs} args - Arguments to update or create a HubAssetAuditLog.
+     * @example
+     * // Update or create a HubAssetAuditLog
+     * const hubAssetAuditLog = await prisma.hubAssetAuditLog.upsert({
+     *   create: {
+     *     // ... data to create a HubAssetAuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubAssetAuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubAssetAuditLogUpsertArgs>(args: SelectSubset<T, HubAssetAuditLogUpsertArgs<ExtArgs>>): Prisma__HubAssetAuditLogClient<$Result.GetResult<Prisma.$HubAssetAuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubAssetAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogCountArgs} args - Arguments to filter HubAssetAuditLogs to count.
+     * @example
+     * // Count the number of HubAssetAuditLogs
+     * const count = await prisma.hubAssetAuditLog.count({
+     *   where: {
+     *     // ... the filter for the HubAssetAuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubAssetAuditLogCountArgs>(
+      args?: Subset<T, HubAssetAuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubAssetAuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubAssetAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubAssetAuditLogAggregateArgs>(args: Subset<T, HubAssetAuditLogAggregateArgs>): Prisma.PrismaPromise<GetHubAssetAuditLogAggregateType<T>>
+
+    /**
+     * Group by HubAssetAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAssetAuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubAssetAuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubAssetAuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: HubAssetAuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubAssetAuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubAssetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubAssetAuditLog model
+   */
+  readonly fields: HubAssetAuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubAssetAuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubAssetAuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubAssetAuditLog model
+   */
+  interface HubAssetAuditLogFieldRefs {
+    readonly id: FieldRef<"HubAssetAuditLog", 'String'>
+    readonly actorId: FieldRef<"HubAssetAuditLog", 'String'>
+    readonly action: FieldRef<"HubAssetAuditLog", 'String'>
+    readonly resourceType: FieldRef<"HubAssetAuditLog", 'String'>
+    readonly resourceId: FieldRef<"HubAssetAuditLog", 'String'>
+    readonly details: FieldRef<"HubAssetAuditLog", 'Json'>
+    readonly createdAt: FieldRef<"HubAssetAuditLog", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubAssetAuditLog findUnique
+   */
+  export type HubAssetAuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAssetAuditLog to fetch.
+     */
+    where: HubAssetAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAssetAuditLog findUniqueOrThrow
+   */
+  export type HubAssetAuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAssetAuditLog to fetch.
+     */
+    where: HubAssetAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAssetAuditLog findFirst
+   */
+  export type HubAssetAuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAssetAuditLog to fetch.
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetAuditLogs to fetch.
+     */
+    orderBy?: HubAssetAuditLogOrderByWithRelationInput | HubAssetAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssetAuditLogs.
+     */
+    cursor?: HubAssetAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetAuditLogs.
+     */
+    distinct?: HubAssetAuditLogScalarFieldEnum | HubAssetAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetAuditLog findFirstOrThrow
+   */
+  export type HubAssetAuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAssetAuditLog to fetch.
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetAuditLogs to fetch.
+     */
+    orderBy?: HubAssetAuditLogOrderByWithRelationInput | HubAssetAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubAssetAuditLogs.
+     */
+    cursor?: HubAssetAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetAuditLogs.
+     */
+    distinct?: HubAssetAuditLogScalarFieldEnum | HubAssetAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetAuditLog findMany
+   */
+  export type HubAssetAuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAssetAuditLogs to fetch.
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubAssetAuditLogs to fetch.
+     */
+    orderBy?: HubAssetAuditLogOrderByWithRelationInput | HubAssetAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubAssetAuditLogs.
+     */
+    cursor?: HubAssetAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubAssetAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubAssetAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubAssetAuditLogs.
+     */
+    distinct?: HubAssetAuditLogScalarFieldEnum | HubAssetAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAssetAuditLog create
+   */
+  export type HubAssetAuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a HubAssetAuditLog.
+     */
+    data: XOR<HubAssetAuditLogCreateInput, HubAssetAuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * HubAssetAuditLog createMany
+   */
+  export type HubAssetAuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubAssetAuditLogs.
+     */
+    data: HubAssetAuditLogCreateManyInput | HubAssetAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubAssetAuditLog update
+   */
+  export type HubAssetAuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a HubAssetAuditLog.
+     */
+    data: XOR<HubAssetAuditLogUpdateInput, HubAssetAuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which HubAssetAuditLog to update.
+     */
+    where: HubAssetAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAssetAuditLog updateMany
+   */
+  export type HubAssetAuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubAssetAuditLogs.
+     */
+    data: XOR<HubAssetAuditLogUpdateManyMutationInput, HubAssetAuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which HubAssetAuditLogs to update
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * Limit how many HubAssetAuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAssetAuditLog upsert
+   */
+  export type HubAssetAuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the HubAssetAuditLog to update in case it exists.
+     */
+    where: HubAssetAuditLogWhereUniqueInput
+    /**
+     * In case the HubAssetAuditLog found by the `where` argument doesn't exist, create a new HubAssetAuditLog with this data.
+     */
+    create: XOR<HubAssetAuditLogCreateInput, HubAssetAuditLogUncheckedCreateInput>
+    /**
+     * In case the HubAssetAuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubAssetAuditLogUpdateInput, HubAssetAuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * HubAssetAuditLog delete
+   */
+  export type HubAssetAuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter which HubAssetAuditLog to delete.
+     */
+    where: HubAssetAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAssetAuditLog deleteMany
+   */
+  export type HubAssetAuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAssetAuditLogs to delete
+     */
+    where?: HubAssetAuditLogWhereInput
+    /**
+     * Limit how many HubAssetAuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAssetAuditLog without action
+   */
+  export type HubAssetAuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAssetAuditLog
+     */
+    select?: HubAssetAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAssetAuditLog
+     */
+    omit?: HubAssetAuditLogOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubInstallRecord
+   */
+
+  export type AggregateHubInstallRecord = {
+    _count: HubInstallRecordCountAggregateOutputType | null
+    _min: HubInstallRecordMinAggregateOutputType | null
+    _max: HubInstallRecordMaxAggregateOutputType | null
+  }
+
+  export type HubInstallRecordMinAggregateOutputType = {
+    id: string | null
+    projectName: string | null
+    repoUrl: string | null
+    manifestId: string | null
+    manifestVersion: string | null
+    installMode: string | null
+    status: string | null
+    message: string | null
+    createdAt: Date | null
+  }
+
+  export type HubInstallRecordMaxAggregateOutputType = {
+    id: string | null
+    projectName: string | null
+    repoUrl: string | null
+    manifestId: string | null
+    manifestVersion: string | null
+    installMode: string | null
+    status: string | null
+    message: string | null
+    createdAt: Date | null
+  }
+
+  export type HubInstallRecordCountAggregateOutputType = {
+    id: number
+    projectName: number
+    repoUrl: number
+    manifestId: number
+    manifestVersion: number
+    installMode: number
+    status: number
+    assets: number
+    message: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type HubInstallRecordMinAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    installMode?: true
+    status?: true
+    message?: true
+    createdAt?: true
+  }
+
+  export type HubInstallRecordMaxAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    installMode?: true
+    status?: true
+    message?: true
+    createdAt?: true
+  }
+
+  export type HubInstallRecordCountAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    installMode?: true
+    status?: true
+    assets?: true
+    message?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type HubInstallRecordAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubInstallRecord to aggregate.
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubInstallRecords to fetch.
+     */
+    orderBy?: HubInstallRecordOrderByWithRelationInput | HubInstallRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubInstallRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubInstallRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubInstallRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubInstallRecords
+    **/
+    _count?: true | HubInstallRecordCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubInstallRecordMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubInstallRecordMaxAggregateInputType
+  }
+
+  export type GetHubInstallRecordAggregateType<T extends HubInstallRecordAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubInstallRecord]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubInstallRecord[P]>
+      : GetScalarType<T[P], AggregateHubInstallRecord[P]>
+  }
+
+
+
+
+  export type HubInstallRecordGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubInstallRecordWhereInput
+    orderBy?: HubInstallRecordOrderByWithAggregationInput | HubInstallRecordOrderByWithAggregationInput[]
+    by: HubInstallRecordScalarFieldEnum[] | HubInstallRecordScalarFieldEnum
+    having?: HubInstallRecordScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubInstallRecordCountAggregateInputType | true
+    _min?: HubInstallRecordMinAggregateInputType
+    _max?: HubInstallRecordMaxAggregateInputType
+  }
+
+  export type HubInstallRecordGroupByOutputType = {
+    id: string
+    projectName: string
+    repoUrl: string | null
+    manifestId: string
+    manifestVersion: string
+    installMode: string
+    status: string
+    assets: JsonValue
+    message: string | null
+    createdAt: Date
+    _count: HubInstallRecordCountAggregateOutputType | null
+    _min: HubInstallRecordMinAggregateOutputType | null
+    _max: HubInstallRecordMaxAggregateOutputType | null
+  }
+
+  type GetHubInstallRecordGroupByPayload<T extends HubInstallRecordGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubInstallRecordGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubInstallRecordGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubInstallRecordGroupByOutputType[P]>
+            : GetScalarType<T[P], HubInstallRecordGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubInstallRecordSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectName?: boolean
+    repoUrl?: boolean
+    manifestId?: boolean
+    manifestVersion?: boolean
+    installMode?: boolean
+    status?: boolean
+    assets?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["hubInstallRecord"]>
+
+
+
+  export type HubInstallRecordSelectScalar = {
+    id?: boolean
+    projectName?: boolean
+    repoUrl?: boolean
+    manifestId?: boolean
+    manifestVersion?: boolean
+    installMode?: boolean
+    status?: boolean
+    assets?: boolean
+    message?: boolean
+    createdAt?: boolean
+  }
+
+  export type HubInstallRecordOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectName" | "repoUrl" | "manifestId" | "manifestVersion" | "installMode" | "status" | "assets" | "message" | "createdAt", ExtArgs["result"]["hubInstallRecord"]>
+
+  export type $HubInstallRecordPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubInstallRecord"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectName: string
+      repoUrl: string | null
+      manifestId: string
+      manifestVersion: string
+      installMode: string
+      status: string
+      assets: Prisma.JsonValue
+      message: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["hubInstallRecord"]>
+    composites: {}
+  }
+
+  type HubInstallRecordGetPayload<S extends boolean | null | undefined | HubInstallRecordDefaultArgs> = $Result.GetResult<Prisma.$HubInstallRecordPayload, S>
+
+  type HubInstallRecordCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubInstallRecordFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubInstallRecordCountAggregateInputType | true
+    }
+
+  export interface HubInstallRecordDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubInstallRecord'], meta: { name: 'HubInstallRecord' } }
+    /**
+     * Find zero or one HubInstallRecord that matches the filter.
+     * @param {HubInstallRecordFindUniqueArgs} args - Arguments to find a HubInstallRecord
+     * @example
+     * // Get one HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubInstallRecordFindUniqueArgs>(args: SelectSubset<T, HubInstallRecordFindUniqueArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubInstallRecord that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubInstallRecordFindUniqueOrThrowArgs} args - Arguments to find a HubInstallRecord
+     * @example
+     * // Get one HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubInstallRecordFindUniqueOrThrowArgs>(args: SelectSubset<T, HubInstallRecordFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubInstallRecord that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordFindFirstArgs} args - Arguments to find a HubInstallRecord
+     * @example
+     * // Get one HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubInstallRecordFindFirstArgs>(args?: SelectSubset<T, HubInstallRecordFindFirstArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubInstallRecord that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordFindFirstOrThrowArgs} args - Arguments to find a HubInstallRecord
+     * @example
+     * // Get one HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubInstallRecordFindFirstOrThrowArgs>(args?: SelectSubset<T, HubInstallRecordFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubInstallRecords that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubInstallRecords
+     * const hubInstallRecords = await prisma.hubInstallRecord.findMany()
+     *
+     * // Get first 10 HubInstallRecords
+     * const hubInstallRecords = await prisma.hubInstallRecord.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubInstallRecordWithIdOnly = await prisma.hubInstallRecord.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubInstallRecordFindManyArgs>(args?: SelectSubset<T, HubInstallRecordFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubInstallRecord.
+     * @param {HubInstallRecordCreateArgs} args - Arguments to create a HubInstallRecord.
+     * @example
+     * // Create one HubInstallRecord
+     * const HubInstallRecord = await prisma.hubInstallRecord.create({
+     *   data: {
+     *     // ... data to create a HubInstallRecord
+     *   }
+     * })
+     *
+     */
+    create<T extends HubInstallRecordCreateArgs>(args: SelectSubset<T, HubInstallRecordCreateArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubInstallRecords.
+     * @param {HubInstallRecordCreateManyArgs} args - Arguments to create many HubInstallRecords.
+     * @example
+     * // Create many HubInstallRecords
+     * const hubInstallRecord = await prisma.hubInstallRecord.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubInstallRecordCreateManyArgs>(args?: SelectSubset<T, HubInstallRecordCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubInstallRecord.
+     * @param {HubInstallRecordDeleteArgs} args - Arguments to delete one HubInstallRecord.
+     * @example
+     * // Delete one HubInstallRecord
+     * const HubInstallRecord = await prisma.hubInstallRecord.delete({
+     *   where: {
+     *     // ... filter to delete one HubInstallRecord
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubInstallRecordDeleteArgs>(args: SelectSubset<T, HubInstallRecordDeleteArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubInstallRecord.
+     * @param {HubInstallRecordUpdateArgs} args - Arguments to update one HubInstallRecord.
+     * @example
+     * // Update one HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubInstallRecordUpdateArgs>(args: SelectSubset<T, HubInstallRecordUpdateArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubInstallRecords.
+     * @param {HubInstallRecordDeleteManyArgs} args - Arguments to filter HubInstallRecords to delete.
+     * @example
+     * // Delete a few HubInstallRecords
+     * const { count } = await prisma.hubInstallRecord.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubInstallRecordDeleteManyArgs>(args?: SelectSubset<T, HubInstallRecordDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubInstallRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubInstallRecords
+     * const hubInstallRecord = await prisma.hubInstallRecord.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubInstallRecordUpdateManyArgs>(args: SelectSubset<T, HubInstallRecordUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubInstallRecord.
+     * @param {HubInstallRecordUpsertArgs} args - Arguments to update or create a HubInstallRecord.
+     * @example
+     * // Update or create a HubInstallRecord
+     * const hubInstallRecord = await prisma.hubInstallRecord.upsert({
+     *   create: {
+     *     // ... data to create a HubInstallRecord
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubInstallRecord we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubInstallRecordUpsertArgs>(args: SelectSubset<T, HubInstallRecordUpsertArgs<ExtArgs>>): Prisma__HubInstallRecordClient<$Result.GetResult<Prisma.$HubInstallRecordPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubInstallRecords.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordCountArgs} args - Arguments to filter HubInstallRecords to count.
+     * @example
+     * // Count the number of HubInstallRecords
+     * const count = await prisma.hubInstallRecord.count({
+     *   where: {
+     *     // ... the filter for the HubInstallRecords we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubInstallRecordCountArgs>(
+      args?: Subset<T, HubInstallRecordCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubInstallRecordCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubInstallRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubInstallRecordAggregateArgs>(args: Subset<T, HubInstallRecordAggregateArgs>): Prisma.PrismaPromise<GetHubInstallRecordAggregateType<T>>
+
+    /**
+     * Group by HubInstallRecord.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubInstallRecordGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubInstallRecordGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubInstallRecordGroupByArgs['orderBy'] }
+        : { orderBy?: HubInstallRecordGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubInstallRecordGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubInstallRecordGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubInstallRecord model
+   */
+  readonly fields: HubInstallRecordFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubInstallRecord.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubInstallRecordClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubInstallRecord model
+   */
+  interface HubInstallRecordFieldRefs {
+    readonly id: FieldRef<"HubInstallRecord", 'String'>
+    readonly projectName: FieldRef<"HubInstallRecord", 'String'>
+    readonly repoUrl: FieldRef<"HubInstallRecord", 'String'>
+    readonly manifestId: FieldRef<"HubInstallRecord", 'String'>
+    readonly manifestVersion: FieldRef<"HubInstallRecord", 'String'>
+    readonly installMode: FieldRef<"HubInstallRecord", 'String'>
+    readonly status: FieldRef<"HubInstallRecord", 'String'>
+    readonly assets: FieldRef<"HubInstallRecord", 'Json'>
+    readonly message: FieldRef<"HubInstallRecord", 'String'>
+    readonly createdAt: FieldRef<"HubInstallRecord", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubInstallRecord findUnique
+   */
+  export type HubInstallRecordFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which HubInstallRecord to fetch.
+     */
+    where: HubInstallRecordWhereUniqueInput
+  }
+
+  /**
+   * HubInstallRecord findUniqueOrThrow
+   */
+  export type HubInstallRecordFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which HubInstallRecord to fetch.
+     */
+    where: HubInstallRecordWhereUniqueInput
+  }
+
+  /**
+   * HubInstallRecord findFirst
+   */
+  export type HubInstallRecordFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which HubInstallRecord to fetch.
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubInstallRecords to fetch.
+     */
+    orderBy?: HubInstallRecordOrderByWithRelationInput | HubInstallRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubInstallRecords.
+     */
+    cursor?: HubInstallRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubInstallRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubInstallRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubInstallRecords.
+     */
+    distinct?: HubInstallRecordScalarFieldEnum | HubInstallRecordScalarFieldEnum[]
+  }
+
+  /**
+   * HubInstallRecord findFirstOrThrow
+   */
+  export type HubInstallRecordFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which HubInstallRecord to fetch.
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubInstallRecords to fetch.
+     */
+    orderBy?: HubInstallRecordOrderByWithRelationInput | HubInstallRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubInstallRecords.
+     */
+    cursor?: HubInstallRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubInstallRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubInstallRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubInstallRecords.
+     */
+    distinct?: HubInstallRecordScalarFieldEnum | HubInstallRecordScalarFieldEnum[]
+  }
+
+  /**
+   * HubInstallRecord findMany
+   */
+  export type HubInstallRecordFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter, which HubInstallRecords to fetch.
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubInstallRecords to fetch.
+     */
+    orderBy?: HubInstallRecordOrderByWithRelationInput | HubInstallRecordOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubInstallRecords.
+     */
+    cursor?: HubInstallRecordWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubInstallRecords from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubInstallRecords.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubInstallRecords.
+     */
+    distinct?: HubInstallRecordScalarFieldEnum | HubInstallRecordScalarFieldEnum[]
+  }
+
+  /**
+   * HubInstallRecord create
+   */
+  export type HubInstallRecordCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to create a HubInstallRecord.
+     */
+    data: XOR<HubInstallRecordCreateInput, HubInstallRecordUncheckedCreateInput>
+  }
+
+  /**
+   * HubInstallRecord createMany
+   */
+  export type HubInstallRecordCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubInstallRecords.
+     */
+    data: HubInstallRecordCreateManyInput | HubInstallRecordCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubInstallRecord update
+   */
+  export type HubInstallRecordUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * The data needed to update a HubInstallRecord.
+     */
+    data: XOR<HubInstallRecordUpdateInput, HubInstallRecordUncheckedUpdateInput>
+    /**
+     * Choose, which HubInstallRecord to update.
+     */
+    where: HubInstallRecordWhereUniqueInput
+  }
+
+  /**
+   * HubInstallRecord updateMany
+   */
+  export type HubInstallRecordUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubInstallRecords.
+     */
+    data: XOR<HubInstallRecordUpdateManyMutationInput, HubInstallRecordUncheckedUpdateManyInput>
+    /**
+     * Filter which HubInstallRecords to update
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * Limit how many HubInstallRecords to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubInstallRecord upsert
+   */
+  export type HubInstallRecordUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * The filter to search for the HubInstallRecord to update in case it exists.
+     */
+    where: HubInstallRecordWhereUniqueInput
+    /**
+     * In case the HubInstallRecord found by the `where` argument doesn't exist, create a new HubInstallRecord with this data.
+     */
+    create: XOR<HubInstallRecordCreateInput, HubInstallRecordUncheckedCreateInput>
+    /**
+     * In case the HubInstallRecord was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubInstallRecordUpdateInput, HubInstallRecordUncheckedUpdateInput>
+  }
+
+  /**
+   * HubInstallRecord delete
+   */
+  export type HubInstallRecordDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+    /**
+     * Filter which HubInstallRecord to delete.
+     */
+    where: HubInstallRecordWhereUniqueInput
+  }
+
+  /**
+   * HubInstallRecord deleteMany
+   */
+  export type HubInstallRecordDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubInstallRecords to delete
+     */
+    where?: HubInstallRecordWhereInput
+    /**
+     * Limit how many HubInstallRecords to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubInstallRecord without action
+   */
+  export type HubInstallRecordDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubInstallRecord
+     */
+    select?: HubInstallRecordSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubInstallRecord
+     */
+    omit?: HubInstallRecordOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HubRuntimeReport
+   */
+
+  export type AggregateHubRuntimeReport = {
+    _count: HubRuntimeReportCountAggregateOutputType | null
+    _avg: HubRuntimeReportAvgAggregateOutputType | null
+    _sum: HubRuntimeReportSumAggregateOutputType | null
+    _min: HubRuntimeReportMinAggregateOutputType | null
+    _max: HubRuntimeReportMaxAggregateOutputType | null
+  }
+
+  export type HubRuntimeReportAvgAggregateOutputType = {
+    durationMs: number | null
+  }
+
+  export type HubRuntimeReportSumAggregateOutputType = {
+    durationMs: number | null
+  }
+
+  export type HubRuntimeReportMinAggregateOutputType = {
+    id: string | null
+    projectName: string | null
+    repoUrl: string | null
+    manifestId: string | null
+    manifestVersion: string | null
+    runId: string | null
+    stage: string | null
+    status: string | null
+    durationMs: number | null
+    failedReason: string | null
+    createdAt: Date | null
+  }
+
+  export type HubRuntimeReportMaxAggregateOutputType = {
+    id: string | null
+    projectName: string | null
+    repoUrl: string | null
+    manifestId: string | null
+    manifestVersion: string | null
+    runId: string | null
+    stage: string | null
+    status: string | null
+    durationMs: number | null
+    failedReason: string | null
+    createdAt: Date | null
+  }
+
+  export type HubRuntimeReportCountAggregateOutputType = {
+    id: number
+    projectName: number
+    repoUrl: number
+    manifestId: number
+    manifestVersion: number
+    runId: number
+    stage: number
+    status: number
+    usedAssets: number
+    durationMs: number
+    failedReason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type HubRuntimeReportAvgAggregateInputType = {
+    durationMs?: true
+  }
+
+  export type HubRuntimeReportSumAggregateInputType = {
+    durationMs?: true
+  }
+
+  export type HubRuntimeReportMinAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    runId?: true
+    stage?: true
+    status?: true
+    durationMs?: true
+    failedReason?: true
+    createdAt?: true
+  }
+
+  export type HubRuntimeReportMaxAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    runId?: true
+    stage?: true
+    status?: true
+    durationMs?: true
+    failedReason?: true
+    createdAt?: true
+  }
+
+  export type HubRuntimeReportCountAggregateInputType = {
+    id?: true
+    projectName?: true
+    repoUrl?: true
+    manifestId?: true
+    manifestVersion?: true
+    runId?: true
+    stage?: true
+    status?: true
+    usedAssets?: true
+    durationMs?: true
+    failedReason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type HubRuntimeReportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubRuntimeReport to aggregate.
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubRuntimeReports to fetch.
+     */
+    orderBy?: HubRuntimeReportOrderByWithRelationInput | HubRuntimeReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: HubRuntimeReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubRuntimeReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubRuntimeReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned HubRuntimeReports
+    **/
+    _count?: true | HubRuntimeReportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: HubRuntimeReportAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: HubRuntimeReportSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubRuntimeReportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubRuntimeReportMaxAggregateInputType
+  }
+
+  export type GetHubRuntimeReportAggregateType<T extends HubRuntimeReportAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubRuntimeReport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubRuntimeReport[P]>
+      : GetScalarType<T[P], AggregateHubRuntimeReport[P]>
+  }
+
+
+
+
+  export type HubRuntimeReportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubRuntimeReportWhereInput
+    orderBy?: HubRuntimeReportOrderByWithAggregationInput | HubRuntimeReportOrderByWithAggregationInput[]
+    by: HubRuntimeReportScalarFieldEnum[] | HubRuntimeReportScalarFieldEnum
+    having?: HubRuntimeReportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubRuntimeReportCountAggregateInputType | true
+    _avg?: HubRuntimeReportAvgAggregateInputType
+    _sum?: HubRuntimeReportSumAggregateInputType
+    _min?: HubRuntimeReportMinAggregateInputType
+    _max?: HubRuntimeReportMaxAggregateInputType
+  }
+
+  export type HubRuntimeReportGroupByOutputType = {
+    id: string
+    projectName: string
+    repoUrl: string | null
+    manifestId: string | null
+    manifestVersion: string | null
+    runId: string
+    stage: string
+    status: string
+    usedAssets: JsonValue
+    durationMs: number
+    failedReason: string | null
+    createdAt: Date
+    _count: HubRuntimeReportCountAggregateOutputType | null
+    _avg: HubRuntimeReportAvgAggregateOutputType | null
+    _sum: HubRuntimeReportSumAggregateOutputType | null
+    _min: HubRuntimeReportMinAggregateOutputType | null
+    _max: HubRuntimeReportMaxAggregateOutputType | null
+  }
+
+  type GetHubRuntimeReportGroupByPayload<T extends HubRuntimeReportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubRuntimeReportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubRuntimeReportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubRuntimeReportGroupByOutputType[P]>
+            : GetScalarType<T[P], HubRuntimeReportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubRuntimeReportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    projectName?: boolean
+    repoUrl?: boolean
+    manifestId?: boolean
+    manifestVersion?: boolean
+    runId?: boolean
+    stage?: boolean
+    status?: boolean
+    usedAssets?: boolean
+    durationMs?: boolean
+    failedReason?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["hubRuntimeReport"]>
+
+
+
+  export type HubRuntimeReportSelectScalar = {
+    id?: boolean
+    projectName?: boolean
+    repoUrl?: boolean
+    manifestId?: boolean
+    manifestVersion?: boolean
+    runId?: boolean
+    stage?: boolean
+    status?: boolean
+    usedAssets?: boolean
+    durationMs?: boolean
+    failedReason?: boolean
+    createdAt?: boolean
+  }
+
+  export type HubRuntimeReportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "projectName" | "repoUrl" | "manifestId" | "manifestVersion" | "runId" | "stage" | "status" | "usedAssets" | "durationMs" | "failedReason" | "createdAt", ExtArgs["result"]["hubRuntimeReport"]>
+
+  export type $HubRuntimeReportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubRuntimeReport"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      projectName: string
+      repoUrl: string | null
+      manifestId: string | null
+      manifestVersion: string | null
+      runId: string
+      stage: string
+      status: string
+      usedAssets: Prisma.JsonValue
+      durationMs: number
+      failedReason: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["hubRuntimeReport"]>
+    composites: {}
+  }
+
+  type HubRuntimeReportGetPayload<S extends boolean | null | undefined | HubRuntimeReportDefaultArgs> = $Result.GetResult<Prisma.$HubRuntimeReportPayload, S>
+
+  type HubRuntimeReportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubRuntimeReportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubRuntimeReportCountAggregateInputType | true
+    }
+
+  export interface HubRuntimeReportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubRuntimeReport'], meta: { name: 'HubRuntimeReport' } }
+    /**
+     * Find zero or one HubRuntimeReport that matches the filter.
+     * @param {HubRuntimeReportFindUniqueArgs} args - Arguments to find a HubRuntimeReport
+     * @example
+     * // Get one HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubRuntimeReportFindUniqueArgs>(args: SelectSubset<T, HubRuntimeReportFindUniqueArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubRuntimeReport that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubRuntimeReportFindUniqueOrThrowArgs} args - Arguments to find a HubRuntimeReport
+     * @example
+     * // Get one HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubRuntimeReportFindUniqueOrThrowArgs>(args: SelectSubset<T, HubRuntimeReportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubRuntimeReport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportFindFirstArgs} args - Arguments to find a HubRuntimeReport
+     * @example
+     * // Get one HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubRuntimeReportFindFirstArgs>(args?: SelectSubset<T, HubRuntimeReportFindFirstArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubRuntimeReport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportFindFirstOrThrowArgs} args - Arguments to find a HubRuntimeReport
+     * @example
+     * // Get one HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubRuntimeReportFindFirstOrThrowArgs>(args?: SelectSubset<T, HubRuntimeReportFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubRuntimeReports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubRuntimeReports
+     * const hubRuntimeReports = await prisma.hubRuntimeReport.findMany()
+     *
+     * // Get first 10 HubRuntimeReports
+     * const hubRuntimeReports = await prisma.hubRuntimeReport.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const hubRuntimeReportWithIdOnly = await prisma.hubRuntimeReport.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends HubRuntimeReportFindManyArgs>(args?: SelectSubset<T, HubRuntimeReportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubRuntimeReport.
+     * @param {HubRuntimeReportCreateArgs} args - Arguments to create a HubRuntimeReport.
+     * @example
+     * // Create one HubRuntimeReport
+     * const HubRuntimeReport = await prisma.hubRuntimeReport.create({
+     *   data: {
+     *     // ... data to create a HubRuntimeReport
+     *   }
+     * })
+     *
+     */
+    create<T extends HubRuntimeReportCreateArgs>(args: SelectSubset<T, HubRuntimeReportCreateArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubRuntimeReports.
+     * @param {HubRuntimeReportCreateManyArgs} args - Arguments to create many HubRuntimeReports.
+     * @example
+     * // Create many HubRuntimeReports
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends HubRuntimeReportCreateManyArgs>(args?: SelectSubset<T, HubRuntimeReportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubRuntimeReport.
+     * @param {HubRuntimeReportDeleteArgs} args - Arguments to delete one HubRuntimeReport.
+     * @example
+     * // Delete one HubRuntimeReport
+     * const HubRuntimeReport = await prisma.hubRuntimeReport.delete({
+     *   where: {
+     *     // ... filter to delete one HubRuntimeReport
+     *   }
+     * })
+     *
+     */
+    delete<T extends HubRuntimeReportDeleteArgs>(args: SelectSubset<T, HubRuntimeReportDeleteArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubRuntimeReport.
+     * @param {HubRuntimeReportUpdateArgs} args - Arguments to update one HubRuntimeReport.
+     * @example
+     * // Update one HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends HubRuntimeReportUpdateArgs>(args: SelectSubset<T, HubRuntimeReportUpdateArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubRuntimeReports.
+     * @param {HubRuntimeReportDeleteManyArgs} args - Arguments to filter HubRuntimeReports to delete.
+     * @example
+     * // Delete a few HubRuntimeReports
+     * const { count } = await prisma.hubRuntimeReport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends HubRuntimeReportDeleteManyArgs>(args?: SelectSubset<T, HubRuntimeReportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubRuntimeReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubRuntimeReports
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends HubRuntimeReportUpdateManyArgs>(args: SelectSubset<T, HubRuntimeReportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubRuntimeReport.
+     * @param {HubRuntimeReportUpsertArgs} args - Arguments to update or create a HubRuntimeReport.
+     * @example
+     * // Update or create a HubRuntimeReport
+     * const hubRuntimeReport = await prisma.hubRuntimeReport.upsert({
+     *   create: {
+     *     // ... data to create a HubRuntimeReport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubRuntimeReport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubRuntimeReportUpsertArgs>(args: SelectSubset<T, HubRuntimeReportUpsertArgs<ExtArgs>>): Prisma__HubRuntimeReportClient<$Result.GetResult<Prisma.$HubRuntimeReportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubRuntimeReports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportCountArgs} args - Arguments to filter HubRuntimeReports to count.
+     * @example
+     * // Count the number of HubRuntimeReports
+     * const count = await prisma.hubRuntimeReport.count({
+     *   where: {
+     *     // ... the filter for the HubRuntimeReports we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubRuntimeReportCountArgs>(
+      args?: Subset<T, HubRuntimeReportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubRuntimeReportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubRuntimeReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubRuntimeReportAggregateArgs>(args: Subset<T, HubRuntimeReportAggregateArgs>): Prisma.PrismaPromise<GetHubRuntimeReportAggregateType<T>>
+
+    /**
+     * Group by HubRuntimeReport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubRuntimeReportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends HubRuntimeReportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubRuntimeReportGroupByArgs['orderBy'] }
+        : { orderBy?: HubRuntimeReportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubRuntimeReportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubRuntimeReportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubRuntimeReport model
+   */
+  readonly fields: HubRuntimeReportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubRuntimeReport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubRuntimeReportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubRuntimeReport model
+   */
+  interface HubRuntimeReportFieldRefs {
+    readonly id: FieldRef<"HubRuntimeReport", 'String'>
+    readonly projectName: FieldRef<"HubRuntimeReport", 'String'>
+    readonly repoUrl: FieldRef<"HubRuntimeReport", 'String'>
+    readonly manifestId: FieldRef<"HubRuntimeReport", 'String'>
+    readonly manifestVersion: FieldRef<"HubRuntimeReport", 'String'>
+    readonly runId: FieldRef<"HubRuntimeReport", 'String'>
+    readonly stage: FieldRef<"HubRuntimeReport", 'String'>
+    readonly status: FieldRef<"HubRuntimeReport", 'String'>
+    readonly usedAssets: FieldRef<"HubRuntimeReport", 'Json'>
+    readonly durationMs: FieldRef<"HubRuntimeReport", 'Int'>
+    readonly failedReason: FieldRef<"HubRuntimeReport", 'String'>
+    readonly createdAt: FieldRef<"HubRuntimeReport", 'DateTime'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * HubRuntimeReport findUnique
+   */
+  export type HubRuntimeReportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter, which HubRuntimeReport to fetch.
+     */
+    where: HubRuntimeReportWhereUniqueInput
+  }
+
+  /**
+   * HubRuntimeReport findUniqueOrThrow
+   */
+  export type HubRuntimeReportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter, which HubRuntimeReport to fetch.
+     */
+    where: HubRuntimeReportWhereUniqueInput
+  }
+
+  /**
+   * HubRuntimeReport findFirst
+   */
+  export type HubRuntimeReportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter, which HubRuntimeReport to fetch.
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubRuntimeReports to fetch.
+     */
+    orderBy?: HubRuntimeReportOrderByWithRelationInput | HubRuntimeReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubRuntimeReports.
+     */
+    cursor?: HubRuntimeReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubRuntimeReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubRuntimeReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubRuntimeReports.
+     */
+    distinct?: HubRuntimeReportScalarFieldEnum | HubRuntimeReportScalarFieldEnum[]
+  }
+
+  /**
+   * HubRuntimeReport findFirstOrThrow
+   */
+  export type HubRuntimeReportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter, which HubRuntimeReport to fetch.
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubRuntimeReports to fetch.
+     */
+    orderBy?: HubRuntimeReportOrderByWithRelationInput | HubRuntimeReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for HubRuntimeReports.
+     */
+    cursor?: HubRuntimeReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubRuntimeReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubRuntimeReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubRuntimeReports.
+     */
+    distinct?: HubRuntimeReportScalarFieldEnum | HubRuntimeReportScalarFieldEnum[]
+  }
+
+  /**
+   * HubRuntimeReport findMany
+   */
+  export type HubRuntimeReportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter, which HubRuntimeReports to fetch.
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of HubRuntimeReports to fetch.
+     */
+    orderBy?: HubRuntimeReportOrderByWithRelationInput | HubRuntimeReportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing HubRuntimeReports.
+     */
+    cursor?: HubRuntimeReportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` HubRuntimeReports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` HubRuntimeReports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of HubRuntimeReports.
+     */
+    distinct?: HubRuntimeReportScalarFieldEnum | HubRuntimeReportScalarFieldEnum[]
+  }
+
+  /**
+   * HubRuntimeReport create
+   */
+  export type HubRuntimeReportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * The data needed to create a HubRuntimeReport.
+     */
+    data: XOR<HubRuntimeReportCreateInput, HubRuntimeReportUncheckedCreateInput>
+  }
+
+  /**
+   * HubRuntimeReport createMany
+   */
+  export type HubRuntimeReportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubRuntimeReports.
+     */
+    data: HubRuntimeReportCreateManyInput | HubRuntimeReportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubRuntimeReport update
+   */
+  export type HubRuntimeReportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * The data needed to update a HubRuntimeReport.
+     */
+    data: XOR<HubRuntimeReportUpdateInput, HubRuntimeReportUncheckedUpdateInput>
+    /**
+     * Choose, which HubRuntimeReport to update.
+     */
+    where: HubRuntimeReportWhereUniqueInput
+  }
+
+  /**
+   * HubRuntimeReport updateMany
+   */
+  export type HubRuntimeReportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubRuntimeReports.
+     */
+    data: XOR<HubRuntimeReportUpdateManyMutationInput, HubRuntimeReportUncheckedUpdateManyInput>
+    /**
+     * Filter which HubRuntimeReports to update
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * Limit how many HubRuntimeReports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubRuntimeReport upsert
+   */
+  export type HubRuntimeReportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * The filter to search for the HubRuntimeReport to update in case it exists.
+     */
+    where: HubRuntimeReportWhereUniqueInput
+    /**
+     * In case the HubRuntimeReport found by the `where` argument doesn't exist, create a new HubRuntimeReport with this data.
+     */
+    create: XOR<HubRuntimeReportCreateInput, HubRuntimeReportUncheckedCreateInput>
+    /**
+     * In case the HubRuntimeReport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubRuntimeReportUpdateInput, HubRuntimeReportUncheckedUpdateInput>
+  }
+
+  /**
+   * HubRuntimeReport delete
+   */
+  export type HubRuntimeReportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
+    /**
+     * Filter which HubRuntimeReport to delete.
+     */
+    where: HubRuntimeReportWhereUniqueInput
+  }
+
+  /**
+   * HubRuntimeReport deleteMany
+   */
+  export type HubRuntimeReportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubRuntimeReports to delete
+     */
+    where?: HubRuntimeReportWhereInput
+    /**
+     * Limit how many HubRuntimeReports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubRuntimeReport without action
+   */
+  export type HubRuntimeReportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubRuntimeReport
+     */
+    select?: HubRuntimeReportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubRuntimeReport
+     */
+    omit?: HubRuntimeReportOmit<ExtArgs> | null
   }
 
 
@@ -32870,6 +41564,142 @@ export namespace Prisma {
   export type ScenarioDomainLinkScalarFieldEnum = (typeof ScenarioDomainLinkScalarFieldEnum)[keyof typeof ScenarioDomainLinkScalarFieldEnum]
 
 
+  export const HubAssetScalarFieldEnum: {
+    id: 'id',
+    assetId: 'assetId',
+    kind: 'kind',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    ownerId: 'ownerId',
+    teamId: 'teamId',
+    status: 'status',
+    riskLevel: 'riskLevel',
+    tags: 'tags',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type HubAssetScalarFieldEnum = (typeof HubAssetScalarFieldEnum)[keyof typeof HubAssetScalarFieldEnum]
+
+
+  export const HubAssetVersionScalarFieldEnum: {
+    id: 'id',
+    assetId: 'assetId',
+    version: 'version',
+    content: 'content',
+    contentFormat: 'contentFormat',
+    checksum: 'checksum',
+    changelog: 'changelog',
+    status: 'status',
+    contentUrl: 'contentUrl',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    publishedAt: 'publishedAt'
+  };
+
+  export type HubAssetVersionScalarFieldEnum = (typeof HubAssetVersionScalarFieldEnum)[keyof typeof HubAssetVersionScalarFieldEnum]
+
+
+  export const HubManifestScalarFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    status: 'status',
+    techStacks: 'techStacks',
+    ides: 'ides',
+    scenarios: 'scenarios',
+    tags: 'tags',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type HubManifestScalarFieldEnum = (typeof HubManifestScalarFieldEnum)[keyof typeof HubManifestScalarFieldEnum]
+
+
+  export const HubManifestVersionScalarFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    version: 'version',
+    checksum: 'checksum',
+    installPolicy: 'installPolicy',
+    compatibility: 'compatibility',
+    exportSnapshot: 'exportSnapshot',
+    releaseNote: 'releaseNote',
+    status: 'status',
+    createdAt: 'createdAt',
+    publishedAt: 'publishedAt'
+  };
+
+  export type HubManifestVersionScalarFieldEnum = (typeof HubManifestVersionScalarFieldEnum)[keyof typeof HubManifestVersionScalarFieldEnum]
+
+
+  export const HubManifestAssetScalarFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    kind: 'kind',
+    assetId: 'assetId',
+    version: 'version',
+    required: 'required',
+    installPath: 'installPath',
+    checksum: 'checksum',
+    sortOrder: 'sortOrder',
+    config: 'config',
+    createdAt: 'createdAt'
+  };
+
+  export type HubManifestAssetScalarFieldEnum = (typeof HubManifestAssetScalarFieldEnum)[keyof typeof HubManifestAssetScalarFieldEnum]
+
+
+  export const HubAssetAuditLogScalarFieldEnum: {
+    id: 'id',
+    actorId: 'actorId',
+    action: 'action',
+    resourceType: 'resourceType',
+    resourceId: 'resourceId',
+    details: 'details',
+    createdAt: 'createdAt'
+  };
+
+  export type HubAssetAuditLogScalarFieldEnum = (typeof HubAssetAuditLogScalarFieldEnum)[keyof typeof HubAssetAuditLogScalarFieldEnum]
+
+
+  export const HubInstallRecordScalarFieldEnum: {
+    id: 'id',
+    projectName: 'projectName',
+    repoUrl: 'repoUrl',
+    manifestId: 'manifestId',
+    manifestVersion: 'manifestVersion',
+    installMode: 'installMode',
+    status: 'status',
+    assets: 'assets',
+    message: 'message',
+    createdAt: 'createdAt'
+  };
+
+  export type HubInstallRecordScalarFieldEnum = (typeof HubInstallRecordScalarFieldEnum)[keyof typeof HubInstallRecordScalarFieldEnum]
+
+
+  export const HubRuntimeReportScalarFieldEnum: {
+    id: 'id',
+    projectName: 'projectName',
+    repoUrl: 'repoUrl',
+    manifestId: 'manifestId',
+    manifestVersion: 'manifestVersion',
+    runId: 'runId',
+    stage: 'stage',
+    status: 'status',
+    usedAssets: 'usedAssets',
+    durationMs: 'durationMs',
+    failedReason: 'failedReason',
+    createdAt: 'createdAt'
+  };
+
+  export type HubRuntimeReportScalarFieldEnum = (typeof HubRuntimeReportScalarFieldEnum)[keyof typeof HubRuntimeReportScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -33238,6 +42068,115 @@ export namespace Prisma {
   export type ScenarioDomainLinkOrderByRelevanceFieldEnum = (typeof ScenarioDomainLinkOrderByRelevanceFieldEnum)[keyof typeof ScenarioDomainLinkOrderByRelevanceFieldEnum]
 
 
+  export const HubAssetOrderByRelevanceFieldEnum: {
+    id: 'id',
+    assetId: 'assetId',
+    kind: 'kind',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    ownerId: 'ownerId',
+    teamId: 'teamId',
+    status: 'status',
+    riskLevel: 'riskLevel'
+  };
+
+  export type HubAssetOrderByRelevanceFieldEnum = (typeof HubAssetOrderByRelevanceFieldEnum)[keyof typeof HubAssetOrderByRelevanceFieldEnum]
+
+
+  export const HubAssetVersionOrderByRelevanceFieldEnum: {
+    id: 'id',
+    assetId: 'assetId',
+    version: 'version',
+    content: 'content',
+    contentFormat: 'contentFormat',
+    checksum: 'checksum',
+    changelog: 'changelog',
+    status: 'status',
+    contentUrl: 'contentUrl',
+    createdBy: 'createdBy'
+  };
+
+  export type HubAssetVersionOrderByRelevanceFieldEnum = (typeof HubAssetVersionOrderByRelevanceFieldEnum)[keyof typeof HubAssetVersionOrderByRelevanceFieldEnum]
+
+
+  export const HubManifestOrderByRelevanceFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    name: 'name',
+    displayName: 'displayName',
+    description: 'description',
+    status: 'status'
+  };
+
+  export type HubManifestOrderByRelevanceFieldEnum = (typeof HubManifestOrderByRelevanceFieldEnum)[keyof typeof HubManifestOrderByRelevanceFieldEnum]
+
+
+  export const HubManifestVersionOrderByRelevanceFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    version: 'version',
+    checksum: 'checksum',
+    releaseNote: 'releaseNote',
+    status: 'status'
+  };
+
+  export type HubManifestVersionOrderByRelevanceFieldEnum = (typeof HubManifestVersionOrderByRelevanceFieldEnum)[keyof typeof HubManifestVersionOrderByRelevanceFieldEnum]
+
+
+  export const HubManifestAssetOrderByRelevanceFieldEnum: {
+    id: 'id',
+    manifestId: 'manifestId',
+    kind: 'kind',
+    assetId: 'assetId',
+    version: 'version',
+    installPath: 'installPath',
+    checksum: 'checksum'
+  };
+
+  export type HubManifestAssetOrderByRelevanceFieldEnum = (typeof HubManifestAssetOrderByRelevanceFieldEnum)[keyof typeof HubManifestAssetOrderByRelevanceFieldEnum]
+
+
+  export const HubAssetAuditLogOrderByRelevanceFieldEnum: {
+    id: 'id',
+    actorId: 'actorId',
+    action: 'action',
+    resourceType: 'resourceType',
+    resourceId: 'resourceId'
+  };
+
+  export type HubAssetAuditLogOrderByRelevanceFieldEnum = (typeof HubAssetAuditLogOrderByRelevanceFieldEnum)[keyof typeof HubAssetAuditLogOrderByRelevanceFieldEnum]
+
+
+  export const HubInstallRecordOrderByRelevanceFieldEnum: {
+    id: 'id',
+    projectName: 'projectName',
+    repoUrl: 'repoUrl',
+    manifestId: 'manifestId',
+    manifestVersion: 'manifestVersion',
+    installMode: 'installMode',
+    status: 'status',
+    message: 'message'
+  };
+
+  export type HubInstallRecordOrderByRelevanceFieldEnum = (typeof HubInstallRecordOrderByRelevanceFieldEnum)[keyof typeof HubInstallRecordOrderByRelevanceFieldEnum]
+
+
+  export const HubRuntimeReportOrderByRelevanceFieldEnum: {
+    id: 'id',
+    projectName: 'projectName',
+    repoUrl: 'repoUrl',
+    manifestId: 'manifestId',
+    manifestVersion: 'manifestVersion',
+    runId: 'runId',
+    stage: 'stage',
+    status: 'status',
+    failedReason: 'failedReason'
+  };
+
+  export type HubRuntimeReportOrderByRelevanceFieldEnum = (typeof HubRuntimeReportOrderByRelevanceFieldEnum)[keyof typeof HubRuntimeReportOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -33247,49 +42186,49 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
+
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
+
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
+
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
+
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
+
   /**
    * Deep Input Types
    */
@@ -35550,6 +44489,695 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"ScenarioDomainLink"> | string
     scenarioPackageId?: StringWithAggregatesFilter<"ScenarioDomainLink"> | string
     domainId?: StringWithAggregatesFilter<"ScenarioDomainLink"> | string
+  }
+
+  export type HubAssetWhereInput = {
+    AND?: HubAssetWhereInput | HubAssetWhereInput[]
+    OR?: HubAssetWhereInput[]
+    NOT?: HubAssetWhereInput | HubAssetWhereInput[]
+    id?: StringFilter<"HubAsset"> | string
+    assetId?: StringFilter<"HubAsset"> | string
+    kind?: StringFilter<"HubAsset"> | string
+    name?: StringFilter<"HubAsset"> | string
+    displayName?: StringFilter<"HubAsset"> | string
+    description?: StringNullableFilter<"HubAsset"> | string | null
+    ownerId?: StringNullableFilter<"HubAsset"> | string | null
+    teamId?: StringNullableFilter<"HubAsset"> | string | null
+    status?: StringFilter<"HubAsset"> | string
+    riskLevel?: StringFilter<"HubAsset"> | string
+    tags?: JsonNullableFilter<"HubAsset">
+    createdAt?: DateTimeFilter<"HubAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"HubAsset"> | Date | string
+    versions?: HubAssetVersionListRelationFilter
+  }
+
+  export type HubAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    kind?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    ownerId?: SortOrderInput | SortOrder
+    teamId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    riskLevel?: SortOrder
+    tags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    versions?: HubAssetVersionOrderByRelationAggregateInput
+    _relevance?: HubAssetOrderByRelevanceInput
+  }
+
+  export type HubAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    assetId?: string
+    AND?: HubAssetWhereInput | HubAssetWhereInput[]
+    OR?: HubAssetWhereInput[]
+    NOT?: HubAssetWhereInput | HubAssetWhereInput[]
+    kind?: StringFilter<"HubAsset"> | string
+    name?: StringFilter<"HubAsset"> | string
+    displayName?: StringFilter<"HubAsset"> | string
+    description?: StringNullableFilter<"HubAsset"> | string | null
+    ownerId?: StringNullableFilter<"HubAsset"> | string | null
+    teamId?: StringNullableFilter<"HubAsset"> | string | null
+    status?: StringFilter<"HubAsset"> | string
+    riskLevel?: StringFilter<"HubAsset"> | string
+    tags?: JsonNullableFilter<"HubAsset">
+    createdAt?: DateTimeFilter<"HubAsset"> | Date | string
+    updatedAt?: DateTimeFilter<"HubAsset"> | Date | string
+    versions?: HubAssetVersionListRelationFilter
+  }, "id" | "assetId">
+
+  export type HubAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    kind?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    ownerId?: SortOrderInput | SortOrder
+    teamId?: SortOrderInput | SortOrder
+    status?: SortOrder
+    riskLevel?: SortOrder
+    tags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: HubAssetCountOrderByAggregateInput
+    _max?: HubAssetMaxOrderByAggregateInput
+    _min?: HubAssetMinOrderByAggregateInput
+  }
+
+  export type HubAssetScalarWhereWithAggregatesInput = {
+    AND?: HubAssetScalarWhereWithAggregatesInput | HubAssetScalarWhereWithAggregatesInput[]
+    OR?: HubAssetScalarWhereWithAggregatesInput[]
+    NOT?: HubAssetScalarWhereWithAggregatesInput | HubAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubAsset"> | string
+    assetId?: StringWithAggregatesFilter<"HubAsset"> | string
+    kind?: StringWithAggregatesFilter<"HubAsset"> | string
+    name?: StringWithAggregatesFilter<"HubAsset"> | string
+    displayName?: StringWithAggregatesFilter<"HubAsset"> | string
+    description?: StringNullableWithAggregatesFilter<"HubAsset"> | string | null
+    ownerId?: StringNullableWithAggregatesFilter<"HubAsset"> | string | null
+    teamId?: StringNullableWithAggregatesFilter<"HubAsset"> | string | null
+    status?: StringWithAggregatesFilter<"HubAsset"> | string
+    riskLevel?: StringWithAggregatesFilter<"HubAsset"> | string
+    tags?: JsonNullableWithAggregatesFilter<"HubAsset">
+    createdAt?: DateTimeWithAggregatesFilter<"HubAsset"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"HubAsset"> | Date | string
+  }
+
+  export type HubAssetVersionWhereInput = {
+    AND?: HubAssetVersionWhereInput | HubAssetVersionWhereInput[]
+    OR?: HubAssetVersionWhereInput[]
+    NOT?: HubAssetVersionWhereInput | HubAssetVersionWhereInput[]
+    id?: StringFilter<"HubAssetVersion"> | string
+    assetId?: StringFilter<"HubAssetVersion"> | string
+    version?: StringFilter<"HubAssetVersion"> | string
+    content?: StringNullableFilter<"HubAssetVersion"> | string | null
+    contentFormat?: StringFilter<"HubAssetVersion"> | string
+    checksum?: StringFilter<"HubAssetVersion"> | string
+    changelog?: StringNullableFilter<"HubAssetVersion"> | string | null
+    status?: StringFilter<"HubAssetVersion"> | string
+    contentUrl?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdBy?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdAt?: DateTimeFilter<"HubAssetVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubAssetVersion"> | Date | string | null
+    asset?: XOR<HubAssetScalarRelationFilter, HubAssetWhereInput>
+  }
+
+  export type HubAssetVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    content?: SortOrderInput | SortOrder
+    contentFormat?: SortOrder
+    checksum?: SortOrder
+    changelog?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contentUrl?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    asset?: HubAssetOrderByWithRelationInput
+    _relevance?: HubAssetVersionOrderByRelevanceInput
+  }
+
+  export type HubAssetVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    assetId_version?: HubAssetVersionAssetIdVersionCompoundUniqueInput
+    AND?: HubAssetVersionWhereInput | HubAssetVersionWhereInput[]
+    OR?: HubAssetVersionWhereInput[]
+    NOT?: HubAssetVersionWhereInput | HubAssetVersionWhereInput[]
+    assetId?: StringFilter<"HubAssetVersion"> | string
+    version?: StringFilter<"HubAssetVersion"> | string
+    content?: StringNullableFilter<"HubAssetVersion"> | string | null
+    contentFormat?: StringFilter<"HubAssetVersion"> | string
+    checksum?: StringFilter<"HubAssetVersion"> | string
+    changelog?: StringNullableFilter<"HubAssetVersion"> | string | null
+    status?: StringFilter<"HubAssetVersion"> | string
+    contentUrl?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdBy?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdAt?: DateTimeFilter<"HubAssetVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubAssetVersion"> | Date | string | null
+    asset?: XOR<HubAssetScalarRelationFilter, HubAssetWhereInput>
+  }, "id" | "assetId_version">
+
+  export type HubAssetVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    content?: SortOrderInput | SortOrder
+    contentFormat?: SortOrder
+    checksum?: SortOrder
+    changelog?: SortOrderInput | SortOrder
+    status?: SortOrder
+    contentUrl?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    _count?: HubAssetVersionCountOrderByAggregateInput
+    _max?: HubAssetVersionMaxOrderByAggregateInput
+    _min?: HubAssetVersionMinOrderByAggregateInput
+  }
+
+  export type HubAssetVersionScalarWhereWithAggregatesInput = {
+    AND?: HubAssetVersionScalarWhereWithAggregatesInput | HubAssetVersionScalarWhereWithAggregatesInput[]
+    OR?: HubAssetVersionScalarWhereWithAggregatesInput[]
+    NOT?: HubAssetVersionScalarWhereWithAggregatesInput | HubAssetVersionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    assetId?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    version?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    content?: StringNullableWithAggregatesFilter<"HubAssetVersion"> | string | null
+    contentFormat?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    checksum?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    changelog?: StringNullableWithAggregatesFilter<"HubAssetVersion"> | string | null
+    status?: StringWithAggregatesFilter<"HubAssetVersion"> | string
+    contentUrl?: StringNullableWithAggregatesFilter<"HubAssetVersion"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"HubAssetVersion"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"HubAssetVersion"> | Date | string
+    publishedAt?: DateTimeNullableWithAggregatesFilter<"HubAssetVersion"> | Date | string | null
+  }
+
+  export type HubManifestWhereInput = {
+    AND?: HubManifestWhereInput | HubManifestWhereInput[]
+    OR?: HubManifestWhereInput[]
+    NOT?: HubManifestWhereInput | HubManifestWhereInput[]
+    id?: StringFilter<"HubManifest"> | string
+    manifestId?: StringFilter<"HubManifest"> | string
+    name?: StringFilter<"HubManifest"> | string
+    displayName?: StringFilter<"HubManifest"> | string
+    description?: StringNullableFilter<"HubManifest"> | string | null
+    status?: StringFilter<"HubManifest"> | string
+    techStacks?: JsonNullableFilter<"HubManifest">
+    ides?: JsonNullableFilter<"HubManifest">
+    scenarios?: JsonNullableFilter<"HubManifest">
+    tags?: JsonNullableFilter<"HubManifest">
+    createdAt?: DateTimeFilter<"HubManifest"> | Date | string
+    updatedAt?: DateTimeFilter<"HubManifest"> | Date | string
+    versions?: HubManifestVersionListRelationFilter
+    assets?: HubManifestAssetListRelationFilter
+  }
+
+  export type HubManifestOrderByWithRelationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    techStacks?: SortOrderInput | SortOrder
+    ides?: SortOrderInput | SortOrder
+    scenarios?: SortOrderInput | SortOrder
+    tags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    versions?: HubManifestVersionOrderByRelationAggregateInput
+    assets?: HubManifestAssetOrderByRelationAggregateInput
+    _relevance?: HubManifestOrderByRelevanceInput
+  }
+
+  export type HubManifestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    manifestId?: string
+    AND?: HubManifestWhereInput | HubManifestWhereInput[]
+    OR?: HubManifestWhereInput[]
+    NOT?: HubManifestWhereInput | HubManifestWhereInput[]
+    name?: StringFilter<"HubManifest"> | string
+    displayName?: StringFilter<"HubManifest"> | string
+    description?: StringNullableFilter<"HubManifest"> | string | null
+    status?: StringFilter<"HubManifest"> | string
+    techStacks?: JsonNullableFilter<"HubManifest">
+    ides?: JsonNullableFilter<"HubManifest">
+    scenarios?: JsonNullableFilter<"HubManifest">
+    tags?: JsonNullableFilter<"HubManifest">
+    createdAt?: DateTimeFilter<"HubManifest"> | Date | string
+    updatedAt?: DateTimeFilter<"HubManifest"> | Date | string
+    versions?: HubManifestVersionListRelationFilter
+    assets?: HubManifestAssetListRelationFilter
+  }, "id" | "manifestId">
+
+  export type HubManifestOrderByWithAggregationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    techStacks?: SortOrderInput | SortOrder
+    ides?: SortOrderInput | SortOrder
+    scenarios?: SortOrderInput | SortOrder
+    tags?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: HubManifestCountOrderByAggregateInput
+    _max?: HubManifestMaxOrderByAggregateInput
+    _min?: HubManifestMinOrderByAggregateInput
+  }
+
+  export type HubManifestScalarWhereWithAggregatesInput = {
+    AND?: HubManifestScalarWhereWithAggregatesInput | HubManifestScalarWhereWithAggregatesInput[]
+    OR?: HubManifestScalarWhereWithAggregatesInput[]
+    NOT?: HubManifestScalarWhereWithAggregatesInput | HubManifestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubManifest"> | string
+    manifestId?: StringWithAggregatesFilter<"HubManifest"> | string
+    name?: StringWithAggregatesFilter<"HubManifest"> | string
+    displayName?: StringWithAggregatesFilter<"HubManifest"> | string
+    description?: StringNullableWithAggregatesFilter<"HubManifest"> | string | null
+    status?: StringWithAggregatesFilter<"HubManifest"> | string
+    techStacks?: JsonNullableWithAggregatesFilter<"HubManifest">
+    ides?: JsonNullableWithAggregatesFilter<"HubManifest">
+    scenarios?: JsonNullableWithAggregatesFilter<"HubManifest">
+    tags?: JsonNullableWithAggregatesFilter<"HubManifest">
+    createdAt?: DateTimeWithAggregatesFilter<"HubManifest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"HubManifest"> | Date | string
+  }
+
+  export type HubManifestVersionWhereInput = {
+    AND?: HubManifestVersionWhereInput | HubManifestVersionWhereInput[]
+    OR?: HubManifestVersionWhereInput[]
+    NOT?: HubManifestVersionWhereInput | HubManifestVersionWhereInput[]
+    id?: StringFilter<"HubManifestVersion"> | string
+    manifestId?: StringFilter<"HubManifestVersion"> | string
+    version?: StringFilter<"HubManifestVersion"> | string
+    checksum?: StringFilter<"HubManifestVersion"> | string
+    installPolicy?: JsonFilter<"HubManifestVersion">
+    compatibility?: JsonFilter<"HubManifestVersion">
+    exportSnapshot?: JsonFilter<"HubManifestVersion">
+    releaseNote?: StringNullableFilter<"HubManifestVersion"> | string | null
+    status?: StringFilter<"HubManifestVersion"> | string
+    createdAt?: DateTimeFilter<"HubManifestVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubManifestVersion"> | Date | string | null
+    manifest?: XOR<HubManifestScalarRelationFilter, HubManifestWhereInput>
+  }
+
+  export type HubManifestVersionOrderByWithRelationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    version?: SortOrder
+    checksum?: SortOrder
+    installPolicy?: SortOrder
+    compatibility?: SortOrder
+    exportSnapshot?: SortOrder
+    releaseNote?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    manifest?: HubManifestOrderByWithRelationInput
+    _relevance?: HubManifestVersionOrderByRelevanceInput
+  }
+
+  export type HubManifestVersionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    manifestId_version?: HubManifestVersionManifestIdVersionCompoundUniqueInput
+    AND?: HubManifestVersionWhereInput | HubManifestVersionWhereInput[]
+    OR?: HubManifestVersionWhereInput[]
+    NOT?: HubManifestVersionWhereInput | HubManifestVersionWhereInput[]
+    manifestId?: StringFilter<"HubManifestVersion"> | string
+    version?: StringFilter<"HubManifestVersion"> | string
+    checksum?: StringFilter<"HubManifestVersion"> | string
+    installPolicy?: JsonFilter<"HubManifestVersion">
+    compatibility?: JsonFilter<"HubManifestVersion">
+    exportSnapshot?: JsonFilter<"HubManifestVersion">
+    releaseNote?: StringNullableFilter<"HubManifestVersion"> | string | null
+    status?: StringFilter<"HubManifestVersion"> | string
+    createdAt?: DateTimeFilter<"HubManifestVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubManifestVersion"> | Date | string | null
+    manifest?: XOR<HubManifestScalarRelationFilter, HubManifestWhereInput>
+  }, "id" | "manifestId_version">
+
+  export type HubManifestVersionOrderByWithAggregationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    version?: SortOrder
+    checksum?: SortOrder
+    installPolicy?: SortOrder
+    compatibility?: SortOrder
+    exportSnapshot?: SortOrder
+    releaseNote?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrderInput | SortOrder
+    _count?: HubManifestVersionCountOrderByAggregateInput
+    _max?: HubManifestVersionMaxOrderByAggregateInput
+    _min?: HubManifestVersionMinOrderByAggregateInput
+  }
+
+  export type HubManifestVersionScalarWhereWithAggregatesInput = {
+    AND?: HubManifestVersionScalarWhereWithAggregatesInput | HubManifestVersionScalarWhereWithAggregatesInput[]
+    OR?: HubManifestVersionScalarWhereWithAggregatesInput[]
+    NOT?: HubManifestVersionScalarWhereWithAggregatesInput | HubManifestVersionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubManifestVersion"> | string
+    manifestId?: StringWithAggregatesFilter<"HubManifestVersion"> | string
+    version?: StringWithAggregatesFilter<"HubManifestVersion"> | string
+    checksum?: StringWithAggregatesFilter<"HubManifestVersion"> | string
+    installPolicy?: JsonWithAggregatesFilter<"HubManifestVersion">
+    compatibility?: JsonWithAggregatesFilter<"HubManifestVersion">
+    exportSnapshot?: JsonWithAggregatesFilter<"HubManifestVersion">
+    releaseNote?: StringNullableWithAggregatesFilter<"HubManifestVersion"> | string | null
+    status?: StringWithAggregatesFilter<"HubManifestVersion"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"HubManifestVersion"> | Date | string
+    publishedAt?: DateTimeNullableWithAggregatesFilter<"HubManifestVersion"> | Date | string | null
+  }
+
+  export type HubManifestAssetWhereInput = {
+    AND?: HubManifestAssetWhereInput | HubManifestAssetWhereInput[]
+    OR?: HubManifestAssetWhereInput[]
+    NOT?: HubManifestAssetWhereInput | HubManifestAssetWhereInput[]
+    id?: StringFilter<"HubManifestAsset"> | string
+    manifestId?: StringFilter<"HubManifestAsset"> | string
+    kind?: StringFilter<"HubManifestAsset"> | string
+    assetId?: StringFilter<"HubManifestAsset"> | string
+    version?: StringFilter<"HubManifestAsset"> | string
+    required?: BoolFilter<"HubManifestAsset"> | boolean
+    installPath?: StringNullableFilter<"HubManifestAsset"> | string | null
+    checksum?: StringFilter<"HubManifestAsset"> | string
+    sortOrder?: IntFilter<"HubManifestAsset"> | number
+    config?: JsonNullableFilter<"HubManifestAsset">
+    createdAt?: DateTimeFilter<"HubManifestAsset"> | Date | string
+    manifest?: XOR<HubManifestScalarRelationFilter, HubManifestWhereInput>
+  }
+
+  export type HubManifestAssetOrderByWithRelationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    kind?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    required?: SortOrder
+    installPath?: SortOrderInput | SortOrder
+    checksum?: SortOrder
+    sortOrder?: SortOrder
+    config?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    manifest?: HubManifestOrderByWithRelationInput
+    _relevance?: HubManifestAssetOrderByRelevanceInput
+  }
+
+  export type HubManifestAssetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    manifestId_kind_assetId_version?: HubManifestAssetManifestIdKindAssetIdVersionCompoundUniqueInput
+    AND?: HubManifestAssetWhereInput | HubManifestAssetWhereInput[]
+    OR?: HubManifestAssetWhereInput[]
+    NOT?: HubManifestAssetWhereInput | HubManifestAssetWhereInput[]
+    manifestId?: StringFilter<"HubManifestAsset"> | string
+    kind?: StringFilter<"HubManifestAsset"> | string
+    assetId?: StringFilter<"HubManifestAsset"> | string
+    version?: StringFilter<"HubManifestAsset"> | string
+    required?: BoolFilter<"HubManifestAsset"> | boolean
+    installPath?: StringNullableFilter<"HubManifestAsset"> | string | null
+    checksum?: StringFilter<"HubManifestAsset"> | string
+    sortOrder?: IntFilter<"HubManifestAsset"> | number
+    config?: JsonNullableFilter<"HubManifestAsset">
+    createdAt?: DateTimeFilter<"HubManifestAsset"> | Date | string
+    manifest?: XOR<HubManifestScalarRelationFilter, HubManifestWhereInput>
+  }, "id" | "manifestId_kind_assetId_version">
+
+  export type HubManifestAssetOrderByWithAggregationInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    kind?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    required?: SortOrder
+    installPath?: SortOrderInput | SortOrder
+    checksum?: SortOrder
+    sortOrder?: SortOrder
+    config?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: HubManifestAssetCountOrderByAggregateInput
+    _avg?: HubManifestAssetAvgOrderByAggregateInput
+    _max?: HubManifestAssetMaxOrderByAggregateInput
+    _min?: HubManifestAssetMinOrderByAggregateInput
+    _sum?: HubManifestAssetSumOrderByAggregateInput
+  }
+
+  export type HubManifestAssetScalarWhereWithAggregatesInput = {
+    AND?: HubManifestAssetScalarWhereWithAggregatesInput | HubManifestAssetScalarWhereWithAggregatesInput[]
+    OR?: HubManifestAssetScalarWhereWithAggregatesInput[]
+    NOT?: HubManifestAssetScalarWhereWithAggregatesInput | HubManifestAssetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    manifestId?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    kind?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    assetId?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    version?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    required?: BoolWithAggregatesFilter<"HubManifestAsset"> | boolean
+    installPath?: StringNullableWithAggregatesFilter<"HubManifestAsset"> | string | null
+    checksum?: StringWithAggregatesFilter<"HubManifestAsset"> | string
+    sortOrder?: IntWithAggregatesFilter<"HubManifestAsset"> | number
+    config?: JsonNullableWithAggregatesFilter<"HubManifestAsset">
+    createdAt?: DateTimeWithAggregatesFilter<"HubManifestAsset"> | Date | string
+  }
+
+  export type HubAssetAuditLogWhereInput = {
+    AND?: HubAssetAuditLogWhereInput | HubAssetAuditLogWhereInput[]
+    OR?: HubAssetAuditLogWhereInput[]
+    NOT?: HubAssetAuditLogWhereInput | HubAssetAuditLogWhereInput[]
+    id?: StringFilter<"HubAssetAuditLog"> | string
+    actorId?: StringNullableFilter<"HubAssetAuditLog"> | string | null
+    action?: StringFilter<"HubAssetAuditLog"> | string
+    resourceType?: StringFilter<"HubAssetAuditLog"> | string
+    resourceId?: StringFilter<"HubAssetAuditLog"> | string
+    details?: JsonFilter<"HubAssetAuditLog">
+    createdAt?: DateTimeFilter<"HubAssetAuditLog"> | Date | string
+  }
+
+  export type HubAssetAuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    actorId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    resourceType?: SortOrder
+    resourceId?: SortOrder
+    details?: SortOrder
+    createdAt?: SortOrder
+    _relevance?: HubAssetAuditLogOrderByRelevanceInput
+  }
+
+  export type HubAssetAuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HubAssetAuditLogWhereInput | HubAssetAuditLogWhereInput[]
+    OR?: HubAssetAuditLogWhereInput[]
+    NOT?: HubAssetAuditLogWhereInput | HubAssetAuditLogWhereInput[]
+    actorId?: StringNullableFilter<"HubAssetAuditLog"> | string | null
+    action?: StringFilter<"HubAssetAuditLog"> | string
+    resourceType?: StringFilter<"HubAssetAuditLog"> | string
+    resourceId?: StringFilter<"HubAssetAuditLog"> | string
+    details?: JsonFilter<"HubAssetAuditLog">
+    createdAt?: DateTimeFilter<"HubAssetAuditLog"> | Date | string
+  }, "id">
+
+  export type HubAssetAuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    actorId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    resourceType?: SortOrder
+    resourceId?: SortOrder
+    details?: SortOrder
+    createdAt?: SortOrder
+    _count?: HubAssetAuditLogCountOrderByAggregateInput
+    _max?: HubAssetAuditLogMaxOrderByAggregateInput
+    _min?: HubAssetAuditLogMinOrderByAggregateInput
+  }
+
+  export type HubAssetAuditLogScalarWhereWithAggregatesInput = {
+    AND?: HubAssetAuditLogScalarWhereWithAggregatesInput | HubAssetAuditLogScalarWhereWithAggregatesInput[]
+    OR?: HubAssetAuditLogScalarWhereWithAggregatesInput[]
+    NOT?: HubAssetAuditLogScalarWhereWithAggregatesInput | HubAssetAuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubAssetAuditLog"> | string
+    actorId?: StringNullableWithAggregatesFilter<"HubAssetAuditLog"> | string | null
+    action?: StringWithAggregatesFilter<"HubAssetAuditLog"> | string
+    resourceType?: StringWithAggregatesFilter<"HubAssetAuditLog"> | string
+    resourceId?: StringWithAggregatesFilter<"HubAssetAuditLog"> | string
+    details?: JsonWithAggregatesFilter<"HubAssetAuditLog">
+    createdAt?: DateTimeWithAggregatesFilter<"HubAssetAuditLog"> | Date | string
+  }
+
+  export type HubInstallRecordWhereInput = {
+    AND?: HubInstallRecordWhereInput | HubInstallRecordWhereInput[]
+    OR?: HubInstallRecordWhereInput[]
+    NOT?: HubInstallRecordWhereInput | HubInstallRecordWhereInput[]
+    id?: StringFilter<"HubInstallRecord"> | string
+    projectName?: StringFilter<"HubInstallRecord"> | string
+    repoUrl?: StringNullableFilter<"HubInstallRecord"> | string | null
+    manifestId?: StringFilter<"HubInstallRecord"> | string
+    manifestVersion?: StringFilter<"HubInstallRecord"> | string
+    installMode?: StringFilter<"HubInstallRecord"> | string
+    status?: StringFilter<"HubInstallRecord"> | string
+    assets?: JsonFilter<"HubInstallRecord">
+    message?: StringNullableFilter<"HubInstallRecord"> | string | null
+    createdAt?: DateTimeFilter<"HubInstallRecord"> | Date | string
+  }
+
+  export type HubInstallRecordOrderByWithRelationInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrderInput | SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    installMode?: SortOrder
+    status?: SortOrder
+    assets?: SortOrder
+    message?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _relevance?: HubInstallRecordOrderByRelevanceInput
+  }
+
+  export type HubInstallRecordWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HubInstallRecordWhereInput | HubInstallRecordWhereInput[]
+    OR?: HubInstallRecordWhereInput[]
+    NOT?: HubInstallRecordWhereInput | HubInstallRecordWhereInput[]
+    projectName?: StringFilter<"HubInstallRecord"> | string
+    repoUrl?: StringNullableFilter<"HubInstallRecord"> | string | null
+    manifestId?: StringFilter<"HubInstallRecord"> | string
+    manifestVersion?: StringFilter<"HubInstallRecord"> | string
+    installMode?: StringFilter<"HubInstallRecord"> | string
+    status?: StringFilter<"HubInstallRecord"> | string
+    assets?: JsonFilter<"HubInstallRecord">
+    message?: StringNullableFilter<"HubInstallRecord"> | string | null
+    createdAt?: DateTimeFilter<"HubInstallRecord"> | Date | string
+  }, "id">
+
+  export type HubInstallRecordOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrderInput | SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    installMode?: SortOrder
+    status?: SortOrder
+    assets?: SortOrder
+    message?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: HubInstallRecordCountOrderByAggregateInput
+    _max?: HubInstallRecordMaxOrderByAggregateInput
+    _min?: HubInstallRecordMinOrderByAggregateInput
+  }
+
+  export type HubInstallRecordScalarWhereWithAggregatesInput = {
+    AND?: HubInstallRecordScalarWhereWithAggregatesInput | HubInstallRecordScalarWhereWithAggregatesInput[]
+    OR?: HubInstallRecordScalarWhereWithAggregatesInput[]
+    NOT?: HubInstallRecordScalarWhereWithAggregatesInput | HubInstallRecordScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    projectName?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    repoUrl?: StringNullableWithAggregatesFilter<"HubInstallRecord"> | string | null
+    manifestId?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    manifestVersion?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    installMode?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    status?: StringWithAggregatesFilter<"HubInstallRecord"> | string
+    assets?: JsonWithAggregatesFilter<"HubInstallRecord">
+    message?: StringNullableWithAggregatesFilter<"HubInstallRecord"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"HubInstallRecord"> | Date | string
+  }
+
+  export type HubRuntimeReportWhereInput = {
+    AND?: HubRuntimeReportWhereInput | HubRuntimeReportWhereInput[]
+    OR?: HubRuntimeReportWhereInput[]
+    NOT?: HubRuntimeReportWhereInput | HubRuntimeReportWhereInput[]
+    id?: StringFilter<"HubRuntimeReport"> | string
+    projectName?: StringFilter<"HubRuntimeReport"> | string
+    repoUrl?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    manifestId?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    manifestVersion?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    runId?: StringFilter<"HubRuntimeReport"> | string
+    stage?: StringFilter<"HubRuntimeReport"> | string
+    status?: StringFilter<"HubRuntimeReport"> | string
+    usedAssets?: JsonFilter<"HubRuntimeReport">
+    durationMs?: IntFilter<"HubRuntimeReport"> | number
+    failedReason?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    createdAt?: DateTimeFilter<"HubRuntimeReport"> | Date | string
+  }
+
+  export type HubRuntimeReportOrderByWithRelationInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrderInput | SortOrder
+    manifestId?: SortOrderInput | SortOrder
+    manifestVersion?: SortOrderInput | SortOrder
+    runId?: SortOrder
+    stage?: SortOrder
+    status?: SortOrder
+    usedAssets?: SortOrder
+    durationMs?: SortOrder
+    failedReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _relevance?: HubRuntimeReportOrderByRelevanceInput
+  }
+
+  export type HubRuntimeReportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HubRuntimeReportWhereInput | HubRuntimeReportWhereInput[]
+    OR?: HubRuntimeReportWhereInput[]
+    NOT?: HubRuntimeReportWhereInput | HubRuntimeReportWhereInput[]
+    projectName?: StringFilter<"HubRuntimeReport"> | string
+    repoUrl?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    manifestId?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    manifestVersion?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    runId?: StringFilter<"HubRuntimeReport"> | string
+    stage?: StringFilter<"HubRuntimeReport"> | string
+    status?: StringFilter<"HubRuntimeReport"> | string
+    usedAssets?: JsonFilter<"HubRuntimeReport">
+    durationMs?: IntFilter<"HubRuntimeReport"> | number
+    failedReason?: StringNullableFilter<"HubRuntimeReport"> | string | null
+    createdAt?: DateTimeFilter<"HubRuntimeReport"> | Date | string
+  }, "id">
+
+  export type HubRuntimeReportOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrderInput | SortOrder
+    manifestId?: SortOrderInput | SortOrder
+    manifestVersion?: SortOrderInput | SortOrder
+    runId?: SortOrder
+    stage?: SortOrder
+    status?: SortOrder
+    usedAssets?: SortOrder
+    durationMs?: SortOrder
+    failedReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: HubRuntimeReportCountOrderByAggregateInput
+    _avg?: HubRuntimeReportAvgOrderByAggregateInput
+    _max?: HubRuntimeReportMaxOrderByAggregateInput
+    _min?: HubRuntimeReportMinOrderByAggregateInput
+    _sum?: HubRuntimeReportSumOrderByAggregateInput
+  }
+
+  export type HubRuntimeReportScalarWhereWithAggregatesInput = {
+    AND?: HubRuntimeReportScalarWhereWithAggregatesInput | HubRuntimeReportScalarWhereWithAggregatesInput[]
+    OR?: HubRuntimeReportScalarWhereWithAggregatesInput[]
+    NOT?: HubRuntimeReportScalarWhereWithAggregatesInput | HubRuntimeReportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubRuntimeReport"> | string
+    projectName?: StringWithAggregatesFilter<"HubRuntimeReport"> | string
+    repoUrl?: StringNullableWithAggregatesFilter<"HubRuntimeReport"> | string | null
+    manifestId?: StringNullableWithAggregatesFilter<"HubRuntimeReport"> | string | null
+    manifestVersion?: StringNullableWithAggregatesFilter<"HubRuntimeReport"> | string | null
+    runId?: StringWithAggregatesFilter<"HubRuntimeReport"> | string
+    stage?: StringWithAggregatesFilter<"HubRuntimeReport"> | string
+    status?: StringWithAggregatesFilter<"HubRuntimeReport"> | string
+    usedAssets?: JsonWithAggregatesFilter<"HubRuntimeReport">
+    durationMs?: IntWithAggregatesFilter<"HubRuntimeReport"> | number
+    failedReason?: StringNullableWithAggregatesFilter<"HubRuntimeReport"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"HubRuntimeReport"> | Date | string
   }
 
   export type AgentCreateInput = {
@@ -37949,6 +47577,799 @@ export namespace Prisma {
     domainId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type HubAssetCreateInput = {
+    id?: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description?: string | null
+    ownerId?: string | null
+    teamId?: string | null
+    status?: string
+    riskLevel?: string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubAssetVersionCreateNestedManyWithoutAssetInput
+  }
+
+  export type HubAssetUncheckedCreateInput = {
+    id?: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description?: string | null
+    ownerId?: string | null
+    teamId?: string | null
+    status?: string
+    riskLevel?: string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubAssetVersionUncheckedCreateNestedManyWithoutAssetInput
+  }
+
+  export type HubAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubAssetVersionUpdateManyWithoutAssetNestedInput
+  }
+
+  export type HubAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubAssetVersionUncheckedUpdateManyWithoutAssetNestedInput
+  }
+
+  export type HubAssetCreateManyInput = {
+    id?: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description?: string | null
+    ownerId?: string | null
+    teamId?: string | null
+    status?: string
+    riskLevel?: string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HubAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetVersionCreateInput = {
+    id?: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+    asset: HubAssetCreateNestedOneWithoutVersionsInput
+  }
+
+  export type HubAssetVersionUncheckedCreateInput = {
+    id?: string
+    assetId: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubAssetVersionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    asset?: HubAssetUpdateOneRequiredWithoutVersionsNestedInput
+  }
+
+  export type HubAssetVersionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubAssetVersionCreateManyInput = {
+    id?: string
+    assetId: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubAssetVersionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubAssetVersionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestCreateInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubManifestVersionCreateNestedManyWithoutManifestInput
+    assets?: HubManifestAssetCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestUncheckedCreateInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubManifestVersionUncheckedCreateNestedManyWithoutManifestInput
+    assets?: HubManifestAssetUncheckedCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubManifestVersionUpdateManyWithoutManifestNestedInput
+    assets?: HubManifestAssetUpdateManyWithoutManifestNestedInput
+  }
+
+  export type HubManifestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubManifestVersionUncheckedUpdateManyWithoutManifestNestedInput
+    assets?: HubManifestAssetUncheckedUpdateManyWithoutManifestNestedInput
+  }
+
+  export type HubManifestCreateManyInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HubManifestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestVersionCreateInput = {
+    id?: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+    manifest: HubManifestCreateNestedOneWithoutVersionsInput
+  }
+
+  export type HubManifestVersionUncheckedCreateInput = {
+    id?: string
+    manifestId: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubManifestVersionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    manifest?: HubManifestUpdateOneRequiredWithoutVersionsNestedInput
+  }
+
+  export type HubManifestVersionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestVersionCreateManyInput = {
+    id?: string
+    manifestId: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubManifestVersionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestVersionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestAssetCreateInput = {
+    id?: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    manifest: HubManifestCreateNestedOneWithoutAssetsInput
+  }
+
+  export type HubManifestAssetUncheckedCreateInput = {
+    id?: string
+    manifestId: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubManifestAssetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    manifest?: HubManifestUpdateOneRequiredWithoutAssetsNestedInput
+  }
+
+  export type HubManifestAssetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestAssetCreateManyInput = {
+    id?: string
+    manifestId: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubManifestAssetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestAssetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetAuditLogCreateInput = {
+    id?: string
+    actorId?: string | null
+    action: string
+    resourceType: string
+    resourceId: string
+    details: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubAssetAuditLogUncheckedCreateInput = {
+    id?: string
+    actorId?: string | null
+    action: string
+    resourceType: string
+    resourceId: string
+    details: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubAssetAuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    details?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetAuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    details?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetAuditLogCreateManyInput = {
+    id?: string
+    actorId?: string | null
+    action: string
+    resourceType: string
+    resourceId: string
+    details: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubAssetAuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    details?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetAuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resourceType?: StringFieldUpdateOperationsInput | string
+    resourceId?: StringFieldUpdateOperationsInput | string
+    details?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubInstallRecordCreateInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId: string
+    manifestVersion: string
+    installMode: string
+    status: string
+    assets: JsonNullValueInput | InputJsonValue
+    message?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubInstallRecordUncheckedCreateInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId: string
+    manifestVersion: string
+    installMode: string
+    status: string
+    assets: JsonNullValueInput | InputJsonValue
+    message?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubInstallRecordUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: StringFieldUpdateOperationsInput | string
+    manifestVersion?: StringFieldUpdateOperationsInput | string
+    installMode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    assets?: JsonNullValueInput | InputJsonValue
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubInstallRecordUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: StringFieldUpdateOperationsInput | string
+    manifestVersion?: StringFieldUpdateOperationsInput | string
+    installMode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    assets?: JsonNullValueInput | InputJsonValue
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubInstallRecordCreateManyInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId: string
+    manifestVersion: string
+    installMode: string
+    status: string
+    assets: JsonNullValueInput | InputJsonValue
+    message?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubInstallRecordUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: StringFieldUpdateOperationsInput | string
+    manifestVersion?: StringFieldUpdateOperationsInput | string
+    installMode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    assets?: JsonNullValueInput | InputJsonValue
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubInstallRecordUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: StringFieldUpdateOperationsInput | string
+    manifestVersion?: StringFieldUpdateOperationsInput | string
+    installMode?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    assets?: JsonNullValueInput | InputJsonValue
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubRuntimeReportCreateInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId?: string | null
+    manifestVersion?: string | null
+    runId: string
+    stage: string
+    status: string
+    usedAssets: JsonNullValueInput | InputJsonValue
+    durationMs?: number
+    failedReason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubRuntimeReportUncheckedCreateInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId?: string | null
+    manifestVersion?: string | null
+    runId: string
+    stage: string
+    status: string
+    usedAssets: JsonNullValueInput | InputJsonValue
+    durationMs?: number
+    failedReason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubRuntimeReportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    usedAssets?: JsonNullValueInput | InputJsonValue
+    durationMs?: IntFieldUpdateOperationsInput | number
+    failedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubRuntimeReportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    usedAssets?: JsonNullValueInput | InputJsonValue
+    durationMs?: IntFieldUpdateOperationsInput | number
+    failedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubRuntimeReportCreateManyInput = {
+    id?: string
+    projectName: string
+    repoUrl?: string | null
+    manifestId?: string | null
+    manifestVersion?: string | null
+    runId: string
+    stage: string
+    status: string
+    usedAssets: JsonNullValueInput | InputJsonValue
+    durationMs?: number
+    failedReason?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubRuntimeReportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    usedAssets?: JsonNullValueInput | InputJsonValue
+    durationMs?: IntFieldUpdateOperationsInput | number
+    failedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubRuntimeReportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectName?: StringFieldUpdateOperationsInput | string
+    repoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestId?: NullableStringFieldUpdateOperationsInput | string | null
+    manifestVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    runId?: StringFieldUpdateOperationsInput | string
+    stage?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    usedAssets?: JsonNullValueInput | InputJsonValue
+    durationMs?: IntFieldUpdateOperationsInput | number
+    failedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -39819,6 +50240,439 @@ export namespace Prisma {
     id?: SortOrder
     scenarioPackageId?: SortOrder
     domainId?: SortOrder
+  }
+
+  export type HubAssetVersionListRelationFilter = {
+    every?: HubAssetVersionWhereInput
+    some?: HubAssetVersionWhereInput
+    none?: HubAssetVersionWhereInput
+  }
+
+  export type HubAssetVersionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HubAssetOrderByRelevanceInput = {
+    fields: HubAssetOrderByRelevanceFieldEnum | HubAssetOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    kind?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    ownerId?: SortOrder
+    teamId?: SortOrder
+    status?: SortOrder
+    riskLevel?: SortOrder
+    tags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    kind?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    ownerId?: SortOrder
+    teamId?: SortOrder
+    status?: SortOrder
+    riskLevel?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    kind?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    ownerId?: SortOrder
+    teamId?: SortOrder
+    status?: SortOrder
+    riskLevel?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubAssetScalarRelationFilter = {
+    is?: HubAssetWhereInput
+    isNot?: HubAssetWhereInput
+  }
+
+  export type HubAssetVersionOrderByRelevanceInput = {
+    fields: HubAssetVersionOrderByRelevanceFieldEnum | HubAssetVersionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubAssetVersionAssetIdVersionCompoundUniqueInput = {
+    assetId: string
+    version: string
+  }
+
+  export type HubAssetVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    content?: SortOrder
+    contentFormat?: SortOrder
+    checksum?: SortOrder
+    changelog?: SortOrder
+    status?: SortOrder
+    contentUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubAssetVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    content?: SortOrder
+    contentFormat?: SortOrder
+    checksum?: SortOrder
+    changelog?: SortOrder
+    status?: SortOrder
+    contentUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubAssetVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    content?: SortOrder
+    contentFormat?: SortOrder
+    checksum?: SortOrder
+    changelog?: SortOrder
+    status?: SortOrder
+    contentUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubManifestVersionListRelationFilter = {
+    every?: HubManifestVersionWhereInput
+    some?: HubManifestVersionWhereInput
+    none?: HubManifestVersionWhereInput
+  }
+
+  export type HubManifestAssetListRelationFilter = {
+    every?: HubManifestAssetWhereInput
+    some?: HubManifestAssetWhereInput
+    none?: HubManifestAssetWhereInput
+  }
+
+  export type HubManifestVersionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HubManifestAssetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type HubManifestOrderByRelevanceInput = {
+    fields: HubManifestOrderByRelevanceFieldEnum | HubManifestOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubManifestCountOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    techStacks?: SortOrder
+    ides?: SortOrder
+    scenarios?: SortOrder
+    tags?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubManifestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubManifestMinOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    name?: SortOrder
+    displayName?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type HubManifestScalarRelationFilter = {
+    is?: HubManifestWhereInput
+    isNot?: HubManifestWhereInput
+  }
+
+  export type HubManifestVersionOrderByRelevanceInput = {
+    fields: HubManifestVersionOrderByRelevanceFieldEnum | HubManifestVersionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubManifestVersionManifestIdVersionCompoundUniqueInput = {
+    manifestId: string
+    version: string
+  }
+
+  export type HubManifestVersionCountOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    version?: SortOrder
+    checksum?: SortOrder
+    installPolicy?: SortOrder
+    compatibility?: SortOrder
+    exportSnapshot?: SortOrder
+    releaseNote?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubManifestVersionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    version?: SortOrder
+    checksum?: SortOrder
+    releaseNote?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubManifestVersionMinOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    version?: SortOrder
+    checksum?: SortOrder
+    releaseNote?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    publishedAt?: SortOrder
+  }
+
+  export type HubManifestAssetOrderByRelevanceInput = {
+    fields: HubManifestAssetOrderByRelevanceFieldEnum | HubManifestAssetOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubManifestAssetManifestIdKindAssetIdVersionCompoundUniqueInput = {
+    manifestId: string
+    kind: string
+    assetId: string
+    version: string
+  }
+
+  export type HubManifestAssetCountOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    kind?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    required?: SortOrder
+    installPath?: SortOrder
+    checksum?: SortOrder
+    sortOrder?: SortOrder
+    config?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubManifestAssetAvgOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
+  export type HubManifestAssetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    kind?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    required?: SortOrder
+    installPath?: SortOrder
+    checksum?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubManifestAssetMinOrderByAggregateInput = {
+    id?: SortOrder
+    manifestId?: SortOrder
+    kind?: SortOrder
+    assetId?: SortOrder
+    version?: SortOrder
+    required?: SortOrder
+    installPath?: SortOrder
+    checksum?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubManifestAssetSumOrderByAggregateInput = {
+    sortOrder?: SortOrder
+  }
+
+  export type HubAssetAuditLogOrderByRelevanceInput = {
+    fields: HubAssetAuditLogOrderByRelevanceFieldEnum | HubAssetAuditLogOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubAssetAuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceType?: SortOrder
+    resourceId?: SortOrder
+    details?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubAssetAuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceType?: SortOrder
+    resourceId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubAssetAuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    actorId?: SortOrder
+    action?: SortOrder
+    resourceType?: SortOrder
+    resourceId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubInstallRecordOrderByRelevanceInput = {
+    fields: HubInstallRecordOrderByRelevanceFieldEnum | HubInstallRecordOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubInstallRecordCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    installMode?: SortOrder
+    status?: SortOrder
+    assets?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubInstallRecordMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    installMode?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubInstallRecordMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    installMode?: SortOrder
+    status?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubRuntimeReportOrderByRelevanceInput = {
+    fields: HubRuntimeReportOrderByRelevanceFieldEnum | HubRuntimeReportOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubRuntimeReportCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    runId?: SortOrder
+    stage?: SortOrder
+    status?: SortOrder
+    usedAssets?: SortOrder
+    durationMs?: SortOrder
+    failedReason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubRuntimeReportAvgOrderByAggregateInput = {
+    durationMs?: SortOrder
+  }
+
+  export type HubRuntimeReportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    runId?: SortOrder
+    stage?: SortOrder
+    status?: SortOrder
+    durationMs?: SortOrder
+    failedReason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubRuntimeReportMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectName?: SortOrder
+    repoUrl?: SortOrder
+    manifestId?: SortOrder
+    manifestVersion?: SortOrder
+    runId?: SortOrder
+    stage?: SortOrder
+    status?: SortOrder
+    durationMs?: SortOrder
+    failedReason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubRuntimeReportSumOrderByAggregateInput = {
+    durationMs?: SortOrder
   }
 
   export type ApiKeyCreateNestedManyWithoutAgentInput = {
@@ -41887,6 +52741,174 @@ export namespace Prisma {
     upsert?: CapabilityDomainUpsertWithoutScenarioLinksInput
     connect?: CapabilityDomainWhereUniqueInput
     update?: XOR<XOR<CapabilityDomainUpdateToOneWithWhereWithoutScenarioLinksInput, CapabilityDomainUpdateWithoutScenarioLinksInput>, CapabilityDomainUncheckedUpdateWithoutScenarioLinksInput>
+  }
+
+  export type HubAssetVersionCreateNestedManyWithoutAssetInput = {
+    create?: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput> | HubAssetVersionCreateWithoutAssetInput[] | HubAssetVersionUncheckedCreateWithoutAssetInput[]
+    connectOrCreate?: HubAssetVersionCreateOrConnectWithoutAssetInput | HubAssetVersionCreateOrConnectWithoutAssetInput[]
+    createMany?: HubAssetVersionCreateManyAssetInputEnvelope
+    connect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+  }
+
+  export type HubAssetVersionUncheckedCreateNestedManyWithoutAssetInput = {
+    create?: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput> | HubAssetVersionCreateWithoutAssetInput[] | HubAssetVersionUncheckedCreateWithoutAssetInput[]
+    connectOrCreate?: HubAssetVersionCreateOrConnectWithoutAssetInput | HubAssetVersionCreateOrConnectWithoutAssetInput[]
+    createMany?: HubAssetVersionCreateManyAssetInputEnvelope
+    connect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+  }
+
+  export type HubAssetVersionUpdateManyWithoutAssetNestedInput = {
+    create?: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput> | HubAssetVersionCreateWithoutAssetInput[] | HubAssetVersionUncheckedCreateWithoutAssetInput[]
+    connectOrCreate?: HubAssetVersionCreateOrConnectWithoutAssetInput | HubAssetVersionCreateOrConnectWithoutAssetInput[]
+    upsert?: HubAssetVersionUpsertWithWhereUniqueWithoutAssetInput | HubAssetVersionUpsertWithWhereUniqueWithoutAssetInput[]
+    createMany?: HubAssetVersionCreateManyAssetInputEnvelope
+    set?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    disconnect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    delete?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    connect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    update?: HubAssetVersionUpdateWithWhereUniqueWithoutAssetInput | HubAssetVersionUpdateWithWhereUniqueWithoutAssetInput[]
+    updateMany?: HubAssetVersionUpdateManyWithWhereWithoutAssetInput | HubAssetVersionUpdateManyWithWhereWithoutAssetInput[]
+    deleteMany?: HubAssetVersionScalarWhereInput | HubAssetVersionScalarWhereInput[]
+  }
+
+  export type HubAssetVersionUncheckedUpdateManyWithoutAssetNestedInput = {
+    create?: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput> | HubAssetVersionCreateWithoutAssetInput[] | HubAssetVersionUncheckedCreateWithoutAssetInput[]
+    connectOrCreate?: HubAssetVersionCreateOrConnectWithoutAssetInput | HubAssetVersionCreateOrConnectWithoutAssetInput[]
+    upsert?: HubAssetVersionUpsertWithWhereUniqueWithoutAssetInput | HubAssetVersionUpsertWithWhereUniqueWithoutAssetInput[]
+    createMany?: HubAssetVersionCreateManyAssetInputEnvelope
+    set?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    disconnect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    delete?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    connect?: HubAssetVersionWhereUniqueInput | HubAssetVersionWhereUniqueInput[]
+    update?: HubAssetVersionUpdateWithWhereUniqueWithoutAssetInput | HubAssetVersionUpdateWithWhereUniqueWithoutAssetInput[]
+    updateMany?: HubAssetVersionUpdateManyWithWhereWithoutAssetInput | HubAssetVersionUpdateManyWithWhereWithoutAssetInput[]
+    deleteMany?: HubAssetVersionScalarWhereInput | HubAssetVersionScalarWhereInput[]
+  }
+
+  export type HubAssetCreateNestedOneWithoutVersionsInput = {
+    create?: XOR<HubAssetCreateWithoutVersionsInput, HubAssetUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: HubAssetCreateOrConnectWithoutVersionsInput
+    connect?: HubAssetWhereUniqueInput
+  }
+
+  export type HubAssetUpdateOneRequiredWithoutVersionsNestedInput = {
+    create?: XOR<HubAssetCreateWithoutVersionsInput, HubAssetUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: HubAssetCreateOrConnectWithoutVersionsInput
+    upsert?: HubAssetUpsertWithoutVersionsInput
+    connect?: HubAssetWhereUniqueInput
+    update?: XOR<XOR<HubAssetUpdateToOneWithWhereWithoutVersionsInput, HubAssetUpdateWithoutVersionsInput>, HubAssetUncheckedUpdateWithoutVersionsInput>
+  }
+
+  export type HubManifestVersionCreateNestedManyWithoutManifestInput = {
+    create?: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput> | HubManifestVersionCreateWithoutManifestInput[] | HubManifestVersionUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestVersionCreateOrConnectWithoutManifestInput | HubManifestVersionCreateOrConnectWithoutManifestInput[]
+    createMany?: HubManifestVersionCreateManyManifestInputEnvelope
+    connect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+  }
+
+  export type HubManifestAssetCreateNestedManyWithoutManifestInput = {
+    create?: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput> | HubManifestAssetCreateWithoutManifestInput[] | HubManifestAssetUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestAssetCreateOrConnectWithoutManifestInput | HubManifestAssetCreateOrConnectWithoutManifestInput[]
+    createMany?: HubManifestAssetCreateManyManifestInputEnvelope
+    connect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+  }
+
+  export type HubManifestVersionUncheckedCreateNestedManyWithoutManifestInput = {
+    create?: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput> | HubManifestVersionCreateWithoutManifestInput[] | HubManifestVersionUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestVersionCreateOrConnectWithoutManifestInput | HubManifestVersionCreateOrConnectWithoutManifestInput[]
+    createMany?: HubManifestVersionCreateManyManifestInputEnvelope
+    connect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+  }
+
+  export type HubManifestAssetUncheckedCreateNestedManyWithoutManifestInput = {
+    create?: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput> | HubManifestAssetCreateWithoutManifestInput[] | HubManifestAssetUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestAssetCreateOrConnectWithoutManifestInput | HubManifestAssetCreateOrConnectWithoutManifestInput[]
+    createMany?: HubManifestAssetCreateManyManifestInputEnvelope
+    connect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+  }
+
+  export type HubManifestVersionUpdateManyWithoutManifestNestedInput = {
+    create?: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput> | HubManifestVersionCreateWithoutManifestInput[] | HubManifestVersionUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestVersionCreateOrConnectWithoutManifestInput | HubManifestVersionCreateOrConnectWithoutManifestInput[]
+    upsert?: HubManifestVersionUpsertWithWhereUniqueWithoutManifestInput | HubManifestVersionUpsertWithWhereUniqueWithoutManifestInput[]
+    createMany?: HubManifestVersionCreateManyManifestInputEnvelope
+    set?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    disconnect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    delete?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    connect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    update?: HubManifestVersionUpdateWithWhereUniqueWithoutManifestInput | HubManifestVersionUpdateWithWhereUniqueWithoutManifestInput[]
+    updateMany?: HubManifestVersionUpdateManyWithWhereWithoutManifestInput | HubManifestVersionUpdateManyWithWhereWithoutManifestInput[]
+    deleteMany?: HubManifestVersionScalarWhereInput | HubManifestVersionScalarWhereInput[]
+  }
+
+  export type HubManifestAssetUpdateManyWithoutManifestNestedInput = {
+    create?: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput> | HubManifestAssetCreateWithoutManifestInput[] | HubManifestAssetUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestAssetCreateOrConnectWithoutManifestInput | HubManifestAssetCreateOrConnectWithoutManifestInput[]
+    upsert?: HubManifestAssetUpsertWithWhereUniqueWithoutManifestInput | HubManifestAssetUpsertWithWhereUniqueWithoutManifestInput[]
+    createMany?: HubManifestAssetCreateManyManifestInputEnvelope
+    set?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    disconnect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    delete?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    connect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    update?: HubManifestAssetUpdateWithWhereUniqueWithoutManifestInput | HubManifestAssetUpdateWithWhereUniqueWithoutManifestInput[]
+    updateMany?: HubManifestAssetUpdateManyWithWhereWithoutManifestInput | HubManifestAssetUpdateManyWithWhereWithoutManifestInput[]
+    deleteMany?: HubManifestAssetScalarWhereInput | HubManifestAssetScalarWhereInput[]
+  }
+
+  export type HubManifestVersionUncheckedUpdateManyWithoutManifestNestedInput = {
+    create?: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput> | HubManifestVersionCreateWithoutManifestInput[] | HubManifestVersionUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestVersionCreateOrConnectWithoutManifestInput | HubManifestVersionCreateOrConnectWithoutManifestInput[]
+    upsert?: HubManifestVersionUpsertWithWhereUniqueWithoutManifestInput | HubManifestVersionUpsertWithWhereUniqueWithoutManifestInput[]
+    createMany?: HubManifestVersionCreateManyManifestInputEnvelope
+    set?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    disconnect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    delete?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    connect?: HubManifestVersionWhereUniqueInput | HubManifestVersionWhereUniqueInput[]
+    update?: HubManifestVersionUpdateWithWhereUniqueWithoutManifestInput | HubManifestVersionUpdateWithWhereUniqueWithoutManifestInput[]
+    updateMany?: HubManifestVersionUpdateManyWithWhereWithoutManifestInput | HubManifestVersionUpdateManyWithWhereWithoutManifestInput[]
+    deleteMany?: HubManifestVersionScalarWhereInput | HubManifestVersionScalarWhereInput[]
+  }
+
+  export type HubManifestAssetUncheckedUpdateManyWithoutManifestNestedInput = {
+    create?: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput> | HubManifestAssetCreateWithoutManifestInput[] | HubManifestAssetUncheckedCreateWithoutManifestInput[]
+    connectOrCreate?: HubManifestAssetCreateOrConnectWithoutManifestInput | HubManifestAssetCreateOrConnectWithoutManifestInput[]
+    upsert?: HubManifestAssetUpsertWithWhereUniqueWithoutManifestInput | HubManifestAssetUpsertWithWhereUniqueWithoutManifestInput[]
+    createMany?: HubManifestAssetCreateManyManifestInputEnvelope
+    set?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    disconnect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    delete?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    connect?: HubManifestAssetWhereUniqueInput | HubManifestAssetWhereUniqueInput[]
+    update?: HubManifestAssetUpdateWithWhereUniqueWithoutManifestInput | HubManifestAssetUpdateWithWhereUniqueWithoutManifestInput[]
+    updateMany?: HubManifestAssetUpdateManyWithWhereWithoutManifestInput | HubManifestAssetUpdateManyWithWhereWithoutManifestInput[]
+    deleteMany?: HubManifestAssetScalarWhereInput | HubManifestAssetScalarWhereInput[]
+  }
+
+  export type HubManifestCreateNestedOneWithoutVersionsInput = {
+    create?: XOR<HubManifestCreateWithoutVersionsInput, HubManifestUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: HubManifestCreateOrConnectWithoutVersionsInput
+    connect?: HubManifestWhereUniqueInput
+  }
+
+  export type HubManifestUpdateOneRequiredWithoutVersionsNestedInput = {
+    create?: XOR<HubManifestCreateWithoutVersionsInput, HubManifestUncheckedCreateWithoutVersionsInput>
+    connectOrCreate?: HubManifestCreateOrConnectWithoutVersionsInput
+    upsert?: HubManifestUpsertWithoutVersionsInput
+    connect?: HubManifestWhereUniqueInput
+    update?: XOR<XOR<HubManifestUpdateToOneWithWhereWithoutVersionsInput, HubManifestUpdateWithoutVersionsInput>, HubManifestUncheckedUpdateWithoutVersionsInput>
+  }
+
+  export type HubManifestCreateNestedOneWithoutAssetsInput = {
+    create?: XOR<HubManifestCreateWithoutAssetsInput, HubManifestUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: HubManifestCreateOrConnectWithoutAssetsInput
+    connect?: HubManifestWhereUniqueInput
+  }
+
+  export type HubManifestUpdateOneRequiredWithoutAssetsNestedInput = {
+    create?: XOR<HubManifestCreateWithoutAssetsInput, HubManifestUncheckedCreateWithoutAssetsInput>
+    connectOrCreate?: HubManifestCreateOrConnectWithoutAssetsInput
+    upsert?: HubManifestUpsertWithoutAssetsInput
+    connect?: HubManifestWhereUniqueInput
+    update?: XOR<XOR<HubManifestUpdateToOneWithWhereWithoutAssetsInput, HubManifestUpdateWithoutAssetsInput>, HubManifestUncheckedUpdateWithoutAssetsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -48309,6 +59331,456 @@ export namespace Prisma {
     ruleLinks?: RuleDomainLinkUncheckedUpdateManyWithoutDomainNestedInput
   }
 
+  export type HubAssetVersionCreateWithoutAssetInput = {
+    id?: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubAssetVersionUncheckedCreateWithoutAssetInput = {
+    id?: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubAssetVersionCreateOrConnectWithoutAssetInput = {
+    where: HubAssetVersionWhereUniqueInput
+    create: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput>
+  }
+
+  export type HubAssetVersionCreateManyAssetInputEnvelope = {
+    data: HubAssetVersionCreateManyAssetInput | HubAssetVersionCreateManyAssetInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HubAssetVersionUpsertWithWhereUniqueWithoutAssetInput = {
+    where: HubAssetVersionWhereUniqueInput
+    update: XOR<HubAssetVersionUpdateWithoutAssetInput, HubAssetVersionUncheckedUpdateWithoutAssetInput>
+    create: XOR<HubAssetVersionCreateWithoutAssetInput, HubAssetVersionUncheckedCreateWithoutAssetInput>
+  }
+
+  export type HubAssetVersionUpdateWithWhereUniqueWithoutAssetInput = {
+    where: HubAssetVersionWhereUniqueInput
+    data: XOR<HubAssetVersionUpdateWithoutAssetInput, HubAssetVersionUncheckedUpdateWithoutAssetInput>
+  }
+
+  export type HubAssetVersionUpdateManyWithWhereWithoutAssetInput = {
+    where: HubAssetVersionScalarWhereInput
+    data: XOR<HubAssetVersionUpdateManyMutationInput, HubAssetVersionUncheckedUpdateManyWithoutAssetInput>
+  }
+
+  export type HubAssetVersionScalarWhereInput = {
+    AND?: HubAssetVersionScalarWhereInput | HubAssetVersionScalarWhereInput[]
+    OR?: HubAssetVersionScalarWhereInput[]
+    NOT?: HubAssetVersionScalarWhereInput | HubAssetVersionScalarWhereInput[]
+    id?: StringFilter<"HubAssetVersion"> | string
+    assetId?: StringFilter<"HubAssetVersion"> | string
+    version?: StringFilter<"HubAssetVersion"> | string
+    content?: StringNullableFilter<"HubAssetVersion"> | string | null
+    contentFormat?: StringFilter<"HubAssetVersion"> | string
+    checksum?: StringFilter<"HubAssetVersion"> | string
+    changelog?: StringNullableFilter<"HubAssetVersion"> | string | null
+    status?: StringFilter<"HubAssetVersion"> | string
+    contentUrl?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdBy?: StringNullableFilter<"HubAssetVersion"> | string | null
+    createdAt?: DateTimeFilter<"HubAssetVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubAssetVersion"> | Date | string | null
+  }
+
+  export type HubAssetCreateWithoutVersionsInput = {
+    id?: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description?: string | null
+    ownerId?: string | null
+    teamId?: string | null
+    status?: string
+    riskLevel?: string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HubAssetUncheckedCreateWithoutVersionsInput = {
+    id?: string
+    assetId: string
+    kind: string
+    name: string
+    displayName: string
+    description?: string | null
+    ownerId?: string | null
+    teamId?: string | null
+    status?: string
+    riskLevel?: string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type HubAssetCreateOrConnectWithoutVersionsInput = {
+    where: HubAssetWhereUniqueInput
+    create: XOR<HubAssetCreateWithoutVersionsInput, HubAssetUncheckedCreateWithoutVersionsInput>
+  }
+
+  export type HubAssetUpsertWithoutVersionsInput = {
+    update: XOR<HubAssetUpdateWithoutVersionsInput, HubAssetUncheckedUpdateWithoutVersionsInput>
+    create: XOR<HubAssetCreateWithoutVersionsInput, HubAssetUncheckedCreateWithoutVersionsInput>
+    where?: HubAssetWhereInput
+  }
+
+  export type HubAssetUpdateToOneWithWhereWithoutVersionsInput = {
+    where?: HubAssetWhereInput
+    data: XOR<HubAssetUpdateWithoutVersionsInput, HubAssetUncheckedUpdateWithoutVersionsInput>
+  }
+
+  export type HubAssetUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAssetUncheckedUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ownerId?: NullableStringFieldUpdateOperationsInput | string | null
+    teamId?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    riskLevel?: StringFieldUpdateOperationsInput | string
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestVersionCreateWithoutManifestInput = {
+    id?: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubManifestVersionUncheckedCreateWithoutManifestInput = {
+    id?: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubManifestVersionCreateOrConnectWithoutManifestInput = {
+    where: HubManifestVersionWhereUniqueInput
+    create: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput>
+  }
+
+  export type HubManifestVersionCreateManyManifestInputEnvelope = {
+    data: HubManifestVersionCreateManyManifestInput | HubManifestVersionCreateManyManifestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HubManifestAssetCreateWithoutManifestInput = {
+    id?: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubManifestAssetUncheckedCreateWithoutManifestInput = {
+    id?: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubManifestAssetCreateOrConnectWithoutManifestInput = {
+    where: HubManifestAssetWhereUniqueInput
+    create: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput>
+  }
+
+  export type HubManifestAssetCreateManyManifestInputEnvelope = {
+    data: HubManifestAssetCreateManyManifestInput | HubManifestAssetCreateManyManifestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HubManifestVersionUpsertWithWhereUniqueWithoutManifestInput = {
+    where: HubManifestVersionWhereUniqueInput
+    update: XOR<HubManifestVersionUpdateWithoutManifestInput, HubManifestVersionUncheckedUpdateWithoutManifestInput>
+    create: XOR<HubManifestVersionCreateWithoutManifestInput, HubManifestVersionUncheckedCreateWithoutManifestInput>
+  }
+
+  export type HubManifestVersionUpdateWithWhereUniqueWithoutManifestInput = {
+    where: HubManifestVersionWhereUniqueInput
+    data: XOR<HubManifestVersionUpdateWithoutManifestInput, HubManifestVersionUncheckedUpdateWithoutManifestInput>
+  }
+
+  export type HubManifestVersionUpdateManyWithWhereWithoutManifestInput = {
+    where: HubManifestVersionScalarWhereInput
+    data: XOR<HubManifestVersionUpdateManyMutationInput, HubManifestVersionUncheckedUpdateManyWithoutManifestInput>
+  }
+
+  export type HubManifestVersionScalarWhereInput = {
+    AND?: HubManifestVersionScalarWhereInput | HubManifestVersionScalarWhereInput[]
+    OR?: HubManifestVersionScalarWhereInput[]
+    NOT?: HubManifestVersionScalarWhereInput | HubManifestVersionScalarWhereInput[]
+    id?: StringFilter<"HubManifestVersion"> | string
+    manifestId?: StringFilter<"HubManifestVersion"> | string
+    version?: StringFilter<"HubManifestVersion"> | string
+    checksum?: StringFilter<"HubManifestVersion"> | string
+    installPolicy?: JsonFilter<"HubManifestVersion">
+    compatibility?: JsonFilter<"HubManifestVersion">
+    exportSnapshot?: JsonFilter<"HubManifestVersion">
+    releaseNote?: StringNullableFilter<"HubManifestVersion"> | string | null
+    status?: StringFilter<"HubManifestVersion"> | string
+    createdAt?: DateTimeFilter<"HubManifestVersion"> | Date | string
+    publishedAt?: DateTimeNullableFilter<"HubManifestVersion"> | Date | string | null
+  }
+
+  export type HubManifestAssetUpsertWithWhereUniqueWithoutManifestInput = {
+    where: HubManifestAssetWhereUniqueInput
+    update: XOR<HubManifestAssetUpdateWithoutManifestInput, HubManifestAssetUncheckedUpdateWithoutManifestInput>
+    create: XOR<HubManifestAssetCreateWithoutManifestInput, HubManifestAssetUncheckedCreateWithoutManifestInput>
+  }
+
+  export type HubManifestAssetUpdateWithWhereUniqueWithoutManifestInput = {
+    where: HubManifestAssetWhereUniqueInput
+    data: XOR<HubManifestAssetUpdateWithoutManifestInput, HubManifestAssetUncheckedUpdateWithoutManifestInput>
+  }
+
+  export type HubManifestAssetUpdateManyWithWhereWithoutManifestInput = {
+    where: HubManifestAssetScalarWhereInput
+    data: XOR<HubManifestAssetUpdateManyMutationInput, HubManifestAssetUncheckedUpdateManyWithoutManifestInput>
+  }
+
+  export type HubManifestAssetScalarWhereInput = {
+    AND?: HubManifestAssetScalarWhereInput | HubManifestAssetScalarWhereInput[]
+    OR?: HubManifestAssetScalarWhereInput[]
+    NOT?: HubManifestAssetScalarWhereInput | HubManifestAssetScalarWhereInput[]
+    id?: StringFilter<"HubManifestAsset"> | string
+    manifestId?: StringFilter<"HubManifestAsset"> | string
+    kind?: StringFilter<"HubManifestAsset"> | string
+    assetId?: StringFilter<"HubManifestAsset"> | string
+    version?: StringFilter<"HubManifestAsset"> | string
+    required?: BoolFilter<"HubManifestAsset"> | boolean
+    installPath?: StringNullableFilter<"HubManifestAsset"> | string | null
+    checksum?: StringFilter<"HubManifestAsset"> | string
+    sortOrder?: IntFilter<"HubManifestAsset"> | number
+    config?: JsonNullableFilter<"HubManifestAsset">
+    createdAt?: DateTimeFilter<"HubManifestAsset"> | Date | string
+  }
+
+  export type HubManifestCreateWithoutVersionsInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: HubManifestAssetCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestUncheckedCreateWithoutVersionsInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    assets?: HubManifestAssetUncheckedCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestCreateOrConnectWithoutVersionsInput = {
+    where: HubManifestWhereUniqueInput
+    create: XOR<HubManifestCreateWithoutVersionsInput, HubManifestUncheckedCreateWithoutVersionsInput>
+  }
+
+  export type HubManifestUpsertWithoutVersionsInput = {
+    update: XOR<HubManifestUpdateWithoutVersionsInput, HubManifestUncheckedUpdateWithoutVersionsInput>
+    create: XOR<HubManifestCreateWithoutVersionsInput, HubManifestUncheckedCreateWithoutVersionsInput>
+    where?: HubManifestWhereInput
+  }
+
+  export type HubManifestUpdateToOneWithWhereWithoutVersionsInput = {
+    where?: HubManifestWhereInput
+    data: XOR<HubManifestUpdateWithoutVersionsInput, HubManifestUncheckedUpdateWithoutVersionsInput>
+  }
+
+  export type HubManifestUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: HubManifestAssetUpdateManyWithoutManifestNestedInput
+  }
+
+  export type HubManifestUncheckedUpdateWithoutVersionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    assets?: HubManifestAssetUncheckedUpdateManyWithoutManifestNestedInput
+  }
+
+  export type HubManifestCreateWithoutAssetsInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubManifestVersionCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestUncheckedCreateWithoutAssetsInput = {
+    id?: string
+    manifestId: string
+    name: string
+    displayName: string
+    description?: string | null
+    status?: string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: HubManifestVersionUncheckedCreateNestedManyWithoutManifestInput
+  }
+
+  export type HubManifestCreateOrConnectWithoutAssetsInput = {
+    where: HubManifestWhereUniqueInput
+    create: XOR<HubManifestCreateWithoutAssetsInput, HubManifestUncheckedCreateWithoutAssetsInput>
+  }
+
+  export type HubManifestUpsertWithoutAssetsInput = {
+    update: XOR<HubManifestUpdateWithoutAssetsInput, HubManifestUncheckedUpdateWithoutAssetsInput>
+    create: XOR<HubManifestCreateWithoutAssetsInput, HubManifestUncheckedCreateWithoutAssetsInput>
+    where?: HubManifestWhereInput
+  }
+
+  export type HubManifestUpdateToOneWithWhereWithoutAssetsInput = {
+    where?: HubManifestWhereInput
+    data: XOR<HubManifestUpdateWithoutAssetsInput, HubManifestUncheckedUpdateWithoutAssetsInput>
+  }
+
+  export type HubManifestUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubManifestVersionUpdateManyWithoutManifestNestedInput
+  }
+
+  export type HubManifestUncheckedUpdateWithoutAssetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    manifestId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    displayName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    techStacks?: NullableJsonNullValueInput | InputJsonValue
+    ides?: NullableJsonNullValueInput | InputJsonValue
+    scenarios?: NullableJsonNullValueInput | InputJsonValue
+    tags?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: HubManifestVersionUncheckedUpdateManyWithoutManifestNestedInput
+  }
+
   export type ApiKeyCreateManyAgentInput = {
     id?: string
     keyHash: string
@@ -49877,6 +61349,166 @@ export namespace Prisma {
   export type ScenarioDomainLinkUncheckedUpdateManyWithoutDomainInput = {
     id?: StringFieldUpdateOperationsInput | string
     scenarioPackageId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type HubAssetVersionCreateManyAssetInput = {
+    id?: string
+    version: string
+    content?: string | null
+    contentFormat?: string
+    checksum: string
+    changelog?: string | null
+    status?: string
+    contentUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubAssetVersionUpdateWithoutAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubAssetVersionUncheckedUpdateWithoutAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubAssetVersionUncheckedUpdateManyWithoutAssetInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    content?: NullableStringFieldUpdateOperationsInput | string | null
+    contentFormat?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    contentUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestVersionCreateManyManifestInput = {
+    id?: string
+    version: string
+    checksum: string
+    installPolicy: JsonNullValueInput | InputJsonValue
+    compatibility: JsonNullValueInput | InputJsonValue
+    exportSnapshot: JsonNullValueInput | InputJsonValue
+    releaseNote?: string | null
+    status?: string
+    createdAt?: Date | string
+    publishedAt?: Date | string | null
+  }
+
+  export type HubManifestAssetCreateManyManifestInput = {
+    id?: string
+    kind: string
+    assetId: string
+    version: string
+    required?: boolean
+    installPath?: string | null
+    checksum: string
+    sortOrder?: number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type HubManifestVersionUpdateWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestVersionUncheckedUpdateWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestVersionUncheckedUpdateManyWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    checksum?: StringFieldUpdateOperationsInput | string
+    installPolicy?: JsonNullValueInput | InputJsonValue
+    compatibility?: JsonNullValueInput | InputJsonValue
+    exportSnapshot?: JsonNullValueInput | InputJsonValue
+    releaseNote?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    publishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type HubManifestAssetUpdateWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestAssetUncheckedUpdateWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubManifestAssetUncheckedUpdateManyWithoutManifestInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    kind?: StringFieldUpdateOperationsInput | string
+    assetId?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    required?: BoolFieldUpdateOperationsInput | boolean
+    installPath?: NullableStringFieldUpdateOperationsInput | string | null
+    checksum?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    config?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

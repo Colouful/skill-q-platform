@@ -447,6 +447,118 @@ exports.Prisma.ScenarioDomainLinkScalarFieldEnum = {
   domainId: 'domainId'
 };
 
+exports.Prisma.HubAssetScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  kind: 'kind',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  ownerId: 'ownerId',
+  teamId: 'teamId',
+  status: 'status',
+  riskLevel: 'riskLevel',
+  tags: 'tags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.HubAssetVersionScalarFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  version: 'version',
+  content: 'content',
+  contentFormat: 'contentFormat',
+  checksum: 'checksum',
+  changelog: 'changelog',
+  status: 'status',
+  contentUrl: 'contentUrl',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  publishedAt: 'publishedAt'
+};
+
+exports.Prisma.HubManifestScalarFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  status: 'status',
+  techStacks: 'techStacks',
+  ides: 'ides',
+  scenarios: 'scenarios',
+  tags: 'tags',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.HubManifestVersionScalarFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  version: 'version',
+  checksum: 'checksum',
+  installPolicy: 'installPolicy',
+  compatibility: 'compatibility',
+  exportSnapshot: 'exportSnapshot',
+  releaseNote: 'releaseNote',
+  status: 'status',
+  createdAt: 'createdAt',
+  publishedAt: 'publishedAt'
+};
+
+exports.Prisma.HubManifestAssetScalarFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  kind: 'kind',
+  assetId: 'assetId',
+  version: 'version',
+  required: 'required',
+  installPath: 'installPath',
+  checksum: 'checksum',
+  sortOrder: 'sortOrder',
+  config: 'config',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.HubAssetAuditLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  resourceType: 'resourceType',
+  resourceId: 'resourceId',
+  details: 'details',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.HubInstallRecordScalarFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  installMode: 'installMode',
+  status: 'status',
+  assets: 'assets',
+  message: 'message',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.HubRuntimeReportScalarFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  runId: 'runId',
+  stage: 'stage',
+  status: 'status',
+  usedAssets: 'usedAssets',
+  durationMs: 'durationMs',
+  failedReason: 'failedReason',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -713,6 +825,91 @@ exports.Prisma.ScenarioDomainLinkOrderByRelevanceFieldEnum = {
   domainId: 'domainId'
 };
 
+exports.Prisma.HubAssetOrderByRelevanceFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  kind: 'kind',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  ownerId: 'ownerId',
+  teamId: 'teamId',
+  status: 'status',
+  riskLevel: 'riskLevel'
+};
+
+exports.Prisma.HubAssetVersionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  assetId: 'assetId',
+  version: 'version',
+  content: 'content',
+  contentFormat: 'contentFormat',
+  checksum: 'checksum',
+  changelog: 'changelog',
+  status: 'status',
+  contentUrl: 'contentUrl',
+  createdBy: 'createdBy'
+};
+
+exports.Prisma.HubManifestOrderByRelevanceFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  status: 'status'
+};
+
+exports.Prisma.HubManifestVersionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  version: 'version',
+  checksum: 'checksum',
+  releaseNote: 'releaseNote',
+  status: 'status'
+};
+
+exports.Prisma.HubManifestAssetOrderByRelevanceFieldEnum = {
+  id: 'id',
+  manifestId: 'manifestId',
+  kind: 'kind',
+  assetId: 'assetId',
+  version: 'version',
+  installPath: 'installPath',
+  checksum: 'checksum'
+};
+
+exports.Prisma.HubAssetAuditLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  resourceType: 'resourceType',
+  resourceId: 'resourceId'
+};
+
+exports.Prisma.HubInstallRecordOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  installMode: 'installMode',
+  status: 'status',
+  message: 'message'
+};
+
+exports.Prisma.HubRuntimeReportOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  runId: 'runId',
+  stage: 'stage',
+  status: 'status',
+  failedReason: 'failedReason'
+};
+
 
 exports.Prisma.ModelName = {
   Agent: 'Agent',
@@ -742,7 +939,15 @@ exports.Prisma.ModelName = {
   RoleDomainLink: 'RoleDomainLink',
   SkillDomainLink: 'SkillDomainLink',
   RuleDomainLink: 'RuleDomainLink',
-  ScenarioDomainLink: 'ScenarioDomainLink'
+  ScenarioDomainLink: 'ScenarioDomainLink',
+  HubAsset: 'HubAsset',
+  HubAssetVersion: 'HubAssetVersion',
+  HubManifest: 'HubManifest',
+  HubManifestVersion: 'HubManifestVersion',
+  HubManifestAsset: 'HubManifestAsset',
+  HubAssetAuditLog: 'HubAssetAuditLog',
+  HubInstallRecord: 'HubInstallRecord',
+  HubRuntimeReport: 'HubRuntimeReport'
 };
 
 /**

@@ -1,11 +1,13 @@
 # 虾球 Hub（Xia Qiu Hub）
 
-Next.js + Prisma + MySQL 的 **Skill / Rule 双轨**资源站：像素风 UI、统一搜索、榜单、ZIP 上传与在线编辑。
+Next.js + Prisma + MySQL 的 AI 工程资产 Hub：管理 Skill / Rule（技能 / 规则）、Role / Flow（角色 / 流程）与 Manifest（方案包清单），为 `br-ai-spec`（命令行执行底座）提供可安装、可版本化、可审计的团队级能力包。
 
 ## 功能概要
 
 - **Skills**：`SKILL.md` 技能包，列表 `/skills`，在线编辑 `/skills/[slug]/editor`
 - **Rules**：`RULE.md` 规则包，列表 `/rules`，在线编辑 `/rules/[slug]/editor`
+- **Manifest**：方案包清单，列表 `/manifests`，编辑器 `/manifests/new`，导出接口 `/api/hub/manifests/[id]/export`
+- **Hub API**：`/api/hub/search`、`/api/hub/registry/export`、安装上报与运行回流接口，详见 [docs/api.md](./docs/api.md)
 - **搜索**：`/search`，支持类型 `all` / `skill` / `rule`
 - **身份**：特工档案 `/me` 保存昵称后同步 `localStorage`，开启 `HUB_AUTH=on` 时与作者字段对齐
 - **特工局**：Agent 用 API Key 注册/登录（`/me`），详见 [docs/agent-auth.md](./docs/agent-auth.md)

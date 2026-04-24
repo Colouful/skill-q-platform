@@ -16,9 +16,9 @@ class ScriptExit extends Error {
 }
 
 type ScriptRunOptions = {
-  env?: NodeJS.ProcessEnv;
+  env?: Partial<NodeJS.ProcessEnv>;
   existsSync?: (file: string) => boolean;
-  readFileSync?: (file: string, encoding: string) => string;
+  readFileSync?: (file: string, encoding: BufferEncoding) => string;
   hostname?: string;
 };
 
@@ -34,7 +34,7 @@ function runScript(options: ScriptRunOptions = {}) {
   const sandbox = {
     __dirname: path.dirname(scriptPath),
     process: {
-      env: options.env ?? {},
+      env: { NODE_ENV: "test", ...(options.env ?? {}) },
       platform: "linux",
       stdout: {
         write(message: string) {
@@ -57,7 +57,7 @@ function runScript(options: ScriptRunOptions = {}) {
               file.endsWith("/src/generated/prisma/schema.prisma")),
           readFileSync:
             options.readFileSync ??
-            ((file: string, encoding: string) => {
+            ((file: string, encoding: BufferEncoding) => {
               if (file === scriptPath) {
                 return fs.readFileSync(file, encoding);
               }
@@ -111,7 +111,7 @@ function runScript(options: ScriptRunOptions = {}) {
 describe("prisma-generate-if-needed", () => {
   it("skips prisma generate in BuildKit when bundled client is already present", () => {
     const result = runScript({
-      env: {},
+      env: { NODE_ENV: "test" },
       hostname: "buildkitsandbox",
     });
 
@@ -122,7 +122,7 @@ describe("prisma-generate-if-needed", () => {
 
   it("still runs prisma generate on a local development machine", () => {
     const result = runScript({
-      env: {},
+      env: { NODE_ENV: "test" },
       hostname: "my-local-machine",
       existsSync: () => false,
     });
@@ -138,6 +138,7 @@ describe("prisma-generate-if-needed", () => {
   it("respects SKIP_PRISMA_POSTINSTALL before any runtime detection", () => {
     const result = runScript({
       env: {
+        NODE_ENV: "test",
         SKIP_PRISMA_POSTINSTALL: "1",
       },
       hostname: "my-local-machine",

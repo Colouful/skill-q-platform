@@ -48,8 +48,12 @@ describe("admin-api-route", () => {
     vi.mocked(getAdminFromRequest).mockResolvedValue({
       id: "admin-1",
       email: "admin@example.com",
+      passwordHash: "hash",
       role: "admin",
+      permissions: [],
       isActive: true,
+      createdAt: new Date("2026-04-24T00:00:00.000Z"),
+      lastLoginAt: null,
     });
 
     const result = await requireAdminJson(
