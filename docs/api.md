@@ -44,6 +44,25 @@
 | GET | `/api/search?q=&type=all\|skill\|rule` | 统一搜索（带短期内存缓存） |
 | POST | `/api/upload` | multipart `file` + 可选 `kind=skill\|rule` |
 
+## Registry / Manifest 导出
+
+Hub 是 registry（注册表）主数据维护方，导出时建议稳定提供：
+
+- `registryId`
+- `manifestId`
+- `slug`
+- `source / sourceByProfile`
+- `rule_ids / rule_ids_by_profile`
+- `skill_priority / skill_priority_by_profile`
+
+这些字段的消费关系是：
+
+- `br-ai-spec` 读取并同步到项目本地 `.agents/registry`
+- `br-ai-spec-visual` 展示同步后的结果与运行态，不重新定义 registry 规则
+
+如需查看三仓关系总览，见：
+`../../br-ai-spec/docs/four/Hub-CLI-Visual三仓协同说明.md`
+
 ## 评测通用
 
 | 方法 | 路径 | 说明 |

@@ -5,6 +5,7 @@ import {
   inferRuleRegistryId,
   inferSkillRegistryId,
   renderRoleMarkdown,
+  splitRegistryIdsByProfile,
 } from "@/lib/br-ai-spec-export";
 
 describe("br-ai-spec export helpers", () => {
@@ -95,6 +96,23 @@ description: 项目结构规范
     expect(content).toContain("## 交接说明");
   });
 
+  it("可按 profile 拆分角色关联的 registry id", () => {
+    const grouped = splitRegistryIdsByProfile({
+      registryIds: ["project-overview", "api-standard", "create-api", "create-proposal"],
+      roleProfiles: ["vue", "react"],
+      assetProfilesByRegistryId: {
+        "api-standard": ["vue", "react"],
+        "create-api": ["vue"],
+      },
+    });
+
+    expect(grouped.common).toEqual(["project-overview", "create-proposal"]);
+    expect(grouped.byProfile).toEqual({
+      react: ["api-standard"],
+      vue: ["api-standard", "create-api"],
+    });
+  });
+
   it("可从导出 bundle 中提取 registry snapshot", () => {
     const snapshot = extractRegistrySnapshot({
       manifest: {
@@ -129,8 +147,36 @@ description: 项目结构规范
       files: [
         { path: ".agents/registry/profiles.json", content: JSON.stringify({ version: 1, profiles: { vue: {} } }) },
         { path: ".agents/registry/skills.json", content: JSON.stringify({ version: 1, skills: { "create-proposal": {} } }) },
-        { path: ".agents/registry/rules.json", content: JSON.stringify({ version: 1, rules: { "api-standard": {} } }) },
-        { path: ".agents/registry/roles.json", content: JSON.stringify({ version: 1, roles: { "task-orchestrator": {} } }) },
+        {
+          path: ".agents/registry/rules.json",
+          content: JSON.stringify({
+            version: 1,
+            rules: {
+              "api-standard": {
+                sourceByProfile: {
+                  vue: ".agents/rules/profiles/vue/05-API规范.md",
+                },
+              },
+            },
+          }),
+        },
+        {
+          path: ".agents/registry/roles.json",
+          content: JSON.stringify({
+            version: 1,
+            roles: {
+              "task-orchestrator": {
+                rule_ids: ["project-overview"],
+                rule_ids_by_profile: {
+                  vue: ["api-standard"],
+                },
+                skill_priority_by_profile: {
+                  vue: ["create-proposal"],
+                },
+              },
+            },
+          }),
+        },
         { path: ".agents/registry/flows.json", content: JSON.stringify({ version: 1, flows: { "prd-to-delivery": {} } }) },
         { path: ".agents/registry/scenario-packages.json", content: JSON.stringify({ version: 1, scenario_packages: { "prd-to-delivery": {} } }) },
       ],
@@ -142,5 +188,38 @@ description: 项目结构规范
     expect(snapshot.roles).toMatchObject({ version: 1 });
     expect(snapshot.flows).toMatchObject({ version: 1 });
     expect(snapshot.scenario_packages).toMatchObject({ version: 1 });
+    expect(
+      (
+        snapshot.rules as {
+          rules?: Record<string, { sourceByProfile?: Record<string, string> }>;
+        }
+      ).rules?.["api-standard"]?.sourceByProfile?.vue,
+    ).toBe(".agents/rules/profiles/vue/05-API规范.md");
+    expect(
+      (
+        snapshot.roles as {
+          roles?: Record<
+            string,
+            {
+              rule_ids_by_profile?: Record<string, string[]>;
+              skill_priority_by_profile?: Record<string, string[]>;
+            }
+          >;
+        }
+      ).roles?.["task-orchestrator"]?.rule_ids_by_profile?.vue,
+    ).toEqual(["api-standard"]);
+    expect(
+      (
+        snapshot.roles as {
+          roles?: Record<
+            string,
+            {
+              rule_ids_by_profile?: Record<string, string[]>;
+              skill_priority_by_profile?: Record<string, string[]>;
+            }
+          >;
+        }
+      ).roles?.["task-orchestrator"]?.skill_priority_by_profile?.vue,
+    ).toEqual(["create-proposal"]);
   });
 });
