@@ -2,7 +2,22 @@ import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "@/generated/prisma";
 
 type HubPrismaClient = PrismaClient &
-  Pick<PrismaClient, "agent" | "skill" | "rule" | "roleTemplate" | "scenarioPackage">;
+  Pick<
+    PrismaClient,
+    | "agent"
+    | "skill"
+    | "rule"
+    | "roleTemplate"
+    | "scenarioPackage"
+    | "hubAsset"
+    | "hubAssetVersion"
+    | "hubManifest"
+    | "hubManifestVersion"
+    | "hubManifestAsset"
+    | "hubAssetAuditLog"
+    | "hubInstallRecord"
+    | "hubRuntimeReport"
+  >;
 
 function databaseUrlFromEnv(): string {
   const direct = process.env.DATABASE_URL?.trim();
@@ -65,7 +80,8 @@ function isUsableClient(c: HubPrismaClient | undefined): c is HubPrismaClient {
     typeof c.skill?.findMany === "function" &&
     typeof c.agent?.findFirst === "function" &&
     typeof c.roleTemplate?.findMany === "function" &&
-    typeof c.scenarioPackage?.findMany === "function"
+    typeof c.scenarioPackage?.findMany === "function" &&
+    typeof c.hubManifest?.findMany === "function"
   );
 }
 

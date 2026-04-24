@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    ports:
+      - "${SKILL_Q_DB_PORT:-13307}:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${SKILL_Q_DB_ROOT_PASSWORD:-root_password_123}
+      MARIADB_DATABASE: ${SKILL_Q_DB_NAME:-skill_q_platform}
+      MARIADB_USER: ${SKILL_Q_DB_USER:-skillq_user}
+      MARIADB_PASSWORD: ${SKILL_Q_DB_PASSWORD:-skillq_password_123}
+    volumes:
+      - skill_q_mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  skill_q_mariadb_data:

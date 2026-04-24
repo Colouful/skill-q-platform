@@ -44,6 +44,46 @@
 | GET | `/api/search?q=&type=all\|skill\|rule` | 统一搜索（带短期内存缓存） |
 | POST | `/api/upload` | multipart `file` + 可选 `kind=skill\|rule` |
 
+## Registry / Manifest 导出
+
+Hub 是 registry（注册表）主数据维护方，导出时建议稳定提供：
+
+- `registryId`
+- `manifestId`
+- `slug`
+- `source / sourceByProfile`
+- `rule_ids / rule_ids_by_profile`
+- `skill_priority / skill_priority_by_profile`
+
+这些字段的消费关系是：
+
+- `br-ai-spec` 读取并同步到项目本地 `.agents/registry`
+- `br-ai-spec-visual` 展示同步后的结果与运行态，不重新定义 registry 规则
+
+如需查看三仓关系总览，见：
+`../../br-ai-spec/docs/four/Hub-CLI-Visual三仓协同说明.md`
+
+### Hub Manifest API
+
+Hub Manifest（方案包清单）接口统一带 `contractVersion`（契约版本）字段，供 `br-ai-spec`（命令行执行底座）和 `br-ai-spec-visual`（可视化控制台）消费。
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| GET | `/api/hub/search?q=&kind=manifest` | 搜索资产或 Manifest（方案包清单） |
+| GET | `/api/hub/registry/export` | 导出完整 Hub Registry（注册表）快照 |
+| GET/POST | `/api/hub/assets` | Hub 资产列表 / 创建或更新资产版本 |
+| GET/POST | `/api/hub/manifests` | Manifest（方案包清单）列表 / 保存草稿 |
+| POST | `/api/hub/manifests/[id]/publish` | 发布 Manifest，要求包含 role / skill / rule / flow（角色 / 技能 / 规则 / 流程）且引用资产已发布 |
+| GET | `/api/hub/manifests/[id]/export?version=` | 导出 Manifest 安装包，返回 `manifest`、`assets`、`files` |
+| POST | `/api/hub/install/preview` | 生成安装前文件影响预览 |
+| POST | `/api/hub/install/report` | 接收 CLI（命令行工具）安装结果 |
+| POST | `/api/hub/runtime/report` | 接收 CLI（命令行工具）运行回流事件 |
+| POST | `/api/hub/runtime/project-snapshots` | 接收 Visual（可视化控制台）项目资产快照 |
+| POST | `/api/hub/runtime/usage-metrics` | 接收 Visual 脱敏后的运行指标 |
+| GET | `/api/hub/analytics/summary` | 查询 Hub 运行效果总览和治理提醒 |
+| GET | `/api/hub/analytics/manifests` | 查询 Manifest 安装量、成功率、失败原因和推荐等级 |
+| GET | `/api/hub/analytics/assets` | 查询 Skill / Rule / Role 等资产的真实调用效果 |
+
 ## 评测通用
 
 | 方法 | 路径 | 说明 |

@@ -78,6 +78,11 @@ export type BrAiSpecRegistrySnapshot = {
   scenario_packages?: Record<string, unknown>;
 };
 
+export type ProfileScopedRegistryIds = {
+  common: string[];
+  byProfile: Record<string, string[]>;
+};
+
 type VersionLike = {
   files: unknown;
   isLatest: boolean;
@@ -129,6 +134,17 @@ function uniqueList(values: Iterable<string>): string[] {
     out.push(trimmed);
   }
   return out;
+}
+
+function normalizeProfileGroups(
+  groups: Record<string, string[]>,
+): Record<string, string[]> | undefined {
+  const entries = Object.entries(groups)
+    .map(([profile, ids]) => [profile, uniqueList(ids)] as const)
+    .filter(([, ids]) => ids.length > 0)
+    .sort(([left], [right]) => left.localeCompare(right));
+  if (entries.length === 0) return undefined;
+  return Object.fromEntries(entries);
 }
 
 function maybeArray<T>(value: T[]): T[] | undefined {
@@ -226,6 +242,42 @@ function createProfileSet(input: {
     ...(input.explicitProfiles ?? []),
     ...getHubProfileIds(),
   ]);
+}
+
+export function splitRegistryIdsByProfile(input: {
+  registryIds: string[];
+  roleProfiles?: string[];
+  assetProfilesByRegistryId?: Record<string, string[]>;
+}): ProfileScopedRegistryIds {
+  const common: string[] = [];
+  const byProfile: Record<string, string[]> = {};
+  const roleProfiles = uniqueSorted(input.roleProfiles ?? []);
+
+  for (const registryId of uniqueList(input.registryIds)) {
+    const assetProfiles = uniqueSorted(
+      input.assetProfilesByRegistryId?.[registryId] ?? [],
+    );
+
+    if (assetProfiles.length === 0) {
+      common.push(registryId);
+      continue;
+    }
+
+    const targets =
+      roleProfiles.length > 0
+        ? assetProfiles.filter((profile) => roleProfiles.includes(profile))
+        : assetProfiles;
+
+    for (const profile of targets) {
+      byProfile[profile] = byProfile[profile] ?? [];
+      byProfile[profile].push(registryId);
+    }
+  }
+
+  return {
+    common: uniqueList(common),
+    byProfile: normalizeProfileGroups(byProfile) ?? {},
+  };
 }
 
 export function inferAssetProfiles(input: {
@@ -801,6 +853,8 @@ export async function buildBrAiSpecExportBundle(
   >();
   const skillRegistryIdByHubSlug = new Map<string, string>();
   const ruleRegistryIdByHubSlug = new Map<string, string>();
+  const skillProfilesByRegistryId = new Map<string, string[]>();
+  const ruleProfilesByRegistryId = new Map<string, string[]>();
   const skillReports: ExportAssetReport[] = [];
   const ruleReports: ExportAssetReport[] = [];
 
@@ -861,6 +915,7 @@ export async function buildBrAiSpecExportBundle(
     );
     skillRegistryEntries.set(registryId, registryEntry);
     skillRegistryIdByHubSlug.set(skill.slug, registryId);
+    skillProfilesByRegistryId.set(registryId, profiles);
 
     const variantKeys = profiles.length > 0 ? profiles : [COMMON_SLOT];
     for (const variantKey of variantKeys) {
@@ -960,6 +1015,7 @@ export async function buildBrAiSpecExportBundle(
     );
     ruleRegistryEntries.set(registryId, registryEntry);
     ruleRegistryIdByHubSlug.set(rule.slug, registryId);
+    ruleProfilesByRegistryId.set(registryId, profiles);
 
     const variantKeys = profiles.length > 0 ? profiles : [COMMON_SLOT];
     for (const variantKey of variantKeys) {
@@ -1061,6 +1117,17 @@ export async function buildBrAiSpecExportBundle(
     });
     setTextFile(filesMap, roleSource, roleMarkdown);
 
+    const scopedRuleIds = splitRegistryIdsByProfile({
+      registryIds: exportedRuleIds,
+      roleProfiles: supportedProfiles,
+      assetProfilesByRegistryId: Object.fromEntries(ruleProfilesByRegistryId),
+    });
+    const scopedSkillIds = splitRegistryIdsByProfile({
+      registryIds: exportedSkillIds,
+      roleProfiles: supportedProfiles,
+      assetProfilesByRegistryId: Object.fromEntries(skillProfilesByRegistryId),
+    });
+
     rolesRegistry[roleProtocolId] = {
       name: role.name,
       status: role.roleStatus || "draft",
@@ -1069,8 +1136,14 @@ export async function buildBrAiSpecExportBundle(
         ? { domains: uniqueSorted(role.domainLinks.map((item) => item.domain.slug)) }
         : {}),
       source: roleSource,
-      ...(exportedRuleIds.length > 0 ? { rule_ids: exportedRuleIds } : {}),
-      ...(exportedSkillIds.length > 0 ? { skill_priority: exportedSkillIds } : {}),
+      ...(scopedRuleIds.common.length > 0 ? { rule_ids: scopedRuleIds.common } : {}),
+      ...(Object.keys(scopedRuleIds.byProfile).length > 0
+        ? { rule_ids_by_profile: scopedRuleIds.byProfile }
+        : {}),
+      ...(scopedSkillIds.common.length > 0 ? { skill_priority: scopedSkillIds.common } : {}),
+      ...(Object.keys(scopedSkillIds.byProfile).length > 0
+        ? { skill_priority_by_profile: scopedSkillIds.byProfile }
+        : {}),
     };
     roleReports.push({
       hubSlug: role.slug,
