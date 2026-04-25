@@ -16,9 +16,9 @@ class ScriptExit extends Error {
 }
 
 type ScriptRunOptions = {
-  env?: NodeJS.ProcessEnv;
+  env?: Record<string, string | undefined>;
   existsSync?: (file: string) => boolean;
-  readFileSync?: (file: string, encoding: string) => string;
+  readFileSync?: (file: string, encoding: BufferEncoding) => string;
   hostname?: string;
 };
 
@@ -27,7 +27,7 @@ function runScript(options: ScriptRunOptions = {}) {
     command: string;
     args: string[];
     cwd?: string;
-    env?: NodeJS.ProcessEnv;
+    env?: Record<string, string | undefined>;
   }> = [];
   const writes: string[] = [];
 
@@ -57,7 +57,7 @@ function runScript(options: ScriptRunOptions = {}) {
               file.endsWith("/src/generated/prisma/schema.prisma")),
           readFileSync:
             options.readFileSync ??
-            ((file: string, encoding: string) => {
+            ((file: string, encoding: BufferEncoding) => {
               if (file === scriptPath) {
                 return fs.readFileSync(file, encoding);
               }
@@ -77,7 +77,7 @@ function runScript(options: ScriptRunOptions = {}) {
 
       if (specifier === "node:child_process") {
         return {
-          spawnSync(command: string, args: string[], spawnOptions: { cwd?: string; env?: NodeJS.ProcessEnv }) {
+          spawnSync(command: string, args: string[], spawnOptions: { cwd?: string; env?: Record<string, string | undefined> }) {
             spawnCalls.push({ command, args, cwd: spawnOptions.cwd, env: spawnOptions.env });
             return { status: 0 };
           },
