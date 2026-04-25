@@ -77,8 +77,12 @@ Hub Manifest（方案包清单）接口统一带 `contractVersion`（契约版�
 | GET | `/api/hub/manifests/[id]/export?version=` | 导出 Manifest 安装包，返回 `manifest`、`assets`、`files` |
 | POST | `/api/hub/install/preview` | 生成安装前文件影响预览 |
 | POST | `/api/hub/install/report` | 接收 CLI（命令行工具）安装结果 |
+| POST | `/api/hub/runtime/report` | 接收 CLI（命令行工具）运行回流事件 |
 | POST | `/api/hub/runtime/project-snapshots` | 接收 Visual（可视化控制台）项目资产快照 |
 | POST | `/api/hub/runtime/usage-metrics` | 接收 Visual 脱敏后的运行指标 |
+| GET | `/api/hub/analytics/summary` | 查询 Hub 运行效果总览和治理提醒 |
+| GET | `/api/hub/analytics/manifests` | 查询 Manifest 安装量、成功率、失败原因和推荐等级 |
+| GET | `/api/hub/analytics/assets` | 查询 Skill / Rule / Role 等资产的真实调用效果 |
 
 ## 评测通用
 

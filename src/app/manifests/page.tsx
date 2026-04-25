@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { BarChart3, Plus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +26,22 @@ export default async function ManifestsPage() {
           <h1 className="text-2xl font-semibold">Manifest 方案包</h1>
           <p className="mt-2 text-sm text-muted-foreground">创建、发布并导出可被 br-ai-spec 安装的团队级方案包。</p>
         </div>
-        <Link
-          href="/manifests/new"
-          className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-primary px-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/80"
-        >
-          <Plus className="mr-2 size-4" />
-          新建 Manifest
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/manifests/analytics"
+            className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg border px-2.5 text-sm font-medium transition-all hover:bg-muted"
+          >
+            <BarChart3 className="size-4" />
+            运行分析
+          </Link>
+          <Link
+            href="/manifests/new"
+            className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-primary px-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/80"
+          >
+            <Plus className="size-4" />
+            新建 Manifest
+          </Link>
+        </div>
       </div>
 
       {manifests.length === 0 ? (
