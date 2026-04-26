@@ -50,6 +50,7 @@ export class ManifestGovernanceService {
     if (input.projectKinds !== undefined) manifest.projectKinds = parseStringArray(input.projectKinds);
     if (input.recommendedFor !== undefined) manifest.recommendedFor = parseStringArray(input.recommendedFor);
     if (input.ownerTeamId !== undefined) manifest.ownerTeamId = optionalString(input.ownerTeamId);
+    if (manifest.status === "rejected") manifest.status = "draft";
     manifest.updatedBy = "system";
     manifest.updatedAt = new Date().toISOString();
     return { manifest: serializeManifest(manifest) };

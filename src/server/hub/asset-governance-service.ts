@@ -44,6 +44,7 @@ export class AssetGovernanceService {
     if (input.visibility !== undefined) asset.visibility = optionalString(input.visibility);
     if (input.ownerTeamId !== undefined) asset.ownerTeamId = optionalString(input.ownerTeamId);
     if (input.ownerUserId !== undefined) asset.ownerUserId = optionalString(input.ownerUserId);
+    if (asset.status === "rejected") asset.status = "draft";
     asset.updatedBy = "system";
     asset.updatedAt = new Date().toISOString();
     return { asset: serializeAsset(asset) };

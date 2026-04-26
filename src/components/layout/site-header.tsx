@@ -34,6 +34,15 @@ export function SiteHeader() {
       >
         首页
       </Link>
+      <Link
+        href="/hub"
+        className={cn(
+          "transition-colors hover:text-[var(--pixel-fg)]",
+          pathname?.startsWith("/hub") ? "text-[var(--pixel-fg)]" : "text-[var(--pixel-muted)]",
+        )}
+      >
+        资产治理
+      </Link>
       <HeaderResourceMenus mobile={mobile} />
     </nav>
   );

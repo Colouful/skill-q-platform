@@ -92,6 +92,8 @@ export function serializeManifestVersionSummary(repo: HubRepository, version: Hu
     exportSchemaVersion: version.exportSchemaVersion ?? undefined,
     changelog: version.changelog ?? undefined,
     previousVersionId: version.previousVersionId ?? undefined,
+    rejectedAt: version.rejectedAt ?? undefined,
+    rejectedReason: version.rejectedReason ?? undefined,
     createdAt: version.createdAt,
     publishedAt: version.publishedAt ?? undefined,
   };
@@ -104,6 +106,7 @@ export function serializeBinding(
 ) {
   return {
     bindingId: link.id,
+    manifestVersionId: link.manifestVersionId,
     assetId: asset.id,
     assetSlug: asset.slug,
     assetName: asset.name,

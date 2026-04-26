@@ -169,6 +169,8 @@ export type HubAgentProfile = {
   riskLevel?: string | null;
   createdBy?: string | null;
   publishedBy?: string | null;
+  rejectedAt?: string | null;
+  rejectedReason?: string | null;
   deprecatedAt?: string | null;
   archivedAt?: string | null;
   createdAt: string;

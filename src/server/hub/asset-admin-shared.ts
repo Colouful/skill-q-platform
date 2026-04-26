@@ -97,6 +97,8 @@ export function serializeVersionSummary(version: HubAssetVersion) {
     changelog: version.changelog ?? undefined,
     source: version.source ?? undefined,
     previousVersionId: version.previousVersionId ?? undefined,
+    rejectedAt: version.rejectedAt ?? undefined,
+    rejectedReason: version.rejectedReason ?? undefined,
     createdAt: version.createdAt,
     publishedAt: version.publishedAt ?? undefined,
   };

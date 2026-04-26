@@ -3,12 +3,12 @@ import { defaultHubRepository, ReviewWorkflowService } from "@/server/hub";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: Request, { params }: { params: Promise<{ assetId: string; versionId: string }> }) {
+export async function POST(req: Request, { params }: { params: Promise<{ manifestId: string; versionId: string }> }) {
   try {
-    const { assetId, versionId } = await params;
+    const { manifestId, versionId } = await params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ReviewWorkflowService(defaultHubRepository).publishAssetVersion(
-      decodeURIComponent(assetId),
+    const data = new ReviewWorkflowService(defaultHubRepository).rejectManifestVersion(
+      decodeURIComponent(manifestId),
       decodeURIComponent(versionId),
       body,
     );

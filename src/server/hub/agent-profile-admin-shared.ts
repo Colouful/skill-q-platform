@@ -196,6 +196,8 @@ export function serializeAgentProfileSummary(profile: HubAgentProfile) {
     createdAt: profile.createdAt,
     updatedAt: profile.updatedAt,
     publishedAt: profile.publishedAt ?? undefined,
+    rejectedAt: profile.rejectedAt ?? undefined,
+    rejectedReason: profile.rejectedReason ?? undefined,
   };
 }
 

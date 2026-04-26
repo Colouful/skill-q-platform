@@ -14,5 +14,8 @@ export { ManifestQueryService } from "./manifest-query-service";
 export { ManifestRecommendService } from "./manifest-recommend-service";
 export { ManifestVersionService } from "./manifest-version-service";
 export { InstallRecordService, RuntimeFeedbackService } from "./telemetry-service";
+export { InstallRecordQueryService, RuntimeFeedbackQueryService } from "./telemetry-query-service";
+export { AuditLogService } from "./audit-log-service";
+export { ReviewWorkflowService } from "./review-workflow-service";
 export { createSeededHubRepository, defaultHubRepository } from "./seed";
 export { HubError } from "./errors";

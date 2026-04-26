@@ -58,6 +58,11 @@ export class AgentProfileGovernanceService {
       profile.riskLevel = content.riskLevel;
       profile.checksum = computeAgentProfileChecksum(content);
     }
+    if (profile.status === "rejected") {
+      profile.status = "draft";
+      profile.rejectedAt = null;
+      profile.rejectedReason = null;
+    }
     profile.updatedAt = new Date().toISOString();
     return serializeAgentProfileDetail(profile);
   }

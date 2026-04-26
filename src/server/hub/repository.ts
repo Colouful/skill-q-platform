@@ -275,6 +275,8 @@ export class HubRepository {
       riskLevel: input.riskLevel ?? input.content.riskLevel,
       createdBy: input.createdBy ?? null,
       publishedBy: input.publishedBy ?? null,
+      rejectedAt: null,
+      rejectedReason: null,
       deprecatedAt: null,
       archivedAt: null,
       createdAt: timestamp,

@@ -1,5 +1,5 @@
 import { hubException, hubSuccess } from "@/lib/hub-api-response";
-import { defaultHubRepository, ManifestVersionService } from "@/server/hub";
+import { defaultHubRepository, ReviewWorkflowService } from "@/server/hub";
 
 export const dynamic = "force-dynamic";
 
@@ -7,7 +7,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ manifes
   try {
     const { manifestId, versionId } = await params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ManifestVersionService(defaultHubRepository).publish(
+    const data = new ReviewWorkflowService(defaultHubRepository).publishManifestVersion(
       decodeURIComponent(manifestId),
       decodeURIComponent(versionId),
       body,
