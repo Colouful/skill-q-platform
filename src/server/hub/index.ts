@@ -1,8 +1,18 @@
 export { AgentProfileService } from "./agent-profile-service";
 export { AgentProfileValidator } from "./agent-profile-validator";
+export { AgentProfileGovernanceService } from "./agent-profile-governance-service";
+export { AgentProfileQueryService } from "./agent-profile-query-service";
+export { AgentProfileSecurityService } from "./agent-profile-security-service";
 export { AssetService } from "./asset-service";
+export { AssetGovernanceService } from "./asset-governance-service";
+export { AssetQueryService } from "./asset-query-service";
+export { AssetVersionService } from "./asset-version-service";
 export { ManifestExportService } from "./manifest-export-service";
+export { ManifestAssetBindingService } from "./manifest-asset-binding-service";
+export { ManifestGovernanceService } from "./manifest-governance-service";
+export { ManifestQueryService } from "./manifest-query-service";
 export { ManifestRecommendService } from "./manifest-recommend-service";
+export { ManifestVersionService } from "./manifest-version-service";
 export { InstallRecordService, RuntimeFeedbackService } from "./telemetry-service";
 export { createSeededHubRepository, defaultHubRepository } from "./seed";
 export { HubError } from "./errors";

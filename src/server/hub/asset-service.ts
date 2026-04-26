@@ -1,5 +1,6 @@
 import { HubError } from "./errors";
 import { HubRepository } from "./repository";
+import { sha256Text } from "./checksum";
 import type { HubAssetKind, HubScope } from "./types";
 
 export class AssetService {
@@ -89,6 +90,8 @@ export class AssetService {
       );
     }
     version.content = input.content;
+    version.checksum = sha256Text(input.content);
+    version.contentSize = input.content.length;
     return version;
   }
 

@@ -30,6 +30,13 @@ export type HubAsset = {
   ownerUserId: string | null;
   status: HubStatus;
   description: string;
+  tags?: unknown[];
+  visibility?: string | null;
+  latestVersionId?: string | null;
+  deprecatedAt?: string | null;
+  archivedAt?: string | null;
+  createdBy?: string | null;
+  updatedBy?: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -39,13 +46,21 @@ export type HubAssetVersion = {
   assetId: string;
   version: string;
   content: string;
-  contentFormat: "markdown";
+  contentFormat: "markdown" | "json" | "yaml";
   checksum: string;
   status: HubStatus;
   immutable: boolean;
   qualityScore: number;
   dependencies: unknown[];
   compatibility: Record<string, unknown>;
+  changelog?: string | null;
+  createdBy?: string | null;
+  publishedBy?: string | null;
+  rejectedAt?: string | null;
+  rejectedReason?: string | null;
+  source?: string | null;
+  contentSize?: number | null;
+  previousVersionId?: string | null;
   createdAt: string;
   publishedAt: string | null;
 };
@@ -59,6 +74,15 @@ export type HubManifest = {
   ownerTeamId: string | null;
   status: HubStatus;
   description: string;
+  tags?: unknown[];
+  techStacks?: unknown[];
+  projectKinds?: unknown[];
+  recommendedFor?: unknown[];
+  latestVersionId?: string | null;
+  deprecatedAt?: string | null;
+  archivedAt?: string | null;
+  createdBy?: string | null;
+  updatedBy?: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -74,6 +98,13 @@ export type HubManifestVersion = {
     fallbackExecutors: Array<"claude-code" | "codex" | "cursor">;
   };
   compatibility: Record<string, unknown>;
+  changelog?: string | null;
+  createdBy?: string | null;
+  publishedBy?: string | null;
+  rejectedAt?: string | null;
+  rejectedReason?: string | null;
+  previousVersionId?: string | null;
+  exportSchemaVersion?: string | null;
   createdAt: string;
   publishedAt: string | null;
 };
@@ -87,6 +118,12 @@ export type HubManifestAsset = {
   required: boolean;
   loadWhen: string[];
   order: number;
+  alias?: string | null;
+  reason?: string | null;
+  stage?: string | null;
+  addedBy?: string | null;
+  addedAt?: string | null;
+  policy?: Record<string, unknown> | null;
 };
 
 export type HubAgentProfileContent = {
@@ -103,7 +140,7 @@ export type HubAgentProfileContent = {
   };
   modelPolicy: {
     tokenBudget: number;
-    reasoningEffort: "low" | "medium" | "high" | "xhigh";
+    reasoningEffort: "low" | "medium" | "high" | "ultra" | "xhigh";
   };
   approvalPolicy: {
     beforePush: boolean;
@@ -120,11 +157,20 @@ export type HubAgentProfile = {
   id: string;
   slug: string;
   name: string;
+  description?: string;
   scope: HubScope;
   status: HubStatus;
   version: string;
   content: HubAgentProfileContent;
   checksum: string;
+  ownerOrgId?: string | null;
+  ownerTeamId?: string | null;
+  ownerUserId?: string | null;
+  riskLevel?: string | null;
+  createdBy?: string | null;
+  publishedBy?: string | null;
+  deprecatedAt?: string | null;
+  archivedAt?: string | null;
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -136,6 +182,14 @@ export type HubInstallRecord = {
   workspaceId: string | null;
   manifest: { slug: string; version: string };
   packages: unknown[];
+  manifestSlug?: string | null;
+  manifestVersion?: string | null;
+  manifestChecksum?: string | null;
+  status?: string | null;
+  failureReason?: string | null;
+  packageCount?: number | null;
+  clientName?: string | null;
+  clientVersion?: string | null;
   installedAt: string;
   client: { name: string; version: string };
   createdAt: string;
@@ -150,5 +204,13 @@ export type HubRuntimeFeedback = {
   executor: string;
   result: { status: string; success: boolean; durationMs: number };
   issues: unknown[];
+  manifestSlug?: string | null;
+  manifestVersion?: string | null;
+  success?: boolean | null;
+  durationMs?: number | null;
+  failureCategory?: string | null;
+  executorType?: string | null;
+  assetSlugs?: unknown[] | null;
+  privacyChecked?: boolean | null;
   createdAt: string;
 };

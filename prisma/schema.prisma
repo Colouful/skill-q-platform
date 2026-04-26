@@ -540,6 +540,13 @@ model HubAsset {
   ownerUserId String?           @db.VarChar(191)
   status      String            @default("draft") @db.VarChar(40)
   description String?           @db.Text
+  tags        Json?
+  visibility  String?           @db.VarChar(40)
+  latestVersionId String?        @db.VarChar(36)
+  deprecatedAt DateTime?
+  archivedAt   DateTime?
+  createdBy    String?          @db.VarChar(191)
+  updatedBy    String?          @db.VarChar(191)
   versions    HubAssetVersion[]
   manifestLinks HubManifestAsset[]
   createdAt   DateTime          @default(now())
@@ -565,6 +572,14 @@ model HubAssetVersion {
   qualityScore  Int                @default(0)
   dependencies  Json?
   compatibility Json?
+  changelog     String?            @db.Text
+  createdBy     String?            @db.VarChar(191)
+  publishedBy   String?            @db.VarChar(191)
+  rejectedAt    DateTime?
+  rejectedReason String?           @db.Text
+  source        String?            @db.VarChar(80)
+  contentSize   Int?
+  previousVersionId String?        @db.VarChar(36)
   manifestLinks HubManifestAsset[]
   createdAt     DateTime           @default(now())
   publishedAt   DateTime?
@@ -584,6 +599,15 @@ model HubManifest {
   ownerTeamId String?              @db.VarChar(191)
   status      String               @default("draft") @db.VarChar(40)
   description String?              @db.Text
+  tags        Json?
+  techStacks  Json?
+  projectKinds Json?
+  recommendedFor Json?
+  latestVersionId String?          @db.VarChar(36)
+  deprecatedAt DateTime?
+  archivedAt   DateTime?
+  createdBy    String?             @db.VarChar(191)
+  updatedBy    String?             @db.VarChar(191)
   versions    HubManifestVersion[]
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
@@ -603,6 +627,13 @@ model HubManifestVersion {
   checksum      String             @db.VarChar(128)
   installPolicy Json
   compatibility Json?
+  changelog     String?            @db.Text
+  createdBy     String?            @db.VarChar(191)
+  publishedBy   String?            @db.VarChar(191)
+  rejectedAt    DateTime?
+  rejectedReason String?           @db.Text
+  previousVersionId String?        @db.VarChar(36)
+  exportSchemaVersion String?      @db.VarChar(40)
   assets        HubManifestAsset[]
   createdAt     DateTime           @default(now())
   publishedAt   DateTime?
@@ -625,6 +656,12 @@ model HubManifestAsset {
   required          Boolean            @default(true)
   loadWhen          Json?
   order             Int                @default(0)
+  alias             String?            @db.VarChar(191)
+  reason            String?            @db.Text
+  stage             String?            @db.VarChar(80)
+  addedBy           String?            @db.VarChar(191)
+  addedAt           DateTime?
+  policy            Json?
 
   @@index([manifestVersionId])
   @@index([assetId])
@@ -641,6 +678,14 @@ model HubAgentProfile {
   version     String    @default("1.0.0") @db.VarChar(40)
   content     Json
   checksum    String    @db.VarChar(128)
+  ownerOrgId  String?   @db.VarChar(191)
+  ownerTeamId String?   @db.VarChar(191)
+  ownerUserId String?   @db.VarChar(191)
+  riskLevel   String?   @db.VarChar(40)
+  createdBy   String?   @db.VarChar(191)
+  publishedBy String?   @db.VarChar(191)
+  deprecatedAt DateTime?
+  archivedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   publishedAt DateTime?
@@ -657,11 +702,20 @@ model HubInstallRecord {
   workspaceId String?  @db.VarChar(191)
   manifest    Json
   packages    Json?
+  manifestSlug String?  @db.VarChar(191)
+  manifestVersion String? @db.VarChar(40)
+  manifestChecksum String? @db.VarChar(128)
+  status      String?  @db.VarChar(40)
+  failureReason String? @db.Text
+  packageCount Int?
+  clientName  String?  @db.VarChar(80)
+  clientVersion String? @db.VarChar(80)
   installedAt DateTime
   client      Json
   createdAt   DateTime @default(now())
 
   @@index([projectId])
+  @@index([manifestSlug])
   @@map("hub_install_record")
 }
 
@@ -674,10 +728,19 @@ model HubRuntimeFeedback {
   executor   String?  @db.VarChar(80)
   result     Json
   issues     Json?
+  manifestSlug String? @db.VarChar(191)
+  manifestVersion String? @db.VarChar(40)
+  success    Boolean?
+  durationMs Int?
+  failureCategory String? @db.VarChar(80)
+  executorType String? @db.VarChar(80)
+  assetSlugs Json?
+  privacyChecked Boolean?
   createdAt  DateTime @default(now())
 
   @@index([projectId])
   @@index([runId])
+  @@index([manifestSlug])
   @@map("hub_runtime_feedback")
 }
 

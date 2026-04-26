@@ -14,6 +14,7 @@ import type {
   HubStatus,
 } from "./types";
 import { safeJsonHash, sha256Text } from "./checksum";
+import { HubError } from "./errors";
 
 function nowIso() {
   return new Date().toISOString();
@@ -36,9 +37,13 @@ export class HubRepository {
     scope?: HubScope;
     status?: HubStatus;
     description?: string;
+    tags?: unknown[];
+    visibility?: string | null;
     ownerOrgId?: string | null;
     ownerTeamId?: string | null;
     ownerUserId?: string | null;
+    createdBy?: string | null;
+    updatedBy?: string | null;
   }) {
     const timestamp = nowIso();
     const asset: HubAsset = {
@@ -52,6 +57,13 @@ export class HubRepository {
       ownerUserId: input.ownerUserId ?? null,
       status: input.status ?? "draft",
       description: input.description ?? "",
+      tags: input.tags ?? [],
+      visibility: input.visibility ?? null,
+      latestVersionId: null,
+      deprecatedAt: null,
+      archivedAt: null,
+      createdBy: input.createdBy ?? null,
+      updatedBy: input.updatedBy ?? null,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -63,10 +75,16 @@ export class HubRepository {
     assetId: string;
     version: string;
     content: string;
+    contentFormat?: HubAssetVersion["contentFormat"];
     status?: HubStatus;
     qualityScore?: number;
     dependencies?: unknown[];
     compatibility?: Record<string, unknown>;
+    changelog?: string | null;
+    createdBy?: string | null;
+    publishedBy?: string | null;
+    source?: string | null;
+    previousVersionId?: string | null;
   }) {
     const status = input.status ?? "draft";
     const version: HubAssetVersion = {
@@ -74,13 +92,21 @@ export class HubRepository {
       assetId: input.assetId,
       version: input.version,
       content: input.content,
-      contentFormat: "markdown",
+      contentFormat: input.contentFormat ?? "markdown",
       checksum: sha256Text(input.content),
       status,
       immutable: status === "published",
       qualityScore: input.qualityScore ?? 0,
       dependencies: input.dependencies ?? [],
       compatibility: input.compatibility ?? {},
+      changelog: input.changelog ?? null,
+      createdBy: input.createdBy ?? null,
+      publishedBy: input.publishedBy ?? null,
+      rejectedAt: null,
+      rejectedReason: null,
+      source: input.source ?? null,
+      contentSize: input.content.length,
+      previousVersionId: input.previousVersionId ?? null,
       createdAt: nowIso(),
       publishedAt: status === "published" ? nowIso() : null,
     };
@@ -94,8 +120,14 @@ export class HubRepository {
     scope?: HubScope;
     status?: HubStatus;
     description?: string;
+    tags?: unknown[];
+    techStacks?: unknown[];
+    projectKinds?: unknown[];
+    recommendedFor?: unknown[];
     ownerOrgId?: string | null;
     ownerTeamId?: string | null;
+    createdBy?: string | null;
+    updatedBy?: string | null;
   }) {
     const timestamp = nowIso();
     const manifest: HubManifest = {
@@ -107,6 +139,15 @@ export class HubRepository {
       ownerTeamId: input.ownerTeamId ?? null,
       status: input.status ?? "draft",
       description: input.description ?? "",
+      tags: input.tags ?? [],
+      techStacks: input.techStacks ?? [],
+      projectKinds: input.projectKinds ?? [],
+      recommendedFor: input.recommendedFor ?? [],
+      latestVersionId: null,
+      deprecatedAt: null,
+      archivedAt: null,
+      createdBy: input.createdBy ?? null,
+      updatedBy: input.updatedBy ?? null,
       createdAt: timestamp,
       updatedAt: timestamp,
     };
@@ -120,6 +161,11 @@ export class HubRepository {
     status?: HubStatus;
     installPolicy?: HubManifestVersion["installPolicy"];
     compatibility?: Record<string, unknown>;
+    changelog?: string | null;
+    createdBy?: string | null;
+    publishedBy?: string | null;
+    previousVersionId?: string | null;
+    exportSchemaVersion?: string | null;
   }) {
     const status = input.status ?? "draft";
     const manifestVersion: HubManifestVersion = {
@@ -133,6 +179,13 @@ export class HubRepository {
         fallbackExecutors: ["claude-code", "codex"],
       },
       compatibility: input.compatibility ?? {},
+      changelog: input.changelog ?? null,
+      createdBy: input.createdBy ?? null,
+      publishedBy: input.publishedBy ?? null,
+      rejectedAt: null,
+      rejectedReason: null,
+      previousVersionId: input.previousVersionId ?? null,
+      exportSchemaVersion: input.exportSchemaVersion ?? null,
       createdAt: nowIso(),
       publishedAt: status === "published" ? nowIso() : null,
     };
@@ -154,7 +207,21 @@ export class HubRepository {
     required?: boolean;
     loadWhen?: string[];
     order?: number;
+    alias?: string | null;
+    reason?: string | null;
+    stage?: string | null;
+    addedBy?: string | null;
+    addedAt?: string | null;
+    policy?: Record<string, unknown> | null;
   }) {
+    const asset = this.assets.find((item) => item.id === input.assetId);
+    const assetVersion = this.assetVersions.find((item) => item.id === input.assetVersionId);
+    if (asset?.status === "archived" || assetVersion?.status === "archived") {
+      throw new HubError("ASSET_ARCHIVED", "已归档资产不允许新绑定到 Manifest", "请选择 published 状态的资产版本。", 409);
+    }
+    if (asset?.status === "deprecated" || assetVersion?.status === "deprecated") {
+      throw new HubError("ASSET_DEPRECATED", "已废弃资产不应新绑定到 Manifest", "请选择新的 published 资产版本。", 409);
+    }
     const link: HubManifestAsset = {
       id: randomUUID(),
       manifestVersionId: input.manifestVersionId,
@@ -164,6 +231,12 @@ export class HubRepository {
       required: input.required ?? true,
       loadWhen: input.loadWhen ?? [],
       order: input.order ?? 0,
+      alias: input.alias ?? null,
+      reason: input.reason ?? null,
+      stage: input.stage ?? null,
+      addedBy: input.addedBy ?? null,
+      addedAt: input.addedAt ?? null,
+      policy: input.policy ?? null,
     };
     this.manifestAssets.push(link);
     return link;
@@ -172,10 +245,17 @@ export class HubRepository {
   createAgentProfile(input: {
     slug: string;
     name: string;
+    description?: string;
     content: HubAgentProfileContent;
     version?: string;
     scope?: HubScope;
     status?: HubStatus;
+    ownerOrgId?: string | null;
+    ownerTeamId?: string | null;
+    ownerUserId?: string | null;
+    riskLevel?: string | null;
+    createdBy?: string | null;
+    publishedBy?: string | null;
   }) {
     const status = input.status ?? "published";
     const timestamp = nowIso();
@@ -183,11 +263,20 @@ export class HubRepository {
       id: randomUUID(),
       slug: input.slug,
       name: input.name,
+      description: input.description ?? "",
       scope: input.scope ?? "platform",
       status,
       version: input.version ?? "1.0.0",
       content: input.content,
       checksum: safeJsonHash(input.content),
+      ownerOrgId: input.ownerOrgId ?? null,
+      ownerTeamId: input.ownerTeamId ?? null,
+      ownerUserId: input.ownerUserId ?? null,
+      riskLevel: input.riskLevel ?? input.content.riskLevel,
+      createdBy: input.createdBy ?? null,
+      publishedBy: input.publishedBy ?? null,
+      deprecatedAt: null,
+      archivedAt: null,
       createdAt: timestamp,
       updatedAt: timestamp,
       publishedAt: status === "published" ? timestamp : null,

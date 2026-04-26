@@ -529,6 +529,221 @@ model RuleDomainLink {
   @@map("rule_domain_links")
 }
 
+model HubAsset {
+  id              String             @id @default(uuid()) @db.VarChar(36)
+  slug            String             @db.VarChar(191)
+  name            String             @db.VarChar(255)
+  kind            String             @db.VarChar(40)
+  scope           String             @default("platform") @db.VarChar(40)
+  ownerOrgId      String?            @db.VarChar(191)
+  ownerTeamId     String?            @db.VarChar(191)
+  ownerUserId     String?            @db.VarChar(191)
+  status          String             @default("draft") @db.VarChar(40)
+  description     String?            @db.Text
+  tags            Json?
+  visibility      String?            @db.VarChar(40)
+  latestVersionId String?            @db.VarChar(36)
+  deprecatedAt    DateTime?
+  archivedAt      DateTime?
+  createdBy       String?            @db.VarChar(191)
+  updatedBy       String?            @db.VarChar(191)
+  versions        HubAssetVersion[]
+  manifestLinks   HubManifestAsset[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@unique([slug, scope, ownerOrgId])
+  @@index([slug])
+  @@index([kind])
+  @@index([status])
+  @@map("hub_asset")
+}
+
+model HubAssetVersion {
+  id                String             @id @default(uuid()) @db.VarChar(36)
+  assetId           String             @db.VarChar(36)
+  asset             HubAsset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  version           String             @db.VarChar(40)
+  content           String             @db.LongText
+  contentFormat     String             @default("markdown") @db.VarChar(40)
+  checksum          String             @db.VarChar(128)
+  status            String             @default("draft") @db.VarChar(40)
+  immutable         Boolean            @default(false)
+  qualityScore      Int                @default(0)
+  dependencies      Json?
+  compatibility     Json?
+  changelog         String?            @db.Text
+  createdBy         String?            @db.VarChar(191)
+  publishedBy       String?            @db.VarChar(191)
+  rejectedAt        DateTime?
+  rejectedReason    String?            @db.Text
+  source            String?            @db.VarChar(80)
+  contentSize       Int?
+  previousVersionId String?            @db.VarChar(36)
+  manifestLinks     HubManifestAsset[]
+  createdAt         DateTime           @default(now())
+  publishedAt       DateTime?
+
+  @@unique([assetId, version])
+  @@index([checksum])
+  @@index([status])
+  @@map("hub_asset_version")
+}
+
+model HubManifest {
+  id              String               @id @default(uuid()) @db.VarChar(36)
+  slug            String               @db.VarChar(191)
+  name            String               @db.VarChar(255)
+  scope           String               @default("platform") @db.VarChar(40)
+  ownerOrgId      String?              @db.VarChar(191)
+  ownerTeamId     String?              @db.VarChar(191)
+  status          String               @default("draft") @db.VarChar(40)
+  description     String?              @db.Text
+  tags            Json?
+  techStacks      Json?
+  projectKinds    Json?
+  recommendedFor  Json?
+  latestVersionId String?              @db.VarChar(36)
+  deprecatedAt    DateTime?
+  archivedAt      DateTime?
+  createdBy       String?              @db.VarChar(191)
+  updatedBy       String?              @db.VarChar(191)
+  versions        HubManifestVersion[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@unique([slug, scope, ownerOrgId])
+  @@index([slug])
+  @@index([status])
+  @@map("hub_manifest")
+}
+
+model HubManifestVersion {
+  id                  String             @id @default(uuid()) @db.VarChar(36)
+  manifestId          String             @db.VarChar(36)
+  manifest            HubManifest        @relation(fields: [manifestId], references: [id], onDelete: Cascade)
+  version             String             @db.VarChar(40)
+  status              String             @default("draft") @db.VarChar(40)
+  checksum            String             @db.VarChar(128)
+  installPolicy       Json
+  compatibility       Json?
+  changelog           String?            @db.Text
+  createdBy           String?            @db.VarChar(191)
+  publishedBy         String?            @db.VarChar(191)
+  rejectedAt          DateTime?
+  rejectedReason      String?            @db.Text
+  previousVersionId   String?            @db.VarChar(36)
+  exportSchemaVersion String?            @db.VarChar(40)
+  assets              HubManifestAsset[]
+  createdAt           DateTime           @default(now())
+  publishedAt         DateTime?
+
+  @@unique([manifestId, version])
+  @@index([checksum])
+  @@index([status])
+  @@map("hub_manifest_version")
+}
+
+model HubManifestAsset {
+  id                String             @id @default(uuid()) @db.VarChar(36)
+  manifestVersionId String             @db.VarChar(36)
+  manifestVersion   HubManifestVersion @relation(fields: [manifestVersionId], references: [id], onDelete: Cascade)
+  assetId           String             @db.VarChar(36)
+  asset             HubAsset           @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  assetVersionId    String             @db.VarChar(36)
+  assetVersion      HubAssetVersion    @relation(fields: [assetVersionId], references: [id], onDelete: Restrict)
+  kind              String             @db.VarChar(40)
+  required          Boolean            @default(true)
+  loadWhen          Json?
+  order             Int                @default(0)
+  alias             String?            @db.VarChar(191)
+  reason            String?            @db.Text
+  stage             String?            @db.VarChar(80)
+  addedBy           String?            @db.VarChar(191)
+  addedAt           DateTime?
+  policy            Json?
+
+  @@index([manifestVersionId])
+  @@index([assetId])
+  @@index([assetVersionId])
+  @@map("hub_manifest_asset")
+}
+
+model HubAgentProfile {
+  id           String    @id @default(uuid()) @db.VarChar(36)
+  slug         String    @db.VarChar(191)
+  name         String    @db.VarChar(255)
+  scope        String    @default("platform") @db.VarChar(40)
+  status       String    @default("draft") @db.VarChar(40)
+  version      String    @default("1.0.0") @db.VarChar(40)
+  content      Json
+  checksum     String    @db.VarChar(128)
+  ownerOrgId   String?   @db.VarChar(191)
+  ownerTeamId  String?   @db.VarChar(191)
+  ownerUserId  String?   @db.VarChar(191)
+  riskLevel    String?   @db.VarChar(40)
+  createdBy    String?   @db.VarChar(191)
+  publishedBy  String?   @db.VarChar(191)
+  deprecatedAt DateTime?
+  archivedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  publishedAt  DateTime?
+
+  @@unique([slug, version, scope])
+  @@index([slug])
+  @@index([status])
+  @@map("hub_agent_profile")
+}
+
+model HubInstallRecord {
+  id               String   @id @default(uuid()) @db.VarChar(36)
+  projectId        String   @db.VarChar(191)
+  workspaceId      String?  @db.VarChar(191)
+  manifest         Json
+  packages         Json?
+  manifestSlug     String?  @db.VarChar(191)
+  manifestVersion  String?  @db.VarChar(40)
+  manifestChecksum String?  @db.VarChar(128)
+  status           String?  @db.VarChar(40)
+  failureReason    String?  @db.Text
+  packageCount     Int?
+  clientName       String?  @db.VarChar(80)
+  clientVersion    String?  @db.VarChar(80)
+  installedAt      DateTime
+  client           Json
+  createdAt        DateTime @default(now())
+
+  @@index([projectId])
+  @@index([manifestSlug])
+  @@map("hub_install_record")
+}
+
+model HubRuntimeFeedback {
+  id              String   @id @default(uuid()) @db.VarChar(36)
+  projectId       String   @db.VarChar(191)
+  runId           String   @db.VarChar(191)
+  manifest        Json
+  assetsUsed      Json?
+  executor        String?  @db.VarChar(80)
+  result          Json
+  issues          Json?
+  manifestSlug    String?  @db.VarChar(191)
+  manifestVersion String?  @db.VarChar(40)
+  success         Boolean?
+  durationMs      Int?
+  failureCategory String?  @db.VarChar(80)
+  executorType    String?  @db.VarChar(80)
+  assetSlugs      Json?
+  privacyChecked  Boolean?
+  createdAt       DateTime @default(now())
+
+  @@index([projectId])
+  @@index([runId])
+  @@index([manifestSlug])
+  @@map("hub_runtime_feedback")
+}
+
 model ScenarioDomainLink {
   id                String           @id @default(uuid()) @db.VarChar(36)
   scenarioPackageId String           @db.VarChar(36)

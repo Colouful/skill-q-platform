@@ -74,7 +74,14 @@ export function createSeededHubRepository() {
     kind: "flow",
     content: "# Implementation Flow\n\n用于实现阶段的基础流程资产。\n",
   });
-  const diagnosticProfile = repo.createAgentProfile({
+  const assetService = new AssetService(repo);
+  assetService.createVersion({
+    assetSlug: plannerRole.asset.slug,
+    version: "1.1.0-draft",
+    content: "# Planner Role Draft\n\n用于 V2.1 发布流测试的草稿版本，不绑定默认 Manifest。\n",
+    status: "draft",
+  });
+  repo.createAgentProfile({
     slug: DEFAULT_AGENT_PROFILE.slug,
     name: DEFAULT_AGENT_PROFILE.name,
     content: DEFAULT_AGENT_PROFILE,
