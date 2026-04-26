@@ -1,72 +1,171 @@
 import { MANIFEST_ERROR } from "./manifest-governance-errors";
 import {
-  listVersionBindings,
   normalizeStatus,
-  parseStringArray,
   serializeManifest,
-  serializeManifestVersionSummary,
 } from "./manifest-admin-shared";
 import type { HubRepository } from "./repository";
+import { getHubRepositoryProvider } from "./repositories/hub-repository-provider";
+import { InMemoryHubRepositoryAdapter } from "./repositories/memory/in-memory-hub-repository-adapter";
+import type { ManifestRepositoryPort } from "./repositories/ports/manifest-repository-port";
+import type {
+  HubManifestAssetBinding,
+  HubManifestSummary,
+  HubManifestVersionSummary,
+  ManifestListQuery,
+} from "./repositories/repository-types";
 import type { HubScope } from "./types";
 
+function isHubRepository(repo: unknown): repo is HubRepository {
+  return Boolean(repo && typeof repo === "object" && Array.isArray((repo as HubRepository).manifests));
+}
+
+function toRepository(repo?: HubRepository | ManifestRepositoryPort): ManifestRepositoryPort {
+  if (!repo) return getHubRepositoryProvider();
+  if (isHubRepository(repo)) return new InMemoryHubRepositoryAdapter(repo);
+  return repo as ManifestRepositoryPort;
+}
+
+function toStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((item): item is string => typeof item === "string" && item.trim().length > 0);
+}
+
+function readQuery(input: URLSearchParams | Record<string, string | undefined>): ManifestListQuery {
+  const get = (key: string) => (input instanceof URLSearchParams ? input.get(key) ?? undefined : input[key]);
+  const page = Number(get("page") ?? 1);
+  const pageSize = Number(get("pageSize") ?? 20);
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw MANIFEST_ERROR.invalidPagination();
+  }
+  const status = get("status") || undefined;
+  if (status) normalizeStatus(status);
+  return {
+    keyword: get("keyword")?.trim() || undefined,
+    status,
+    scope: (get("scope") as HubScope | undefined) || undefined,
+    ownerTeamId: get("ownerTeamId") || undefined,
+    techStack: get("techStack") || undefined,
+    projectKind: get("projectKind") || undefined,
+    tag: get("tag") || undefined,
+    page,
+    pageSize,
+  };
+}
+
+function serializeVersionSummary(version: HubManifestVersionSummary) {
+  return {
+    id: version.id,
+    manifestId: version.manifestId,
+    version: version.version,
+    status: version.status,
+    checksum: version.checksum,
+    installPolicy: version.installPolicy,
+    compatibility: version.compatibility,
+    assetBindingCount: version.assetBindingCount,
+    exportSchemaVersion: version.exportSchemaVersion ?? undefined,
+    changelog: version.changelog ?? undefined,
+    previousVersionId: version.previousVersionId ?? undefined,
+    rejectedAt: version.rejectedAt ?? undefined,
+    rejectedReason: version.rejectedReason ?? undefined,
+    createdAt: version.createdAt,
+    publishedAt: version.publishedAt ?? undefined,
+  };
+}
+
+function serializeBinding(binding: HubManifestAssetBinding) {
+  return {
+    bindingId: binding.id,
+    manifestVersionId: binding.manifestVersionId,
+    assetId: binding.assetId,
+    assetSlug: binding.assetSlug,
+    assetName: binding.assetName,
+    assetVersionId: binding.assetVersionId,
+    assetVersion: binding.assetVersion,
+    kind: binding.kind,
+    checksum: binding.checksum,
+    required: binding.required,
+    loadWhen: binding.loadWhen,
+    order: binding.order,
+    alias: binding.alias ?? undefined,
+    reason: binding.reason ?? undefined,
+    stage: binding.stage ?? undefined,
+    policy: binding.policy ?? undefined,
+  };
+}
+
+function serializeManifestSummary(manifest: HubManifestSummary) {
+  return {
+    id: manifest.id,
+    slug: manifest.slug,
+    name: manifest.name,
+    scope: manifest.scope,
+    status: manifest.status,
+    description: manifest.description,
+    tags: toStringArray(manifest.tags),
+    techStacks: toStringArray(manifest.techStacks),
+    projectKinds: toStringArray(manifest.projectKinds),
+    recommendedFor: toStringArray(manifest.recommendedFor),
+    latestVersionId: manifest.latestVersionId ?? undefined,
+    deprecatedAt: manifest.deprecatedAt ?? undefined,
+    archivedAt: manifest.archivedAt ?? undefined,
+    createdAt: manifest.createdAt,
+    updatedAt: manifest.updatedAt,
+    versionCount: manifest.versionCount,
+    publishedVersionCount: manifest.publishedVersionCount,
+    assetBindingCount: manifest.assetBindingCount,
+  };
+}
+
 export class ManifestQueryService {
-  constructor(private readonly repo: HubRepository) {}
+  private readonly repository: ManifestRepositoryPort;
 
-  list(input: URLSearchParams | Record<string, string | undefined>) {
-    const get = (key: string) => (input instanceof URLSearchParams ? input.get(key) ?? undefined : input[key]);
-    const page = Number(get("page") ?? 1);
-    const pageSize = Number(get("pageSize") ?? 20);
-    if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
-      throw MANIFEST_ERROR.invalidPagination();
-    }
-    const keyword = (get("keyword") ?? "").trim().toLowerCase();
-    const status = get("status");
-    const scope = get("scope") as HubScope | undefined;
-    const ownerTeamId = get("ownerTeamId");
-    const techStack = get("techStack");
-    const projectKind = get("projectKind");
-    const tag = get("tag");
-    if (status) normalizeStatus(status);
-
-    const filtered = this.repo.manifests.filter((manifest) => {
-      if (keyword && !`${manifest.slug} ${manifest.name} ${manifest.description}`.toLowerCase().includes(keyword)) return false;
-      if (status && manifest.status !== status) return false;
-      if (scope && manifest.scope !== scope) return false;
-      if (ownerTeamId && manifest.ownerTeamId !== ownerTeamId) return false;
-      if (techStack && !parseStringArray(manifest.techStacks).includes(techStack)) return false;
-      if (projectKind && !parseStringArray(manifest.projectKinds).includes(projectKind)) return false;
-      if (tag && !parseStringArray(manifest.tags).includes(tag)) return false;
-      return true;
-    });
-    const total = filtered.length;
-    const items = filtered.slice((page - 1) * pageSize, page * pageSize).map((manifest) => {
-      const versions = this.repo.manifestVersions.filter((version) => version.manifestId === manifest.id);
-      const versionIds = new Set(versions.map((version) => version.id));
-      return {
-        ...serializeManifest(manifest),
-        versionCount: versions.length,
-        publishedVersionCount: versions.filter((version) => version.status === "published").length,
-        assetBindingCount: this.repo.manifestAssets.filter((link) => versionIds.has(link.manifestVersionId)).length,
-      };
-    });
-    return { items, pagination: { page, pageSize, total } };
+  constructor(repo?: HubRepository | ManifestRepositoryPort) {
+    this.repository = toRepository(repo);
   }
 
-  detail(manifestId: string) {
-    const manifest = this.repo.manifests.find((item) => item.id === manifestId);
+  async list(input: URLSearchParams | Record<string, string | undefined>) {
+    const result = await this.repository.listManifests(readQuery(input));
+    return {
+      ...result,
+      items: result.items.map(serializeManifestSummary),
+    };
+  }
+
+  async detail(manifestId: string) {
+    const manifest = await this.repository.findManifestById(manifestId);
     if (!manifest) throw MANIFEST_ERROR.notFound();
-    const versions = this.repo.manifestVersions.filter((item) => item.manifestId === manifest.id);
-    const versionIds = new Set(versions.map((version) => version.id));
-    const assetBindings = versions.flatMap((version) => listVersionBindings(this.repo, version.id));
+    const versions = await this.repository.listManifestVersions(manifest.id);
+    const bindingGroups = await Promise.all(versions.map((version) => this.repository.listManifestAssetBindings(version.id)));
+    const assetBindings = bindingGroups.flat().map(serializeBinding);
     return {
       manifest: serializeManifest(manifest),
-      versions: versions.map((version) => serializeManifestVersionSummary(this.repo, version)),
+      versions: versions.map(serializeVersionSummary),
       assetBindings,
       stats: {
         versionCount: versions.length,
         publishedVersionCount: versions.filter((version) => version.status === "published").length,
-        assetBindingCount: this.repo.manifestAssets.filter((link) => versionIds.has(link.manifestVersionId)).length,
+        assetBindingCount: assetBindings.length,
       },
+    };
+  }
+
+  async listManifestVersions(manifestId: string) {
+    const manifest = await this.repository.findManifestById(manifestId);
+    if (!manifest) throw MANIFEST_ERROR.notFound();
+    const versions = await this.repository.listManifestVersions(manifest.id);
+    return versions.map(serializeVersionSummary);
+  }
+
+  async findManifestVersionById(versionId: string) {
+    const version = await this.repository.findManifestVersionById(versionId);
+    if (!version) throw MANIFEST_ERROR.versionNotFound();
+    const assets = await this.repository.listManifestAssetBindings(version.id);
+    return {
+      version: serializeVersionSummary({
+        ...version,
+        assetBindingCount: assets.length,
+      }),
+      assets: assets.map(serializeBinding),
     };
   }
 }

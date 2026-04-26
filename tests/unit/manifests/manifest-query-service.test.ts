@@ -33,36 +33,36 @@ function seedQueryRepo() {
 }
 
 describe("ManifestQueryService", () => {
-  it("应返回分页列表", () => {
+  it("应返回分页列表", async () => {
     const { query } = seedQueryRepo();
 
-    const result = query.list(new URLSearchParams("page=1&pageSize=1"));
+    const result = await query.list(new URLSearchParams("page=1&pageSize=1"));
 
     expect(result.items).toHaveLength(1);
     expect(result.pagination).toEqual({ page: 1, pageSize: 1, total: 2 });
   });
 
-  it("keyword 应支持 slug / name / description 模糊搜索", () => {
+  it("keyword 应支持 slug / name / description 模糊搜索", async () => {
     const { query } = seedQueryRepo();
 
-    expect(query.list(new URLSearchParams("keyword=keyword")).pagination.total).toBe(1);
-    expect(query.list(new URLSearchParams("keyword=查询 React")).items[0].slug).toBe("query-react-manifest");
-    expect(query.list(new URLSearchParams("keyword=query-node")).items[0].slug).toBe("query-node-manifest");
+    expect((await query.list(new URLSearchParams("keyword=keyword"))).pagination.total).toBe(1);
+    expect((await query.list(new URLSearchParams("keyword=查询 React"))).items[0].slug).toBe("query-react-manifest");
+    expect((await query.list(new URLSearchParams("keyword=query-node"))).items[0].slug).toBe("query-node-manifest");
   });
 
-  it("应按 status 筛选", () => {
+  it("应按 status 筛选", async () => {
     const { query } = seedQueryRepo();
 
-    const result = query.list(new URLSearchParams("status=published"));
+    const result = await query.list(new URLSearchParams("status=published"));
 
     expect(result.pagination.total).toBe(1);
     expect(result.items[0].publishedVersionCount).toBe(1);
   });
 
-  it("详情应返回版本摘要和绑定摘要", () => {
+  it("详情应返回版本摘要和绑定摘要", async () => {
     const { query, react } = seedQueryRepo();
 
-    const detail = query.detail(react.manifest.id);
+    const detail = await query.detail(react.manifest.id);
 
     expect(detail.manifest.slug).toBe("query-react-manifest");
     expect(detail.versions[0]).toEqual(expect.objectContaining({ version: "1.0.0" }));

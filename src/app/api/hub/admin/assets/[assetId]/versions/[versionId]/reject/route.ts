@@ -7,7 +7,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ assetId
   try {
     const { assetId, versionId } = await params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ReviewWorkflowService(defaultHubRepository).rejectAssetVersion(
+    const data = await new ReviewWorkflowService(defaultHubRepository).rejectAssetVersion(
       decodeURIComponent(assetId),
       decodeURIComponent(versionId),
       body,

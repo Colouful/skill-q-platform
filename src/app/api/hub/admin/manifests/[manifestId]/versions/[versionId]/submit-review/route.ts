@@ -7,7 +7,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ manifes
   try {
     const { manifestId, versionId } = await params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ReviewWorkflowService(defaultHubRepository).submitManifestVersion(
+    const data = await new ReviewWorkflowService(defaultHubRepository).submitManifestVersion(
       decodeURIComponent(manifestId),
       decodeURIComponent(versionId),
       body,

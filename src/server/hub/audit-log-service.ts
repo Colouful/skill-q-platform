@@ -1,62 +1,92 @@
-import { randomUUID } from "node:crypto";
-import { assertNoSensitivePayload } from "./privacy-guard";
-import type { HubAuditAction, HubAuditLog, HubAuditTargetType } from "./audit-log-types";
+import { AUDIT_LOG_ERROR } from "./audit-log-errors";
+import { HubError } from "./errors";
+import { InMemoryHubRepositoryAdapter } from "./repositories/memory/in-memory-hub-repository-adapter";
+import type { AuditLogRepositoryPort } from "./repositories/ports/audit-log-repository-port";
+import { PrismaAuditLogRepository } from "./repositories/prisma/prisma-audit-log-repository";
+import type { AuditLogListQuery, HubAuditLogCreateInput, PrismaHubClientLike } from "./repositories/repository-types";
+import { defaultHubRepository } from "./seed";
 
-type AuditInput = {
-  targetType: HubAuditTargetType;
-  targetId: string;
-  action: HubAuditAction;
+type AuditLogInput = Omit<HubAuditLogCreateInput, "operatorId" | "operatorName" | "operatorType"> & {
   operator?: string;
-  reason?: string;
-  note?: string;
-  statusFrom?: string;
-  statusTo?: string;
+  operatorId?: string;
+  operatorName?: string;
+  operatorType?: string;
 };
 
-const auditLogs: HubAuditLog[] = [];
+type QueryInput = URLSearchParams | Record<string, string | number | undefined>;
+
+export const defaultMemoryAuditRepository = new InMemoryHubRepositoryAdapter(defaultHubRepository);
+
+function get(input: QueryInput, key: string) {
+  return input instanceof URLSearchParams ? input.get(key) ?? undefined : input[key];
+}
+
+function normalizeQuery(input: QueryInput = {}): AuditLogListQuery {
+  const page = Number(get(input, "page") ?? 1);
+  const pageSize = Number(get(input, "pageSize") ?? 20);
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw AUDIT_LOG_ERROR.invalidQuery();
+  }
+  const value = (key: string) => {
+    const item = get(input, key);
+    return item === undefined ? undefined : String(item).trim() || undefined;
+  };
+  return {
+    targetType: value("targetType"),
+    targetId: value("targetId"),
+    action: value("action"),
+    operatorId: value("operatorId"),
+    page,
+    pageSize,
+  };
+}
+
+function defaultRepository(): AuditLogRepositoryPort {
+  if ((process.env.HUB_REPOSITORY_MODE ?? "memory").trim().toLowerCase() !== "prisma") {
+    return defaultMemoryAuditRepository;
+  }
+  // 按环境开关懒加载 Prisma，避免 memory 测试路径误连数据库。
+  const { prisma } = require("@/lib/prisma") as { prisma: PrismaHubClientLike };
+  return new PrismaAuditLogRepository(prisma);
+}
 
 export class AuditLogService {
-  append(input: AuditInput) {
-    assertNoSensitivePayload(input);
-    const log: HubAuditLog = {
-      id: randomUUID(),
-      targetType: input.targetType,
-      targetId: input.targetId,
-      action: input.action,
-      operator: input.operator ?? "system",
-      reason: input.reason,
-      note: input.note,
-      statusFrom: input.statusFrom,
-      statusTo: input.statusTo,
-      createdAt: new Date().toISOString(),
-    };
-    auditLogs.unshift(log);
-    return log;
+  constructor(private readonly repository: AuditLogRepositoryPort = defaultRepository()) {}
+
+  async createAuditLog(input: AuditLogInput) {
+    try {
+      return await this.repository.createAuditLog({
+        ...input,
+        operatorId: input.operatorId ?? input.operator ?? "system",
+        operatorName: input.operatorName ?? (input.operator && input.operator !== "system" ? input.operator : "系统"),
+        operatorType: input.operatorType ?? "system",
+      });
+    } catch (error) {
+      if (error instanceof HubError) throw error;
+      throw AUDIT_LOG_ERROR.createFailed(error instanceof Error ? error.message : undefined);
+    }
   }
 
-  list(input: URLSearchParams | Record<string, string | undefined> = {}) {
-    const get = (key: string) => (input instanceof URLSearchParams ? input.get(key) ?? undefined : input[key]);
-    const page = Number(get("page") ?? 1);
-    const pageSize = Number(get("pageSize") ?? 20);
-    if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
-      return { items: [], pagination: { page: 1, pageSize: 20, total: 0 } };
+  async append(input: AuditLogInput) {
+    return this.createAuditLog(input);
+  }
+
+  async listAuditLogs(input: QueryInput = {}) {
+    try {
+      return await this.repository.listAuditLogs(normalizeQuery(input));
+    } catch (error) {
+      if (error instanceof HubError) throw error;
+      if (error instanceof Error && error.message.includes("分页参数不合法")) throw AUDIT_LOG_ERROR.invalidQuery();
+      throw AUDIT_LOG_ERROR.queryFailed(error instanceof Error ? error.message : undefined);
     }
-    const targetType = get("targetType");
-    const targetId = get("targetId");
-    const action = get("action");
-    const filtered = auditLogs.filter((log) => {
-      if (targetType && log.targetType !== targetType) return false;
-      if (targetId && log.targetId !== targetId) return false;
-      if (action && log.action !== action) return false;
-      return true;
-    });
-    return {
-      items: filtered.slice((page - 1) * pageSize, page * pageSize),
-      pagination: { page, pageSize, total: filtered.length },
-    };
+  }
+
+  async list(input: QueryInput = {}) {
+    return this.listAuditLogs(input);
   }
 
   clear() {
-    auditLogs.splice(0, auditLogs.length);
+    const repository = this.repository as AuditLogRepositoryPort & { clearAuditLogs?: () => void };
+    repository.clearAuditLogs?.();
   }
 }

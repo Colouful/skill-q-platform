@@ -25,7 +25,7 @@ export class ReviewWorkflowService {
     private readonly auditLogService = new AuditLogService(),
   ) {}
 
-  submitAssetVersion(assetId: string, versionId: string, input: Record<string, unknown> = {}) {
+  async submitAssetVersion(assetId: string, versionId: string, input: Record<string, unknown> = {}) {
     assertSafeAdminPayload(input);
     const asset = this.repo.assets.find((item) => item.id === assetId);
     const version = this.repo.assetVersions.find((item) => item.assetId === assetId && item.id === versionId);
@@ -37,11 +37,11 @@ export class ReviewWorkflowService {
     version.rejectedAt = null;
     version.rejectedReason = null;
     if (asset.status === "draft" || asset.status === "rejected") asset.status = "reviewing";
-    this.audit("asset-version", version.id, "submit-review", statusFrom, version.status, input);
+    await this.audit("asset-version", version.id, "submit-review", statusFrom, version.status, input);
     return { version: serializeVersionDetail(version) };
   }
 
-  rejectAssetVersion(assetId: string, versionId: string, input: Record<string, unknown>) {
+  async rejectAssetVersion(assetId: string, versionId: string, input: Record<string, unknown>) {
     assertSafeAdminPayload(input);
     const reason = String(input.reason ?? "").trim();
     if (!reason) throw REVIEW_ERROR.reasonRequired();
@@ -54,19 +54,19 @@ export class ReviewWorkflowService {
     version.rejectedAt = new Date().toISOString();
     version.rejectedReason = reason;
     if (asset.status !== "published") asset.status = "rejected";
-    this.audit("asset-version", version.id, "reject", statusFrom, version.status, { ...input, reason });
+    await this.audit("asset-version", version.id, "reject", statusFrom, version.status, { ...input, reason });
     return { version: serializeVersionDetail(version) };
   }
 
-  publishAssetVersion(assetId: string, versionId: string, input: Record<string, unknown> = {}) {
+  async publishAssetVersion(assetId: string, versionId: string, input: Record<string, unknown> = {}) {
     const version = this.repo.assetVersions.find((item) => item.assetId === assetId && item.id === versionId);
     const statusFrom = version?.status;
     const result = new AssetVersionService(this.repo).publish(assetId, versionId, input);
-    this.audit("asset-version", versionId, "publish", statusFrom, "published", input);
+    await this.audit("asset-version", versionId, "publish", statusFrom, "published", input);
     return result;
   }
 
-  submitManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown> = {}) {
+  async submitManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown> = {}) {
     assertSafeAdminPayload(input);
     const manifest = this.repo.manifests.find((item) => item.id === manifestId);
     const version = this.repo.manifestVersions.find((item) => item.manifestId === manifestId && item.id === versionId);
@@ -78,11 +78,11 @@ export class ReviewWorkflowService {
     version.rejectedAt = null;
     version.rejectedReason = null;
     if (manifest.status === "draft" || manifest.status === "rejected") manifest.status = "reviewing";
-    this.audit("manifest-version", version.id, "submit-review", statusFrom, version.status, input);
+    await this.audit("manifest-version", version.id, "submit-review", statusFrom, version.status, input);
     return { version: serializeManifestVersionSummary(this.repo, version) };
   }
 
-  rejectManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown>) {
+  async rejectManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown>) {
     assertSafeAdminPayload(input);
     const reason = String(input.reason ?? "").trim();
     if (!reason) throw REVIEW_ERROR.reasonRequired();
@@ -95,19 +95,19 @@ export class ReviewWorkflowService {
     version.rejectedAt = new Date().toISOString();
     version.rejectedReason = reason;
     if (manifest.status !== "published") manifest.status = "rejected";
-    this.audit("manifest-version", version.id, "reject", statusFrom, version.status, { ...input, reason });
+    await this.audit("manifest-version", version.id, "reject", statusFrom, version.status, { ...input, reason });
     return { version: serializeManifestVersionSummary(this.repo, version) };
   }
 
-  publishManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown> = {}) {
+  async publishManifestVersion(manifestId: string, versionId: string, input: Record<string, unknown> = {}) {
     const version = this.repo.manifestVersions.find((item) => item.manifestId === manifestId && item.id === versionId);
     const statusFrom = version?.status;
     const result = new ManifestVersionService(this.repo).publish(manifestId, versionId, input);
-    this.audit("manifest-version", versionId, "publish", statusFrom, "published", input);
+    await this.audit("manifest-version", versionId, "publish", statusFrom, "published", input);
     return result;
   }
 
-  submitAgentProfile(profileId: string, input: Record<string, unknown> = {}) {
+  async submitAgentProfile(profileId: string, input: Record<string, unknown> = {}) {
     assertSafeAdminPayload(input);
     const profile = this.repo.agentProfiles.find((item) => item.id === profileId);
     if (!profile) throw REVIEW_ERROR.targetNotFound();
@@ -118,11 +118,11 @@ export class ReviewWorkflowService {
     profile.rejectedAt = null;
     profile.rejectedReason = null;
     profile.updatedAt = new Date().toISOString();
-    this.audit("agent-profile", profile.id, "submit-review", statusFrom, profile.status, input);
+    await this.audit("agent-profile", profile.id, "submit-review", statusFrom, profile.status, input);
     return serializeAgentProfileDetail(profile);
   }
 
-  rejectAgentProfile(profileId: string, input: Record<string, unknown>) {
+  async rejectAgentProfile(profileId: string, input: Record<string, unknown>) {
     assertSafeAdminPayload(input);
     const reason = String(input.reason ?? "").trim();
     if (!reason) throw REVIEW_ERROR.reasonRequired();
@@ -134,11 +134,11 @@ export class ReviewWorkflowService {
     profile.rejectedAt = new Date().toISOString();
     profile.rejectedReason = reason;
     profile.updatedAt = new Date().toISOString();
-    this.audit("agent-profile", profile.id, "reject", statusFrom, profile.status, { ...input, reason });
+    await this.audit("agent-profile", profile.id, "reject", statusFrom, profile.status, { ...input, reason });
     return serializeAgentProfileDetail(profile);
   }
 
-  publishAgentProfile(profileId: string, input: Record<string, unknown> = {}) {
+  async publishAgentProfile(profileId: string, input: Record<string, unknown> = {}) {
     const profile = this.repo.agentProfiles.find((item) => item.id === profileId);
     const statusFrom = profile?.status;
     if (profile) {
@@ -146,7 +146,7 @@ export class ReviewWorkflowService {
       if (!validation.valid) throw REVIEW_ERROR.publishNotAllowed();
     }
     const result = new AgentProfileGovernanceService(this.repo).publish(profileId, input);
-    this.audit("agent-profile", profileId, "publish", statusFrom, "published", input);
+    await this.audit("agent-profile", profileId, "publish", statusFrom, "published", input);
     return result;
   }
 
@@ -196,7 +196,7 @@ export class ReviewWorkflowService {
     return Boolean(asset && version && asset.status === "published" && version.status === "published" && version.immutable && version.checksum);
   }
 
-  private audit(
+  private async audit(
     targetType: HubAuditTargetType,
     targetId: string,
     action: "submit-review" | "reject" | "publish",
@@ -204,7 +204,7 @@ export class ReviewWorkflowService {
     statusTo: string,
     input: Record<string, unknown>,
   ) {
-    this.auditLogService.append({
+    await this.auditLogService.append({
       targetType,
       targetId,
       action,
@@ -212,7 +212,9 @@ export class ReviewWorkflowService {
       statusTo,
       reason: input.reason ? String(input.reason) : undefined,
       note: noteOf(input),
-      operator: "system",
+      operatorId: "system",
+      operatorName: "系统",
+      operatorType: "system",
     });
   }
 }

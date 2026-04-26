@@ -606,6 +606,25 @@ exports.Prisma.HubRuntimeFeedbackScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.HubAuditLogScalarFieldEnum = {
+  id: 'id',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  targetSlug: 'targetSlug',
+  targetVersion: 'targetVersion',
+  action: 'action',
+  statusFrom: 'statusFrom',
+  statusTo: 'statusTo',
+  operatorId: 'operatorId',
+  operatorName: 'operatorName',
+  operatorType: 'operatorType',
+  reason: 'reason',
+  note: 'note',
+  metadata: 'metadata',
+  requestId: 'requestId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ScenarioDomainLinkScalarFieldEnum = {
   id: 'id',
   scenarioPackageId: 'scenarioPackageId',
@@ -985,6 +1004,23 @@ exports.Prisma.HubRuntimeFeedbackOrderByRelevanceFieldEnum = {
   executorType: 'executorType'
 };
 
+exports.Prisma.HubAuditLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  targetType: 'targetType',
+  targetId: 'targetId',
+  targetSlug: 'targetSlug',
+  targetVersion: 'targetVersion',
+  action: 'action',
+  statusFrom: 'statusFrom',
+  statusTo: 'statusTo',
+  operatorId: 'operatorId',
+  operatorName: 'operatorName',
+  operatorType: 'operatorType',
+  reason: 'reason',
+  note: 'note',
+  requestId: 'requestId'
+};
+
 exports.Prisma.ScenarioDomainLinkOrderByRelevanceFieldEnum = {
   id: 'id',
   scenarioPackageId: 'scenarioPackageId',
@@ -1028,6 +1064,7 @@ exports.Prisma.ModelName = {
   HubAgentProfile: 'HubAgentProfile',
   HubInstallRecord: 'HubInstallRecord',
   HubRuntimeFeedback: 'HubRuntimeFeedback',
+  HubAuditLog: 'HubAuditLog',
   ScenarioDomainLink: 'ScenarioDomainLink'
 };
 

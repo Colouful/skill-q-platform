@@ -1,11 +1,11 @@
 import { hubException, hubSuccess } from "@/lib/hub-api-response";
-import { AssetGovernanceService, AssetQueryService, defaultHubRepository } from "@/server/hub";
+import { AssetGovernanceService, AssetQueryService } from "@/server/hub";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   try {
-    const data = new AssetQueryService(defaultHubRepository).list(new URL(req.url).searchParams);
+    const data = await new AssetQueryService().list(new URL(req.url).searchParams);
     return hubSuccess(data);
   } catch (error) {
     return hubException(error);
@@ -15,7 +15,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new AssetGovernanceService(defaultHubRepository).createDraft(body);
+    const data = await new AssetGovernanceService().createDraft(body);
     return hubSuccess(data);
   } catch (error) {
     return hubException(error);

@@ -189,6 +189,11 @@ export type HubInstallRecord = $Result.DefaultSelection<Prisma.$HubInstallRecord
  */
 export type HubRuntimeFeedback = $Result.DefaultSelection<Prisma.$HubRuntimeFeedbackPayload>
 /**
+ * Model HubAuditLog
+ * 
+ */
+export type HubAuditLog = $Result.DefaultSelection<Prisma.$HubAuditLogPayload>
+/**
  * Model ScenarioDomainLink
  * 
  */
@@ -664,6 +669,16 @@ export class PrismaClient<
     * ```
     */
   get hubRuntimeFeedback(): Prisma.HubRuntimeFeedbackDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.hubAuditLog`: Exposes CRUD operations for the **HubAuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HubAuditLogs
+    * const hubAuditLogs = await prisma.hubAuditLog.findMany()
+    * ```
+    */
+  get hubAuditLog(): Prisma.HubAuditLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.scenarioDomainLink`: Exposes CRUD operations for the **ScenarioDomainLink** model.
@@ -1143,6 +1158,7 @@ export namespace Prisma {
     HubAgentProfile: 'HubAgentProfile',
     HubInstallRecord: 'HubInstallRecord',
     HubRuntimeFeedback: 'HubRuntimeFeedback',
+    HubAuditLog: 'HubAuditLog',
     ScenarioDomainLink: 'ScenarioDomainLink'
   };
 
@@ -1159,7 +1175,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "agent" | "apiKey" | "agentSession" | "category" | "skill" | "rule" | "version" | "ruleVersion" | "review" | "downloadLog" | "categoryAuditLog" | "systemConfig" | "hubNotification" | "admin" | "adminSession" | "roleTemplate" | "roleVersion" | "roleSkillLink" | "roleRuleLink" | "scenarioPackage" | "scenarioPackageRole" | "scenarioPackageSkill" | "scenarioPackageRule" | "capabilityDomain" | "roleDomainLink" | "skillDomainLink" | "ruleDomainLink" | "hubAsset" | "hubAssetVersion" | "hubManifest" | "hubManifestVersion" | "hubManifestAsset" | "hubAgentProfile" | "hubInstallRecord" | "hubRuntimeFeedback" | "scenarioDomainLink"
+      modelProps: "agent" | "apiKey" | "agentSession" | "category" | "skill" | "rule" | "version" | "ruleVersion" | "review" | "downloadLog" | "categoryAuditLog" | "systemConfig" | "hubNotification" | "admin" | "adminSession" | "roleTemplate" | "roleVersion" | "roleSkillLink" | "roleRuleLink" | "scenarioPackage" | "scenarioPackageRole" | "scenarioPackageSkill" | "scenarioPackageRule" | "capabilityDomain" | "roleDomainLink" | "skillDomainLink" | "ruleDomainLink" | "hubAsset" | "hubAssetVersion" | "hubManifest" | "hubManifestVersion" | "hubManifestAsset" | "hubAgentProfile" | "hubInstallRecord" | "hubRuntimeFeedback" | "hubAuditLog" | "scenarioDomainLink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3473,6 +3489,72 @@ export namespace Prisma {
           }
         }
       }
+      HubAuditLog: {
+        payload: Prisma.$HubAuditLogPayload<ExtArgs>
+        fields: Prisma.HubAuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HubAuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HubAuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.HubAuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HubAuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.HubAuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.HubAuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.HubAuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.HubAuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          update: {
+            args: Prisma.HubAuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.HubAuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HubAuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.HubAuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HubAuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.HubAuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHubAuditLog>
+          }
+          groupBy: {
+            args: Prisma.HubAuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HubAuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HubAuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<HubAuditLogCountAggregateOutputType> | number
+          }
+        }
+      }
       ScenarioDomainLink: {
         payload: Prisma.$ScenarioDomainLinkPayload<ExtArgs>
         fields: Prisma.ScenarioDomainLinkFieldRefs
@@ -3682,6 +3764,7 @@ export namespace Prisma {
     hubAgentProfile?: HubAgentProfileOmit
     hubInstallRecord?: HubInstallRecordOmit
     hubRuntimeFeedback?: HubRuntimeFeedbackOmit
+    hubAuditLog?: HubAuditLogOmit
     scenarioDomainLink?: ScenarioDomainLinkOmit
   }
 
@@ -40977,6 +41060,1010 @@ export namespace Prisma {
 
 
   /**
+   * Model HubAuditLog
+   */
+
+  export type AggregateHubAuditLog = {
+    _count: HubAuditLogCountAggregateOutputType | null
+    _min: HubAuditLogMinAggregateOutputType | null
+    _max: HubAuditLogMaxAggregateOutputType | null
+  }
+
+  export type HubAuditLogMinAggregateOutputType = {
+    id: string | null
+    targetType: string | null
+    targetId: string | null
+    targetSlug: string | null
+    targetVersion: string | null
+    action: string | null
+    statusFrom: string | null
+    statusTo: string | null
+    operatorId: string | null
+    operatorName: string | null
+    operatorType: string | null
+    reason: string | null
+    note: string | null
+    requestId: string | null
+    createdAt: Date | null
+  }
+
+  export type HubAuditLogMaxAggregateOutputType = {
+    id: string | null
+    targetType: string | null
+    targetId: string | null
+    targetSlug: string | null
+    targetVersion: string | null
+    action: string | null
+    statusFrom: string | null
+    statusTo: string | null
+    operatorId: string | null
+    operatorName: string | null
+    operatorType: string | null
+    reason: string | null
+    note: string | null
+    requestId: string | null
+    createdAt: Date | null
+  }
+
+  export type HubAuditLogCountAggregateOutputType = {
+    id: number
+    targetType: number
+    targetId: number
+    targetSlug: number
+    targetVersion: number
+    action: number
+    statusFrom: number
+    statusTo: number
+    operatorId: number
+    operatorName: number
+    operatorType: number
+    reason: number
+    note: number
+    metadata: number
+    requestId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type HubAuditLogMinAggregateInputType = {
+    id?: true
+    targetType?: true
+    targetId?: true
+    targetSlug?: true
+    targetVersion?: true
+    action?: true
+    statusFrom?: true
+    statusTo?: true
+    operatorId?: true
+    operatorName?: true
+    operatorType?: true
+    reason?: true
+    note?: true
+    requestId?: true
+    createdAt?: true
+  }
+
+  export type HubAuditLogMaxAggregateInputType = {
+    id?: true
+    targetType?: true
+    targetId?: true
+    targetSlug?: true
+    targetVersion?: true
+    action?: true
+    statusFrom?: true
+    statusTo?: true
+    operatorId?: true
+    operatorName?: true
+    operatorType?: true
+    reason?: true
+    note?: true
+    requestId?: true
+    createdAt?: true
+  }
+
+  export type HubAuditLogCountAggregateInputType = {
+    id?: true
+    targetType?: true
+    targetId?: true
+    targetSlug?: true
+    targetVersion?: true
+    action?: true
+    statusFrom?: true
+    statusTo?: true
+    operatorId?: true
+    operatorName?: true
+    operatorType?: true
+    reason?: true
+    note?: true
+    metadata?: true
+    requestId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type HubAuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAuditLog to aggregate.
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HubAuditLogs to fetch.
+     */
+    orderBy?: HubAuditLogOrderByWithRelationInput | HubAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: HubAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HubAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HubAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned HubAuditLogs
+    **/
+    _count?: true | HubAuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: HubAuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: HubAuditLogMaxAggregateInputType
+  }
+
+  export type GetHubAuditLogAggregateType<T extends HubAuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateHubAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHubAuditLog[P]>
+      : GetScalarType<T[P], AggregateHubAuditLog[P]>
+  }
+
+
+
+
+  export type HubAuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HubAuditLogWhereInput
+    orderBy?: HubAuditLogOrderByWithAggregationInput | HubAuditLogOrderByWithAggregationInput[]
+    by: HubAuditLogScalarFieldEnum[] | HubAuditLogScalarFieldEnum
+    having?: HubAuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HubAuditLogCountAggregateInputType | true
+    _min?: HubAuditLogMinAggregateInputType
+    _max?: HubAuditLogMaxAggregateInputType
+  }
+
+  export type HubAuditLogGroupByOutputType = {
+    id: string
+    targetType: string
+    targetId: string
+    targetSlug: string | null
+    targetVersion: string | null
+    action: string
+    statusFrom: string | null
+    statusTo: string | null
+    operatorId: string | null
+    operatorName: string | null
+    operatorType: string | null
+    reason: string | null
+    note: string | null
+    metadata: JsonValue | null
+    requestId: string | null
+    createdAt: Date
+    _count: HubAuditLogCountAggregateOutputType | null
+    _min: HubAuditLogMinAggregateOutputType | null
+    _max: HubAuditLogMaxAggregateOutputType | null
+  }
+
+  type GetHubAuditLogGroupByPayload<T extends HubAuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HubAuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HubAuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HubAuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], HubAuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HubAuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    targetSlug?: boolean
+    targetVersion?: boolean
+    action?: boolean
+    statusFrom?: boolean
+    statusTo?: boolean
+    operatorId?: boolean
+    operatorName?: boolean
+    operatorType?: boolean
+    reason?: boolean
+    note?: boolean
+    metadata?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["hubAuditLog"]>
+
+
+
+  export type HubAuditLogSelectScalar = {
+    id?: boolean
+    targetType?: boolean
+    targetId?: boolean
+    targetSlug?: boolean
+    targetVersion?: boolean
+    action?: boolean
+    statusFrom?: boolean
+    statusTo?: boolean
+    operatorId?: boolean
+    operatorName?: boolean
+    operatorType?: boolean
+    reason?: boolean
+    note?: boolean
+    metadata?: boolean
+    requestId?: boolean
+    createdAt?: boolean
+  }
+
+  export type HubAuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "targetType" | "targetId" | "targetSlug" | "targetVersion" | "action" | "statusFrom" | "statusTo" | "operatorId" | "operatorName" | "operatorType" | "reason" | "note" | "metadata" | "requestId" | "createdAt", ExtArgs["result"]["hubAuditLog"]>
+
+  export type $HubAuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HubAuditLog"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      targetType: string
+      targetId: string
+      targetSlug: string | null
+      targetVersion: string | null
+      action: string
+      statusFrom: string | null
+      statusTo: string | null
+      operatorId: string | null
+      operatorName: string | null
+      operatorType: string | null
+      reason: string | null
+      note: string | null
+      metadata: Prisma.JsonValue | null
+      requestId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["hubAuditLog"]>
+    composites: {}
+  }
+
+  type HubAuditLogGetPayload<S extends boolean | null | undefined | HubAuditLogDefaultArgs> = $Result.GetResult<Prisma.$HubAuditLogPayload, S>
+
+  type HubAuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HubAuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HubAuditLogCountAggregateInputType | true
+    }
+
+  export interface HubAuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HubAuditLog'], meta: { name: 'HubAuditLog' } }
+    /**
+     * Find zero or one HubAuditLog that matches the filter.
+     * @param {HubAuditLogFindUniqueArgs} args - Arguments to find a HubAuditLog
+     * @example
+     * // Get one HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HubAuditLogFindUniqueArgs>(args: SelectSubset<T, HubAuditLogFindUniqueArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HubAuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HubAuditLogFindUniqueOrThrowArgs} args - Arguments to find a HubAuditLog
+     * @example
+     * // Get one HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HubAuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, HubAuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogFindFirstArgs} args - Arguments to find a HubAuditLog
+     * @example
+     * // Get one HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HubAuditLogFindFirstArgs>(args?: SelectSubset<T, HubAuditLogFindFirstArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HubAuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogFindFirstOrThrowArgs} args - Arguments to find a HubAuditLog
+     * @example
+     * // Get one HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HubAuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, HubAuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HubAuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HubAuditLogs
+     * const hubAuditLogs = await prisma.hubAuditLog.findMany()
+     * 
+     * // Get first 10 HubAuditLogs
+     * const hubAuditLogs = await prisma.hubAuditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const hubAuditLogWithIdOnly = await prisma.hubAuditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends HubAuditLogFindManyArgs>(args?: SelectSubset<T, HubAuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HubAuditLog.
+     * @param {HubAuditLogCreateArgs} args - Arguments to create a HubAuditLog.
+     * @example
+     * // Create one HubAuditLog
+     * const HubAuditLog = await prisma.hubAuditLog.create({
+     *   data: {
+     *     // ... data to create a HubAuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends HubAuditLogCreateArgs>(args: SelectSubset<T, HubAuditLogCreateArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HubAuditLogs.
+     * @param {HubAuditLogCreateManyArgs} args - Arguments to create many HubAuditLogs.
+     * @example
+     * // Create many HubAuditLogs
+     * const hubAuditLog = await prisma.hubAuditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends HubAuditLogCreateManyArgs>(args?: SelectSubset<T, HubAuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a HubAuditLog.
+     * @param {HubAuditLogDeleteArgs} args - Arguments to delete one HubAuditLog.
+     * @example
+     * // Delete one HubAuditLog
+     * const HubAuditLog = await prisma.hubAuditLog.delete({
+     *   where: {
+     *     // ... filter to delete one HubAuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends HubAuditLogDeleteArgs>(args: SelectSubset<T, HubAuditLogDeleteArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HubAuditLog.
+     * @param {HubAuditLogUpdateArgs} args - Arguments to update one HubAuditLog.
+     * @example
+     * // Update one HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends HubAuditLogUpdateArgs>(args: SelectSubset<T, HubAuditLogUpdateArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HubAuditLogs.
+     * @param {HubAuditLogDeleteManyArgs} args - Arguments to filter HubAuditLogs to delete.
+     * @example
+     * // Delete a few HubAuditLogs
+     * const { count } = await prisma.hubAuditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends HubAuditLogDeleteManyArgs>(args?: SelectSubset<T, HubAuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HubAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HubAuditLogs
+     * const hubAuditLog = await prisma.hubAuditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends HubAuditLogUpdateManyArgs>(args: SelectSubset<T, HubAuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one HubAuditLog.
+     * @param {HubAuditLogUpsertArgs} args - Arguments to update or create a HubAuditLog.
+     * @example
+     * // Update or create a HubAuditLog
+     * const hubAuditLog = await prisma.hubAuditLog.upsert({
+     *   create: {
+     *     // ... data to create a HubAuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HubAuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HubAuditLogUpsertArgs>(args: SelectSubset<T, HubAuditLogUpsertArgs<ExtArgs>>): Prisma__HubAuditLogClient<$Result.GetResult<Prisma.$HubAuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HubAuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogCountArgs} args - Arguments to filter HubAuditLogs to count.
+     * @example
+     * // Count the number of HubAuditLogs
+     * const count = await prisma.hubAuditLog.count({
+     *   where: {
+     *     // ... the filter for the HubAuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends HubAuditLogCountArgs>(
+      args?: Subset<T, HubAuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HubAuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HubAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HubAuditLogAggregateArgs>(args: Subset<T, HubAuditLogAggregateArgs>): Prisma.PrismaPromise<GetHubAuditLogAggregateType<T>>
+
+    /**
+     * Group by HubAuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HubAuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends HubAuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HubAuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: HubAuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HubAuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHubAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HubAuditLog model
+   */
+  readonly fields: HubAuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HubAuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HubAuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HubAuditLog model
+   */
+  interface HubAuditLogFieldRefs {
+    readonly id: FieldRef<"HubAuditLog", 'String'>
+    readonly targetType: FieldRef<"HubAuditLog", 'String'>
+    readonly targetId: FieldRef<"HubAuditLog", 'String'>
+    readonly targetSlug: FieldRef<"HubAuditLog", 'String'>
+    readonly targetVersion: FieldRef<"HubAuditLog", 'String'>
+    readonly action: FieldRef<"HubAuditLog", 'String'>
+    readonly statusFrom: FieldRef<"HubAuditLog", 'String'>
+    readonly statusTo: FieldRef<"HubAuditLog", 'String'>
+    readonly operatorId: FieldRef<"HubAuditLog", 'String'>
+    readonly operatorName: FieldRef<"HubAuditLog", 'String'>
+    readonly operatorType: FieldRef<"HubAuditLog", 'String'>
+    readonly reason: FieldRef<"HubAuditLog", 'String'>
+    readonly note: FieldRef<"HubAuditLog", 'String'>
+    readonly metadata: FieldRef<"HubAuditLog", 'Json'>
+    readonly requestId: FieldRef<"HubAuditLog", 'String'>
+    readonly createdAt: FieldRef<"HubAuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * HubAuditLog findUnique
+   */
+  export type HubAuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAuditLog to fetch.
+     */
+    where: HubAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAuditLog findUniqueOrThrow
+   */
+  export type HubAuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAuditLog to fetch.
+     */
+    where: HubAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAuditLog findFirst
+   */
+  export type HubAuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAuditLog to fetch.
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HubAuditLogs to fetch.
+     */
+    orderBy?: HubAuditLogOrderByWithRelationInput | HubAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HubAuditLogs.
+     */
+    cursor?: HubAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HubAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HubAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HubAuditLogs.
+     */
+    distinct?: HubAuditLogScalarFieldEnum | HubAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAuditLog findFirstOrThrow
+   */
+  export type HubAuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAuditLog to fetch.
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HubAuditLogs to fetch.
+     */
+    orderBy?: HubAuditLogOrderByWithRelationInput | HubAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HubAuditLogs.
+     */
+    cursor?: HubAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HubAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HubAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HubAuditLogs.
+     */
+    distinct?: HubAuditLogScalarFieldEnum | HubAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAuditLog findMany
+   */
+  export type HubAuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter, which HubAuditLogs to fetch.
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HubAuditLogs to fetch.
+     */
+    orderBy?: HubAuditLogOrderByWithRelationInput | HubAuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing HubAuditLogs.
+     */
+    cursor?: HubAuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HubAuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HubAuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HubAuditLogs.
+     */
+    distinct?: HubAuditLogScalarFieldEnum | HubAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * HubAuditLog create
+   */
+  export type HubAuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * The data needed to create a HubAuditLog.
+     */
+    data: XOR<HubAuditLogCreateInput, HubAuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * HubAuditLog createMany
+   */
+  export type HubAuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HubAuditLogs.
+     */
+    data: HubAuditLogCreateManyInput | HubAuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HubAuditLog update
+   */
+  export type HubAuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * The data needed to update a HubAuditLog.
+     */
+    data: XOR<HubAuditLogUpdateInput, HubAuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which HubAuditLog to update.
+     */
+    where: HubAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAuditLog updateMany
+   */
+  export type HubAuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HubAuditLogs.
+     */
+    data: XOR<HubAuditLogUpdateManyMutationInput, HubAuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which HubAuditLogs to update
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * Limit how many HubAuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAuditLog upsert
+   */
+  export type HubAuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * The filter to search for the HubAuditLog to update in case it exists.
+     */
+    where: HubAuditLogWhereUniqueInput
+    /**
+     * In case the HubAuditLog found by the `where` argument doesn't exist, create a new HubAuditLog with this data.
+     */
+    create: XOR<HubAuditLogCreateInput, HubAuditLogUncheckedCreateInput>
+    /**
+     * In case the HubAuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HubAuditLogUpdateInput, HubAuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * HubAuditLog delete
+   */
+  export type HubAuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+    /**
+     * Filter which HubAuditLog to delete.
+     */
+    where: HubAuditLogWhereUniqueInput
+  }
+
+  /**
+   * HubAuditLog deleteMany
+   */
+  export type HubAuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HubAuditLogs to delete
+     */
+    where?: HubAuditLogWhereInput
+    /**
+     * Limit how many HubAuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HubAuditLog without action
+   */
+  export type HubAuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HubAuditLog
+     */
+    select?: HubAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HubAuditLog
+     */
+    omit?: HubAuditLogOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model ScenarioDomainLink
    */
 
@@ -42497,6 +43584,28 @@ export namespace Prisma {
   export type HubRuntimeFeedbackScalarFieldEnum = (typeof HubRuntimeFeedbackScalarFieldEnum)[keyof typeof HubRuntimeFeedbackScalarFieldEnum]
 
 
+  export const HubAuditLogScalarFieldEnum: {
+    id: 'id',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    targetSlug: 'targetSlug',
+    targetVersion: 'targetVersion',
+    action: 'action',
+    statusFrom: 'statusFrom',
+    statusTo: 'statusTo',
+    operatorId: 'operatorId',
+    operatorName: 'operatorName',
+    operatorType: 'operatorType',
+    reason: 'reason',
+    note: 'note',
+    metadata: 'metadata',
+    requestId: 'requestId',
+    createdAt: 'createdAt'
+  };
+
+  export type HubAuditLogScalarFieldEnum = (typeof HubAuditLogScalarFieldEnum)[keyof typeof HubAuditLogScalarFieldEnum]
+
+
   export const ScenarioDomainLinkScalarFieldEnum: {
     id: 'id',
     scenarioPackageId: 'scenarioPackageId',
@@ -43000,6 +44109,26 @@ export namespace Prisma {
   };
 
   export type HubRuntimeFeedbackOrderByRelevanceFieldEnum = (typeof HubRuntimeFeedbackOrderByRelevanceFieldEnum)[keyof typeof HubRuntimeFeedbackOrderByRelevanceFieldEnum]
+
+
+  export const HubAuditLogOrderByRelevanceFieldEnum: {
+    id: 'id',
+    targetType: 'targetType',
+    targetId: 'targetId',
+    targetSlug: 'targetSlug',
+    targetVersion: 'targetVersion',
+    action: 'action',
+    statusFrom: 'statusFrom',
+    statusTo: 'statusTo',
+    operatorId: 'operatorId',
+    operatorName: 'operatorName',
+    operatorType: 'operatorType',
+    reason: 'reason',
+    note: 'note',
+    requestId: 'requestId'
+  };
+
+  export type HubAuditLogOrderByRelevanceFieldEnum = (typeof HubAuditLogOrderByRelevanceFieldEnum)[keyof typeof HubAuditLogOrderByRelevanceFieldEnum]
 
 
   export const ScenarioDomainLinkOrderByRelevanceFieldEnum: {
@@ -46245,6 +47374,114 @@ export namespace Prisma {
     assetSlugs?: JsonNullableWithAggregatesFilter<"HubRuntimeFeedback">
     privacyChecked?: BoolNullableWithAggregatesFilter<"HubRuntimeFeedback"> | boolean | null
     createdAt?: DateTimeWithAggregatesFilter<"HubRuntimeFeedback"> | Date | string
+  }
+
+  export type HubAuditLogWhereInput = {
+    AND?: HubAuditLogWhereInput | HubAuditLogWhereInput[]
+    OR?: HubAuditLogWhereInput[]
+    NOT?: HubAuditLogWhereInput | HubAuditLogWhereInput[]
+    id?: StringFilter<"HubAuditLog"> | string
+    targetType?: StringFilter<"HubAuditLog"> | string
+    targetId?: StringFilter<"HubAuditLog"> | string
+    targetSlug?: StringNullableFilter<"HubAuditLog"> | string | null
+    targetVersion?: StringNullableFilter<"HubAuditLog"> | string | null
+    action?: StringFilter<"HubAuditLog"> | string
+    statusFrom?: StringNullableFilter<"HubAuditLog"> | string | null
+    statusTo?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorId?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorName?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorType?: StringNullableFilter<"HubAuditLog"> | string | null
+    reason?: StringNullableFilter<"HubAuditLog"> | string | null
+    note?: StringNullableFilter<"HubAuditLog"> | string | null
+    metadata?: JsonNullableFilter<"HubAuditLog">
+    requestId?: StringNullableFilter<"HubAuditLog"> | string | null
+    createdAt?: DateTimeFilter<"HubAuditLog"> | Date | string
+  }
+
+  export type HubAuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetSlug?: SortOrderInput | SortOrder
+    targetVersion?: SortOrderInput | SortOrder
+    action?: SortOrder
+    statusFrom?: SortOrderInput | SortOrder
+    statusTo?: SortOrderInput | SortOrder
+    operatorId?: SortOrderInput | SortOrder
+    operatorName?: SortOrderInput | SortOrder
+    operatorType?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _relevance?: HubAuditLogOrderByRelevanceInput
+  }
+
+  export type HubAuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: HubAuditLogWhereInput | HubAuditLogWhereInput[]
+    OR?: HubAuditLogWhereInput[]
+    NOT?: HubAuditLogWhereInput | HubAuditLogWhereInput[]
+    targetType?: StringFilter<"HubAuditLog"> | string
+    targetId?: StringFilter<"HubAuditLog"> | string
+    targetSlug?: StringNullableFilter<"HubAuditLog"> | string | null
+    targetVersion?: StringNullableFilter<"HubAuditLog"> | string | null
+    action?: StringFilter<"HubAuditLog"> | string
+    statusFrom?: StringNullableFilter<"HubAuditLog"> | string | null
+    statusTo?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorId?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorName?: StringNullableFilter<"HubAuditLog"> | string | null
+    operatorType?: StringNullableFilter<"HubAuditLog"> | string | null
+    reason?: StringNullableFilter<"HubAuditLog"> | string | null
+    note?: StringNullableFilter<"HubAuditLog"> | string | null
+    metadata?: JsonNullableFilter<"HubAuditLog">
+    requestId?: StringNullableFilter<"HubAuditLog"> | string | null
+    createdAt?: DateTimeFilter<"HubAuditLog"> | Date | string
+  }, "id">
+
+  export type HubAuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetSlug?: SortOrderInput | SortOrder
+    targetVersion?: SortOrderInput | SortOrder
+    action?: SortOrder
+    statusFrom?: SortOrderInput | SortOrder
+    statusTo?: SortOrderInput | SortOrder
+    operatorId?: SortOrderInput | SortOrder
+    operatorName?: SortOrderInput | SortOrder
+    operatorType?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    requestId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: HubAuditLogCountOrderByAggregateInput
+    _max?: HubAuditLogMaxOrderByAggregateInput
+    _min?: HubAuditLogMinOrderByAggregateInput
+  }
+
+  export type HubAuditLogScalarWhereWithAggregatesInput = {
+    AND?: HubAuditLogScalarWhereWithAggregatesInput | HubAuditLogScalarWhereWithAggregatesInput[]
+    OR?: HubAuditLogScalarWhereWithAggregatesInput[]
+    NOT?: HubAuditLogScalarWhereWithAggregatesInput | HubAuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"HubAuditLog"> | string
+    targetType?: StringWithAggregatesFilter<"HubAuditLog"> | string
+    targetId?: StringWithAggregatesFilter<"HubAuditLog"> | string
+    targetSlug?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    targetVersion?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    action?: StringWithAggregatesFilter<"HubAuditLog"> | string
+    statusFrom?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    statusTo?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    operatorId?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    operatorName?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    operatorType?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    reason?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    note?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"HubAuditLog">
+    requestId?: StringNullableWithAggregatesFilter<"HubAuditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"HubAuditLog"> | Date | string
   }
 
   export type ScenarioDomainLinkWhereInput = {
@@ -49824,6 +51061,139 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type HubAuditLogCreateInput = {
+    id: string
+    targetType: string
+    targetId: string
+    targetSlug?: string | null
+    targetVersion?: string | null
+    action: string
+    statusFrom?: string | null
+    statusTo?: string | null
+    operatorId?: string | null
+    operatorName?: string | null
+    operatorType?: string | null
+    reason?: string | null
+    note?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubAuditLogUncheckedCreateInput = {
+    id: string
+    targetType: string
+    targetId: string
+    targetSlug?: string | null
+    targetVersion?: string | null
+    action: string
+    statusFrom?: string | null
+    statusTo?: string | null
+    operatorId?: string | null
+    operatorName?: string | null
+    operatorType?: string | null
+    reason?: string | null
+    note?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubAuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetSlug?: NullableStringFieldUpdateOperationsInput | string | null
+    targetVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    statusFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    statusTo?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorType?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetSlug?: NullableStringFieldUpdateOperationsInput | string | null
+    targetVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    statusFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    statusTo?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorType?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAuditLogCreateManyInput = {
+    id: string
+    targetType: string
+    targetId: string
+    targetSlug?: string | null
+    targetVersion?: string | null
+    action: string
+    statusFrom?: string | null
+    statusTo?: string | null
+    operatorId?: string | null
+    operatorName?: string | null
+    operatorType?: string | null
+    reason?: string | null
+    note?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type HubAuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetSlug?: NullableStringFieldUpdateOperationsInput | string | null
+    targetVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    statusFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    statusTo?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorType?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HubAuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetType?: StringFieldUpdateOperationsInput | string
+    targetId?: StringFieldUpdateOperationsInput | string
+    targetSlug?: NullableStringFieldUpdateOperationsInput | string | null
+    targetVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    statusFrom?: NullableStringFieldUpdateOperationsInput | string | null
+    statusTo?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorName?: NullableStringFieldUpdateOperationsInput | string | null
+    operatorType?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    requestId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ScenarioDomainLinkCreateInput = {
     id?: string
     scenarioPackage: ScenarioPackageCreateNestedOneWithoutDomainLinksInput
@@ -52360,6 +53730,67 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedBoolNullableFilter<$PrismaModel>
     _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
+  export type HubAuditLogOrderByRelevanceInput = {
+    fields: HubAuditLogOrderByRelevanceFieldEnum | HubAuditLogOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type HubAuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetSlug?: SortOrder
+    targetVersion?: SortOrder
+    action?: SortOrder
+    statusFrom?: SortOrder
+    statusTo?: SortOrder
+    operatorId?: SortOrder
+    operatorName?: SortOrder
+    operatorType?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    metadata?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubAuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetSlug?: SortOrder
+    targetVersion?: SortOrder
+    action?: SortOrder
+    statusFrom?: SortOrder
+    statusTo?: SortOrder
+    operatorId?: SortOrder
+    operatorName?: SortOrder
+    operatorType?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type HubAuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    targetType?: SortOrder
+    targetId?: SortOrder
+    targetSlug?: SortOrder
+    targetVersion?: SortOrder
+    action?: SortOrder
+    statusFrom?: SortOrder
+    statusTo?: SortOrder
+    operatorId?: SortOrder
+    operatorName?: SortOrder
+    operatorType?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    requestId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type ScenarioDomainLinkOrderByRelevanceInput = {

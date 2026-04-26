@@ -744,6 +744,31 @@ model HubRuntimeFeedback {
   @@map("hub_runtime_feedback")
 }
 
+model HubAuditLog {
+  id            String   @id @db.VarChar(36)
+  targetType    String   @db.VarChar(80)
+  targetId      String   @db.VarChar(191)
+  targetSlug    String?  @db.VarChar(191)
+  targetVersion String?  @db.VarChar(80)
+  action        String   @db.VarChar(80)
+  statusFrom    String?  @db.VarChar(80)
+  statusTo      String?  @db.VarChar(80)
+  operatorId    String?  @db.VarChar(191)
+  operatorName  String?  @db.VarChar(191)
+  operatorType  String?  @db.VarChar(80)
+  reason        String?  @db.Text
+  note          String?  @db.Text
+  metadata      Json?
+  requestId     String?  @db.VarChar(191)
+  createdAt     DateTime @default(now())
+
+  @@index([targetType, targetId, createdAt])
+  @@index([action, createdAt])
+  @@index([operatorId, createdAt])
+  @@index([createdAt])
+  @@map("hub_audit_log")
+}
+
 model ScenarioDomainLink {
   id                 String             @id @default(uuid()) @db.VarChar(36)
   scenarioPackageId  String             @db.VarChar(36)

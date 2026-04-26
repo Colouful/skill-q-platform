@@ -9,7 +9,7 @@ export async function POST(req: Request, context: RouteContext) {
   try {
     const { profileId } = await context.params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ReviewWorkflowService(defaultHubRepository).rejectAgentProfile(profileId, body);
+    const data = await new ReviewWorkflowService(defaultHubRepository).rejectAgentProfile(profileId, body);
     return hubSuccess(data);
   } catch (error) {
     return hubException(error);

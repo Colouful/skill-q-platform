@@ -1,5 +1,5 @@
 import { hubException, hubSuccess } from "@/lib/hub-api-response";
-import { defaultHubRepository, ManifestAssetBindingService } from "@/server/hub";
+import { ManifestAssetBindingService } from "@/server/hub";
 
 export const dynamic = "force-dynamic";
 
@@ -7,7 +7,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ manife
   try {
     const { manifestId, versionId } = await params;
     const body = (await req.json()) as Record<string, unknown>;
-    const data = new ManifestAssetBindingService(defaultHubRepository).reorder(
+    const data = await new ManifestAssetBindingService().reorder(
       decodeURIComponent(manifestId),
       decodeURIComponent(versionId),
       body,

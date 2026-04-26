@@ -1,5 +1,5 @@
 import { hubException, hubSuccess } from "@/lib/hub-api-response";
-import { defaultHubRepository, ManifestAssetBindingService } from "@/server/hub";
+import { ManifestAssetBindingService } from "@/server/hub";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +9,7 @@ export async function DELETE(
 ) {
   try {
     const { manifestId, versionId, bindingId } = await params;
-    const data = new ManifestAssetBindingService(defaultHubRepository).unbind(
+    const data = await new ManifestAssetBindingService().unbind(
       decodeURIComponent(manifestId),
       decodeURIComponent(versionId),
       decodeURIComponent(bindingId),
