@@ -5,6 +5,8 @@ import type {
   PrismaDelegateLike,
   PrismaHubClientLike,
   PublishAssetVersionInput,
+  RejectAssetVersionReviewInput,
+  SubmitAssetVersionReviewInput,
 } from "../repository-types";
 import { mapPrismaAssetVersion } from "./prisma-mappers";
 
@@ -48,6 +50,30 @@ export class PrismaAssetVersionRepository implements AssetVersionRepositoryPort 
   async findAssetVersionByAssetAndVersion(assetId: string, version: string) {
     const item = await this.prisma.hubAssetVersion.findFirst({ where: { assetId, version } });
     return item ? mapPrismaAssetVersion(item) : null;
+  }
+
+  async submitAssetVersionReview(input: SubmitAssetVersionReviewInput) {
+    const version = await updateRequired(this.prisma.hubAssetVersion, {
+      where: { id: input.versionId },
+      data: {
+        status: "reviewing",
+        rejectedAt: null,
+        rejectedReason: null,
+      },
+    });
+    return mapPrismaAssetVersion(version);
+  }
+
+  async rejectAssetVersionReview(input: RejectAssetVersionReviewInput) {
+    const version = await updateRequired(this.prisma.hubAssetVersion, {
+      where: { id: input.versionId },
+      data: {
+        status: "rejected",
+        rejectedAt: input.rejectedAt ? new Date(input.rejectedAt) : new Date(),
+        rejectedReason: input.rejectedReason ?? null,
+      },
+    });
+    return mapPrismaAssetVersion(version);
   }
 
   async publishAssetVersion(input: PublishAssetVersionInput) {

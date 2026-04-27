@@ -7,6 +7,8 @@ import type {
   PrismaDelegateLike,
   PrismaHubClientLike,
   PublishAgentProfileInput,
+  RejectAgentProfileReviewInput,
+  SubmitAgentProfileReviewInput,
   UpdateAgentProfileDraftInput,
 } from "../repository-types";
 import { parsePagination } from "../repository-types";
@@ -120,6 +122,22 @@ export class PrismaAgentProfileRepository implements AgentProfileRepositoryPort 
         ...(input.riskLevel !== undefined ? { riskLevel: input.riskLevel } : {}),
         status: "draft",
       },
+    });
+    return mapPrismaAgentProfile(profile);
+  }
+
+  async submitAgentProfileReview(input: SubmitAgentProfileReviewInput) {
+    const profile = await updateRequired(this.prisma.hubAgentProfile, {
+      where: { id: input.profileId },
+      data: { status: "reviewing" },
+    });
+    return mapPrismaAgentProfile(profile);
+  }
+
+  async rejectAgentProfileReview(input: RejectAgentProfileReviewInput) {
+    const profile = await updateRequired(this.prisma.hubAgentProfile, {
+      where: { id: input.profileId },
+      data: { status: "rejected" },
     });
     return mapPrismaAgentProfile(profile);
   }

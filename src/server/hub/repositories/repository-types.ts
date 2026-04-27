@@ -154,6 +154,18 @@ export type DeprecateAssetVersionInput = {
   versionId: string;
 };
 
+export type SubmitAssetVersionReviewInput = {
+  assetId: string;
+  versionId: string;
+};
+
+export type RejectAssetVersionReviewInput = {
+  assetId: string;
+  versionId: string;
+  rejectedAt?: string;
+  rejectedReason?: string | null;
+};
+
 export type HubAssetManifestRef = {
   manifestId: string;
   manifestSlug: string;
@@ -253,6 +265,18 @@ export type UpdateManifestVersionChecksumInput = {
   checksum: string;
 };
 
+export type SubmitManifestVersionReviewInput = {
+  manifestId: string;
+  versionId: string;
+};
+
+export type RejectManifestVersionReviewInput = {
+  manifestId: string;
+  versionId: string;
+  rejectedAt?: string;
+  rejectedReason?: string | null;
+};
+
 export type HubManifestAssetBinding = HubManifestAsset & {
   assetSlug: string;
   assetName: string;
@@ -326,6 +350,16 @@ export type DeprecateAgentProfileInput = {
 export type ArchiveAgentProfileInput = {
   profileId: string;
   archivedAt?: string;
+};
+
+export type SubmitAgentProfileReviewInput = {
+  profileId: string;
+};
+
+export type RejectAgentProfileReviewInput = {
+  profileId: string;
+  rejectedAt?: string;
+  rejectedReason?: string | null;
 };
 
 export type HubInstallRecordSummary = {

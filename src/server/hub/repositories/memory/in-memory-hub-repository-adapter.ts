@@ -47,7 +47,13 @@ import type {
   PublishAgentProfileInput,
   PublishManifestVersionInput,
   PublishAssetVersionInput,
+  RejectAgentProfileReviewInput,
+  RejectAssetVersionReviewInput,
+  RejectManifestVersionReviewInput,
   RuntimeFeedbackListQuery,
+  SubmitAgentProfileReviewInput,
+  SubmitAssetVersionReviewInput,
+  SubmitManifestVersionReviewInput,
   UpdateAgentProfileDraftInput,
   UpdateAssetDraftInput,
   UpdateManifestDraftInput,
@@ -288,6 +294,24 @@ export class InMemoryHubRepositoryAdapter implements HubRepositoryPort {
     return this.repo.assetVersions.find((item) => item.assetId === assetId && item.version === version) ?? null;
   }
 
+  async submitAssetVersionReview(input: SubmitAssetVersionReviewInput) {
+    const version = this.repo.assetVersions.find((item) => item.assetId === input.assetId && item.id === input.versionId);
+    if (!version) return Promise.reject(new Error("资产版本不存在"));
+    version.status = "reviewing";
+    version.rejectedAt = null;
+    version.rejectedReason = null;
+    return version;
+  }
+
+  async rejectAssetVersionReview(input: RejectAssetVersionReviewInput) {
+    const version = this.repo.assetVersions.find((item) => item.assetId === input.assetId && item.id === input.versionId);
+    if (!version) return Promise.reject(new Error("资产版本不存在"));
+    version.status = "rejected";
+    version.rejectedAt = input.rejectedAt ?? new Date().toISOString();
+    version.rejectedReason = input.rejectedReason ?? null;
+    return version;
+  }
+
   async publishAssetVersion(input: PublishAssetVersionInput) {
     const version = this.repo.assetVersions.find((item) => item.assetId === input.assetId && item.id === input.versionId);
     if (!version) return Promise.reject(new Error("资产版本不存在"));
@@ -422,6 +446,24 @@ export class InMemoryHubRepositoryAdapter implements HubRepositoryPort {
     return this.repo.manifestVersions.find((item) => item.manifestId === manifestId && item.version === version) ?? null;
   }
 
+  async submitManifestVersionReview(input: SubmitManifestVersionReviewInput) {
+    const version = this.repo.manifestVersions.find((item) => item.manifestId === input.manifestId && item.id === input.versionId);
+    if (!version) return Promise.reject(new Error("Manifest 版本不存在"));
+    version.status = "reviewing";
+    version.rejectedAt = null;
+    version.rejectedReason = null;
+    return version;
+  }
+
+  async rejectManifestVersionReview(input: RejectManifestVersionReviewInput) {
+    const version = this.repo.manifestVersions.find((item) => item.manifestId === input.manifestId && item.id === input.versionId);
+    if (!version) return Promise.reject(new Error("Manifest 版本不存在"));
+    version.status = "rejected";
+    version.rejectedAt = input.rejectedAt ?? new Date().toISOString();
+    version.rejectedReason = input.rejectedReason ?? null;
+    return version;
+  }
+
   async publishManifestVersion(input: PublishManifestVersionInput) {
     const version = this.repo.manifestVersions.find((item) => item.manifestId === input.manifestId && item.id === input.versionId);
     if (!version) return Promise.reject(new Error("Manifest 版本不存在"));
@@ -553,6 +595,26 @@ export class InMemoryHubRepositoryAdapter implements HubRepositoryPort {
       profile.rejectedAt = null;
       profile.rejectedReason = null;
     }
+    profile.updatedAt = new Date().toISOString();
+    return profile;
+  }
+
+  async submitAgentProfileReview(input: SubmitAgentProfileReviewInput) {
+    const profile = this.repo.agentProfiles.find((item) => item.id === input.profileId);
+    if (!profile) return Promise.reject(new Error("Agent Profile 不存在"));
+    profile.status = "reviewing";
+    profile.rejectedAt = null;
+    profile.rejectedReason = null;
+    profile.updatedAt = new Date().toISOString();
+    return profile;
+  }
+
+  async rejectAgentProfileReview(input: RejectAgentProfileReviewInput) {
+    const profile = this.repo.agentProfiles.find((item) => item.id === input.profileId);
+    if (!profile) return Promise.reject(new Error("Agent Profile 不存在"));
+    profile.status = "rejected";
+    profile.rejectedAt = input.rejectedAt ?? new Date().toISOString();
+    profile.rejectedReason = input.rejectedReason ?? null;
     profile.updatedAt = new Date().toISOString();
     return profile;
   }

@@ -84,6 +84,14 @@ export class PrismaHubRepository implements HubRepositoryPort {
     return this.assetVersions.publishAssetVersion(...args);
   }
 
+  submitAssetVersionReview(...args: Parameters<PrismaAssetVersionRepository["submitAssetVersionReview"]>) {
+    return this.assetVersions.submitAssetVersionReview(...args);
+  }
+
+  rejectAssetVersionReview(...args: Parameters<PrismaAssetVersionRepository["rejectAssetVersionReview"]>) {
+    return this.assetVersions.rejectAssetVersionReview(...args);
+  }
+
   deprecateAssetVersion(...args: Parameters<PrismaAssetVersionRepository["deprecateAssetVersion"]>) {
     return this.assetVersions.deprecateAssetVersion(...args);
   }
@@ -138,6 +146,14 @@ export class PrismaHubRepository implements HubRepositoryPort {
 
   publishManifestVersion(...args: Parameters<PrismaManifestRepository["publishManifestVersion"]>) {
     return this.manifests.publishManifestVersion(...args);
+  }
+
+  submitManifestVersionReview(...args: Parameters<PrismaManifestRepository["submitManifestVersionReview"]>) {
+    return this.manifests.submitManifestVersionReview(...args);
+  }
+
+  rejectManifestVersionReview(...args: Parameters<PrismaManifestRepository["rejectManifestVersionReview"]>) {
+    return this.manifests.rejectManifestVersionReview(...args);
   }
 
   deprecateManifestVersion(...args: Parameters<PrismaManifestRepository["deprecateManifestVersion"]>) {
@@ -198,6 +214,14 @@ export class PrismaHubRepository implements HubRepositoryPort {
 
   publishAgentProfile(...args: Parameters<PrismaAgentProfileRepository["publishAgentProfile"]>) {
     return this.agentProfiles.publishAgentProfile(...args);
+  }
+
+  submitAgentProfileReview(...args: Parameters<PrismaAgentProfileRepository["submitAgentProfileReview"]>) {
+    return this.agentProfiles.submitAgentProfileReview(...args);
+  }
+
+  rejectAgentProfileReview(...args: Parameters<PrismaAgentProfileRepository["rejectAgentProfileReview"]>) {
+    return this.agentProfiles.rejectAgentProfileReview(...args);
   }
 
   deprecateAgentProfile(...args: Parameters<PrismaAgentProfileRepository["deprecateAgentProfile"]>) {

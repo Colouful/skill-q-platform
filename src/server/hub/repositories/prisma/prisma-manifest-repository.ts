@@ -10,6 +10,8 @@ import type {
   PrismaDelegateLike,
   PrismaHubClientLike,
   PublishManifestVersionInput,
+  RejectManifestVersionReviewInput,
+  SubmitManifestVersionReviewInput,
   UpdateManifestDraftInput,
   UpdateManifestVersionChecksumInput,
 } from "../repository-types";
@@ -205,6 +207,30 @@ export class PrismaManifestRepository implements ManifestRepositoryPort {
   async findManifestVersionByManifestAndVersion(manifestId: string, version: string) {
     const item = await this.prisma.hubManifestVersion.findFirst({ where: { manifestId, version } });
     return item ? mapPrismaManifestVersion(item) : null;
+  }
+
+  async submitManifestVersionReview(input: SubmitManifestVersionReviewInput) {
+    const version = await updateRequired(this.prisma.hubManifestVersion, {
+      where: { id: input.versionId },
+      data: {
+        status: "reviewing",
+        rejectedAt: null,
+        rejectedReason: null,
+      },
+    });
+    return mapPrismaManifestVersion(version);
+  }
+
+  async rejectManifestVersionReview(input: RejectManifestVersionReviewInput) {
+    const version = await updateRequired(this.prisma.hubManifestVersion, {
+      where: { id: input.versionId },
+      data: {
+        status: "rejected",
+        rejectedAt: input.rejectedAt ? new Date(input.rejectedAt) : new Date(),
+        rejectedReason: input.rejectedReason ?? null,
+      },
+    });
+    return mapPrismaManifestVersion(version);
   }
 
   async publishManifestVersion(input: PublishManifestVersionInput) {

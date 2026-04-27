@@ -1,0 +1,38 @@
+# 虾球Hub — 简洁版，单包构建
+FROM node:20-bookworm-slim AS base
+RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+
+FROM base AS builder
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+COPY next.config.ts ./
+COPY src ./src
+COPY public ./public
+COPY scripts ./scripts
+COPY app ./app
+COPY components.json tailwind.config.ts postcss.config.mjs tsconfig.json ./
+COPY .eslintrc.mjs ./
+COPY prisma-schema.config.ts ./
+
+RUN npm install --legacy-peer-deps && npm run build
+
+FROM base AS runner
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+WORKDIR /app
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/next.config.ts ./next.config.ts
+COPY --from=builder /app/package.json ./package.json
+
+EXPOSE 3000
+CMD ["npm", "start"]

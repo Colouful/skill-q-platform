@@ -89,4 +89,8 @@ export class AuditLogService {
     const repository = this.repository as AuditLogRepositoryPort & { clearAuditLogs?: () => void };
     repository.clearAuditLogs?.();
   }
+
+  getRepositoryForTransaction() {
+    return this.repository;
+  }
 }
