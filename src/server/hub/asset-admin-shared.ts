@@ -16,12 +16,31 @@ export const ADMIN_ASSET_KINDS = [
   "skill",
   "role",
   "flow",
+  "workflow",
+  "hook",
+  "command",
+  "prompt-template",
   "scenario",
   "agent-profile",
   "tech-profile",
   "source-pack",
   "contract",
 ] as const;
+
+const ASSET_KIND_ALIASES: Record<string, HubAssetKind> = {
+  agentProfile: "agent-profile",
+  agent_profile: "agent-profile",
+  promptTemplate: "prompt-template",
+  prompt_template: "prompt-template",
+};
+
+const STATUS_ALIASES: Record<string, HubStatus> = {
+  active: "published",
+};
+
+const SCOPE_ALIASES: Record<string, HubScope> = {
+  enterprise: "enterprise",
+};
 
 export type HubContentFormat = (typeof HUB_CONTENT_FORMATS)[number];
 
@@ -40,20 +59,23 @@ export function optionalString(value: unknown): string | null {
 }
 
 export function normalizeKind(value: unknown): HubAssetKind {
-  const kind = String(value ?? "");
+  const rawKind = String(value ?? "");
+  const kind = ASSET_KIND_ALIASES[rawKind] ?? rawKind;
   if (!ADMIN_ASSET_KINDS.includes(kind as (typeof ADMIN_ASSET_KINDS)[number])) throw ASSET_ERROR.invalidKind();
   return kind as HubAssetKind;
 }
 
 export function normalizeScope(value: unknown): HubScope {
-  const scope = String(value ?? "");
+  const rawScope = String(value ?? "");
+  const scope = SCOPE_ALIASES[rawScope] ?? rawScope;
   if (!HUB_SCOPES.includes(scope as HubScope)) throw ASSET_ERROR.createInvalid("资产 scope 不合法");
   return scope as HubScope;
 }
 
 export function normalizeStatus(value: string): HubStatus {
-  if (!HUB_STATUSES.includes(value as HubStatus)) throw ASSET_ERROR.invalidStatus();
-  return value as HubStatus;
+  const status = STATUS_ALIASES[value] ?? value;
+  if (!HUB_STATUSES.includes(status as HubStatus)) throw ASSET_ERROR.invalidStatus();
+  return status as HubStatus;
 }
 
 export function normalizeContentFormat(value: unknown): HubContentFormat {

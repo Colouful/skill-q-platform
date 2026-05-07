@@ -3,6 +3,10 @@ export const HUB_ASSET_KINDS = [
   "skill",
   "role",
   "flow",
+  "workflow",
+  "hook",
+  "command",
+  "prompt-template",
   "scenario",
   "manifest",
   "agent-profile",
@@ -11,9 +15,9 @@ export const HUB_ASSET_KINDS = [
   "contract",
 ] as const;
 
-export const HUB_SCOPES = ["platform", "department", "team", "project", "personal"] as const;
+export const HUB_SCOPES = ["platform", "enterprise", "department", "team", "project", "personal"] as const;
 
-export const HUB_STATUSES = ["draft", "reviewing", "published", "deprecated", "archived", "rejected"] as const;
+export const HUB_STATUSES = ["draft", "reviewing", "published", "active", "deprecated", "archived", "rejected"] as const;
 
 export type HubAssetKind = (typeof HUB_ASSET_KINDS)[number];
 export type HubScope = (typeof HUB_SCOPES)[number];
@@ -33,6 +37,9 @@ export type HubAsset = {
   tags?: unknown[];
   visibility?: string | null;
   latestVersionId?: string | null;
+  parentAssetId?: string | null;
+  overrideFields?: Record<string, unknown> | null;
+  metadata?: Record<string, unknown> | null;
   deprecatedAt?: string | null;
   archivedAt?: string | null;
   createdBy?: string | null;

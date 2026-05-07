@@ -444,17 +444,25 @@ exports.Prisma.RuleDomainLinkScalarFieldEnum = {
 exports.Prisma.HubAssetScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
+  assetId: 'assetId',
   name: 'name',
+  displayName: 'displayName',
   kind: 'kind',
   scope: 'scope',
   ownerOrgId: 'ownerOrgId',
   ownerTeamId: 'ownerTeamId',
   ownerUserId: 'ownerUserId',
+  ownerId: 'ownerId',
+  teamId: 'teamId',
   status: 'status',
+  riskLevel: 'riskLevel',
   description: 'description',
   tags: 'tags',
   visibility: 'visibility',
   latestVersionId: 'latestVersionId',
+  parentAssetId: 'parentAssetId',
+  overrideFields: 'overrideFields',
+  metadata: 'metadata',
   deprecatedAt: 'deprecatedAt',
   archivedAt: 'archivedAt',
   createdBy: 'createdBy',
@@ -476,6 +484,7 @@ exports.Prisma.HubAssetVersionScalarFieldEnum = {
   dependencies: 'dependencies',
   compatibility: 'compatibility',
   changelog: 'changelog',
+  contentUrl: 'contentUrl',
   createdBy: 'createdBy',
   publishedBy: 'publishedBy',
   rejectedAt: 'rejectedAt',
@@ -490,7 +499,9 @@ exports.Prisma.HubAssetVersionScalarFieldEnum = {
 exports.Prisma.HubManifestScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
+  manifestId: 'manifestId',
   name: 'name',
+  displayName: 'displayName',
   scope: 'scope',
   ownerOrgId: 'ownerOrgId',
   ownerTeamId: 'ownerTeamId',
@@ -500,6 +511,8 @@ exports.Prisma.HubManifestScalarFieldEnum = {
   techStacks: 'techStacks',
   projectKinds: 'projectKinds',
   recommendedFor: 'recommendedFor',
+  ides: 'ides',
+  scenarios: 'scenarios',
   latestVersionId: 'latestVersionId',
   deprecatedAt: 'deprecatedAt',
   archivedAt: 'archivedAt',
@@ -517,6 +530,8 @@ exports.Prisma.HubManifestVersionScalarFieldEnum = {
   checksum: 'checksum',
   installPolicy: 'installPolicy',
   compatibility: 'compatibility',
+  exportSnapshot: 'exportSnapshot',
+  releaseNote: 'releaseNote',
   changelog: 'changelog',
   createdBy: 'createdBy',
   publishedBy: 'publishedBy',
@@ -531,18 +546,24 @@ exports.Prisma.HubManifestVersionScalarFieldEnum = {
 exports.Prisma.HubManifestAssetScalarFieldEnum = {
   id: 'id',
   manifestVersionId: 'manifestVersionId',
+  manifestId: 'manifestId',
   assetId: 'assetId',
   assetVersionId: 'assetVersionId',
   kind: 'kind',
+  version: 'version',
   required: 'required',
+  installPath: 'installPath',
+  checksum: 'checksum',
   loadWhen: 'loadWhen',
   order: 'order',
+  sortOrder: 'sortOrder',
   alias: 'alias',
   reason: 'reason',
   stage: 'stage',
   addedBy: 'addedBy',
   addedAt: 'addedAt',
-  policy: 'policy'
+  policy: 'policy',
+  config: 'config'
 };
 
 exports.Prisma.HubAgentProfileScalarFieldEnum = {
@@ -569,15 +590,20 @@ exports.Prisma.HubAgentProfileScalarFieldEnum = {
 
 exports.Prisma.HubInstallRecordScalarFieldEnum = {
   id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
   projectId: 'projectId',
   workspaceId: 'workspaceId',
   manifest: 'manifest',
   packages: 'packages',
+  manifestId: 'manifestId',
   manifestSlug: 'manifestSlug',
   manifestVersion: 'manifestVersion',
   manifestChecksum: 'manifestChecksum',
+  installMode: 'installMode',
   status: 'status',
   failureReason: 'failureReason',
+  message: 'message',
   packageCount: 'packageCount',
   clientName: 'clientName',
   clientVersion: 'clientVersion',
@@ -629,6 +655,31 @@ exports.Prisma.ScenarioDomainLinkScalarFieldEnum = {
   id: 'id',
   scenarioPackageId: 'scenarioPackageId',
   domainId: 'domainId'
+};
+
+exports.Prisma.HubAssetAuditLogScalarFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  resourceType: 'resourceType',
+  resourceId: 'resourceId',
+  details: 'details',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.HubRuntimeReportScalarFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  runId: 'runId',
+  stage: 'stage',
+  status: 'status',
+  usedAssets: 'usedAssets',
+  durationMs: 'durationMs',
+  failedReason: 'failedReason',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -894,16 +945,22 @@ exports.Prisma.RuleDomainLinkOrderByRelevanceFieldEnum = {
 exports.Prisma.HubAssetOrderByRelevanceFieldEnum = {
   id: 'id',
   slug: 'slug',
+  assetId: 'assetId',
   name: 'name',
+  displayName: 'displayName',
   kind: 'kind',
   scope: 'scope',
   ownerOrgId: 'ownerOrgId',
   ownerTeamId: 'ownerTeamId',
   ownerUserId: 'ownerUserId',
+  ownerId: 'ownerId',
+  teamId: 'teamId',
   status: 'status',
+  riskLevel: 'riskLevel',
   description: 'description',
   visibility: 'visibility',
   latestVersionId: 'latestVersionId',
+  parentAssetId: 'parentAssetId',
   createdBy: 'createdBy',
   updatedBy: 'updatedBy'
 };
@@ -917,6 +974,7 @@ exports.Prisma.HubAssetVersionOrderByRelevanceFieldEnum = {
   checksum: 'checksum',
   status: 'status',
   changelog: 'changelog',
+  contentUrl: 'contentUrl',
   createdBy: 'createdBy',
   publishedBy: 'publishedBy',
   rejectedReason: 'rejectedReason',
@@ -927,7 +985,9 @@ exports.Prisma.HubAssetVersionOrderByRelevanceFieldEnum = {
 exports.Prisma.HubManifestOrderByRelevanceFieldEnum = {
   id: 'id',
   slug: 'slug',
+  manifestId: 'manifestId',
   name: 'name',
+  displayName: 'displayName',
   scope: 'scope',
   ownerOrgId: 'ownerOrgId',
   ownerTeamId: 'ownerTeamId',
@@ -944,6 +1004,7 @@ exports.Prisma.HubManifestVersionOrderByRelevanceFieldEnum = {
   version: 'version',
   status: 'status',
   checksum: 'checksum',
+  releaseNote: 'releaseNote',
   changelog: 'changelog',
   createdBy: 'createdBy',
   publishedBy: 'publishedBy',
@@ -955,9 +1016,13 @@ exports.Prisma.HubManifestVersionOrderByRelevanceFieldEnum = {
 exports.Prisma.HubManifestAssetOrderByRelevanceFieldEnum = {
   id: 'id',
   manifestVersionId: 'manifestVersionId',
+  manifestId: 'manifestId',
   assetId: 'assetId',
   assetVersionId: 'assetVersionId',
   kind: 'kind',
+  version: 'version',
+  installPath: 'installPath',
+  checksum: 'checksum',
   alias: 'alias',
   reason: 'reason',
   stage: 'stage',
@@ -982,13 +1047,18 @@ exports.Prisma.HubAgentProfileOrderByRelevanceFieldEnum = {
 
 exports.Prisma.HubInstallRecordOrderByRelevanceFieldEnum = {
   id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
   projectId: 'projectId',
   workspaceId: 'workspaceId',
+  manifestId: 'manifestId',
   manifestSlug: 'manifestSlug',
   manifestVersion: 'manifestVersion',
   manifestChecksum: 'manifestChecksum',
+  installMode: 'installMode',
   status: 'status',
   failureReason: 'failureReason',
+  message: 'message',
   clientName: 'clientName',
   clientVersion: 'clientVersion'
 };
@@ -1025,6 +1095,26 @@ exports.Prisma.ScenarioDomainLinkOrderByRelevanceFieldEnum = {
   id: 'id',
   scenarioPackageId: 'scenarioPackageId',
   domainId: 'domainId'
+};
+
+exports.Prisma.HubAssetAuditLogOrderByRelevanceFieldEnum = {
+  id: 'id',
+  actorId: 'actorId',
+  action: 'action',
+  resourceType: 'resourceType',
+  resourceId: 'resourceId'
+};
+
+exports.Prisma.HubRuntimeReportOrderByRelevanceFieldEnum = {
+  id: 'id',
+  projectName: 'projectName',
+  repoUrl: 'repoUrl',
+  manifestId: 'manifestId',
+  manifestVersion: 'manifestVersion',
+  runId: 'runId',
+  stage: 'stage',
+  status: 'status',
+  failedReason: 'failedReason'
 };
 
 
@@ -1065,7 +1155,9 @@ exports.Prisma.ModelName = {
   HubInstallRecord: 'HubInstallRecord',
   HubRuntimeFeedback: 'HubRuntimeFeedback',
   HubAuditLog: 'HubAuditLog',
-  ScenarioDomainLink: 'ScenarioDomainLink'
+  ScenarioDomainLink: 'ScenarioDomainLink',
+  HubAssetAuditLog: 'HubAssetAuditLog',
+  HubRuntimeReport: 'HubRuntimeReport'
 };
 
 /**

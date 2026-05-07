@@ -49,6 +49,10 @@ const ASSET_KINDS = new Set<HubAssetKind>([
   "skill",
   "role",
   "flow",
+  "workflow",
+  "hook",
+  "command",
+  "prompt-template",
   "scenario",
   "manifest",
   "agent-profile",
@@ -56,8 +60,8 @@ const ASSET_KINDS = new Set<HubAssetKind>([
   "source-pack",
   "contract",
 ]);
-const SCOPES = new Set<HubScope>(["platform", "department", "team", "project", "personal"]);
-const STATUSES = new Set<HubStatus>(["draft", "reviewing", "published", "deprecated", "archived", "rejected"]);
+const SCOPES = new Set<HubScope>(["platform", "enterprise", "department", "team", "project", "personal"]);
+const STATUSES = new Set<HubStatus>(["draft", "reviewing", "published", "active", "deprecated", "archived", "rejected"]);
 
 function asRecord(value: unknown): PrismaRecord {
   if (!value || typeof value !== "object" || Array.isArray(value)) return {};
@@ -178,6 +182,9 @@ export function mapPrismaAsset(value: unknown): HubAsset {
     tags: asJsonArray(record.tags),
     visibility: asNullableString(record.visibility),
     latestVersionId: asNullableString(record.latestVersionId),
+    parentAssetId: asNullableString(record.parentAssetId),
+    overrideFields: asJsonRecord(record.overrideFields),
+    metadata: asJsonRecord(record.metadata),
     deprecatedAt: toNullableIso(record.deprecatedAt),
     archivedAt: toNullableIso(record.archivedAt),
     createdBy: asNullableString(record.createdBy),
