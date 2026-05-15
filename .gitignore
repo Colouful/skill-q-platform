@@ -39,3 +39,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .omx/
+.env
+.env.*
+.env.example
+.env.prod
+.env.pre
